@@ -1,13 +1,28 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "roboto";
+  src: url("../public/font/BebasNeue-Regular.ttf");
+}
+@font-face {
+  font-family: "over";
+  src: url("../public/font/Overpass-Regular.ttf");
+}
+@font-face {
+  font-family: "over-bold";
+  src: url("../public/font/Overpass-Bold.ttf");
+}
+@font-face {
+  font-family: "namsan";
+  src: url("../public/font/SeoulNamsanM.ttf");
+}
+@font-face {
+  font-family: "hangang";
+  src: url("../public/font/SeoulHangangM.ttf");
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  font-family: "roboto";
 }
