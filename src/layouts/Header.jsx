@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import SearchBar from "../components/SearchBar";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import SearchBar from "../components/home/SearchBar";
 
 export default function LayoutHeader() {
   return (

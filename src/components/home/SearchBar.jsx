@@ -10,7 +10,7 @@ export default function SearchBar() {
   };
   return (
     <div className="flex justify-center items-center">
-      <div className="relative">
+      <div className="flex justify-center">
         <input
           type="text"
           value={query || ""}
@@ -20,7 +20,7 @@ export default function SearchBar() {
         />
         <button
           onClick={handleSearch}
-          className="right-2 top-2 bg-red-400 text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+          className="text-center bg-red-400 text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
         >
           검색
         </button>
