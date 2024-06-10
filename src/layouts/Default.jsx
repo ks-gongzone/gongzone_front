@@ -6,7 +6,7 @@ export default function LayoutDefault({ children }) {
     <div className="w-30 bg-bottom">
       <LayoutHeader />
       <div className="w-full flex justify-center">
-        <div className="max-w-[1400px] w-full">{children}</div>
+        <div className="w-full">{children}</div>
       </div>
       <LayoutFooter />
     </div>
