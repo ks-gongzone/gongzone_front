@@ -1,4 +1,4 @@
-export default function Section({ children, title}) {
+export default function PointSection({ children, title}) {
   return (
     <div id={"section"} className={"flex flex-grow bg- my-8 mx-12"}>
       <div className={"bg-gray-50 w-full p-8"}>
