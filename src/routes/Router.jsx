@@ -1,6 +1,7 @@
 import { Outlet, createBrowserRouter } from "react-router-dom";
 import LayoutDefault from "../layouts/Default";
 import Home from "../pages/home/Index";
+import MemberInputData from "../pages/myPage/InputData";
 
 export default createBrowserRouter([
   {
@@ -9,6 +10,9 @@ export default createBrowserRouter([
         <Outlet />
       </LayoutDefault>
     ),
-    children: [{ path: "/", element: <Home /> }],
+    children: [
+      { path: "/", element: <Home /> },
+      { path: "/userInfo", element: <MemberInputData /> },
+    ],
   },
 ]);
