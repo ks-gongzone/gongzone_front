@@ -12,7 +12,7 @@ export default function LayoutHeader() {
   return (
     <div className="shadow-md z-10">
       <div className="flex items-center h-16 px-20 justify-between">
-        <div className="w-full flex items-center max-w-5xl mx-auto gap-20">
+        <div className="w-full flex items-center max-w-6xl mx-auto gap-20">
           <Link className="text-2xl" to="/">
             LOGO
           </Link>

@@ -20,7 +20,7 @@ export default function ModalLogin({ isOpen, onClose }) {
           <button onClick={onClose} className="text-black text-4xl">&times;</button>
         </div>
         <form onSubmit={handleLogin} className="mt-4">
-          <div className="mb-2">
+          <div className="mb-1">
             <label htmlFor="memberId" className="block text-sm font-medium text-gray-700">아이디</label>
             <input
               type="text"
@@ -42,12 +42,14 @@ export default function ModalLogin({ isOpen, onClose }) {
               required
             />
           </div>
-          <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg mb-4">로그인</button>
+          <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg mb-2">로그인</button>
         </form>
-        <div className="flex flex-col space-y-2">
+        <div className="mt-0 mb-2">
           <button className="bg-red-500 text-white w-full py-2 rounded-lg">
-            Google 계정으로 로그인
+            회원 가입
           </button>
+        </div>
+        <div className="flex flex-col space-y-2">
           <button className="bg-green-500 text-white w-full py-2 rounded-lg">
             Naver 계정으로 로그인
           </button>
