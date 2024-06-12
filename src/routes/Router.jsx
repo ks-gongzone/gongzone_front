@@ -1,6 +1,6 @@
 import { Outlet, createBrowserRouter } from "react-router-dom";
 import LayoutDefault from "../layouts/Default";
-import Home from "../home/Index";
+import Home from "../pages/home/Index";
 
 export default createBrowserRouter([
   {
