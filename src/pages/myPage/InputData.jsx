@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import LocationSelect from "./LocationSelect";
 import Password, { useDataSet } from "./PasswordUpdate";
+import AlarmSettings from "./AlarmSelect";
 
 function DataFill() {
   // 닉네임 입력 값
@@ -48,6 +49,7 @@ function DataFill() {
           본인인증
         </button>
       </div>
+      <AlarmSettings />
     </div>
   );
 }
