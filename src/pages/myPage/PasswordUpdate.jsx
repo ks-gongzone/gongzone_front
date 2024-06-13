@@ -56,7 +56,7 @@ export default function Password() {
             isMatched ? "text-green-500" : "text-red-500"
           }`}
         >
-          {matchMessage ? "비밀번호가 일치합니다." : "비밀번호가 불일치합니다."}
+          {isMatched ? "비밀번호가 일치합니다." : "비밀번호가 불일치합니다."}
         </div>
       )}
     </div>
