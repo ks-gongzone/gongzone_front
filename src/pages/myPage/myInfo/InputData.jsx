@@ -41,7 +41,7 @@ function DataFill() {
           placeholder="휴대폰 번호를 입력해 주세요."
         />
       </div>
-      <div className="flex justify-end">
+      <div className="mb-6 flex justify-end">
         {/*
           본인 인증 확인 ture, false값에 따라서 확인완료 혹은 다시시도
         */}

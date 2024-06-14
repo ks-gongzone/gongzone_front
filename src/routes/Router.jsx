@@ -1,7 +1,7 @@
 import { Outlet, createBrowserRouter } from "react-router-dom";
 import LayoutDefault from "../layouts/Default";
 import Home from "../pages/home/Index";
-import MemberInputData from "../pages/myPage/InputData";
+import MemberInputData from "../pages/myPage/myInfo/InputData";
 
 export default createBrowserRouter([
   {
