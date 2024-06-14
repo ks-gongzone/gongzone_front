@@ -15,4 +15,5 @@ export default createBrowserRouter([
       { path: "/userInfo", element: <MemberInputData /> },
     ],
   },
+  //[{ path: "/login", element: <Login /> }],
 ]);
