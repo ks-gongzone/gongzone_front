@@ -1,15 +1,16 @@
 import { useState } from 'react';
 
-export default function ModalLogin({ isOpen, onClose }) {
-  const [memberId, setMemberId] = useState('');
-  const [memberPw, setMemberPw] = useState('');
-
+export default function ModalLogin({ isOpen, onClose, onLogin }) {
+  const [loginId, setloginId] = useState('');
+  const [loginPw, setloginPw] = useState('');
   if (!isOpen) return null;
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log('memberId:', memberId);
-    console.log('memberPw:', memberPw);
+    console.log('preventDefault 작동');
+    const loginRequest = { loginId, loginPw };
+    onLogin(loginRequest);
+    console.log(loginRequest);
   };
 
   return (
@@ -21,23 +22,23 @@ export default function ModalLogin({ isOpen, onClose }) {
         </div>
         <form onSubmit={handleLogin} className="mt-4">
           <div className="mb-1">
-            <label htmlFor="memberId" className="block text-sm font-medium text-gray-700">아이디</label>
+            <label htmlFor="loginId" className="block text-sm font-medium text-gray-700">아이디</label>
             <input
               type="text"
-              id="memberId"
-              value={memberId}
-              onChange={(e) => setMemberId(e.target.value)}
+              id="loginId"
+              value={loginId}
+              onChange={(e) => setloginId(e.target.value)}
               className="w-full px-3 py-2 border rounded-lg"
               required
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="memberPw" className="block text-sm font-medium text-gray-700">비밀번호</label>
+            <label htmlFor="loginPw" className="block text-sm font-medium text-gray-700">비밀번호</label>
             <input
               type="password"
-              id="memberPw"
-              value={memberPw}
-              onChange={(e) => setMemberPw(e.target.value)}
+              id="loginPw"
+              value={loginPw}
+              onChange={(e) => setloginPw(e.target.value)}
               className="w-full px-3 py-2 border rounded-lg"
               required
             />

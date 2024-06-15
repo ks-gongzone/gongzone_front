@@ -9,7 +9,7 @@ import GZAPI from "./api";
 
 export const Auth = {
   Login: async (data) => {
-    return GZAPI.post("/auth/login", data)
+    return GZAPI.post("/api/login", data)
       .then((res) => res)
       .catch((err) => err);
   },

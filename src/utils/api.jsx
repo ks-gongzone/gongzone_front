@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const GZAPI = axios.create({
-  baseURL: "http://localhost:3000/", // API의 기본 URL을 설정
+  baseURL: "http://localhost:8080/", // API의 기본 URL을 설정
 });
 
 // 아래 주석은 예시 -> 디벨롭해서 개발이 필요합니다.
@@ -20,7 +20,8 @@ GZAPI.interceptors.response.use(
         window.localStorage.removeItem("accessToken");
         const url = window.location.href;
         window.localStorage.setItem("redirect", url);
-        window.location.href = "/";
+        //이 부분때문에 안돼서 일단 주석처리 해놨습니다
+        //window.location.href = "/";
       }
     }
     return Promise.reject(error.response);
