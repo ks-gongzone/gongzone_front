@@ -27,40 +27,60 @@ export default function Point() {
   }, [memberNo]);
 
 
+  const [loaded, setLoaded] = useState(false);
+  
+  useEffect(() => {
+    memberPoint != null ? setLoaded(true) : setLoaded(false);
+  }, [memberPoint]);
+
+  if (!loaded) {
+    return (
+      <PointSection title={title}>
+        <div className="text-center">
+          잠시만 기다려주세요..
+        </div>
+      </PointSection>
+    );
+  }
+
   return (
     <PointSection title={title}>
       <div className="flex flex-grow">
-        <div className="flex flex-col justify-center items-center w-1/4">
-          <div>
-            <p className="mb-4">보유 포인트</p>
-          </div>
-          <div className="flex justify-center items-center w-32 h-32 text-xl bg-gray-100">
-            <span className="font-bold">{formatNumber(memberPoint)}</span><span>P</span>
+        <div className="flex justify-center border-r-2 border-r-gray-200 w-1/3">
+          <div className="flex flex-col justify-center items-center">
+            <div>
+              <p className="mb-4">보유 포인트</p>
+            </div>
+            <div className="flex justify-center items-center w-32 h-32 text-xl bg-gray-100">
+              <span className="font-bold">{formatNumber(memberPoint)}</span><span>P</span>
+            </div>
           </div>
         </div>
-        <div className="flex flex-col justify-center items-center w-1/4">
-          <div>
-            <p className="mb-4">포인트 내역</p>
+        <div className="flex justify-around w-2/3">
+          <div className="flex flex-col justify-center items-center w-1/3">
+            <div>
+              <p className="mb-4">포인트 내역</p>
+            </div>
+            <Link to={`/point/history`} className="flex justify-center items-center w-32 h-32 text-xl bg-gray-100">
+              ㅇ
+            </Link>
           </div>
-          <Link to={`/point/history`} className="flex justify-center items-center w-32 h-32 text-xl bg-gray-100">
-            ㅇ
-          </Link>
-        </div>
-        <div className="flex flex-col justify-center items-center w-1/4">
-          <div>
-            <p className="mb-4">포인트 충전</p>
+          <div className="flex flex-col justify-center items-center w-1/3">
+            <div>
+              <p className="mb-4">포인트 충전</p>
+            </div>
+            <Link to={`/point/charge`} className="flex justify-center items-center w-32 h-32 text-xl bg-gray-100">
+              ㅇ
+            </Link>
           </div>
-          <Link to={`/point/charge`} className="flex justify-center items-center w-32 h-32 text-xl bg-gray-100">
-            ㅇ
-          </Link>
-        </div>
-        <div className="flex flex-col justify-center items-center w-1/4">
-          <div>
-            <p className="mb-4">포인트 인출</p>
+          <div className="flex flex-col justify-center items-center w-1/3">
+            <div>
+              <p className="mb-4">포인트 인출</p>
+            </div>
+            <Link to={`/point/withdraw`} className="flex justify-center items-center w-32 h-32 text-xl bg-gray-100">
+              ㅇ
+            </Link>
           </div>
-          <Link to={`/point/withdraw`} className="flex justify-center items-center w-32 h-32 text-xl bg-gray-100">
-            ㅇ
-          </Link>
         </div>
       </div>
     </PointSection>

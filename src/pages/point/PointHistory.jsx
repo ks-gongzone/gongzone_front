@@ -22,7 +22,7 @@ export default function PointHistory() {
   const memberNo = sessionStorage.getItem("memberNo");
   const title = `${memberNo}님의 포인트 내역 페이지`;
 
-  const [pointHistory, setPointHistory] = useState([]);
+  const [pointHistory, setPointHistory] = useState(null);
 
   useEffect(() => {
     async function fetchMemberPointHistory() {
@@ -39,6 +39,23 @@ export default function PointHistory() {
 
     fetchMemberPointHistory();
   }, [memberNo]);
+
+
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    pointHistory != null ? setLoaded(true) : setLoaded(false);
+  }, [pointHistory]);
+
+  if (!loaded) {
+    return (
+      <PointSection title={title}>
+        <div className="text-center">
+          잠시만 기다려주세요..
+        </div>
+      </PointSection>
+    );
+  }
 
 
   return (
