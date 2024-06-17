@@ -1,58 +1,79 @@
 import { useEffect, useState } from "react";
 
-export default function LocationSelect({ onLocationChange }) {
-  // 전체 주소 담을 현재 객체와 업데이트 될 객체
-  const [location, setLocation] = useState({});
-  // 로딩 상태 추가
-  const [isLoading, setIsLoading] = useState(true);
-  // 시/도 상태
-  const [selectedDo, setSelectedDo] = useState("");
-  // 시/군/구 상태
-  const [selectedSi, setSelectedSi] = useState("");
-  // 읍/면/동
-  const [selectedGu, setSelectedGu] = useState("");
+/**
+ * 선호 지역 설정
+ * @date: 2024-06-10
+ * @last: 2024-06-17
+ */
+export default function LocationSelect({
+  onLocationChange,
+  initailLocation = { do: "", si: "", gu: "" },
+  locationData = {},
+}) {
+  const [location, setLocation] = useState(locationData);
+  const [isLoading, setIsLoading] = useState(
+    !locationData || Object.keys(locationData).length === 0
+  );
+  const [selectedDo, setSelectedDo] = useState(initailLocation.do);
+  const [selectedSi, setSelectedSi] = useState(initailLocation.si);
+  const [selectedGu, setSelectedGu] = useState(initailLocation.gu);
 
   useEffect(() => {
-    // 백엔드에서 지역에 대한 데이터를 가져오게한다.
-    // 비동기 처리를 위해 Async 사용, await사용 하여 백엔드 aip 호출
-    const bringRegion = async () => {
-      try {
-        const response = await fetch(""); // 백엔드에서 보내는 주소
-        const data = await response.json();
-        setLocation(data);
-        setIsLoading(false); // 데이터 로드 완료 상태
-      } catch (error) {
-        console.error("잘못된 값 입니다.", error);
-        setIsLoading(false); // 에러 발생 시에도 로딩 상태 종료
-      }
-    };
-    bringRegion();
-  }, []);
+    if (isLoading) {
+      // 더미 데이터
+      const dummyData = {
+        서울: {
+          강남구: ["역삼동", "삼성동"],
+          서초구: ["서초동", "반포동"],
+        },
+        전주: {
+          완산구: ["삼천동", "효자동"],
+          덕진구: ["금암동", "송천동"],
+        },
+      };
 
-  // 도에 대한 값이 변경 되는 이벤트 발생 시
+      // 더미데이터 사용
+      Promise.resolve(dummyData)
+        .then((data) => {
+          setLocation(data);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error("잘못된 값 입니다.", error);
+          setIsLoading(false);
+        });
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+    setSelectedDo(initailLocation.do);
+    setSelectedSi(initailLocation.si);
+    setSelectedGu(initailLocation.gu);
+  }, [initailLocation]);
+
   const handleDoChange = (e) => {
-    setSelectedDo(e.target.value);
+    const newDo = e.target.value;
+    setSelectedDo(newDo);
     setSelectedSi("");
     setSelectedGu("");
-    if (onLocationChange) onLocationChange(e.target.value, "", "");
+    if (onLocationChange) onLocationChange(newDo, "", "");
   };
 
-  // 시에 대한 값이 변경 되는 이벤트 발생 시
   const handleSiChange = (e) => {
-    setSelectedSi(e.target.value);
+    const newSi = e.target.value;
+    setSelectedSi(newSi);
     setSelectedGu("");
-    if (onLocationChange) onLocationChange(selectedDo, e.target.value, "");
+    if (onLocationChange) onLocationChange(selectedDo, newSi, "");
   };
 
-  // 구에 대한 값이 변경 되는 이벤트 발생 시
   const handleGuChange = (e) => {
-    setSelectedGu(e.target.value);
-    if (onLocationChange)
-      onLocationChange(selectedDo, selectedSi, e.target.value);
+    const newGu = e.target.value;
+    setSelectedGu(newGu);
+    if (onLocationChange) onLocationChange(selectedDo, selectedSi, newGu);
   };
 
   if (isLoading) {
-    return <div>Loading...</div>; // 로딩중 표기 내용
+    return <div>Loading...</div>;
   }
 
   return (

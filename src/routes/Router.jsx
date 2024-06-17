@@ -1,7 +1,7 @@
 import { Outlet, createBrowserRouter } from "react-router-dom";
 import LayoutDefault from "../layouts/Default";
 import Home from "../pages/home/Index";
-import MyPageMain from "../pages/myPage/MyPageMain";
+import MovingPoint from "../pages/myPage/MovingPoint";
 
 export default createBrowserRouter([
   {
@@ -12,7 +12,7 @@ export default createBrowserRouter([
     ),
     children: [
       { path: "/", element: <Home /> },
-      { path: "/userInfo", element: <MyPageMain /> },
+      { path: "/userInfo", element: <MovingPoint /> },
     ],
   },
   //[{ path: "/login", element: <Login /> }],
