@@ -3,6 +3,7 @@ import LocationSelect from "./LocationSelect";
 import Password, { useDataSet } from "./PasswordUpdate";
 import AlarmSettings from "./AlarmSelect";
 import SaveButton from "./SubmitBubbon";
+import SetNickname from "./NickName";
 
 /**
  * 개별 토글 스위치 컴포넌트
@@ -88,15 +89,7 @@ export default function MyInfo() {
     <div className="bg-gray-100 py-10 overflow-y-hidden">
       <div className="p-12 bg-white shadow-md rounded-lg w-[800px] mx-auto">
         <Password />
-        <div className="mb-6">
-          <div className="text-gray-700 font-bold text-lg mb-2">닉네임</div>
-          <input
-            className="w-full p-2 border border-gray-300 rounded mt-2"
-            placeholder="닉네임을 입력해 주세요."
-            value={nickname}
-            onChange={changeNickname}
-          />
-        </div>
+        <SetNickname />
         <div className="mb-6">
           <div className="text-gray-700 font-bold text-lg mb-2">선호지역</div>
           <LocationSelect initailLocation={data.location} />
