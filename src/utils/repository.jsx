@@ -32,3 +32,36 @@ export const User = {
       .catch((err) => err);
   },
 };
+
+// myPage 내부콘텐츠 API
+export const contentAPI = {
+  getUserInfo: async () => {
+    // 더미 데이터 반환
+    return Promise.resolve({
+      name: "홍길동",
+      email: "hong@example.com",
+      phone: "010-1234-5678",
+      address: "서울특별시 강남구 테헤란로 123",
+    });
+  },
+  getBulletin: async () => {
+    return GZAPI.get("/bulletin")
+      .then((res) => res.data)
+      .catch((err) => err);
+  },
+  getPartyInfo: async () => {
+    return GZAPI.get("/partyInfo")
+      .then((res) => res.data)
+      .catch((err) => err);
+  },
+  getPoints: async () => {
+    return GZAPI.get("/points")
+      .then((res) => res.data)
+      .catch((err) => err);
+  },
+  getBlockUser: async () => {
+    return GZAPI.get("/blockUser")
+      .then((res) => res.data)
+      .catch((err) => err);
+  },
+};
