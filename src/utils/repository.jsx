@@ -18,6 +18,11 @@ export const Auth = {
       .then((res) => res)
       .catch((err) => err);
   },
+  Register: async (data) => {
+    return GZAPI.post('/api/register', data)
+      .then((res) => res)
+      .catch((err) => err);
+  }
 };
 
 export const User = {

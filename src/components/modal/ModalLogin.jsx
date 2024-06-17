@@ -3,9 +3,10 @@ import { useState } from 'react';
 export default function ModalLogin({ isOpen, onClose, onLogin }) {
   const [loginId, setloginId] = useState('');
   const [loginPw, setloginPw] = useState('');
+
   if (!isOpen) return null;
 
-  const handleLogin = (e) => {
+  const handleContinue = (e) => {
     e.preventDefault();
     console.log('preventDefault 작동');
     const loginRequest = { loginId, loginPw };
@@ -15,47 +16,50 @@ export default function ModalLogin({ isOpen, onClose, onLogin }) {
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-4 rounded-lg shadow-lg w-80">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-80">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-bold">로그인</h2>
-          <button onClick={onClose} className="text-black text-4xl">&times;</button>
+          <button onClick={onClose} className="text-black text-3xl">&times;</button>
         </div>
-        <form onSubmit={handleLogin} className="mt-4">
-          <div className="mb-1">
+        <form onSubmit={handleContinue} className="mt-4 space-y-4">
+          <div>
             <label htmlFor="loginId" className="block text-sm font-medium text-gray-700">아이디</label>
             <input
               type="text"
               id="loginId"
               value={loginId}
               onChange={(e) => setloginId(e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               required
             />
           </div>
-          <div className="mb-4">
+          <div>
             <label htmlFor="loginPw" className="block text-sm font-medium text-gray-700">비밀번호</label>
             <input
               type="password"
               id="loginPw"
               value={loginPw}
               onChange={(e) => setloginPw(e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               required
             />
           </div>
-          <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg mb-2">로그인</button>
+          <div className="flex justify-between items-center mt-4">
+            <button className="text-sm text-gray-500">ID/PW 찾기</button>
+            <div>
+              <button type="submit" className="text-sm text-blue-500">CONTINUE</button>
+            </div>
+          </div>
         </form>
-        <div className="mt-0 mb-2">
-          <button className="bg-red-500 text-white w-full py-2 rounded-lg">
-            회원 가입
+        <div className="space-y-2 mt-4">
+          <button className="w-full bg-gray-200 text-black py-2 rounded-lg flex items-center justify-center">
+            <span className="mr-2">+</span> GOOGLE
           </button>
-        </div>
-        <div className="flex flex-col space-y-2">
-          <button className="bg-green-500 text-white w-full py-2 rounded-lg">
-            Naver 계정으로 로그인
+          <button className="w-full bg-green-500 text-white py-2 rounded-lg flex items-center justify-center">
+            <span className="mr-2">+</span> NAVER
           </button>
-          <button className="bg-yellow-400 text-white w-full py-2 rounded-lg">
-            Kakao 계정으로 로그인
+          <button className="w-full bg-yellow-300 text-black py-2 rounded-lg flex items-center justify-center">
+            <span className="mr-2">+</span> KAKAO
           </button>
         </div>
       </div>

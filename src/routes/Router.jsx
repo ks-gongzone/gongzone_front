@@ -2,6 +2,7 @@ import { Outlet, createBrowserRouter } from "react-router-dom";
 import LayoutDefault from "../layouts/Default";
 import Home from "../pages/home/Index";
 import Party from "../pages/party/Index";
+import Register from "../pages/login/Register";
 
 export default createBrowserRouter([
   {
@@ -13,7 +14,8 @@ export default createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       { path: "/party/accept", element: <Party /> },
+      { path: "/register", element: <Register /> },
     ],
   },
-  //[{ path: "/login", element: <Login /> }],
+  //{ path: "/signup", element: <Signup /> },
 ]);
