@@ -17,8 +17,8 @@ export default function SubSlider() {
   };
 
   return (
-    <div className="w-full">
-      <div className="w-[730px] mx-auto mt-10 mb-6 text-lg font-bold text-[#526688]">
+    <div className="w-full mx-auto">
+      <div className="w-[1000px] mx-auto mt-10 mb-6 text-lg font-bold text-[#526688]">
         마감임박 모임
       </div>
       <Slider {...settings}>
