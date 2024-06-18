@@ -1,4 +1,4 @@
-import MainSlider from "../../components/home/MainSlider";
+import MainSlider from "../../components/page/home/MainSlider";
 import MainMap from "../../components/page/home/MainMap";
 import SubSlider from "../../components/page/home/SubSlider";
 import PartyCardSection from "../party/PartyAccept";

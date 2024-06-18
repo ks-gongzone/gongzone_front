@@ -11,7 +11,7 @@ export default function MainSlider() {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    arrows: true,
+    arrows: false,
     autoplaySpeed: 7000,
     pauseOnFocus: true,
   };

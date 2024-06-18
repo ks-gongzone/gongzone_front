@@ -1,5 +1,5 @@
 import { HeartIcon } from "@heroicons/react/20/solid";
-import MainCard from "../../components/home/MainCard";
+import MainCard from "../../components/page/home/MainCard";
 import PartyCard from "../../components/party/PartyCard";
 import sample1 from "../../assets/images/sample1.PNG";
 import sample2 from "../../assets/images/sample2.PNG";
