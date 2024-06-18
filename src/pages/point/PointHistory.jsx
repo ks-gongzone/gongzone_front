@@ -1,15 +1,10 @@
-import PointSection from "../../layouts/point/PointSection";
 import { useEffect } from "react";
 import GZAPI from "../../utils/api";
 import { formatNumber } from "../../libs/utilities";
 import State from "../../utils/state/State";
 
 
-// test: 로그인 기능 구현 후 제거
-sessionStorage.setItem("memberNo", "M000002");
-const memberNo = sessionStorage.getItem("memberNo");
-const title = `${ memberNo }님의 포인트 내역 페이지`;
-export default function PointHistory() {
+export default function PointHistory({ memberNo, isLoaded }) {
   const pointHistory = State('pointHistory', []);
 
   useEffect(() => {
@@ -21,59 +16,47 @@ export default function PointHistory() {
       pointHistory.set(result);
       isLoaded.set(true);
     })();
-  }, [memberNo]);
+  }, []);
 
 
-  const isLoaded = State('isLoaded', false);
-
-  if (!isLoaded.value) {
-    return (
-      <PointSection title={ title }>
-        <div className="text-center">
-          잠시만 기다려주세요..
-        </div>
-      </PointSection>
-    );
-  }
-
-
-  console.log(pointHistory)
   return (
-    <PointSection title={ title }>
-      <div className="flex flex-grow">
-        <div className="flex flex-col w-full">
-          <div className="flex w-full text-center">
-            <div className="w-2/12 border border-gray-400">내역번호</div>
-            <div className="w-4/12 border border-gray-400">일시</div>
-            <div className="w-2/12 border border-gray-400">유형</div>
-            <div className="w-[12%] border border-gray-400">변동전</div>
-            <div className="w-[12%] border border-gray-400">변동량</div>
-            <div className="w-[12%] border border-gray-400">변동후</div>
-            <div className="w-[12%] border border-gray-400">처리상태</div>
-          </div>
-          {
-            pointHistory.value.map((history, index) => {
-              return (
-                <PointHistoryRow key={ index } pointHistory={ history } />
-              )
-            })
-          }
-        </div>
+    <div className="flex flex-col flex-grow">
+      <div className="flex">
+        <button className={ "w-1/2" }>!사용 내역</button>
+        <button className={ "w-1/2" }>!충전(증가) 내역</button>
       </div>
-    </PointSection>
+      <div className="flex flex-col w-full">
+        <div className="flex w-full bg-gray-100 text-center">
+          <div className="w-2/12 border-x border-x-gray-300 border-y-2 border-y-gray-400">내역번호</div>
+          <div className="w-4/12 border-x border-x-gray-300 border-y-2 border-y-gray-400">일시</div>
+          <div className="w-2/12 border-x border-x-gray-300 border-y-2 border-y-gray-400">유형</div>
+          <div className="w-[12%] border-x border-x-gray-300 border-y-2 border-y-gray-400">변동전</div>
+          <div className="w-[12%] border-x border-x-gray-300 border-y-2 border-y-gray-400">변동량</div>
+          <div className="w-[12%] border-x border-x-gray-300 border-y-2 border-y-gray-400">변동후</div>
+          <div className="w-[12%] border-x border-x-gray-300 border-y-2 border-y-gray-400">상태</div>
+        </div>
+        {
+          pointHistory.value.map((history, index) => {
+            return (
+              <PointHistoryRow key={ index } pointHistory={ history } />
+            )
+          })
+        }
+      </div>
+    </div>
   );
 }
 
 const PointHistoryRow = ({ pointHistory }) => {
   return (
-    <div className="flex w-full text-center">
-      <div className="w-2/12 border border-gray-400">{ pointHistory.pointHistoryNo }</div>
-      <div className="w-4/12 border border-gray-400">{ pointHistory.pointHistoryDate }</div>
-      <div className="w-2/12 border border-gray-400">{ pointHistory.type }</div>
-      <div className="w-[12%] border border-gray-400">{ formatNumber(pointHistory.pointHistoryBefore) }</div>
-      <div className="w-[12%] border border-gray-400">{ formatNumber(pointHistory.pointHistoryChange) }</div>
-      <div className="w-[12%] border border-gray-400">{ formatNumber(pointHistory.pointHistoryAfter) }</div>
-      <div className="w-[12%] border border-gray-400">{ pointHistory.status }</div>
+    <div className="flex w-full border-y border-y-gray-300 bg-gray-50 text-center">
+      <div className="w-2/12 border-x border-gray-300">{ pointHistory.pointHistoryNo }</div>
+      <div className="w-4/12 border-x border-gray-300">{ pointHistory.pointHistoryDate }</div>
+      <div className="w-2/12 border-x border-gray-300">{ pointHistory.type }</div>
+      <div className="w-[12%] border-x border-gray-300">{ formatNumber(pointHistory.pointHistoryBefore) }</div>
+      <div className="w-[12%] border-x border-gray-300">{ formatNumber(pointHistory.pointHistoryChange) }</div>
+      <div className="w-[12%] border-x border-gray-300">{ formatNumber(pointHistory.pointHistoryAfter) }</div>
+      <div className="w-[12%] border-x border-gray-300">{ pointHistory.status }</div>
     </div>
   );
 }
