@@ -1,5 +1,5 @@
 import { HeartIcon } from "@heroicons/react/20/solid";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function PartyCard({
   children,
@@ -12,6 +12,7 @@ export default function PartyCard({
 }) {
   const [isLiked, setIsLiked] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const likeBtn = () => {
     setIsLiked(!isLiked);
@@ -20,6 +21,19 @@ export default function PartyCard({
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="border rounded-lg hover:border-[#ea6560] transition-colors overflow-hidden">
@@ -40,7 +54,7 @@ export default function PartyCard({
               />
             </button>
           )}
-          <div className="relative">
+          <div className="relative" ref={dropdownRef}>
             <button
               onClick={toggleDropdown}
               className="font-bold text-gray-500 text-sm focus:outline-none"

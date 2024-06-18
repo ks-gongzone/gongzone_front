@@ -35,7 +35,7 @@ export default function PartyAccepted() {
   return (
     <div className="w-[65em] mx-auto mb-10 mt-14">
       <div className="w-full mb-6 text-lg font-bold text-[#526688]">
-        파티 신청자
+        파티원 목록
       </div>
       <div className="grid grid-cols-3 gap-4">
         {listitems.map((e) => {
