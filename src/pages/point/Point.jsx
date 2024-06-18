@@ -1,41 +1,35 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import PointSection from "../../layouts/point/PointSection";
 import { formatNumber } from "../../libs/utilities";
 import GZAPI from "../../utils/api";
+import State from "../../utils/state/State";
 
+
+// test: 로그인 기능 구현 후 제거
+sessionStorage.setItem("memberNo", "M000001");
+const memberNo = sessionStorage.getItem('memberNo');
+const title = `${ memberNo }님의 포인트 페이지`;
 export default function Point() {
-  // test: 로그인 기능 구현 후 제거
-  sessionStorage.setItem("memberNo", "M000001");
-  const memberNo = sessionStorage.getItem("memberNo");
-  const title = `${memberNo}님의 포인트 페이지`;
-
-  const [memberPoint, setMemberPoint] = useState(null);
+  const memberPoint = State('memberPoint', '');
 
   useEffect(() => {
-    async function fetchMemberPoint() {
-      try {
-        const url = `/api/members/${memberNo}/point`;
-        const response = await GZAPI.get(url);
-        setMemberPoint(response.data.result.memberPoint);
-      } catch (e) {
-        console.error("Error while fetching:", e);
-      }
-    }
-
-    fetchMemberPoint();
+    (async () => {
+      const url = `/api/members/${ memberNo }/point`;
+      const response = await GZAPI.get(url);
+      const result = response.data.result;
+      console.log(result)
+      memberPoint.set(result);
+      isLoaded.set(true);
+    })();
   }, [memberNo]);
 
 
-  const [loaded, setLoaded] = useState(false);
-  
-  useEffect(() => {
-    memberPoint != null ? setLoaded(true) : setLoaded(false);
-  }, [memberPoint]);
+  const isLoaded = State('loaded', false)
 
-  if (!loaded) {
+  if (!isLoaded.value) {
     return (
-      <PointSection title={title}>
+      <PointSection title={ title }>
         <div className="text-center">
           잠시만 기다려주세요..
         </div>
@@ -43,8 +37,9 @@ export default function Point() {
     );
   }
 
+
   return (
-    <PointSection title={title}>
+    <PointSection title={ title }>
       <div className="flex flex-grow">
         <div className="flex justify-center border-r-2 border-r-gray-200 w-1/3">
           <div className="flex flex-col justify-center items-center">
@@ -52,7 +47,7 @@ export default function Point() {
               <p className="mb-4">보유 포인트</p>
             </div>
             <div className="flex justify-center items-center w-32 h-32 text-xl bg-gray-100">
-              <span className="font-bold">{formatNumber(memberPoint)}</span><span>P</span>
+              <span className="font-bold">{ formatNumber(memberPoint.value) }</span><span>P</span>
             </div>
           </div>
         </div>
@@ -61,7 +56,7 @@ export default function Point() {
             <div>
               <p className="mb-4">포인트 내역</p>
             </div>
-            <Link to={`/point/history`} className="flex justify-center items-center w-32 h-32 text-xl bg-gray-100">
+            <Link to={ `/point/history` } className="flex justify-center items-center w-32 h-32 text-xl bg-gray-100">
               ㅇ
             </Link>
           </div>
@@ -69,7 +64,7 @@ export default function Point() {
             <div>
               <p className="mb-4">포인트 충전</p>
             </div>
-            <Link to={`/point/charge`} className="flex justify-center items-center w-32 h-32 text-xl bg-gray-100">
+            <Link to={ `/point/charge` } className="flex justify-center items-center w-32 h-32 text-xl bg-gray-100">
               ㅇ
             </Link>
           </div>
@@ -77,7 +72,7 @@ export default function Point() {
             <div>
               <p className="mb-4">포인트 인출</p>
             </div>
-            <Link to={`/point/withdraw`} className="flex justify-center items-center w-32 h-32 text-xl bg-gray-100">
+            <Link to={ `/point/withdraw` } className="flex justify-center items-center w-32 h-32 text-xl bg-gray-100">
               ㅇ
             </Link>
           </div>
