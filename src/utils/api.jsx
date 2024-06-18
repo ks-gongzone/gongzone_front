@@ -34,7 +34,7 @@ GZAPI.interceptors.response.use(
         const url = window.location.href;
         window.localStorage.setItem("redirect", url);
         //이 부분때문에 안돼서 일단 주석처리 해놨습니다
-        //window.location.href = "/";
+        window.location.href = "/";
       }
     }
     return Promise.reject(error.response);
