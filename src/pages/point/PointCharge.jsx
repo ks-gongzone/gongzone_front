@@ -3,6 +3,8 @@ import PointSection from "../../layouts/point/PointSection";
 import State from "../../utils/state/State";
 import PointInnerSection from "../../layouts/point/PointInnerSection";
 import { formatNumber } from "../../libs/utilities";
+import GZAPI from "../../utils/api";
+import { useNavigate } from "react-router-dom";
 
 
 // test: 로그인 기능 구현 후 제거
@@ -12,12 +14,25 @@ const title = `${ memberNo }님의 포인트 충전 페이지`;
 export default function PointCharge() {
   const pointCharge = State('pointCharge', 0);
   const isLoaded = State('loaded', false)
+  const navigate = useNavigate();
 
   useEffect(() => {
     isLoaded.set(true);
   }, []);
 
   const actions = {
+    requestPointCharge: async () => {
+      const url = `/api/members/${ memberNo }/point/charge`;
+      const data = { amount: pointCharge.value };
+      const response = await GZAPI.post(url, data);
+      const result = response.data.result;
+      if (result === 'SUCCESS') {
+        alert('충전이 완료되었습니다.');
+        navigate('/point');
+      } else {
+        alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      }
+    },
     inputChangeHandler: (e) => {
       const value = e.target.value.replace(/,/g, '');
       const numericValue = Number(value);
@@ -75,9 +90,7 @@ export default function PointCharge() {
             <button onClick={ actions.addAmount(100_000) }
                     className="box-border border-2 rounded-xl px-2 py-1 bg-gray-300">+10만
             </button>
-            <button onClick={ () => {
-              console.log(pointCharge)
-            } }
+            <button onClick={ actions.requestPointCharge }
                     className="box-border border-2 rounded-xl px-4 py-2 bg-gray-400">!충전
             </button>
           </div>
