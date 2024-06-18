@@ -13,7 +13,7 @@ export default function LayoutHeader() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = sessionStorage.getItem('accessToken');
+    const token = localStorage.getItem('accessToken');
     if (token) {
       setIsLogin(true);
     }
@@ -27,7 +27,8 @@ export default function LayoutHeader() {
 
   const statusLogin = async (data) => {
     const response = await Auth.Login(data);
-      sessionStorage.setItem('accessToken', response.data.token);
+      localStorage.setItem('accessToken', response.data.token);
+      console.log(response.data);
       setIsLogin(true);
       closeModal();
       navigate('/');
@@ -35,7 +36,7 @@ export default function LayoutHeader() {
 
   const statusLogout = () => {
     console.log('로그아웃')
-    sessionStorage.removeItem('accessToken');
+    localStorage.removeItem('accessToken');
     setIsLogin(false);
   };
 

@@ -8,7 +8,6 @@ export default function ModalLogin({ isOpen, onClose, onLogin }) {
 
   const handleContinue = (e) => {
     e.preventDefault();
-    console.log('preventDefault 작동');
     const loginRequest = { loginId, loginPw };
     onLogin(loginRequest);
     console.log(loginRequest);

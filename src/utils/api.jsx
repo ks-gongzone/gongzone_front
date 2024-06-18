@@ -6,6 +6,19 @@ const GZAPI = axios.create({
 
 // 아래 주석은 예시 -> 디벨롭해서 개발이 필요합니다.
 // const Token = window.localStorage.getItem("accessToken") || null;
+// login token
+GZAPI.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 // if (Token) {
 //   GZAPI.defaults.headers.Authorization = "Bearer " + Token;
