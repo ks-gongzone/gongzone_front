@@ -4,7 +4,7 @@ import { formatNumber } from "../../libs/utilities";
 import State from "../../utils/state/State";
 
 
-export default function PointHistory({ memberNo, isLoaded }) {
+export default function PointHistory({ memberNo }) {
   const pointHistory = State('pointHistory', []);
 
   useEffect(() => {
@@ -14,7 +14,6 @@ export default function PointHistory({ memberNo, isLoaded }) {
       const result = [...response.data.result];
       console.log(result)
       pointHistory.set(result);
-      isLoaded.set(true);
     })();
   }, []);
 

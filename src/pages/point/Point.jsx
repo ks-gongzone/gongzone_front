@@ -5,6 +5,7 @@ import { formatNumber } from "../../libs/utilities";
 import GZAPI from "../../utils/api";
 import State from "../../utils/state/State";
 import { PointHistory } from "./Index";
+import PointInnerSection from "../../layouts/point/PointInnerSection";
 
 
 // test: 로그인 기능 구현 후 제거
@@ -37,14 +38,10 @@ export default function Point() {
 
   return (
     <PointSection title={ title }>
-      <div className="flex flex-col flex-grow">
+      <div className="flex flex-col flex-grow space-y-12">
 
         {/* 보유 포인트, 충전/인출 버튼 */ }
-        <div className="flex flex-col justify-between space-y-4 h-min-60
-                          box-border rounded-2xl p-8 bg-gray-200">
-          <div className="text-left">
-            <p className="text-2xl">보유 포인트</p>
-          </div>
+        <PointInnerSection title={ "보유 포인트" }>
           <div className="items-center w-full text-right text-6xl">
             <span className="font-bold">{ formatNumber(memberPoint.value) }</span>
             <span className="ml-4 text-3xl">Point</span>
@@ -53,21 +50,14 @@ export default function Point() {
             <Link to={ '/point/charge' } className="box-border border-2 rounded-xl px-4 py-2 bg-gray-400">!충전</Link>
             <Link to={ '/point/withdraw' } className="box-border border-2 rounded-xl px-4 py-2 bg-gray-300">!인출</Link>
           </div>
-        </div>
+        </PointInnerSection>
 
         {/* 포인트 내역*/ }
-        <div className="flex flex-col my-8">
-          <div className="flex flex-col space-y-4 h-min-60
-                          rounded-2xl p-8 bg-gray-200">
-            <div className="text-left">
-              <p className="text-2xl">포인트 내역</p>
-            </div>
-            <div>
-              <PointHistory memberNo={ memberNo } isLoaded={ isLoaded } />
-            </div>
+        <PointInnerSection title={ "포인트 내역" }>
+          <div>
+            <PointHistory memberNo={ memberNo } />
           </div>
-        </div>
-
+        </PointInnerSection>
       </div>
     </PointSection>
   );
