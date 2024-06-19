@@ -9,7 +9,9 @@ import { useNavigate } from "react-router-dom";
 
 // test: 로그인 기능 구현 후 제거
 sessionStorage.setItem("memberNo", "M000002");
+sessionStorage.setItem("memberPointNo", "MP000002");
 const memberNo = sessionStorage.getItem('memberNo');
+const memberPointNo = sessionStorage.getItem('memberPointNo');
 const title = `${ memberNo }님의 포인트 충전 페이지`;
 export default function PointCharge() {
   const pointCharge = State('pointCharge', 0);
@@ -22,7 +24,7 @@ export default function PointCharge() {
 
   const actions = {
     requestPointCharge: async () => {
-      const url = `/api/members/${ memberNo }/point/charge`;
+      const url = `/api/members/${ memberPointNo }/point/charge`;
       const data = { amount: pointCharge.value };
       const response = await GZAPI.post(url, data);
       const result = response.data.result;

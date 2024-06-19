@@ -10,7 +10,9 @@ import PointInnerSection from "../../layouts/point/PointInnerSection";
 
 // test: 로그인 기능 구현 후 제거
 sessionStorage.setItem("memberNo", "M000002");
+sessionStorage.setItem("memberPointNo", "MP000002");
 const memberNo = sessionStorage.getItem('memberNo');
+const memberPointNo = sessionStorage.getItem('memberPointNo');
 const title = `${ memberNo }님의 포인트 페이지`;
 export default function Point() {
   const memberPoint = State('memberPoint', '');
@@ -18,7 +20,7 @@ export default function Point() {
 
   useEffect(() => {
     (async () => {
-      const url = `/api/members/${ memberNo }/point`;
+      const url = `/api/members/${ memberPointNo }/point`;
       const response = await GZAPI.get(url);
       const result = response.data.result;
       memberPoint.set(result);
@@ -55,7 +57,7 @@ export default function Point() {
         {/* 포인트 내역*/ }
         <PointInnerSection title={ "포인트 내역" }>
           <div>
-            <PointHistory memberNo={ memberNo } />
+            <PointHistory memberPointNo={ memberPointNo } />
           </div>
         </PointInnerSection>
       </div>

@@ -4,12 +4,12 @@ import { formatNumber } from "../../libs/utilities";
 import State from "../../utils/state/State";
 
 
-export default function PointHistory({ memberNo }) {
+export default function PointHistory({ memberPointNo }) {
   const pointHistory = State('pointHistory', []);
 
   useEffect(() => {
     (async () => {
-      const url = `/api/members/${ memberNo }/point/history`;
+      const url = `/api/members/${ memberPointNo }/point/history`;
       const response = await GZAPI.get(url);
       const result = [...response.data.result];
       console.log(result)
