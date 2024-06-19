@@ -3,14 +3,21 @@ import { useState } from 'react';
 export default function ModalLogin({ isOpen, onClose, onLogin }) {
   const [loginId, setloginId] = useState('');
   const [loginPw, setloginPw] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   if (!isOpen) return null;
 
-  const handleContinue = (e) => {
+  const handleContinue = async (e) => {
     e.preventDefault();
     const loginRequest = { loginId, loginPw };
-    onLogin(loginRequest);
+    const response = await onLogin(loginRequest);
     console.log(loginRequest);
+
+    if (response && response.error) {
+      setErrorMessage(response.error);
+    } else {
+      setErrorMessage('');
+    }
   };
 
   return (
@@ -43,6 +50,11 @@ export default function ModalLogin({ isOpen, onClose, onLogin }) {
               required
             />
           </div>
+          {errorMessage && (
+            <div className="text-red-500 text-sm mt-2">
+              {errorMessage}
+            </div>
+          )}
           <div className="flex justify-between items-center mt-4">
             <button className="text-sm text-gray-500">ID/PW 찾기</button>
             <div>

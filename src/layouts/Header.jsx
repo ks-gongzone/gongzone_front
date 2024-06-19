@@ -27,14 +27,14 @@ export default function LayoutHeader() {
 
   const statusLogin = async (data) => {
     const response = await Auth.Login(data);
-    if (response.data.loginToken) {
-      localStorage.setItem('accessToken', response.data.loginToken);
-      console.log(response.data);
+    if (response && response.accessToken) {
+      localStorage.setItem('accessToken', response.accessToken);
+      console.log(response);
       setIsLogin(true);
       closeModal();
       navigate('/');
     } else {
-      console.error("Login token is undefined");
+      return response;
     }
   };
 
