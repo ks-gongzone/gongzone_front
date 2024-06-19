@@ -12,7 +12,7 @@ export default createBrowserRouter([
     ),
     children: [
       { path: "/", element: <Home /> },
-      { path: "/userInfo", element: <MovingPoint /> },
+      { path: "/myPage", element: <MovingPoint /> },
     ],
   },
   //[{ path: "/login", element: <Login /> }],

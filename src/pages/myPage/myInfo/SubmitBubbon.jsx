@@ -25,7 +25,7 @@ export default function SaveButton({ userData }) {
   return (
     <button
       onClick={handleSaveChanges}
-      className="bg-green-500 text-white font-bold py-2 px-4 rounded"
+      className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
     >
       변경사항 저장
     </button>
