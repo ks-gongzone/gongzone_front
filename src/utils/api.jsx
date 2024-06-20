@@ -2,6 +2,9 @@ import axios from "axios";
 
 const GZAPI = axios.create({
   baseURL: "http://localhost:8080/", // API의 기본 URL을 설정
+  headers: {
+    'Content-Type' : 'application/json'
+  }
 });
 
 // 아래 주석은 예시 -> 디벨롭해서 개발이 필요합니다.
@@ -9,8 +12,9 @@ const GZAPI = axios.create({
 // login token
 GZAPI.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("accessToken");
+    const token = window.localStorage.getItem("accessToken");
     if (token) {
+      console.log(token);
       config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;

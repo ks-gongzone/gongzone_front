@@ -28,9 +28,10 @@ export default function LayoutHeader() {
   const statusLogin = async (data) => {
     const response = await Auth.Login(data);
     if (response && response.accessToken) {
-      localStorage.setItem('accessToken', response.accessToken);
-      console.log(response);
       setIsLogin(true);
+      window.localStorage.setItem('accessToken', response.accessToken);
+      console.log(window.localStorage);
+      console.log(response);
       closeModal();
       navigate('/');
     } else {
@@ -40,7 +41,7 @@ export default function LayoutHeader() {
 
   const statusLogout = () => {
     console.log('로그아웃')
-    localStorage.removeItem('accessToken');
+    window.localStorage.removeItem('accessToken');
     setIsLogin(false);
   };
 
