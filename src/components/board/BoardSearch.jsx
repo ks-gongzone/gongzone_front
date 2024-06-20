@@ -1,13 +1,26 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import GZAPI from "../../utils/api";
 
 export default function BoardSearch() {
   const [location, setLocation] = useState("*");
   const [category, setCategory] = useState("*");
   const [content, setContent] = useState("");
 
-  const clickSearch = () => {
-    console.log(location, category, content);
+  const clickSearch = async () => {
+    try {
+      const response = await GZAPI.get("/api/boards/list", {
+        params: {
+          location: location,
+          category: category,
+          content: content,
+        },
+      });
+      console.log(response.data);
+      console.log(response);
+    } catch (error) {
+      console.error("Error during search request:", error);
+    }
   };
 
   const cate = [
