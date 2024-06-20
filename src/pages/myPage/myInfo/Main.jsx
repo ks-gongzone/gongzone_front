@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import LocationSelect from "./LocationSelect";
-import Password, { useDataSet } from "./PasswordUpdate";
+import ChangePassword, { useDataSet } from "./PasswordUpdate";
 import AlarmSettings from "./AlarmSelect";
-import SaveButton from "./SubmitBubbon";
+import SaveButton from "./SubmitButton";
 import SetNickname from "./NickName";
+import axios from "axios";
 
 /**
- * 개별 토글 스위치 컴포넌트
+ * 내 정보 컴포넌트 집합
  * @date: 2024-06-10
  * @last: 2024-06-17
  */
 export default function MyInfo() {
+  // 로그인 구현 전 임시 세션 설정
+  sessionStorage.setItem("memberNo", "M000001");
+  const memberNo = sessionStorage.getItem("memberNo");
+  const returnPath = useNavigate();
+
   const [data, setData] = useState({
-    name: "",
+    nickname: "",
     phone: "",
     location: { do: "", si: "", gu: "" },
     alarmSettings: {
@@ -30,38 +37,26 @@ export default function MyInfo() {
 
   useEffect(() => {
     const fetchUserData = () => {
-      //  더미데이터
-      const dummyData = {
-        name: "홍길동",
-        phone: "010-1234-5678",
-        location: { do: "서울", si: "강남구", gu: "역삼동" },
-        alarmSettings: {
-          sms: true,
-          email: true,
-          marketing: false,
-          member: true,
-          note: false,
-          bulletin: true,
-          party: true,
-          all: false,
-        },
-      };
-
-      Promise.resolve(dummyData)
+      axios
+        .get(`/api/myPage/${memberNo}/memberInfo`)
         .then((response) => {
-          setData(response);
-          setLoading(false);
+          setData(response.data);
         })
         .catch((error) => {
           console.error("데이터 로드 중 에러 발생", error);
+          alert("사용자 정보를 가져오는데 실패했습니다.");
+          // 데이터 없을때 메인페이지로 이동 useNavigate훅의 기능
+          returnPath.push("/");
+        })
+        .finally(() => {
           setLoading(false);
         });
     };
     fetchUserData();
-  }, []);
+  }, [memberNo, returnPath]);
 
   const { value: nickname, memberInput: changeNickname } = useDataSet(
-    data.name
+    data.nickname
   );
   const { value: phoneNumber, memberInput: changePhoneNumber } = useDataSet(
     data.phone
@@ -69,7 +64,7 @@ export default function MyInfo() {
 
   useEffect(() => {
     if (!loading) {
-      changeNickname(data.name);
+      changeNickname(data.nickname);
       changePhoneNumber(data.phone);
     }
   }, [data, loading]);
@@ -79,7 +74,7 @@ export default function MyInfo() {
   }
 
   const userData = {
-    name: nickname,
+    nickname: nickname,
     phone: phoneNumber,
     location: data.location,
     alarmSettings: data.alarmSettings,
@@ -88,7 +83,7 @@ export default function MyInfo() {
   return (
     <div className="bg-gray-100 py-10 overflow-y-hidden">
       <div className="p-12 bg-white shadow-md rounded-lg w-[800px] mx-auto">
-        <Password />
+        <ChangePassword />
         <SetNickname />
         <div className="mb-6">
           <div className="text-gray-700 font-bold text-lg mb-2">선호지역</div>

@@ -22,7 +22,7 @@ export function useDataSet(initialValue = "") {
  * @desc: 현재 비밀번호와 수정 비밀번호가 같은지, 수정 비밀번호 확인시 동일한지 검증
  * @마지막수정내용: id, pw가 없는 유저에 대한 유효성 검증 추가
  */
-export default function Password() {
+export default function ChangePassword() {
   // 로그인 구현 전 임시 세션 설정
   sessionStorage.setItem("memberNo", "M000001");
   const memberNo = sessionStorage.getItem("memberNo");
