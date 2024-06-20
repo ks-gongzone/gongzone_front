@@ -9,15 +9,26 @@ import GZAPI from "./api";
 
 export const Auth = {
   Login: async (data) => {
-    return GZAPI.post("/auth/login", data)
-      .then((res) => res)
-      .catch((err) => err);
+    try {
+      const response = await GZAPI.post("/api/login", data);
+      return response.data; // response.data 반환
+    } catch (err) {
+      const errorMessage = err.response && err.response.data && err.response.data.errorMessage
+        ? err.response.data.errorMessage
+        : "로그인 중 오류가 발생했습니다.";
+      return { error: errorMessage };
+    }
   },
   Naver: async () => {
     return GZAPI.get("/auth/naver")
       .then((res) => res)
       .catch((err) => err);
   },
+  Register: async (data) => {
+    return GZAPI.post('/api/register', data)
+      .then((res) => res)
+      .catch((err) => err);
+  }
 };
 
 export const User = {
