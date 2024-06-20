@@ -14,10 +14,9 @@ export default createBrowserRouter([
       </LayoutDefault>
     ),
     children: [
-      
       { path: "/", element: <Home /> },
       { path: "/myPage", element: <MovingPoint /> },
-    ,
+
       { path: "/party/accept", element: <Party /> },
       { path: "/board/list", element: <BoardList />},
 
