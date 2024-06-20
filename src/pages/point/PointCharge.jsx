@@ -3,8 +3,8 @@ import PointSection from "../../layouts/point/PointSection";
 import State from "../../utils/state/State";
 import PointInnerSection from "../../layouts/point/PointInnerSection";
 import { formatNumber } from "../../libs/utilities";
-import GZAPI from "../../utils/api";
 import { useNavigate } from "react-router-dom";
+import * as PortOne from "@portone/browser-sdk/v2";
 
 
 // test: 로그인 기능 구현 후 제거
@@ -24,6 +24,20 @@ export default function PointCharge() {
 
   const actions = {
     requestPointCharge: async () => {
+      const payData = Payment(pointCharge.value);
+      const response = await PortOne.requestPayment(payData);  // i'mport 결제 API
+
+      // 오류 발생
+      if (response.code != null) {
+        console.log('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+        // TODO: 서버에 오류정보 전송
+        alert(response.message);
+        return;
+      }
+      console.log(response);
+
+
+      /*
       const url = `/api/members/${ memberPointNo }/point/charge`;
       const data = { amount: pointCharge.value };
       const response = await GZAPI.post(url, data);
@@ -34,6 +48,7 @@ export default function PointCharge() {
       } else {
         alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
       }
+      */
     },
     inputChangeHandler: (e) => {
       const value = e.target.value.replace(/,/g, '');
@@ -100,4 +115,22 @@ export default function PointCharge() {
       </div>
     </PointSection>
   );
+}
+
+// test
+const Payment = (amount) => {
+  return {
+    customer: {
+      fullName: "테스트2",
+      phoneNumber: "010-0000-9000",
+      email: "wsk221e@gmail.com",
+    },
+    storeId: "store-86a44338-ed36-4c07-bc18-58e7256789ba",  // Store ID, 아임포트 고유키
+    channelKey: "channel-key-a626044e-69e3-4140-9de5-4b516a8099d6",  // 채널 키, 토스페이
+    paymentId: `pay-${ crypto.randomUUID() }`,
+    orderName: "포인트 충전",
+    totalAmount: amount,
+    currency: "CURRENCY_KRW",
+    payMethod: "CARD",
+  }
 }
