@@ -15,8 +15,10 @@ export default createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       { path: "/party/accept", element: <Party /> },
-      { path: "/member/:memberNo/point", element: <Point /> },
-      { path: "/board/list", element: <BoardList />}
+      { path: "/board/list", element: <BoardList />},
+
+      // point
+      { path: "/point", element: <Point /> },
     ],
   },
   //[{ path: "/login", element: <Login /> }],
