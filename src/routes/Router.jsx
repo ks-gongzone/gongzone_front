@@ -4,6 +4,7 @@ import Home from "../pages/home/Index";
 import Party from "../pages/party/Index";
 import { Point, PointCharge, PointHistory } from "../pages/point/Index";
 import BoardList from "../pages/boardList/Index";
+import MovingPoint from "../pages/myPage/MovingPoint";
 
 export default createBrowserRouter([
   {
@@ -14,6 +15,8 @@ export default createBrowserRouter([
     ),
     children: [
       { path: "/", element: <Home /> },
+      { path: "/myPage", element: <MovingPoint /> },
+
       { path: "/party/accept", element: <Party /> },
       { path: "/board/list", element: <BoardList />},
 
