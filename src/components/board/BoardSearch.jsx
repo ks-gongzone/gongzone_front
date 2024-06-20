@@ -9,7 +9,7 @@ export default function BoardSearch() {
 
   const clickSearch = async () => {
     try {
-      const response = await GZAPI.get("/api/boards/search", {
+      const response = await GZAPI.get("/api/boards/list", {
         params: {
           location: location,
           category: category,
