@@ -53,7 +53,7 @@ export default function LayoutHeader() {
             LOGO
           </Link>
           <div className="w-96 text-[15px] justify-around items-center flex">
-            <Link className="hover:text-red-600" to="/">
+            <Link className="hover:text-red-600" to="/board/list">
               게시판
             </Link>
             <Link className="hover:text-red-600" to="/">
