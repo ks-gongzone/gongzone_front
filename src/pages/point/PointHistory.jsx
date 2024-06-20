@@ -19,10 +19,10 @@ export default function PointHistory({ memberPointNo }) {
 
 
   return (
-    <div className="flex flex-col flex-grow">
-      <div className="flex">
-        <button className={ "w-1/2" }>!사용 내역</button>
-        <button className={ "w-1/2" }>!충전(증가) 내역</button>
+    <div className="flex flex-col flex-grow space-y-4">
+      <div className="flex justify-around">
+        <button className="w-1/4 h-8 rounded-lg bg-gray-300">!사용 내역</button>
+        <button className="w-1/4 h-8 rounded-lg bg-gray-300">!충전(증가) 내역</button>
       </div>
       <div className="flex flex-col w-full">
         <div className="flex w-full bg-gray-100 text-center">
