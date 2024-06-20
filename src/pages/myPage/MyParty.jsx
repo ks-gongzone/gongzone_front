@@ -1,66 +1,57 @@
 import { HeartIcon } from "@heroicons/react/20/solid";
-import PartyCard from "../../components/party/PartyCard";
 import sample1 from "../../assets/images/sample1.PNG";
 import sample2 from "../../assets/images/sample2.PNG";
 import sample3 from "../../assets/images/sample3.PNG";
+import PartyListCard from "../../components/party/PartyListCard";
 
-export default function PartyAccepted() {
+export default function MyParty() {
   const listitems = [
     {
-      id: "동칸이",
-      desc: "패스 입니다.",
+      id: "고자이마스",
+      title: "냉동 메밀소바 40개 공동구매",
+      desc: "아내의쉐프 메밀소바 (냉동), 680g, 40개",
       img: sample1,
-      amount: "5",
-      note: true,
+      amount: "8",
       like: true,
     },
     {
-      id: "미스터리",
-      desc: "옆사람한테 물어보세요.",
+      id: "홍길동맨",
+      title: "냉동 메밀소바 40개 공동구매",
+      desc: "아내의쉐프 메밀소바 (냉동), 680g, 40개",
       img: sample2,
-      amount: "2",
-      note: true,
+      amount: "4",
       like: true,
     },
     {
-      id: "짐바브웨",
-      desc: "500억 드립니다.",
+      id: "한옥마을요정",
+      title: "냉동 메밀소바 40개 공동구매",
+      desc: "아내의쉐프 메밀소바 (냉동), 680g, 40개",
       img: sample3,
-      amount: "4",
-      note: true,
+      amount: "5",
       like: true,
     },
   ];
   return (
     <div className="w-[65em] mx-auto mb-10 mt-14">
       <div className="w-full mb-6 text-lg font-bold text-[#526688]">
-        파티원 목록
+        내가 등록한 파티
       </div>
       <div className="grid grid-cols-3 gap-4">
         {listitems.map((e) => {
           return (
-            <PartyCard
+            <PartyListCard
               key={e.id}
               img={e.img}
               desc={e.desc}
-              id={e.id}
+              title={e.title}
               note={e.note}
               like={e.like}
               amount={e.amount}
             >
               <div className="text-sm px-3 pb-3">
                 <div className="flex justify-between mb-3 text-[#888888]"></div>
-                <hr className="w-full" />
-                <div className="flex text-xs pt-2">
-                  <button
-                    type="button"
-                    className="w-full mx-1 h-6 rounded-md bg-red-300 hover:bg-red-500 text-xs font-bold text-[white]"
-                  >
-                    강퇴하기
-                  </button>
-                </div>
               </div>
-            </PartyCard>
+            </PartyListCard>
           );
         })}
       </div>

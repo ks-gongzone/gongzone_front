@@ -1,5 +1,5 @@
 import { HeartIcon } from "@heroicons/react/20/solid";
-import MainCard from "../../components/home/MainCard";
+import MainCard from "../../components/page/home/MainCard";
 
 export default function BoardCardSection() {
   const boardList = [
