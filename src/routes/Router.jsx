@@ -2,6 +2,7 @@ import { createBrowserRouter, Outlet } from "react-router-dom";
 import LayoutDefault from "../layouts/Default";
 import Home from "../pages/home/Index";
 import Party from "../pages/party/Index";
+import { Point, PointHistory } from "../pages/point/Index";
 import Point from "../pages/point/Point";
 import BoardList from "../pages/boardList/Index";
 
@@ -19,6 +20,7 @@ export default createBrowserRouter([
 
       // point
       { path: "/point", element: <Point /> },
+      { path: "/point/history", element: <PointHistory /> },
     ],
   },
   //[{ path: "/login", element: <Login /> }],
