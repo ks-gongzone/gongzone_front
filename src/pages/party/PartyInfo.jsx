@@ -1,4 +1,4 @@
-import InfoCard from "../../components/party/InfoCard";
+import InfoCard from "../../components/page/party/InfoCard";
 import sample4 from "../../assets/images/sample4.PNG";
 
 export default function PartyInfo() {

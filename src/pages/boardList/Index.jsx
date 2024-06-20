@@ -1,6 +1,6 @@
-import SubSlider from "../../components/board/SubSlider";
+import SubSlider from "../../components/page/board/SubSlider";
 import BoardCardSection from "./BoardCardSection";
-import BoardSearch from "../../components/board/BoardSearch";
+import BoardSearch from "../../components/page/board/BoardSearch";
 
 export default function BoardList() {
   return (
