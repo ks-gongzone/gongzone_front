@@ -1,38 +1,140 @@
 import { useState } from 'react';
-import { Auth } from "../../utils/repository";
+import {MemberAPI} from "../../utils/repository";
 
 export default function Register() {
-  const [memberId, setMemberId] = useState('');
-  const [memberPw, setMemberPw] = useState('');
-  const [memberName, setMemberName] = useState('');
-  const [memberEmail, setMemberEmail] = useState('');
-  const [memberPhone, setMemberPhone] = useState('');
-  const [memberGender, setMemberGender] = useState('');
-  const [memberAddress, setMemberAddress] = useState('');
-  const [memberBirthday, setMemberBirthday] = useState('');
-  const [memberNick, setMemberNick] = useState('');
+  const [formValues, setFormValues] = useState({
+    memberId: '',
+    memberPw: '',
+    memberName: '',
+    memberEmail: '',
+    memberPhone: '',
+    memberGender: '',
+    memberAddress: '',
+    memberBirthday: '',
+    memberNick: ''
+  });
+
+  const [errors, setErrors] = useState({
+    memberId: '',
+    memberPw: '',
+    memberName: '',
+    memberEmail: '',
+    memberPhone: '',
+    memberAddress: '',
+    memberBirthday: '',
+    memberNick: ''
+  });
+
+  const onBlur = async (e) => {
+    const { name, value } = e.target;
+    let errorMsg;
+    if(name === 'memberId'){
+      errorMsg = checkMemberId(value);
+      if (!errorMsg) {
+        console.log('checkMemberIdApi(value) ', checkMemberIdApi(value));
+        await checkMemberIdApi(value);
+      } else {
+        setErrors(prevErrors => ({ ...prevErrors, memberId: errorMsg }));
+      }
+    } else if(name === 'memberPw'){
+      errorMsg = checkMemberPw(value);
+    } else if(name === 'memberName'){
+      errorMsg = checkMemberName(value);
+    } else if(name === 'memberPhone') {
+      errorMsg = checkPhoneNumber(value);
+    }
+    setErrors(prevErrors => ({ ...prevErrors, [name]: errorMsg }));
+  }
+
+  const handleCheck = (e) => {
+    const { name, value } = e.target;
+    // preValues 이전 상태값
+    setFormValues(prevValues => ({...prevValues, [name]: value }));
+  }
+
+  const handleCheckGender = (e) => {
+    const { name, value } = e.target;
+    setFormValues(prevValues => ({...prevValues, [name]: value }));
+  }
+
 
   const statusRegister = async (e) => {
     e.preventDefault();
-    const memberInfo = {
-      memberId,
-      memberPw,
-      memberName,
-      memberEmail,
-      memberPhone,
-      memberGender,
-      memberAddress,
-      memberBirthday,
-      memberNick
-    };
-    console.log(memberInfo);
-    try {
-      const response = await Auth.Register(memberInfo);
-        console.log('Response:', response);
-      } catch (error) {
-      console.error('Error:', error);
+    const requestMember = Object.values(errors).every(error => error === '');
+      if(requestMember) {
+        await MemberAPI.Register(formValues);
       }
-    };
+    }
+
+  // 아이디 검증
+  const checkMemberId = (memberId) => {
+    const pattern = /[a-zA-Z0-9]{6,20}$/;
+    if (!pattern.test(memberId)) {
+      return '아이디는 영어, 숫자만 포함해야 하며, 6자 이상 20자 이하여야 합니다.';
+    }
+    return '';
+  };
+
+  const checkMemberIdApi = async (memberId) => {
+    let error = '';
+    const checkMemberId = await MemberAPI.Check({value: memberId });
+    if(!checkMemberId) {
+      return '사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.'
+    }
+    //setErrors(prevErrors => ({...prevErrors, memberId: error }));
+  };
+
+  // 비밀번호 검증
+  const checkMemberPw = (memberPw) => {
+    let error = '';
+    const pwPattern = /^[a-zA-Z0-9!@#$%^&*()_+=-]{8,16}$/;
+    console.log(`${memberPw} : pattern result : ${pwPattern.test(memberPw)}`);
+    if (!pwPattern.test(memberPw)) {
+      return '8~16자의 영문 대/소문자,숫자,특수문자를 사용해 주세요';
+    }
+    //setErrors(prevErrors => ({ ...prevErrors, memberPw: error }));
+  };
+
+  // 이름 검증
+  const checkMemberName = (memberName) => {
+    let error = '';
+    const pwPattern = /^[가-힣]{2,}$/;
+    if (!pwPattern.test(memberName)) {
+      return '한글을 사용해 주세요.';
+    }
+    //setErrors(prevErrors => ({ ...prevErrors, memberName: error }));
+  };
+
+  // 이메일 검증
+
+  // 전화번호 검증
+  const checkPhoneNumber = (memberPhone) => {
+    let error = '';
+    const phonePattern = /^\d{3}-\d{3,4}-\d{4}$/;
+    if (!phonePattern.test(memberPhone)) {
+      error = '전화번호 형식이 올바르지 않습니다.';
+    }
+    setErrors(prevErrors => ({ ...prevErrors, memberPhone: error }));
+  };
+
+  const formatPhoneNumber = (phoneNumber) => {
+    const cleaned = ('' + phoneNumber).replace(/\D/g, '');
+    let formatted = cleaned;
+
+    if (cleaned.length > 3 && cleaned.length <= 6) {
+      formatted = cleaned.replace(/(\d{4})(\d+)/, '$1-$2');
+    } else if (cleaned.length > 6) {
+      formatted = cleaned.replace(/(\d{3})(\d{4})(\d+)/, '$1-$2-$3');
+    }
+    return formatted;
+  };
+
+  const handlePhoneChange = (e) => {
+    const { name, value } = e.target;
+    const formattedValue = formatPhoneNumber(value);
+    setFormValues(prevValues => ({ ...prevValues, [name]: formattedValue }));
+    checkPhoneNumber(formattedValue);
+  };
 
     return (
       <div>
@@ -44,41 +146,52 @@ export default function Register() {
               <input
                 type="text"
                 id="memberId"
-                value={memberId}
-                onChange={(e) => setMemberId(e.target.value)}
+                name="memberId"
+                value={formValues.memberId}
+                onChange={handleCheck}
+                onBlur={onBlur}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 required
               />
-            </div>
-            <div>
+              {errors.memberId && <p style={{ color: 'red' }}>{errors.memberId}</p>}
+              </div>
+              <div>
               <label htmlFor="memberPw" className="block text-sm font-medium text-gray-700">비밀번호</label>
               <input
                 type="password"
                 id="memberPw"
-                value={memberPw}
-                onChange={(e) => setMemberPw(e.target.value)}
+                name="memberPw"
+                value={formValues.memberPw}
+                onChange={handleCheck}
+                onBlur={onBlur}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 required
               />
+              {errors.memberPw && <p style={{ color: 'red' }}>{errors.memberPw}</p>}
             </div>
             <div>
               <label htmlFor="memberName" className="block text-sm font-medium text-gray-700">이름</label>
               <input
                 type="text"
                 id="memberName"
-                value={memberName}
-                onChange={(e) => setMemberName(e.target.value)}
+                name="memberName"
+                value={formValues.memberName}
+                onChange={handleCheck}
+                onBlur={onBlur}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 required
               />
+              {errors.memberName && <p style={{ color: 'red' }}>{errors.memberName}</p>}
             </div>
             <div>
               <label htmlFor="memberEmail" className="block text-sm font-medium text-gray-700">이메일</label>
               <input
                 type="email"
                 id="memberEmail"
-                value={memberEmail}
-                onChange={(e) => setMemberEmail(e.target.value)}
+                name="memberEmail"
+                value={formValues.memberEmail}
+                onChange={handleCheck}
+                onBlur={onBlur}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 required
               />
@@ -88,11 +201,14 @@ export default function Register() {
               <input
                 type="tel"
                 id="memberPhone"
-                value={memberPhone}
-                onChange={(e) => setMemberPhone(e.target.value)}
+                name="memberPhone"
+                value={formValues.memberPhone}
+                onChange={handlePhoneChange}
+                onBlur={onBlur}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 required
               />
+              {errors.memberPhone && <p style={{ color: 'red' }}>{errors.memberPhone}</p>}
             </div>
             <div>
               <label htmlFor="memberGender" className="block text-sm font-medium text-gray-700">성별</label>
@@ -102,8 +218,8 @@ export default function Register() {
                     type="radio"
                     name="gender"
                     value="M"
-                    checked={memberGender === 'M'}
-                    onChange={(e) => setMemberGender(e.target.value)}
+                    checked={formValues.memberGender === 'M'}
+                    onChange={handleCheckGender}
                     className="form-radio text-blue-600"
                     required
                   />
@@ -114,8 +230,8 @@ export default function Register() {
                     type="radio"
                     name="gender"
                     value="F"
-                    checked={memberGender === 'F'}
-                    onChange={(e) => setMemberGender(e.target.value)}
+                    checked={formValues.memberGender === 'F'}
+                    onChange={handleCheckGender}
                     className="form-radio text-blue-600"
                     required
                   />
@@ -128,8 +244,10 @@ export default function Register() {
               <input
                 type="text"
                 id="memberAddress"
-                value={memberAddress}
-                onChange={(e) => setMemberAddress(e.target.value)}
+                name="memberAddress"
+                value={formValues.memberAddress}
+                onChange={handleCheck}
+                onBlur={onBlur}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -138,8 +256,10 @@ export default function Register() {
               <input
                 type="date"
                 id="memberBirthday"
-                value={memberBirthday}
-                onChange={(e) => setMemberBirthday(e.target.value)}
+                name="memberBirthday"
+                value={formValues.memberBirthday}
+                onChange={handleCheck}
+                onBlur={onBlur}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -148,8 +268,10 @@ export default function Register() {
               <input
                 type="text"
                 id="memberNick"
-                value={memberNick}
-                onChange={(e) => setMemberNick(e.target.value)}
+                name="memberNick"
+                value={formValues.memberNick}
+                onChange={handleCheck}
+                onBlur={onBlur}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
             </div>

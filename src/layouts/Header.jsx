@@ -30,8 +30,6 @@ export default function LayoutHeader() {
     if (response && response.accessToken) {
       setIsLogin(true);
       window.localStorage.setItem("accessToken", response.accessToken);
-      console.log(window.localStorage);
-      console.log(response);
       closeModal();
       navigate("/");
     } else {
@@ -40,7 +38,7 @@ export default function LayoutHeader() {
   };
 
   const statusLogout = () => {
-    console.log("로그아웃");
+    //console.log("로그아웃");
     window.localStorage.removeItem("accessToken");
     setIsLogin(false);
   };
