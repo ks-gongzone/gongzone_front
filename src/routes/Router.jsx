@@ -4,9 +4,10 @@ import Home from "../pages/home/Index";
 import Party from "../pages/party/Index";
 import { Point, PointCharge, PointHistory } from "../pages/point/Index";
 import BoardList from "../pages/boardList/Index";
+import BoardWrite from "../pages/boardWrite/Index";
+
 import Register from "../pages/login/Register";
 import MovingPoint from "../pages/myPage/MovingPoint";
-
 
 export default createBrowserRouter([
   {
@@ -20,7 +21,8 @@ export default createBrowserRouter([
       { path: "/myPage", element: <MovingPoint /> },
 
       { path: "/party/accept", element: <Party /> },
-      { path: "/board/list", element: <BoardList />},
+      { path: "/board/list", element: <BoardList /> },
+      { path: "/board/write", element: <BoardWrite /> },
       { path: "/register", element: <Register /> },
 
       // point
