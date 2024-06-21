@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { UpdatePassword } from "../../../utils/repository";
+import { GetMemberInfo } from "../../../utils/repository";
 
 /**
  * 개별 토글 스위치 컴포넌트
@@ -18,7 +20,7 @@ export function useDataSet(initialValue = "") {
 /**
  * 비밀번호 일치 유효성 검증 컴포넌트
  * @date: 2024-06-12
- * @last: 2024-06-19
+ * @last: 2024-06-21
  * @desc: 현재 비밀번호와 수정 비밀번호가 같은지, 수정 비밀번호 확인시 동일한지 검증
  * @마지막수정내용: id, pw가 없는 유저에 대한 유효성 검증 추가
  */
@@ -33,31 +35,25 @@ export default function ChangePassword({ memberNo }) {
   const [memberInfo, setMemberInfo] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`/api/myPage/${memberNo}/session`)
-      .then((response) => {
-        const status = response.data;
+    ChangePassword(memberNo)
+      .then((status) => {
         setSessionStatus(status);
         if (status === "1") {
-          axios
-            .get(`/api/myPage/${memberNo}/memberInfo`)
-            .then((response) => {
-              const member = response.data;
-              setMemberInfo(member);
-              if (!member.memberId || !member.memberPw) {
-                setIsSocialLogin(false);
-                alert("소셜로그인 사용자는 비밀번호 수정이 불가합니다.");
-              }
-            })
-            .catch((error) => {
-              console.error("회원 정보를 가져오는데 실패했습니다.", error);
-              alert("회원 정보를 가져오는데 실패했습니다.");
-            });
+          return GetMemberInfo(memberNo);
+        } else {
+          throw new Error("세션 상태 없음.");
+        }
+      })
+      .then((member) => {
+        setMemberInfo(member);
+        if (!member.memberId || !member.memberPw) {
+          setIsSocialLogin(false);
+          alert("소셜로그인 사용자는 비밀번호 수정이 불가합니다.");
         }
       })
       .catch((error) => {
-        console.error("세션 정보를 가져오는데 실패했습니다.", error);
-        alert("세션 정보를 가져오는데 실패했습니다.");
+        console.error("에러 발생: ", error);
+        alert("정보를 가져오는데 실패했습니다.");
       });
   }, [memberNo]);
 
@@ -70,14 +66,10 @@ export default function ChangePassword({ memberNo }) {
       return;
     }
 
-    const payload = {
-      newPassword: password,
-    };
-
-    axios
-      .post(`/api/myPage/${memberNo}/password`, payload)
+    const payload = { newPassword: password };
+    UpdatePassword(memberNo, payload)
       .then((response) => {
-        alert(response.data);
+        alert(response);
       })
       .catch((error) => {
         console.error("비밀번호 변경 에러입니다.", error);

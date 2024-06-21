@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { GetLocationData } from "../../../utils/repository";
 
 /**
  * 선호 지역 설정
@@ -20,20 +21,7 @@ export default function LocationSelect({
 
   useEffect(() => {
     if (isLoading) {
-      // 더미 데이터
-      const dummyData = {
-        서울: {
-          강남구: ["역삼동", "삼성동"],
-          서초구: ["서초동", "반포동"],
-        },
-        전주: {
-          완산구: ["삼천동", "효자동"],
-          덕진구: ["금암동", "송천동"],
-        },
-      };
-
-      // 더미데이터 사용
-      Promise.resolve(dummyData)
+      GetLocationData()
         .then((data) => {
           setLocation(data);
           setIsLoading(false);

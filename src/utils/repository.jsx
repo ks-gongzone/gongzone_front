@@ -1,3 +1,4 @@
+import axios from "axios";
 import GZAPI from "./api";
 
 // 해당 파일은 간단한 엑시오스 호출 함수 예시로
@@ -13,9 +14,10 @@ export const Auth = {
       const response = await GZAPI.post("/api/login", data);
       return response.data; // response.data 반환
     } catch (err) {
-      const errorMessage = err.response && err.response.data && err.response.data.errorMessage
-        ? err.response.data.errorMessage
-        : "로그인 중 오류가 발생했습니다.";
+      const errorMessage =
+        err.response && err.response.data && err.response.data.errorMessage
+          ? err.response.data.errorMessage
+          : "로그인 중 오류가 발생했습니다.";
       return { error: errorMessage };
     }
   },
@@ -25,10 +27,10 @@ export const Auth = {
       .catch((err) => err);
   },
   Register: async (data) => {
-    return GZAPI.post('/api/register', data)
+    return GZAPI.post("/api/register", data)
       .then((res) => res)
       .catch((err) => err);
-  }
+  },
 };
 
 export const User = {
@@ -108,6 +110,67 @@ export const SaveUserData = (memberNo, userData) => {
     .then((response) => response.data)
     .catch((error) => {
       console.error("데이터 저장 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const ChangePasswordData = (memberNo) => {
+  return axios
+    .get(`/api/myPage/${memberNo}/session`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("세션 정보 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const GetNickname = (memberNo) => {
+  return axios
+    .get(`/api/myPage/${memberNo}/nickname`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("닉네임 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+// DB에 존재하는 장소를 SELECT박스에 넣어둠
+export const GetLocationData = () => {
+  return axios
+    .get(`/api/locations`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("위치 데이터 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const GetMemberInfo = (memberNo) => {
+  return axios
+    .get(`/api/myPage/${memberNo}/memberInfo`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("회원 정보 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const UpdatePassword = (memberNo, payload) => {
+  return axios
+    .post(`/api/myPage/${memberNo}/password`, payload)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("비밀번호 변경 에러 발생", error);
+      throw error;
+    });
+};
+
+export const CheckSession = (memberNo) => {
+  return axios
+    .get(`/api/myPage/${memberNo}/session`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("세션 확인 중 에러 발생", error);
       throw error;
     });
 };
