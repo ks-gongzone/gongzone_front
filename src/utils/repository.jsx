@@ -43,3 +43,71 @@ export const User = {
       .catch((err) => err);
   },
 };
+
+/**
+ * MyPage통신
+ * 작성자: 한동환
+ * 내용: memberNo를 통해 유저 식별 후 서버와 통신
+ */
+export const ChangeUserInfo = (memberNo) => {
+  return GZAPI.get(`/api/myPage/${memberNo}/memberInfo`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("데이터 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const MyBoard = (memberNo) => {
+  return GZAPI.get(`/api/myPage/${memberNo}/board`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("데이터 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const MyParty = (memberNo) => {
+  return GZAPI.get(`/api/myPage/${memberNo}/party`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("데이터 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const MyPoint = (memberNo) => {
+  return GZAPI.get(`/api/myPage/${memberNo}/point`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("데이터 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const Myfollow = (memberNo) => {
+  return GZAPI.get(`/api/myPage/${memberNo}/follow`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("데이터 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const BlockUser = (memberNo) => {
+  return GZAPI.get(`/api/myPage/${memberNo}/blockUser`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("데이터 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const SaveUserData = (memberNo, userData) => {
+  return GZAPI.post(`/api/myPage/${memberNo}/memberInfo`, userData)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("데이터 저장 중 에러 발생", error);
+      throw error;
+    });
+};

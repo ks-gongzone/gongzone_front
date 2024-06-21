@@ -6,7 +6,7 @@ import { Point, PointCharge, PointHistory } from "../pages/point/Index";
 import BoardList from "../pages/boardList/Index";
 import Register from "../pages/login/Register";
 import MovingPoint from "../pages/myPage/MovingPoint";
-
+import MyPage from "../pages/myPage/Index";
 
 export default createBrowserRouter([
   {
@@ -17,11 +17,10 @@ export default createBrowserRouter([
     ),
     children: [
       { path: "/", element: <Home /> },
-      { path: "/myPage", element: <MovingPoint /> },
-
-      { path: "/party/accept", element: <Party /> },
-      { path: "/board/list", element: <BoardList />},
       { path: "/register", element: <Register /> },
+      { path: "/myPage", element: <MyPage /> },
+      { path: "/party/accept", element: <Party /> },
+      { path: "/board/list", element: <BoardList /> },
 
       // point
       { path: "/point", element: <Point /> },
