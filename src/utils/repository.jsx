@@ -13,9 +13,10 @@ export const Auth = {
       const response = await GZAPI.post("/api/login", data);
       return response.data; // response.data 반환
     } catch (err) {
-      const errorMessage = err.response && err.response.data && err.response.data.errorMessage
-        ? err.response.data.errorMessage
-        : "로그인 중 오류가 발생했습니다.";
+      const errorMessage =
+        err.response && err.response.data && err.response.data.errorMessage
+          ? err.response.data.errorMessage
+          : "로그인 중 오류가 발생했습니다.";
       return { error: errorMessage };
     }
   },
@@ -25,10 +26,10 @@ export const Auth = {
       .catch((err) => err);
   },
   Register: async (data) => {
-    return GZAPI.post('/api/register', data)
+    return GZAPI.post("/api/register", data)
       .then((res) => res)
       .catch((err) => err);
-  }
+  },
 };
 
 export const User = {
@@ -39,6 +40,14 @@ export const User = {
   },
   EditMe: async (data) => {
     return GZAPI.patch("/user/me", data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+};
+
+export const Party = {
+  PartyAccept: async (id) => {
+    return GZAPI.get(`/party/accept/${id}`)
       .then((res) => res)
       .catch((err) => err);
   },
