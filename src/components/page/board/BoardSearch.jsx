@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import GZAPI from "../../utils/api";
+import GZAPI from "../../../utils/api";
 
 export default function BoardSearch() {
   const [location, setLocation] = useState("*");

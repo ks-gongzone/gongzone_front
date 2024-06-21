@@ -2,7 +2,7 @@ import { HeartIcon } from "@heroicons/react/20/solid";
 import sample1 from "../../assets/images/sample1.PNG";
 import sample2 from "../../assets/images/sample2.PNG";
 import sample3 from "../../assets/images/sample3.PNG";
-import PartyListCard from "../../components/party/PartyListCard";
+import PartyListCard from "../../components/page/party/PartyListCard";
 
 export default function MyParty() {
   const listitems = [
