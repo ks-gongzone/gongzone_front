@@ -13,7 +13,6 @@ export default function ModalLogin({ isOpen, onClose }) {
     e.preventDefault();
     const loginRequest = { loginId, loginPw };
     const response = await statusLogin(loginRequest);
-    /*const response = await onLogin(loginRequest)*/
     console.log(loginRequest);
 
     if (response && response.error) {

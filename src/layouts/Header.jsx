@@ -7,45 +7,15 @@ import AuthStore from "../utils/zustand/AuthStore";
 import ModalStore from "../utils/zustand/ModalStore";
 
 export default function LayoutHeader() {
-/*  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);*/
-
   const { isLogin, statusLogout, statusLogin, setIsLogin } = AuthStore();
   const { isModalOpen, isRegisterModalOpen, setIsModalOpen, setIsRegisterModalOpen } = ModalStore();
-
-  //const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
       setIsLogin(true);
     }
-  }, [setIsLogin]);
-// setIsLogin
- /* const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-
-  const openRegisterModal = () => setIsRegisterModalOpen(true);
-  const closeRegisterModal = () => setIsRegisterModalOpen(false);
-
-  const statusLogin = async (data) => {
-    const response = await Auth.Login(data);
-    if (response && response.accessToken) {
-      setIsLogin(true);
-      window.localStorage.setItem("accessToken", response.accessToken);
-      closeModal();
-      //navigate("/");
-    } else {
-      return response;
-    }
-  };
-
-  const statusLogout = () => {
-    //console.log("로그아웃");
-    window.localStorage.removeItem("accessToken");
-    setIsLogin(false);
-  };*/
+  }, []);
 
   return (
     <div className="shadow-md z-10">
@@ -80,16 +50,14 @@ export default function LayoutHeader() {
               <>
                 <div className="flex items-center">
                   <button
-                    onClick={setIsModalOpen(true)}
-                    /*onClick={openModal}*/
+                    onClick={() => setIsModalOpen(true)}
                     className="text-[10px] bg-white text-blue-500 px-2 py-2 rounded-l-lg hover:bg-gray-200"
                   >
                     로그인
                   </button>
                   <span className="text-[10px] text-blue-500 px-1">/</span>
                   <button
-                    onClick={setIsRegisterModalOpen(true)}
-                    /*onClick={openRegisterModal}*/
+                    onClick={() => setIsRegisterModalOpen(true)}
                     className="text-[10px] bg-white text-blue-500 py-2 px-2 rounded-r-lg hover:bg-gray-200"
                   >
                     가입
@@ -99,14 +67,12 @@ export default function LayoutHeader() {
             )}
             <ModalLogin
               isOpen={isModalOpen}
-              onClose={setIsModalOpen(false)}
-              /*onClose={closeModal}*/
+              onClose={() => setIsModalOpen(false)}
               onLogin={statusLogin}
             />
             <ModalSignup
               isOpen={isRegisterModalOpen}
               onClose={() => setIsRegisterModalOpen(false)}
-              /*onClose={openModal}*/
             />
           </div>
         </div>
