@@ -1,25 +1,29 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import SearchBar from "../components/page/home/SearchBar";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import ModalLogin from "../components/modal/ModalLogin";
-import { Auth } from "../utils/repository";
 import ModalSignup from "../components/modal/ModalRegister";
+import AuthStore from "../utils/zustand/AuthStore";
+import ModalStore from "../utils/zustand/ModalStore";
 
 export default function LayoutHeader() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+/*  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);*/
 
-  const navigate = useNavigate();
+  const { isLogin, statusLogout, statusLogin, setIsLogin } = AuthStore();
+  const { isModalOpen, isRegisterModalOpen, setIsModalOpen, setIsRegisterModalOpen } = ModalStore();
+
+  //const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
       setIsLogin(true);
     }
-  }, []);
-
-  const openModal = () => setIsModalOpen(true);
+  }, [setIsLogin]);
+// setIsLogin
+ /* const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
   const openRegisterModal = () => setIsRegisterModalOpen(true);
@@ -31,7 +35,7 @@ export default function LayoutHeader() {
       setIsLogin(true);
       window.localStorage.setItem("accessToken", response.accessToken);
       closeModal();
-      navigate("/");
+      //navigate("/");
     } else {
       return response;
     }
@@ -41,7 +45,7 @@ export default function LayoutHeader() {
     //console.log("로그아웃");
     window.localStorage.removeItem("accessToken");
     setIsLogin(false);
-  };
+  };*/
 
   return (
     <div className="shadow-md z-10">
@@ -76,14 +80,16 @@ export default function LayoutHeader() {
               <>
                 <div className="flex items-center">
                   <button
-                    onClick={openModal}
+                    onClick={setIsModalOpen(true)}
+                    /*onClick={openModal}*/
                     className="text-[10px] bg-white text-blue-500 px-2 py-2 rounded-l-lg hover:bg-gray-200"
                   >
                     로그인
                   </button>
                   <span className="text-[10px] text-blue-500 px-1">/</span>
                   <button
-                    onClick={openRegisterModal}
+                    onClick={setIsRegisterModalOpen(true)}
+                    /*onClick={openRegisterModal}*/
                     className="text-[10px] bg-white text-blue-500 py-2 px-2 rounded-r-lg hover:bg-gray-200"
                   >
                     가입
@@ -93,12 +99,14 @@ export default function LayoutHeader() {
             )}
             <ModalLogin
               isOpen={isModalOpen}
-              onClose={closeModal}
+              onClose={setIsModalOpen(false)}
+              /*onClose={closeModal}*/
               onLogin={statusLogin}
             />
             <ModalSignup
               isOpen={isRegisterModalOpen}
-              onClose={closeRegisterModal}
+              onClose={() => setIsRegisterModalOpen(false)}
+              /*onClose={openModal}*/
             />
           </div>
         </div>

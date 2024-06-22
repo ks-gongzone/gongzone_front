@@ -1,22 +1,26 @@
 import { useState } from 'react';
+import AuthStore from "../../utils/zustand/AuthStore";
 
-export default function ModalLogin({ isOpen, onClose, onLogin }) {
+export default function ModalLogin({ isOpen, onClose }) {
   const [loginId, setloginId] = useState('');
   const [loginPw, setloginPw] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const { statusLogin } = AuthStore();
 
   if (!isOpen) return null;
 
   const handleContinue = async (e) => {
     e.preventDefault();
     const loginRequest = { loginId, loginPw };
-    const response = await onLogin(loginRequest);
+    const response = await statusLogin(loginRequest);
+    /*const response = await onLogin(loginRequest)*/
     console.log(loginRequest);
 
     if (response && response.error) {
       setErrorMessage(response.error);
     } else {
       setErrorMessage('');
+      onClose();
     }
   };
 
