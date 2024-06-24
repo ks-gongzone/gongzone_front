@@ -8,8 +8,8 @@ const AuthStore = create(
       isLogin: false,
       userInfo: {
         token: null,
-        memberId: null,
-        points: 0,
+        memberNo: null,
+        pointNo: null,
       },
 
       setIsLogin: (status) => set({ isLogin: status }),
@@ -28,8 +28,8 @@ const AuthStore = create(
         userInfo: {
           ...state.userInfo,
           token: response.accessToken,
-          memberId: response.memberId,
-          points: response.points,
+          memberNo: response.memberNo,
+          pointNo: response.pointNo,
         },
       }));
       window.localStorage.setItem("accessToken", response.accessToken);
@@ -41,15 +41,18 @@ const AuthStore = create(
 
   statusLogout: () => {
     window.localStorage.removeItem("accessToken");
+    //window.sessionStorage.removeItem("auth-storage");
     set({ isLogin: false });
-    set((state) => ({
+    set({
       userInfo: {
-        ...state.userInfo,
         token: null,
-        memberId: null,
-        points: 0,
+        memberNo: null,
+        pointNo: null,
       },
-    }));
+    });
+    // 주스탠드 상태 리셋 (초기화)
+    sessionStorage.clear();
+    localStorage.clear();
   },
 }),
     {
