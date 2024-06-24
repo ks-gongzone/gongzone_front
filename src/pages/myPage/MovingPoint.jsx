@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import MyInfo from "./myInfo/Main";
+import MyInfo from "../myInfo/MyInfo";
 import Point from "../point/Point";
 import Board from "./Board";
 import Party from "./Party";

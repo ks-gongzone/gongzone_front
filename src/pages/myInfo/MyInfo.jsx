@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import LocationSelect from "./LocationSelect";
-import ChangePassword, { useDataSet } from "./PasswordUpdate";
-import AlarmSettings from "./AlarmSelect";
-import SaveButton from "./SubmitButton";
-import SetNickname from "./NickName";
-import { ChangeUserInfo, SaveUserData } from "../../../utils/repository";
+import LocationSelect from "../../components/page/myInfo/LocationSelect";
+import ChangePassword, {
+  useDataSet,
+} from "../../components/page/myInfo/PasswordUpdate";
+import AlarmSettings from "../../components/page/myInfo/AlarmSelect";
+import SaveButton from "../../components/page/myInfo/SubmitButton";
+import SetNickname from "../../components/page/myInfo/NickName";
+import { ChangeUserInfo, SaveUserData } from "../../utils/repository";
 
 /**
  * 내 정보 컴포넌트 집합

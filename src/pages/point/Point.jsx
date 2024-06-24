@@ -5,7 +5,7 @@ import { formatNumber } from "../../libs/utilities";
 import GZAPI from "../../utils/api";
 import State from "../../utils/state/State";
 import { PointHistory } from "./Index";
-import PointInnerSection from "../../layouts/point/PointInnerSection";
+import PointInnerSection from "../../components/page/point/PointInnerSection";
 
 export default function Point() {
   // test: 로그인 기능 구현 후 제거
