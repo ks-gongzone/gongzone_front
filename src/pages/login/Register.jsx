@@ -216,7 +216,7 @@ export default function Register() {
                 <label className="inline-flex items-center">
                   <input
                     type="radio"
-                    name="gender"
+                    name="memberGender"
                     value="M"
                     checked={formValues.memberGender === 'M'}
                     onChange={handleCheckGender}
@@ -228,7 +228,7 @@ export default function Register() {
                 <label className="inline-flex items-center ml-6">
                   <input
                     type="radio"
-                    name="gender"
+                    name="memberGender"
                     value="F"
                     checked={formValues.memberGender === 'F'}
                     onChange={handleCheckGender}
