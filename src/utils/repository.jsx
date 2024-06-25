@@ -42,7 +42,7 @@ export const User = {
 export const MemberAPI = {
   Register: async (data) => {
     return GZAPI.post('/api/register', data)
-      .then((res) => res)
+      .then((res) => res.data)
       .catch((err) => err);
   },
   Check: async (data) => {
