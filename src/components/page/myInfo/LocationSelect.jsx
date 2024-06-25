@@ -1,43 +1,52 @@
 import { useEffect, useState } from "react";
-import { GetLocationData } from "../../../utils/repository";
+import { parseCSV, transformLocationData } from "../../../utils/LocationApi";
+import { GetLocationData, SaveAddress } from "../../../utils/repository";
 
 /**
  * 선호 지역 설정
  * @date: 2024-06-10
- * @last: 2024-06-17
+ * @last: 2024-06-25
+ * @수정내용: CSV파일을 사용해 정보 처리
  */
-export default function LocationSelect({
-  onLocationChange,
-  initailLocation = { do: "", si: "", gu: "" },
-  locationData = {},
-}) {
-  const [location, setLocation] = useState(locationData);
-  const [isLoading, setIsLoading] = useState(
-    !locationData || Object.keys(locationData).length === 0
-  );
-  const [selectedDo, setSelectedDo] = useState(initailLocation.do);
-  const [selectedSi, setSelectedSi] = useState(initailLocation.si);
-  const [selectedGu, setSelectedGu] = useState(initailLocation.gu);
+export default function LocationSelect({ onLocationChange, memberNo }) {
+  const [locationData, setLocationData] = useState({});
+  const [selectedDo, setSelectedDo] = useState("");
+  const [selectedSi, setSelectedSi] = useState("");
+  const [selectedGu, setSelectedGu] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (isLoading) {
-      GetLocationData()
+    const fetchLocationData = () => {
+      parseCSV()
         .then((data) => {
-          setLocation(data);
-          setIsLoading(false);
+          const transformData = transformLocationData(data);
+          setLocationData(transformData);
         })
         .catch((error) => {
-          console.error("잘못된 값 입니다.", error);
+          console.error("CSV 파일을 읽을 수 없음", error);
+        });
+    };
+
+    const initialLocation = () => {
+      GetLocationData(memberNo)
+        .then((response) => {
+          const { address } = response;
+          const [initalDo, initalSi, initalGu] = address.split(" ");
+          selectedDo(initalDo);
+          selectedSi(initalSi);
+          selectedGu(initalGu);
+        })
+        .catch((error) => {
+          console.error("데이터를 가져오기 실패", error);
+        })
+        .finally(() => {
           setIsLoading(false);
         });
-    }
-  }, [isLoading]);
+    };
 
-  useEffect(() => {
-    setSelectedDo(initailLocation.do);
-    setSelectedSi(initailLocation.si);
-    setSelectedGu(initailLocation.gu);
-  }, [initailLocation]);
+    fetchLocationData();
+    initialLocation();
+  }, [memberNo]);
 
   const handleDoChange = (e) => {
     const newDo = e.target.value;
@@ -60,53 +69,81 @@ export default function LocationSelect({
     if (onLocationChange) onLocationChange(selectedDo, selectedSi, newGu);
   };
 
+  const handleSubmit = () => {
+    const fullAddress = `${selectedDo} ${selectedSi} ${selectedGu}`;
+    SaveAddress(fullAddress)
+      .then(() => {
+        alert("주소가 저장되었습니다.");
+      })
+      .catch((error) => {
+        console.error("주소 저장 중 오류 발생", error);
+      });
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
+  const doList = Object.keys(locationData);
+  const siList = selectedDo ? Object.keys(locationData[selectedDo] || {}) : [];
+  const guList =
+    selectedDo && selectedSi
+      ? locationData[selectedDo]?.[selectedSi] || []
+      : [];
+
   return (
-    <div className="flex flex-col md:flex-row md:space-x-2">
-      <div className="flex-1">
-        <select
-          value={selectedDo}
-          onChange={handleDoChange}
-          className="w-full p-2 border border-gray-300 rounded mt-2"
-        >
-          <option value="">시/도 선택</option>
-          {Object.keys(location).map((doName) => (
-            <option key={doName} value={doName}>
-              {doName}
-            </option>
-          ))}
-        </select>
+    <div className="flex flex-col">
+      <div className="flex flex-col md:flex-row md:space-x-2">
+        <div className="flex-1">
+          <select
+            value={selectedDo}
+            onChange={handleDoChange}
+            className="w-full p-2 border border-gray-300 rounded mt-2"
+          >
+            <option value="">시/도 선택</option>
+            {doList.map((doName) => (
+              <option key={doName} value={doName}>
+                {doName}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="flex-1">
+          <select
+            value={selectedSi}
+            onChange={handleSiChange}
+            className="w-full p-2 border border-gray-300 rounded mt-2"
+          >
+            <option value="">시/군/구 선택</option>
+            {siList.map((siName) => (
+              <option key={siName} value={siName}>
+                {siName}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="flex-1">
+          <select
+            value={selectedGu}
+            onChange={handleGuChange}
+            className="w-full p-2 border border-gray-300 rounded mt-2"
+          >
+            <option value="">읍/면/동 선택</option>
+            {guList.map((guName) => (
+              <option key={guName} value={guName}>
+                {guName}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-      <div className="flex-1">
-        <select
-          value={selectedSi}
-          onChange={handleSiChange}
-          className="w-full p-2 border border-gray-300 rounded mt-2"
+      <div className="mt-2 md:mt-4 self-end">
+        <button
+          onClick={handleSubmit}
+          className="p-2 bg-blue-500 text-white rounded font-bold"
         >
-          <option value="">시/군/구 선택</option>
-          {Object.keys(location[selectedDo] || {}).map((siName) => (
-            <option key={siName} value={siName}>
-              {siName}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="flex-1">
-        <select
-          value={selectedGu}
-          onChange={handleGuChange}
-          className="w-full p-2 border border-gray-300 rounded mt-2"
-        >
-          <option value="">읍/면/동 선택</option>
-          {(location[selectedDo]?.[selectedSi] || []).map((guName) => (
-            <option key={guName} value={guName}>
-              {guName}
-            </option>
-          ))}
-        </select>
+          선호지역 저장
+        </button>
       </div>
     </div>
   );

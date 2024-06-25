@@ -109,19 +109,8 @@ export const SaveUserData = (memberNo, userData) => {
     });
 };
 
-export const ChangePasswordData = (memberNo) => {
-  return axios
-    .get(`/api/myPage/${memberNo}/session`)
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error("세션 정보 로드 중 에러 발생", error);
-      throw error;
-    });
-};
-
 export const GetNickname = (memberNo) => {
-  return axios
-    .get(`/api/myPage/${memberNo}/nickname`)
+  return GZAPI.get(`/api/myPage/${memberNo}/nickname`)
     .then((response) => response.data)
     .catch((error) => {
       console.error("닉네임 로드 중 에러 발생", error);
@@ -130,9 +119,8 @@ export const GetNickname = (memberNo) => {
 };
 
 // DB에 존재하는 장소를 SELECT박스에 넣어둠
-export const GetLocationData = () => {
-  return axios
-    .get(`/api/locations`)
+export const GetLocationData = (memberNo) => {
+  return GZAPI.get(`/api/myPage/${memberNo}/locations`)
     .then((response) => response.data)
     .catch((error) => {
       console.error("위치 데이터 로드 중 에러 발생", error);
@@ -140,9 +128,17 @@ export const GetLocationData = () => {
     });
 };
 
+export const SaveAddress = (memberNo, address) => {
+  return GZAPI.post(`/api/myPage/${memberNo}/locations`, { address })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("주소 저장 중 에러 발생", error);
+      throw error;
+    });
+};
+
 export const GetMemberInfo = (memberNo) => {
-  return axios
-    .get(`/api/myPage/${memberNo}/memberInfo`)
+  return GZAPI.get(`/api/myPage/${memberNo}/memberInfo`)
     .then((response) => response.data)
     .catch((error) => {
       console.error("회원 정보 로드 중 에러 발생", error);
@@ -151,21 +147,10 @@ export const GetMemberInfo = (memberNo) => {
 };
 
 export const UpdatePassword = (memberNo, payload) => {
-  return axios
-    .post(`/api/myPage/${memberNo}/password`, payload)
+  return GZAPI.post(`/api/myPage/${memberNo}/password`, payload)
     .then((response) => response.data)
     .catch((error) => {
       console.error("비밀번호 변경 에러 발생", error);
-      throw error;
-    });
-};
-
-export const CheckSession = (memberNo) => {
-  return axios
-    .get(`/api/myPage/${memberNo}/session`)
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error("세션 확인 중 에러 발생", error);
       throw error;
     });
 };

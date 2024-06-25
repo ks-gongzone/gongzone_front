@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { UpdatePassword } from "../../../utils/repository";
 import { GetMemberInfo } from "../../../utils/repository";
@@ -35,20 +34,12 @@ export default function ChangePassword({ memberNo }) {
   const [memberInfo, setMemberInfo] = useState(null);
 
   useEffect(() => {
-    ChangePassword(memberNo)
-      .then((status) => {
-        setSessionStatus(status);
-        if (status === "1") {
-          return GetMemberInfo(memberNo);
-        } else {
-          throw new Error("세션 상태 없음.");
-        }
-      })
+    GetMemberInfo(memberNo)
       .then((member) => {
         setMemberInfo(member);
         if (!member.memberId || !member.memberPw) {
           setIsSocialLogin(false);
-          alert("소셜로그인 사용자는 비밀번호 수정이 불가합니다.");
+          console.log("소셜로그인 사용자는 비밀번호 수정 불가");
         }
       })
       .catch((error) => {

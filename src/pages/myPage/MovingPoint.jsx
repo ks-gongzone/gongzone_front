@@ -13,46 +13,29 @@ import {
   MyPoint,
   Myfollow,
   BlockUser,
-  CheckSession,
 } from "../../utils/repository";
+import AuthStore from "../../utils/zustand/AuthStore";
 
 /**
  * 개별 토글 스위치 컴포넌트
  * @date: 2024-06-12
- * @last: 2024-06-17
+ * @last: 2024-06-25
+ * @변경내용: 주스탠스로 상태관리 추가 (2024-06-25)
  */
 export default function MyPage() {
   const [activeTab, setActiveTab] = useState("myInfo");
   const [content, setContent] = useState(null);
-  const [memberNo, setMemberNo] = useState("");
+  const { userInfo, isLogin } = AuthStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedMemberNo = sessionStorage.getItem("memberNo");
-    if (storedMemberNo) {
-      setMemberNo(storedMemberNo);
+    if (!isLogin) {
+      console.log("로그인이 필요한 서비스");
+      // navigate("/"); 안정화 후 추가 예정
     } else {
-      navigate("/");
+      TapName(activeTab);
     }
-  }, [navigate]);
-
-  useEffect(() => {
-    if (memberNo) {
-      CheckSession(memberNo)
-        .then((sessionNum) => {
-          if (sessionNum === "1") {
-            TapName(activeTab);
-          } else {
-            alert("로그인이 필요한 서비스입니다.");
-            navigate("/");
-          }
-        })
-        .catch((error) => {
-          console.error("세션 확인 중 에러 발생", error);
-          navigate("/");
-        });
-    }
-  }, [activeTab, memberNo, navigate]);
+  }, [activeTab, isLogin]);
 
   const TapName = (tab) => {
     setActiveTab(tab);
@@ -60,22 +43,22 @@ export default function MyPage() {
 
     switch (tab) {
       case "myInfo":
-        changeData = ChangeUserInfo(memberNo);
+        changeData = ChangeUserInfo(userInfo.memberNo);
         break;
       case "myBoard":
-        changeData = MyBoard(memberNo);
+        changeData = MyBoard(userInfo.memberNo);
         break;
       case "myParty":
-        changeData = MyParty(memberNo);
+        changeData = MyParty(userInfo.memberNo);
         break;
       case "myPoint":
-        changeData = MyPoint(memberNo);
+        changeData = MyPoint(userInfo.memberNo);
         break;
       case "myFollow":
-        changeData = Myfollow(memberNo);
+        changeData = Myfollow(userInfo.memberNo);
         break;
       case "blockUser":
-        changeData = BlockUser(memberNo);
+        changeData = BlockUser(userInfo.memberNo);
         break;
       default:
         setContent(null);
@@ -93,17 +76,17 @@ export default function MyPage() {
   const renderContent = () => {
     switch (activeTab) {
       case "myInfo":
-        return <MyInfo data={content || {}} memberNo={memberNo} />;
+        return <MyInfo data={content || {}} memberNo={userInfo.memberNo} />;
       case "myBoard":
-        return <Board data={content || []} memberNo={memberNo} />;
+        return <Board data={content || []} memberNo={userInfo.memberNo} />;
       case "myParty":
-        return <Party data={content || []} memberNo={memberNo} />;
+        return <Party data={content || []} memberNo={userInfo.memberNo} />;
       case "myPoint":
-        return <Point data={content || {}} memberNo={memberNo} />;
+        return <Point data={content || {}} memberNo={userInfo.memberNo} />;
       case "myFollow":
-        return <Follow data={content || []} memberNo={memberNo} />;
+        return <Follow data={content || []} memberNo={userInfo.memberNo} />;
       case "blockUser":
-        return <Block data={content || []} memberNo={memberNo} />;
+        return <Block data={content || []} memberNo={userInfo.memberNo} />;
       default:
         return <div>클릭해주세요.</div>;
     }

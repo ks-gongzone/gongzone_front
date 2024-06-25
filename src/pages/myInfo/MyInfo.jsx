@@ -12,7 +12,8 @@ import { ChangeUserInfo, SaveUserData } from "../../utils/repository";
 /**
  * 내 정보 컴포넌트 집합
  * @date: 2024-06-10
- * @last: 2024-06-21
+ * @last: 2024-06-25
+ * @수정내용: 주스탠스로 상태처리로직 추가 (2024-06-25)
  */
 export default function MyInfo({ data, memberNo }) {
   const navigate = useNavigate();
@@ -80,7 +81,7 @@ export default function MyInfo({ data, memberNo }) {
     <div className="bg-gray-100 py-10 overflow-y-hidden">
       <div className="p-12 bg-white shadow-md rounded-lg w-[800px] mx-auto">
         <ChangePassword memberNo={memberNo} />
-        <SetNickname />
+        <SetNickname memberNo={memberNo} />
         <div className="mb-6">
           <div className="text-gray-700 font-bold text-lg mb-2">선호지역</div>
           <LocationSelect initailLocation={userData.location} />
