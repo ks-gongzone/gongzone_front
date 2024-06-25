@@ -43,3 +43,11 @@ export const User = {
       .catch((err) => err);
   },
 };
+
+export const Board = {
+  BoardWrite: async (id) => {
+    return GZAPI.post(`/party/accept/${id}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+};

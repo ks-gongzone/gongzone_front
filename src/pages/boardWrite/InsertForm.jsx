@@ -1,6 +1,8 @@
 import BoardContent from "../../components/page/board/BoardContent";
 import React, { useState } from "react";
 import Calendar from "../../components/page/board/BoardCalendar";
+import BoardMap from "../../components/page/board/BoardMap";
+import GZAPI from "../../utils/api";
 
 export default function InsertForm() {
   const [formData, setFormData] = useState({
@@ -15,22 +17,18 @@ export default function InsertForm() {
     endDate: "",
   });
 
-  const [error, setError] = useState("");
-
+  const [numError, setNumError] = useState("");
   const [canSubmit, setCanSubmit] = useState(true);
+  const [dateError, setDateError] = useState("");
 
   const handleChange = (e) => {
-    const { name, value, type } = e.target;
+    const { name, value, type, files } = e.target;
 
     if (type === "file") {
-      const reader = new FileReader();
-      reader.onload = function (event) {
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          [name]: event.target.result,
-        }));
-      };
-      reader.readAsDataURL(e.target.files[0]);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: files[0],
+      }));
     } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -51,38 +49,74 @@ export default function InsertForm() {
 
   const validateAmount = (total, amount) => {
     if (parseInt(amount) > parseInt(total)) {
-      setError("구매 희망 수량은 전체 수량보다 많을 수 없습니다.");
+      setNumError("구매 희망 수량은 전체 수량보다 많을 수 없습니다.");
       setCanSubmit(false);
     } else {
-      setError("");
+      setNumError("");
       setCanSubmit(true);
     }
   };
 
   const handleEndDateChange = (date) => {
-    setFormData({
-      ...formData,
+    const selectedDate = new Date(date);
+    const currentDate = new Date();
+
+    if (selectedDate < currentDate) {
+      setDateError("마감일은 현재 날짜보다 이후여야 합니다.");
+      setCanSubmit(false);
+    } else {
+      setDateError("");
+      setCanSubmit(true);
+    }
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       endDate: date,
-    });
+    }));
   };
 
   const handleContentChange = (content) => {
-    setFormData({
-      ...formData,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       content: content,
-    });
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!canSubmit) {
-      alert("구매 희망 수량이 전체 수량보다 많습니다. 올바른 값을 입력하세요.");
+      alert("입력된 데이터에 오류가 있습니다. 확인 후 다시 시도하세요.");
       return;
     }
 
-    // 폼 데이터 처리 로직 추가
-    console.log(formData);
+    const formDataToSend = new FormData();
+    for (const key in formData) {
+      formDataToSend.append(key, formData[key]);
+    }
+
+    // FormData 객체에 저장된 데이터를 콘솔에 출력
+    for (const [key, value] of formDataToSend.entries()) {
+      console.log(`${key}:`, value);
+    }
+
+    try {
+      const response = await GZAPI.post("/api/boards/write", formDataToSend, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.status !== 200) {
+        throw new Error("서버 응답이 올바르지 않습니다.");
+      }
+
+      // 성공 처리
+      console.log("폼 데이터가 성공적으로 전송되었습니다.");
+    } catch (error) {
+      // 에러 처리
+      console.error("폼 데이터 전송 중 오류가 발생했습니다.", error);
+    }
   };
 
   const cate = [
@@ -104,6 +138,7 @@ export default function InsertForm() {
     { key: "c15", value: "CF0502", label: "커피/차" },
     { key: "c16", value: "CF9901", label: "건강식품" },
   ];
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -187,7 +222,7 @@ export default function InsertForm() {
             className="border p-2 w-full"
             required
           />
-          {error && <p className="text-red-500">{error}</p>}
+          {numError && <p className="text-red-500">{numError}</p>}
         </div>
       </div>
 
@@ -202,24 +237,28 @@ export default function InsertForm() {
         />
 
         {/* 이미지 미리보기 */}
-        <img
-          alt="메인사진"
-          src={formData.image}
-          className="max-w-[100px] border border-gray-300 rounded"
-        ></img>
+        {formData.image && (
+          <img
+            alt="메인사진"
+            src={URL.createObjectURL(formData.image)}
+            className="max-w-[100px] border border-gray-300 rounded"
+          />
+        )}
       </div>
 
       <div className="flex space-x-4">
         <div className="w-1/2">
           <BoardContent onChange={handleContentChange} />
         </div>
-
-        <div className="w-1/2"></div>
+        <div className="w-1/2">
+          
+        </div>
       </div>
 
       <div>
         <label className="block">게시글 마감일</label>
         <Calendar selected={formData.endDate} onChange={handleEndDateChange} />
+        {dateError && <p className="text-red-500">{dateError}</p>}
       </div>
 
       <div>
