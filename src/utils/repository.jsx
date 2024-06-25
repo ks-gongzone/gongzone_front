@@ -26,11 +26,6 @@ export const Auth = {
       .then((res) => res)
       .catch((err) => err);
   },
-  Register: async (data) => {
-    return GZAPI.post("/api/register", data)
-      .then((res) => res)
-      .catch((err) => err);
-  },
 };
 
 export const User = {
@@ -173,4 +168,17 @@ export const CheckSession = (memberNo) => {
       console.error("세션 확인 중 에러 발생", error);
       throw error;
     });
+};
+
+export const MemberAPI = {
+  Register: async (data) => {
+    return GZAPI.post("/api/register", data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  Check: async (data) => {
+    return GZAPI.post("/api/check", data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
 };
