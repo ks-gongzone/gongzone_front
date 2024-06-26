@@ -1,37 +1,58 @@
-import { useEffect } from "react";
+import React, { useEffect } from 'react';
+import axios from "axios";
 import { Auth } from "../../utils/repository";
-import { useLocation ,useNavigate } from "react-router-dom";
+import { loadNaverScript } from "../../utils/naverLoginScript";
 
-export default function NaverLogin({ provider }) {
-  const location = useLocation();
-  const navigate = useNavigate();
-
+const NaverLogin = () => {
+const { naver } = window;
   useEffect(() => {
-    const urlSearchParams = new URLSearchParams(location.search);
-    const code = urlSearchParams.get('code');
-    const state = urlSearchParams.get('state');
+    const initNaverLogin = async () => {
+      await loadNaverScript();
 
-    if (code && state) {
-      Auth[provider](code, state)
-        .then(response => {
-          if (response.data.isNewMember) {
-            navigate('/signup', { socialMember: response.data.socialMember });
-          } else {
-            const { token } = response.data;
-            window.localStorage.setItem('accessToken', token);
-            navigate('/');
-          }
-        })
-        .catch(error => {
-          console.error(`${provider} 로그인 실패:`, error);
+      if (window.naver && window.naver.LoginWithNaverId) {
+        const naverLogin = new window.naver.LoginWithNaverId({
+          clientId: 'ViZy5l34ZQtLQtRQEPmO', // 네이버 개발자 콘솔에서 발급받은 클라이언트 ID
+          callbackUrl: 'http://localhost:3000/callback', // 콜백 URL
+          isPopup: true,
+          loginButton: { color: 'green', type: 3, height: 40 },
         });
-    }
-  }, [location, provider, navigate]);
+        naverLogin.init();
+        document.getElementById('naverIdLogin').innerHTML = '';
+        //naverLogin.renderLoginButton();
+      } else {
+        console.error('Failed to load Naver Login SDK');
+      }
+
+      const handleCallback = async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const state = urlParams.get('state');
+
+        if (code && state) {
+          try {
+            const response = await axios.get(`http://localhost:3000/callback?code=${code}&state=${state}`);
+            const { accessToken } = response.data;
+            window.localStorage.setItem('naverAccessToken', accessToken);
+
+            // 네이버 사용자 정보 요청
+            const userInfo = await Auth.Naver();
+            console.log(userInfo);
+          } catch (error) {
+            console.error('Error during login:', error);
+          }
+        }
+      };
+      handleCallback();
+    };
+    initNaverLogin();
+  }, []);
 
   return (
     <div>
-      {provider} 로그인 처리 중...
+      <div id="naverIdLogin"></div>
+      {/*<h2>Processing Naver Login...</h2>*/}
     </div>
   );
+};
 
-}
+export default NaverLogin;

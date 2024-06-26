@@ -20,10 +20,22 @@ export const Auth = {
     }
   },
   Naver: async () => {
-    return GZAPI.get("/auth/naver")
-      .then((res) => res)
-      .catch((err) => err);
-  },
+    const originalBaseURL = GZAPI.defaults.baseURL;
+    GZAPI.defaults.baseURL = "https://openapi.naver.com/";
+
+    try {
+      const response = await GZAPI.get("/v1/nid/me", {
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("naverAccessToken")}`
+        }
+      });
+      return response.data;
+    } catch (error) {
+      return error.response ? error.response.data : error.message;
+    } finally {
+      GZAPI.defaults.baseURL = originalBaseURL;
+    }
+  }
 };
 
 export const User = {

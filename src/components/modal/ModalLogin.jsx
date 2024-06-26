@@ -23,6 +23,10 @@ export default function ModalLogin({ isOpen, onClose }) {
     }
   };
 
+  const handleNaverLogin = () => {
+    window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=ViZy5l34ZQtLQtRQEPmO&redirect_uri=http://localhost:3000/callback&state=${new Date().getTime()}`;
+  };
+
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-80">
@@ -69,7 +73,8 @@ export default function ModalLogin({ isOpen, onClose }) {
           <button className="w-full bg-gray-200 text-black py-2 rounded-lg flex items-center justify-center">
             <span className="mr-2">+</span> GOOGLE
           </button>
-          <button className="w-full bg-green-500 text-white py-2 rounded-lg flex items-center justify-center">
+          <button className="w-full bg-green-500 text-white py-2 rounded-lg flex items-center justify-center"
+              onClick={handleNaverLogin}>
             <span className="mr-2">+</span> NAVER
           </button>
           <button className="w-full bg-yellow-300 text-black py-2 rounded-lg flex items-center justify-center">

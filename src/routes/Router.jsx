@@ -6,6 +6,7 @@ import { Point, PointCharge, PointHistory } from "../pages/point/Index";
 import BoardList from "../pages/boardList/Index";
 import Register from "../pages/login/Register";
 import MovingPoint from "../pages/myPage/MovingPoint";
+import NaverLogin from "../pages/login/Naver";
 
 
 export default createBrowserRouter([
@@ -22,6 +23,7 @@ export default createBrowserRouter([
       { path: "/party/accept", element: <Party /> },
       { path: "/board/list", element: <BoardList />},
       { path: "/register", element: <Register /> },
+      { path: "/callback", element: <NaverLogin /> },
 
       // point
       { path: "/point", element: <Point /> },
