@@ -33,8 +33,10 @@ export default function BoardContent({ onChange }) {
       <h2>게시글 상세 내용</h2>
       <CKEditor
         editor={ClassicEditor}
-        config={editorConfiguration}
-        data="상세 내용을 입력해주세요."
+        config={{
+          editorConfiguration,
+          placeholder: "게시글 상세 내용을 입력해주세요.",
+        }}
         onChange={handleEditorChange}
       />
     </div>

@@ -21,8 +21,8 @@ export default createBrowserRouter([
       { path: "/myPage", element: <MovingPoint /> },
 
       { path: "/party/accept", element: <Party /> },
-      { path: "/board/list", element: <BoardList /> },
-      { path: "/board/write", element: <BoardWrite /> },
+      { path: "/api/boards/list", element: <BoardList /> },
+      { path: "/api/boards/write/:memberNo", element: <BoardWrite /> },
       { path: "/register", element: <Register /> },
 
       // point

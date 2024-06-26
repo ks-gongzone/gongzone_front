@@ -14,7 +14,7 @@ GZAPI.interceptors.request.use(
   (config) => {
     const token = window.localStorage.getItem("accessToken");
     if (token) {
-      console.log(token);
+      //console.log(token);
       config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
@@ -31,14 +31,13 @@ GZAPI.interceptors.request.use(
 GZAPI.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.log(error);
+    //console.log(error);
     if (error.response) {
       if (error.response.status === 401) {
         window.localStorage.removeItem("accessToken");
         const url = window.location.href;
         window.localStorage.setItem("redirect", url);
-        //이 부분때문에 안돼서 일단 주석처리 해놨습니다
-        //window.location.href = "/";
+        window.location.href = "/";
       }
     }
     // error.response -> error로 변경

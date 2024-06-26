@@ -1,13 +1,17 @@
 import BoardContent from "../../components/page/board/BoardContent";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Calendar from "../../components/page/board/BoardCalendar";
+import MapSearch from "../../components/page/board/MapSearch";
 import BoardMap from "../../components/page/board/BoardMap";
+import AuthStore from "../../utils/zustand/AuthStore";
 import GZAPI from "../../utils/api";
 
 export default function InsertForm() {
+  const memberNo = AuthStore((state) => state.userInfo.memberNo);
+
   const [formData, setFormData] = useState({
+    memberNo: "",
     title: "",
-    name: "",
     category: "",
     URL: "",
     total: "",
@@ -20,6 +24,15 @@ export default function InsertForm() {
   const [numError, setNumError] = useState("");
   const [canSubmit, setCanSubmit] = useState(true);
   const [dateError, setDateError] = useState("");
+
+  useEffect(() => {
+    if (memberNo) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        memberNo: memberNo,
+      }));
+    }
+  }, [memberNo]);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -120,7 +133,7 @@ export default function InsertForm() {
   };
 
   const cate = [
-    { key: "c0", value: "", label: "선택" },
+    { key: "c0", value: "", label: "제품 카테고리 선택" },
     { key: "c1", value: "CF0101", label: "채소" },
     { key: "c2", value: "CF0102", label: "과일" },
     { key: "c3", value: "CF0103", label: "수산/건어물" },
@@ -152,18 +165,7 @@ export default function InsertForm() {
           value={formData.title}
           onChange={handleChange}
           className="border p-2 w-full"
-          required
-        />
-      </div>
-
-      <div>
-        <label className="block">제품명</label>
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          className="border p-2 w-full"
+          placeholder="제품명을 반드시 입력해주세요."
           required
         />
       </div>
@@ -193,6 +195,7 @@ export default function InsertForm() {
           value={formData.URL}
           onChange={handleChange}
           className="border p-2 w-full"
+          placeholder="제품 URL을 입력해주세요."
           required
         />
       </div>
@@ -207,6 +210,7 @@ export default function InsertForm() {
             onChange={handleChange}
             onBlur={handleBlur}
             className="border p-2 w-full"
+            placeholder="제품 전체 수량을 (숫자만) 입력해주세요."
             required
           />
         </div>
@@ -220,6 +224,7 @@ export default function InsertForm() {
             onChange={handleChange}
             onBlur={handleBlur}
             className="border p-2 w-full"
+            placeholder="희망하시는 구매 수량을 (숫자만) 입력해주세요."
             required
           />
           {numError && <p className="text-red-500">{numError}</p>}
@@ -247,11 +252,15 @@ export default function InsertForm() {
       </div>
 
       <div className="flex space-x-4">
+        {/* 게시글 상세 내용 */}
         <div className="w-1/2">
           <BoardContent onChange={handleContentChange} />
         </div>
+        {/* 지도 */}
         <div className="w-1/2">
-          
+          제품 수령 주소
+          <MapSearch />
+          <BoardMap />
         </div>
       </div>
 
