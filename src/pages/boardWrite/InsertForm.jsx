@@ -253,21 +253,25 @@ export default function InsertForm() {
 
       <div className="flex space-x-4">
         {/* 게시글 상세 내용 */}
-        <div className="w-1/2">
+        <div className="w-full">
           <BoardContent onChange={handleContentChange} />
+        </div>
+      </div>
+      <div className="flex justify-between">
+        <div>
+          <label className="block mt-5">게시글 마감일</label>
+          <Calendar
+            selected={formData.endDate}
+            onChange={handleEndDateChange}
+          />
+          {dateError && <p className="text-red-500">{dateError}</p>}
         </div>
         {/* 지도 */}
         <div className="w-1/2">
           제품 수령 주소
-          <MapSearch />
+          {/* <MapSearch /> */}
           <BoardMap />
         </div>
-      </div>
-
-      <div>
-        <label className="block">게시글 마감일</label>
-        <Calendar selected={formData.endDate} onChange={handleEndDateChange} />
-        {dateError && <p className="text-red-500">{dateError}</p>}
       </div>
 
       <div>
