@@ -84,7 +84,13 @@ export default function MyInfo({ data, memberNo }) {
         <SetNickname memberNo={memberNo} />
         <div className="mb-6">
           <div className="text-gray-700 font-bold text-lg mb-2">선호지역</div>
-          <LocationSelect initailLocation={userData.location} />
+          <LocationSelect
+            memberNo={memberNo}
+            initialLocation={userData.location}
+            onLocationChange={(newDo, newSi, newGu) => {
+              console.log(`선택주소: ${newDo} ${newSi} ${newGu}`);
+            }}
+          />
         </div>
         <div className="mb-6">
           <div className="text-gray-700 font-bold text-lg mb-2">휴대폰</div>

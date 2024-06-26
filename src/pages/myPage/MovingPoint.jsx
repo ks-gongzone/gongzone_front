@@ -52,7 +52,7 @@ export default function MyPage() {
         changeData = MyParty(userInfo.memberNo);
         break;
       case "myPoint":
-        changeData = MyPoint(userInfo.memberNo);
+        setContent(null);
         break;
       case "myFollow":
         changeData = Myfollow(userInfo.memberNo);
@@ -82,7 +82,7 @@ export default function MyPage() {
       case "myParty":
         return <Party data={content || []} memberNo={userInfo.memberNo} />;
       case "myPoint":
-        return <Point data={content || {}} memberNo={userInfo.memberNo} />;
+        return <Point data={content || []} memberNo={userInfo.memberNo} />;
       case "myFollow":
         return <Follow data={content || []} memberNo={userInfo.memberNo} />;
       case "blockUser":

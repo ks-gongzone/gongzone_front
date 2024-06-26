@@ -30,11 +30,16 @@ export default function LocationSelect({ onLocationChange, memberNo }) {
     const initialLocation = () => {
       GetLocationData(memberNo)
         .then((response) => {
-          const { address } = response;
-          const [initalDo, initalSi, initalGu] = address.split(" ");
-          selectedDo(initalDo);
-          selectedSi(initalSi);
-          selectedGu(initalGu);
+          const address = response.memberAddress;
+          console.log(`address의 값${address}`);
+          if (address) {
+            const [initalDo, initalSi, initalGu] = address.split(" ");
+            setSelectedDo(initalDo);
+            setSelectedSi(initalSi);
+            setSelectedGu(initalGu);
+          } else {
+            console.log("주소가 정의되지 않았습니다.");
+          }
         })
         .catch((error) => {
           console.error("데이터를 가져오기 실패", error);
@@ -71,7 +76,8 @@ export default function LocationSelect({ onLocationChange, memberNo }) {
 
   const handleSubmit = () => {
     const fullAddress = `${selectedDo} ${selectedSi} ${selectedGu}`;
-    SaveAddress(fullAddress)
+    console.log("저장할 주소: ", fullAddress);
+    SaveAddress(memberNo, fullAddress)
       .then(() => {
         alert("주소가 저장되었습니다.");
       })
