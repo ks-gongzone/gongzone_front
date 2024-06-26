@@ -27,7 +27,6 @@ export default function Register() {
 
   const [message, setMessage] = useState('');
 
-  // 메서드명 변경: validateField -> checkField
   const checkField = async (name, value) => {
     let errorMsg;
 
@@ -64,15 +63,15 @@ export default function Register() {
   };
 
   const statusRegister = async (e) => {
+    // 여기부분 모달창 회원가입 완료 만들고 메인페이지 이동하게
     e.preventDefault();
     setMessage('');
 
-    const validationPromises = Object.keys(formValues).map(name => checkField(name, formValues[name]));
-    await Promise.all(validationPromises);
+    const requiredFields = ['memberId', 'memberPw', 'memberName', 'memberPhone'];
+    const validationPromises = requiredFields.map(name => checkField(name, formValues[name]));
+     await Promise.all(validationPromises);
+    const requestMember = requiredFields.every(name => errors[name] === '');
 
-    console.log('Errors after validation:', errors);
-
-    const requestMember = Object.values(errors).every(error => error === '');
 
     if (requestMember) {
       try {
@@ -80,10 +79,9 @@ export default function Register() {
         if (response.success) {
           setMessage('회원가입에 성공했습니다.');
         } else {
-          setMessage('회원가입 실패: ' + response.message);
+          setMessage('회원가입 실패: ' + '입력하신 정보를 다시 확인해 주세요');
         }
       } catch (error) {
-        console.error('Registration failed:', error);
         setMessage('회원가입 실패: 서버 오류가 발생했습니다.');
       }
     } else {
@@ -101,7 +99,7 @@ export default function Register() {
   };
 
   const checkMemberIdApi = async (memberId) => {
-    const checkMemberId = await MemberAPI.Check(memberId);
+    const checkMemberId = await MemberAPI.Check({memberId});
     if (!checkMemberId) {
       return '사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.';
     }

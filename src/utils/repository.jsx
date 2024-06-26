@@ -42,12 +42,12 @@ export const User = {
 export const MemberAPI = {
   Register: async (data) => {
     return GZAPI.post('/api/register', data)
-      .then((res) => res.data)
+      .then((res) => res)
       .catch((err) => err);
   },
   Check: async (data) => {
     return GZAPI.post('/api/check', data)
-      .then((res) => res)
+      .then((res) => res.data)
       .catch((err) => err);
   }
 }
