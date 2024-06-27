@@ -13,9 +13,10 @@ export const Auth = {
       const response = await GZAPI.post("/api/login", data);
       return response.data; // response.data 반환
     } catch (err) {
-      const errorMessage = err.response && err.response.data && err.response.data.errorMessage
-        ? err.response.data.errorMessage
-        : "로그인 중 오류가 발생했습니다.";
+      const errorMessage =
+        err.response && err.response.data && err.response.data.errorMessage
+          ? err.response.data.errorMessage
+          : "로그인 중 오류가 발생했습니다.";
       return { error: errorMessage };
     }
   },
@@ -39,15 +40,39 @@ export const User = {
   },
 };
 
+export const Party = {
+  PartyAccept: async (id) => {
+    return GZAPI.get(`/api/party/accept/${id}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+};
+
+export const Location = {
+  LocationSearch: async (latitude, longitude) => {
+    return GZAPI.get(
+      `/api/location?latitude=${latitude}&longitude=${longitude}`
+    )
+      .then((res) => res.data)
+      .catch((err) => {
+        const errorMessage =
+          err.response && err.response.data && err.response.data.errorMessage
+            ? err.response.data.errorMessage
+            : "위치 검색 중 오류가 발생했습니다.";
+        return { error: errorMessage };
+      });
+  },
+};
+
 export const MemberAPI = {
   Register: async (data) => {
-    return GZAPI.post('/api/register', data)
+    return GZAPI.post("/api/register", data)
       .then((res) => res)
       .catch((err) => err);
   },
   Check: async (data) => {
-    return GZAPI.post('/api/check', data)
+    return GZAPI.post("/api/check", data)
       .then((res) => res.data)
       .catch((err) => err);
-  }
-}
+  },
+};
