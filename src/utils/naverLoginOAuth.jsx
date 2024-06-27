@@ -1,3 +1,4 @@
+/*
 
 export const loadNaverScript = () => {
   return new Promise((resolve, reject) => {
@@ -14,3 +15,7 @@ export const loadNaverScript = () => {
     document.head.appendChild(script);
   });
 };
+*/
+export const naverClientId = 'YOUR_NAVER_CLIENT_ID';
+export const naverRedirectURL = 'YOUR_NAVER_REDIRECT_URL';
+export const naverSecret = 'YOUR_NAVER_SECRET';
