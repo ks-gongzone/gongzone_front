@@ -165,7 +165,7 @@ export const MemberAPI = {
   },
   Check: async (data) => {
     return GZAPI.post("/api/check", data)
-      .then((res) => res)
+      .then((res) => res.data)
       .catch((err) => err);
   },
 };
