@@ -17,7 +17,11 @@ export default function InsertForm() {
     amount: "",
     image: null,
     content: "",
-    location: "",
+    doCity: "",
+    siGun: "",
+    gu: "",
+    dong: "",
+    detailAddress: "",
     latitude: "", 
     longitude: "",
     endDate: "",
@@ -98,9 +102,20 @@ export default function InsertForm() {
   };
 
   const handleLocationChange = (location) => {
+    const parts = location.split(' '); 
+    const doCity = parts[0]; 
+    const siGun = parts[1]; 
+    const gu = parts[2]; 
+    const dong = parts[3];
+    const detailAddress = parts.slice(4).join(' '); 
+  
     setFormData((prevFormData) => ({
       ...prevFormData,
-      location: location,
+      doCity: doCity,
+      siGun: siGun,
+      gu: gu,
+      dong: dong,
+      detailAddress: detailAddress,
     }));
   };
 
@@ -114,6 +129,21 @@ export default function InsertForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (
+      formData.content === "" ||
+      formData.doCity === "" ||
+      formData.siGun === "" ||
+      formData.gu === "" ||
+      formData.dong === "" ||
+      formData.detailAddress === "" ||
+      formData.latitude === "" ||
+      formData.longitude === "" ||
+      formData.endDate === ""
+    ) {
+      alert("필수 입력 항목을 모두 작성해주세요.");
+      return;
+    }
 
     if (!canSubmit) {
       alert("입력된 데이터에 오류가 있습니다. 확인 후 다시 시도하세요.");
@@ -131,11 +161,7 @@ export default function InsertForm() {
     }
 
     try {
-      const response = await GZAPI.post("/api/boards/write", formDataToSend, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await GZAPI.post("/api/boards/write", formDataToSend);
 
       if (response.status === 200) {
         alert("게시글이 성공적으로 등록되었습니다.");

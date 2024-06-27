@@ -48,7 +48,6 @@ export default function BoardMap({ onLocationChange, onPositionChange }) {
         setAddress(result[0].address.address_name);
         onLocationChange(result[0].address.address_name);
         onPositionChange(position.lat, position.lng);
-        console.log(`위도: ${position.lat}, 경도: ${position.lng}`);
         map.panTo(new window.kakao.maps.LatLng(position.lat, position.lng));
         setShowPostcode(false);
       }
