@@ -3,7 +3,7 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 import DaumPostcode from "react-daum-postcode";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
-export default function BoardMap() {
+export default function BoardMap({ onLocationChange, onPositionChange }) {
   const [map, setMap] = useState(null);
   const [markerPosition, setMarkerPosition] = useState(null);
   const [address, setAddress] = useState("");
@@ -45,7 +45,9 @@ export default function BoardMap() {
           lng: parseFloat(result[0].x),
         };
         setMarkerPosition(position);
-        setAddress(data.address);
+        setAddress(result[0].address.address_name);
+        onLocationChange(result[0].address.address_name);
+        onPositionChange(position.lat, position.lng);
         console.log(`위도: ${position.lat}, 경도: ${position.lng}`);
         map.panTo(new window.kakao.maps.LatLng(position.lat, position.lng));
         setShowPostcode(false);
@@ -61,34 +63,15 @@ export default function BoardMap() {
       latlng.getLat(),
       (result, status) => {
         if (status === window.kakao.maps.services.Status.OK) {
-          const addr = result[0].road_address
-            ? result[0].road_address.address_name
-            : result[0].address.address_name;
+          // 지번 주소로 설정
+          const addr = result[0].address.address_name;
           setMarkerPosition({ lat: latlng.getLat(), lng: latlng.getLng() });
           setAddress(addr);
+          onLocationChange(addr);
+          onPositionChange(latlng.getLat(), latlng.getLng());
         }
       }
     );
-  };
-
-  const handleCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const currentPos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          setCurrentPosition(currentPos);
-          map.panTo(
-            new window.kakao.maps.LatLng(currentPos.lat, currentPos.lng)
-          );
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
-    }
   };
 
   return (
@@ -100,7 +83,7 @@ export default function BoardMap() {
         >
           <div
             className="bg-white p-4 rounded-lg"
-            onClick={(e) => e.stopPropagation()} // Prevent closing on inner div click
+            onClick={(e) => e.stopPropagation()}
           >
             <DaumPostcode onComplete={handlePostcodeComplete} />
           </div>
@@ -113,14 +96,14 @@ export default function BoardMap() {
           value={address}
           className="mt-2 p-2 border rounded w-full"
           onFocus={() => setShowPostcode(true)}
+          required
         />
         <MagnifyingGlassIcon className="w-5 h-5 text-gray-500 absolute right-3 top-5" />
         <input
           id="detailAddr"
           className="mt-2 p-2 border rounded w-full"
-          value={"" || ""}
-          onChange={""}
           placeholder="상세주소를 입력하세요"
+          onChange={(e) => onLocationChange(`${address} ${e.target.value}`)}
         />
       </div>
       <div

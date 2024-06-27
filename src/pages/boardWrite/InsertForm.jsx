@@ -17,6 +17,9 @@ export default function InsertForm() {
     amount: "",
     image: null,
     content: "",
+    location: "",
+    latitude: "", 
+    longitude: "",
     endDate: "",
   });
 
@@ -94,6 +97,21 @@ export default function InsertForm() {
     }));
   };
 
+  const handleLocationChange = (location) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      location: location,
+    }));
+  };
+
+  const handlePositionChange = (lat, lng) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      latitude: lat,
+      longitude: lng,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -119,15 +137,15 @@ export default function InsertForm() {
         },
       });
 
-      if (response.status !== 200) {
-        throw new Error("서버 응답이 올바르지 않습니다.");
+      if (response.status === 200) {
+        alert("게시글이 성공적으로 등록되었습니다.");
+      } else {
+        alert("게시글 등록에 실패했습니다.");
       }
-
-      // 성공 처리
-      console.log("폼 데이터가 성공적으로 전송되었습니다.");
     } catch (error) {
       // 에러 처리
       console.error("폼 데이터 전송 중 오류가 발생했습니다.", error);
+      alert("게시글 등록 중 오류가 발생했습니다. 나중에 다시 시도하세요.");
     }
   };
 
@@ -253,7 +271,9 @@ export default function InsertForm() {
       <div className="flex space-x-4">
         {/* 게시글 상세 내용 */}
         <div className="w-full">
-          <BoardContent onChange={handleContentChange} />
+          <BoardContent 
+            onChange={handleContentChange} 
+          />
         </div>
       </div>
       <div className="flex justify-between gap-10">
@@ -261,7 +281,10 @@ export default function InsertForm() {
         <div className="w-2/3">
           제품 수령 주소
           {/* <MapSearch /> */}
-          <BoardMap />
+          <BoardMap 
+            onLocationChange={handleLocationChange}
+            onPositionChange={handlePositionChange}
+          />
         </div>
         <div className="w-1/3">
           <label className="block mt-5">게시글 마감일</label>
