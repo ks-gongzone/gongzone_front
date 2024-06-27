@@ -20,8 +20,8 @@ export default createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/myPage", element: <MovingPoint /> },
 
-      { path: "/party/accept", element: <Party /> },
-      { path: "/api/boards/list", element: <BoardList /> },
+      { path: "/party/accept/:id", element: <Party /> },
+      { path: "/api/boards/list", element: <BoardList />},
       { path: "/api/boards/write/:memberNo", element: <BoardWrite /> },
       { path: "/register", element: <Register /> },
 
