@@ -7,7 +7,7 @@ import BoardList from "../pages/boardList/Index";
 import BoardWrite from "../pages/boardWrite/Index";
 
 import Register from "../pages/login/Register";
-import MovingPoint from "../pages/myPage/MovingPoint";
+import MyPage from "../pages/myPage/MovingPoint";
 
 export default createBrowserRouter([
   {
@@ -18,7 +18,7 @@ export default createBrowserRouter([
     ),
     children: [
       { path: "/", element: <Home /> },
-      { path: "/myPage", element: <MovingPoint /> },
+      { path: "/myPage", element: <MyPage /> },
 
       { path: "/party/accept/:id", element: <Party /> },
       { path: "/api/boards/list", element: <BoardList />},

@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState } from "react";
 import AuthStore from "../../utils/zustand/AuthStore";
 
 export default function ModalLogin({ isOpen, onClose }) {
-  const [loginId, setloginId] = useState('');
-  const [loginPw, setloginPw] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [loginId, setloginId] = useState("");
+  const [loginPw, setloginPw] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const { statusLogin } = AuthStore();
 
   if (!isOpen) return null;
@@ -18,7 +18,7 @@ export default function ModalLogin({ isOpen, onClose }) {
     if (response && response.error) {
       setErrorMessage(response.error);
     } else {
-      setErrorMessage('');
+      setErrorMessage("");
       onClose();
     }
   };
@@ -28,11 +28,18 @@ export default function ModalLogin({ isOpen, onClose }) {
       <div className="bg-white p-6 rounded-lg shadow-lg w-80">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-bold">로그인</h2>
-          <button onClick={onClose} className="text-black text-3xl">&times;</button>
+          <button onClick={onClose} className="text-black text-3xl">
+            &times;
+          </button>
         </div>
         <form onSubmit={handleContinue} className="mt-4 space-y-4">
           <div>
-            <label htmlFor="loginId" className="block text-sm font-medium text-gray-700">아이디</label>
+            <label
+              htmlFor="loginId"
+              className="block text-sm font-medium text-gray-700"
+            >
+              아이디
+            </label>
             <input
               type="text"
               id="loginId"
@@ -43,7 +50,12 @@ export default function ModalLogin({ isOpen, onClose }) {
             />
           </div>
           <div>
-            <label htmlFor="loginPw" className="block text-sm font-medium text-gray-700">비밀번호</label>
+            <label
+              htmlFor="loginPw"
+              className="block text-sm font-medium text-gray-700"
+            >
+              비밀번호
+            </label>
             <input
               type="password"
               id="loginPw"
@@ -54,14 +66,14 @@ export default function ModalLogin({ isOpen, onClose }) {
             />
           </div>
           {errorMessage && (
-            <div className="text-red-500 text-sm mt-2">
-              {errorMessage}
-            </div>
+            <div className="text-red-500 text-sm mt-2">{errorMessage}</div>
           )}
           <div className="flex justify-between items-center mt-4">
             <button className="text-sm text-gray-500">ID/PW 찾기</button>
             <div>
-              <button type="submit" className="text-sm text-blue-500">CONTINUE</button>
+              <button type="submit" className="text-sm text-blue-500">
+                CONTINUE
+              </button>
             </div>
           </div>
         </form>
