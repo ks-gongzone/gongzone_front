@@ -41,7 +41,7 @@ export default function BoardContent({ onChange }) {
       />
       <style jsx global>{`
         .ck-editor__editable {
-          height: 500px !important;
+          height: 250px !important;
         }
       `}</style>
     </div>

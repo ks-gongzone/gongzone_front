@@ -1,7 +1,6 @@
 import BoardContent from "../../components/page/board/BoardContent";
 import React, { useState, useEffect } from "react";
 import Calendar from "../../components/page/board/BoardCalendar";
-import MapSearch from "../../components/page/board/MapSearch";
 import BoardMap from "../../components/page/board/BoardMap";
 import AuthStore from "../../utils/zustand/AuthStore";
 import GZAPI from "../../utils/api";
@@ -257,20 +256,20 @@ export default function InsertForm() {
           <BoardContent onChange={handleContentChange} />
         </div>
       </div>
-      <div className="flex justify-between">
-        <div>
+      <div className="flex justify-between gap-10">
+        {/* 지도 */}
+        <div className="w-2/3">
+          제품 수령 주소
+          {/* <MapSearch /> */}
+          <BoardMap />
+        </div>
+        <div className="w-1/3">
           <label className="block mt-5">게시글 마감일</label>
           <Calendar
             selected={formData.endDate}
             onChange={handleEndDateChange}
           />
           {dateError && <p className="text-red-500">{dateError}</p>}
-        </div>
-        {/* 지도 */}
-        <div className="w-1/2">
-          제품 수령 주소
-          {/* <MapSearch /> */}
-          <BoardMap />
         </div>
       </div>
 
