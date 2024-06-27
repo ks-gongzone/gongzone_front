@@ -1,92 +1,59 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import MyInfo from "../myInfo/MyInfo";
-import Point from "../point/Point";
-import Board from "./Board";
-import Party from "./Party";
-import Follow from "./Follow";
-import Block from "./Block";
-import {
-  ChangeUserInfo,
-  MyBoard,
-  MyParty,
-  MyPoint,
-  Myfollow,
-  BlockUser,
-} from "../../utils/repository";
-import AuthStore from "../../utils/zustand/AuthStore";
+import MyInfo from "./myInfo/Main";
 
 /**
  * 개별 토글 스위치 컴포넌트
  * @date: 2024-06-12
- * @last: 2024-06-25
- * @변경내용: 주스탠스로 상태관리 추가 (2024-06-25)
+ * @last: 2024-06-17
  */
-export default function MyPage() {
+export default function MovingPoint() {
   const [activeTab, setActiveTab] = useState("myInfo");
   const [content, setContent] = useState(null);
-  const { userInfo, isLogin } = AuthStore();
-  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isLogin) {
-      console.log("로그인이 필요한 서비스");
-      // navigate("/"); 안정화 후 추가 예정
-    } else {
-      TapName(activeTab);
-    }
-  }, [activeTab, isLogin]);
+    TapName(activeTab);
+  }, [activeTab]);
 
-  const TapName = (tab) => {
+  const TapName = async (tab) => {
     setActiveTab(tab);
-    let changeData;
+    try {
+      // 백엔드 미구현으로 더미 데이터 사용
+      const dummyData = {
+        myInfo: {
+          name: "이름확인용",
+          email: "email1@naver.com",
+          phone: "010-1234-5678",
+          location: { do: "", si: "", gu: "" },
+        },
+        myBulletin: { posts: ["게시글1", "게시글2"] },
+        myParty: { parties: ["파티1", "파티2"] },
+        myPoint: { points: 100 },
+        myFollow: { follows: ["친구1", "친구2"] },
+        blockUser: { blocked: ["차단1", "차단2"] },
+      };
 
-    switch (tab) {
-      case "myInfo":
-        changeData = ChangeUserInfo(userInfo.memberNo);
-        break;
-      case "myBoard":
-        changeData = MyBoard(userInfo.memberNo);
-        break;
-      case "myParty":
-        changeData = MyParty(userInfo.memberNo);
-        break;
-      case "myPoint":
-        setContent(null);
-        break;
-      case "myFollow":
-        changeData = Myfollow(userInfo.memberNo);
-        break;
-      case "blockUser":
-        changeData = BlockUser(userInfo.memberNo);
-        break;
-      default:
-        setContent(null);
-        return;
+      const response = { data: dummyData[tab] };
+      setContent(response.data);
+    } catch (err) {
+      console.log("fetching 에러발생", err);
+      setContent({ error: `Error fetching data: ${err.message}` });
     }
-
-    changeData
-      .then((data) => setContent(data))
-      .catch((error) => {
-        console.log("변경중 에러발생", error);
-        setContent({ error: `변경 중 에러 내용: ${error.message}` });
-      });
   };
 
   const renderContent = () => {
     switch (activeTab) {
       case "myInfo":
-        return <MyInfo data={content || {}} memberNo={userInfo.memberNo} />;
-      case "myBoard":
-        return <Board data={content || []} memberNo={userInfo.memberNo} />;
+        return <MyInfo data={content} />;
+      case "myBulletin":
+        return <div>{JSON.stringify(content)}</div>;
       case "myParty":
-        return <Party data={content || []} memberNo={userInfo.memberNo} />;
+        return <div>{JSON.stringify(content)}</div>;
       case "myPoint":
-        return <Point data={content || []} memberNo={userInfo.memberNo} />;
+        return <div>{JSON.stringify(content)}</div>;
       case "myFollow":
-        return <Follow data={content || []} memberNo={userInfo.memberNo} />;
+        return <div>{JSON.stringify(content)}</div>;
       case "blockUser":
-        return <Block data={content || []} memberNo={userInfo.memberNo} />;
+        return <div>{JSON.stringify(content)}</div>;
       default:
         return <div>클릭해주세요.</div>;
     }
@@ -108,11 +75,11 @@ export default function MyPage() {
           </button>
           <button
             className={`w-full p-4 text-left text-lg ${
-              activeTab === "myBoard"
+              activeTab === "myBulletin"
                 ? "bg-blue-500 text-white"
                 : "bg-white text-black"
             }`}
-            onClick={() => TapName("myBoard")}
+            onClick={() => TapName("myBulletin")}
           >
             작성글
           </button>

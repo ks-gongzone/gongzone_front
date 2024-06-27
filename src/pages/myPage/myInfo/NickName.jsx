@@ -1,26 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { GetNickname } from "../../../utils/repository";
 
 /**
  * 닉네임 상태 관리 컴포넌트
  * @date: 2024-06-17
- * @last: 2024-06-21
+ * @last: 2024-06-17
  */
-export default function SetNickname({ memberNo }) {
+export default function SetNickname() {
   const [nickname, setNickname] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    GetNickname(memberNo)
+    // 더미데이터
+    const fetchDummyData = () => {
+      return new Promise((resolve) => {
+        const dummyData = {
+          nickname: "더미데이터입니다.",
+        };
+        resolve(dummyData);
+      });
+    };
+
+    fetchDummyData()
       .then((data) => {
         setNickname(data.nickname);
         setLoading(false);
       })
       .catch((error) => {
-        console.error("에러: 호출 실패", error);
+        console.error("Error: 호출 실패", error);
         setLoading(false);
       });
-  }, [memberNo]);
+  }, []);
 
   const changeNickname = (e) => {
     setNickname(e.target.value);

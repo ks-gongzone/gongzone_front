@@ -32,7 +32,7 @@ const alarmSettings = [
   { label: "광고성 정보 수신 여부", key: "marketing" },
   { label: "회원 알림 수신 여부", key: "member" },
   { label: "쪽지 알림 수신 여부", key: "note" },
-  { label: "게시글 알림 수신 여부", key: "board" },
+  { label: "게시글 알림 수신 여부", key: "bulletin" },
   { label: "파티 수신 여부", key: "party" },
 ];
 
@@ -57,7 +57,7 @@ export default function AlarmSettings({ initialAlarms }) {
       marketing: newValue,
       member: newValue,
       note: newValue,
-      board: newValue,
+      bulletin: newValue,
       party: newValue,
     });
   };
