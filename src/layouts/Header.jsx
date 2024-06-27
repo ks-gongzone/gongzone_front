@@ -1,4 +1,4 @@
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SearchBar from "../components/page/home/SearchBar";
 import { useEffect } from "react";
 import ModalLogin from "../components/modal/ModalLogin";
@@ -7,8 +7,13 @@ import AuthStore from "../utils/zustand/AuthStore";
 import ModalStore from "../utils/zustand/ModalStore";
 
 export default function LayoutHeader() {
-  const { isLogin, statusLogout, statusLogin, setIsLogin} = AuthStore();
-  const { isModalOpen, isRegisterModalOpen, setIsModalOpen, setIsRegisterModalOpen } = ModalStore();
+  const { isLogin, statusLogout, statusLogin, setIsLogin } = AuthStore();
+  const {
+    isModalOpen,
+    isRegisterModalOpen,
+    setIsModalOpen,
+    setIsRegisterModalOpen,
+  } = ModalStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +24,7 @@ export default function LayoutHeader() {
   }, []);
 
   const handleMyPage = () => {
-    navigate('/myPage');
+    navigate("/myPage");
   };
 
   return (
@@ -64,7 +69,7 @@ export default function LayoutHeader() {
               </>
             ) : (
               <>
-              <div className="flex items-center">
+                <div className="flex items-center">
                   <button
                     onClick={() => setIsModalOpen(true)}
                     className="text-[10px] bg-white text-blue-500 px-2 py-2 rounded-l-lg hover:bg-gray-200"

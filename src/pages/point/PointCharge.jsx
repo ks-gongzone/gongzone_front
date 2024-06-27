@@ -6,13 +6,14 @@ import { formatNumber } from "../../libs/utilities";
 import { useNavigate } from "react-router-dom";
 import * as PortOne from "@portone/browser-sdk/v2";
 
-// test: 로그인 기능 구현 후 제거
-sessionStorage.setItem("memberNo", "M000002");
-sessionStorage.setItem("memberPointNo", "MP000002");
-const memberNo = sessionStorage.getItem("memberNo");
-const memberPointNo = sessionStorage.getItem("memberPointNo");
-const title = `${memberNo}님의 포인트 충전 페이지`;
 export default function PointCharge() {
+  // test: 로그인 기능 구현 후 제거
+  sessionStorage.setItem("memberNo", "M000002");
+  sessionStorage.setItem("memberPointNo", "MP000002");
+  const memberNo = sessionStorage.getItem("memberNo");
+  const memberPointNo = sessionStorage.getItem("memberPointNo");
+  const title = `${memberNo}님의 포인트 충전 페이지`;
+
   const pointCharge = State("pointCharge", 0);
   const isLoaded = State("loaded", false);
   const navigate = useNavigate();

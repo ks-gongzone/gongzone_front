@@ -7,13 +7,14 @@ import State from "../../utils/state/State";
 import { PointHistory } from "./Index";
 import PointInnerSection from "../../components/page/point/PointInnerSection";
 
-// test: 로그인 기능 구현 후 제거
-sessionStorage.setItem("memberNo", "M000002");
-sessionStorage.setItem("memberPointNo", "MP000002");
-const memberNo = sessionStorage.getItem("memberNo");
-const memberPointNo = sessionStorage.getItem("memberPointNo");
-const title = `${memberNo}님의 포인트 페이지`;
 export default function Point() {
+  // test: 로그인 기능 구현 후 제거
+  sessionStorage.setItem("memberNo", "M000002");
+  sessionStorage.setItem("memberPointNo", "MP000002");
+  const memberNo = sessionStorage.getItem("memberNo");
+  const memberPointNo = sessionStorage.getItem("memberPointNo");
+  const title = `${memberNo}님의 포인트 페이지`;
+
   const memberPoint = State("memberPoint", "");
   const isLoaded = State("isLoaded", false);
 

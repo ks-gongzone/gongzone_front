@@ -1,4 +1,3 @@
-// TODO 진행중, 종료된 파티 창 구현예정
 import React from "react";
 
 export default function Party({ data = [] }) {

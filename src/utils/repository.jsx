@@ -1,3 +1,4 @@
+import axios from "axios";
 import GZAPI from "./api";
 
 // 해당 파일은 간단한 엑시오스 호출 함수 예시로
@@ -62,6 +63,122 @@ export const Location = {
         return { error: errorMessage };
       });
   },
+};
+
+/**
+ * MyPage통신
+ * 작성자: 한동환
+ * 내용: memberNo를 통해 유저 식별 후 서버와 통신
+ */
+export const ChangeUserInfo = (memberNo) => {
+  return GZAPI.get(`/api/members/${memberNo}/memberInfo`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("데이터 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const MyBoard = (memberNo) => {
+  return GZAPI.get(`/api/members/${memberNo}/board`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("데이터 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const MyParty = (memberNo) => {
+  return GZAPI.get(`/api/members/${memberNo}/party`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("데이터 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const MyPoint = (memberNo) => {
+  return GZAPI.get(`/api/members/${memberNo}/point`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("데이터 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const Myfollow = (memberNo) => {
+  return GZAPI.get(`/api/members/${memberNo}/follow`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("데이터 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const BlockUser = (memberNo) => {
+  return GZAPI.get(`/api/members/${memberNo}/blockUser`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("데이터 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const SaveUserData = (memberNo, userData) => {
+  return GZAPI.post(`/api/members/${memberNo}/memberInfo`, userData)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("데이터 저장 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const GetNickname = (memberNo) => {
+  return GZAPI.get(`/api/members/${memberNo}/nickname`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("닉네임 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+// DB에 존재하는 장소를 SELECT박스에 넣어둠
+export const GetLocationData = (memberNo) => {
+  return GZAPI.get(`/api/members/${memberNo}/locations`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("위치 데이터 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const SaveAddress = (memberNo, address) => {
+  return GZAPI.post(`/api/members/${memberNo}/locations`, {
+    newMemberAddress: address,
+  })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("주소 저장 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const GetMemberInfo = (memberNo) => {
+  return GZAPI.get(`/api/members/${memberNo}/memberInfo`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("회원 정보 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
+export const UpdatePassword = (memberNo, payload) => {
+  return GZAPI.post(`/api/members/${memberNo}/password`, payload)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("비밀번호 변경 에러 발생", error);
+      throw error;
+    });
 };
 
 export const MemberAPI = {
