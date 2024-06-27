@@ -18,7 +18,7 @@ export default createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/myPage", element: <MyPage /> },
 
-      { path: "/party/accept", element: <Party /> },
+      { path: "/party/accept/:id", element: <Party /> },
       { path: "/board/list", element: <BoardList /> },
       { path: "/register", element: <Register /> },
 
