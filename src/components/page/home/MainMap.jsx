@@ -29,14 +29,30 @@ export default function MainMap() {
             isLoading: false,
           }));
 
-          const locationData = await Location.LocationSearch(
-            latitude,
-            longitude
-          );
-          setState((prev) => ({
-            ...prev,
-            locations: locationData,
-          }));
+          try {
+            const locationData = await Location.LocationSearch(
+              latitude,
+              longitude
+            );
+            if (Array.isArray(locationData)) {
+              setState((prev) => ({
+                ...prev,
+                locations: locationData,
+              }));
+            } else {
+              console.error("Fetched data is not an array:", locationData);
+              setState((prev) => ({
+                ...prev,
+                locations: [],
+              }));
+            }
+          } catch (error) {
+            console.error("Error fetching locations:", error);
+            setState((prev) => ({
+              ...prev,
+              locations: [],
+            }));
+          }
         },
         (err) => {
           setState((prev) => ({
@@ -49,7 +65,7 @@ export default function MainMap() {
     } else {
       setState((prev) => ({
         ...prev,
-        errMsg: "geolocation을 사용할수 없어요..",
+        errMsg: "geolocation을 사용할 수 없어요..",
         isLoading: false,
       }));
     }
@@ -68,9 +84,10 @@ export default function MainMap() {
         >
           {!state.isLoading && (
             <>
-              {state.locations.map((location, index) => (
-                <LocationMarker key={index} location={location} />
-              ))}
+              {Array.isArray(state.locations) &&
+                state.locations.map((location, index) => (
+                  <LocationMarker key={index} location={location} />
+                ))}
               <MapMarker
                 position={state.center}
                 image={{
