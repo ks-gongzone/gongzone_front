@@ -41,7 +41,7 @@ export default function LayoutHeader() {
             <Link className="hover:text-red-600" to="/">
               파티
             </Link>
-            <Link className="hover:text-red-600" to="/">
+            <Link className="hover:text-red-600" to="/announce">
               공지사항
             </Link>
           </div>
