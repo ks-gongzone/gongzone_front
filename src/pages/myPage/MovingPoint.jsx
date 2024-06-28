@@ -52,8 +52,8 @@ export default function MyPage() {
         changeData = MyParty(userInfo.memberNo);
         break;
       case "myPoint":
-        setContent(null);
-        break;
+        setActiveTab("myPoint");
+        return;
       case "myFollow":
         changeData = Myfollow(userInfo.memberNo);
         break;
