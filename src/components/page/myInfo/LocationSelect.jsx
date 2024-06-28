@@ -3,10 +3,52 @@ import { parseCSV, transformLocationData } from "../../../utils/LocationApi";
 import { GetLocationData, SaveAddress } from "../../../utils/repository";
 
 /**
+ * csvData 파싱로직
+ * @date: 2024-06-28
+ * @last: 2024-06-28
+ */
+const loadData = (
+  memberNo,
+  setLocationData,
+  setSelectedDo,
+  setSelectedSi,
+  setSelectedGu,
+  setIsLoading
+) => {
+  parseCSV()
+    .then((csvData) => {
+      const transformedData = transformLocationData(csvData);
+      setLocationData(transformedData);
+    })
+    .catch((error) => {
+      console.error("CSV 파일을 읽을 수 없음", error);
+    });
+
+  GetLocationData(memberNo)
+    .then((response) => {
+      const address = response.memberAddress;
+      if (address) {
+        const [initalDo, initalSi, initalGu] = address.split(" ");
+        setSelectedDo(initalDo);
+        setSelectedSi(initalSi);
+        setSelectedGu(initalGu);
+      } else {
+        console.log("주소가 정의되지 않았습니다.");
+      }
+    })
+    .catch((error) => {
+      console.error("데이터를 가져오기 실패", error);
+    })
+    .finally(() => {
+      setIsLoading(false);
+    });
+};
+
+/**
  * 선호 지역 설정
  * @date: 2024-06-10
- * @last: 2024-06-25
- * @수정내용: CSV파일을 사용해 정보 처리
+ * @last: 2024-06-28
+ * @수정내용: 코드 분리 csv파싱 후 주소 로드 (2024-06-28)
  */
 export default function LocationSelect({ onLocationChange, memberNo }) {
   const [locationData, setLocationData] = useState({});
@@ -16,41 +58,14 @@ export default function LocationSelect({ onLocationChange, memberNo }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchLocationData = () => {
-      parseCSV()
-        .then((data) => {
-          const transformData = transformLocationData(data);
-          setLocationData(transformData);
-        })
-        .catch((error) => {
-          console.error("CSV 파일을 읽을 수 없음", error);
-        });
-    };
-
-    const initialLocation = () => {
-      GetLocationData(memberNo)
-        .then((response) => {
-          const address = response.memberAddress;
-          console.log(`address의 값${address}`);
-          if (address) {
-            const [initalDo, initalSi, initalGu] = address.split(" ");
-            setSelectedDo(initalDo);
-            setSelectedSi(initalSi);
-            setSelectedGu(initalGu);
-          } else {
-            console.log("주소가 정의되지 않았습니다.");
-          }
-        })
-        .catch((error) => {
-          console.error("데이터를 가져오기 실패", error);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    };
-
-    fetchLocationData();
-    initialLocation();
+    loadData(  
+      memberNo,
+      setLocationData,
+      setSelectedDo,
+      setSelectedSi,
+      setSelectedGu,
+      setIsLoading
+    );
   }, [memberNo]);
 
   const handleDoChange = (e) => {
