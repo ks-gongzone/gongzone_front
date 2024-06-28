@@ -5,6 +5,7 @@ import PointInnerSection from "../../components/page/point/PointInnerSection";
 import { formatNumber } from "../../libs/utilities";
 import { useNavigate } from "react-router-dom";
 import * as PortOne from "@portone/browser-sdk/v2";
+import GZAPI from "../../utils/api";
 
 export default function PointCharge() {
   // test: 로그인 기능 구현 후 제거
@@ -25,29 +26,33 @@ export default function PointCharge() {
   const actions = {
     requestPointCharge: async () => {
       const payData = Payment(pointCharge.value);
-      const response = await PortOne.requestPayment(payData); // i'mport 결제 API
+      const payResponse = await PortOne.requestPayment(payData); // i'mport 결제 API
 
       // 오류 발생
-      if (response.code != null) {
-        console.log("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      if (payResponse.code != null) {
+        console.log(payResponse.message);
+        alert("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
         // TODO: 서버에 오류정보 전송
-        alert(response.message);
-        return;
+        return;  // 종료
       }
-      console.log(response);
 
-      /*
-      const url = `/api/members/${ memberPointNo }/point/charge`;
-      const data = { amount: pointCharge.value };
-      const response = await GZAPI.post(url, data);
-      const result = response.data.result;
-      if (result === 'SUCCESS') {
-        alert('충전이 완료되었습니다.');
-        navigate('/point');
-      } else {
-        alert('오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      // TODO: 결제 로딩 화면 필요
+
+      // 정상 처리
+      const data = {
+        pointChange: pointCharge.value,
+        changeType: "T030101",
+        payment: payResponse,
       }
-      */
+      const response = await GZAPI.post(`/api/members/${memberPointNo}/point/charge`, data);
+      console.log('서버 응답 :', response)
+
+      if (response.data.result === "SUCCESS") {
+        alert('포인트 결제가 완료되었습니다.');
+      } else {
+        alert('포인트 결제에 실패하였습니다. 다시 시도해주세요.')
+      }
+      navigate('/point');
     },
     inputChangeHandler: (e) => {
       const value = e.target.value.replace(/,/g, "");
