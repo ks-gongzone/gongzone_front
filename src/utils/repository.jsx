@@ -97,15 +97,6 @@ export const MyParty = (memberNo) => {
     });
 };
 
-export const MyPoint = (memberNo) => {
-  return GZAPI.get(`/api/members/${memberNo}/point`)
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error("데이터 로드 중 에러 발생", error);
-      throw error;
-    });
-};
-
 export const Myfollow = (memberNo) => {
   return GZAPI.get(`/api/members/${memberNo}/follow`)
     .then((response) => response.data)
@@ -179,6 +170,33 @@ export const UpdatePassword = (memberNo, payload) => {
       console.error("비밀번호 변경 에러 발생", error);
       throw error;
     });
+};
+
+export const GetAlertSetting = (memberNo) => {
+  return GZAPI.get(`/api/members/${memberNo}/alerts`)
+  .then((response) => response.data)
+  .catch((error) => {
+    console.error("알림 정보 로드 중 에러 발생", error);
+    throw error;
+  });
+};
+
+export const UpdateAlertSetting = (memberNo, alertData) => {
+  return GZAPI.get(`/api/members/${memberNo}/alerts/update`, alertData)
+  .then((response) => response.data)
+  .catch((error) => {
+    console.error("알림 정보 로드 중 에러 발생", error);
+    throw error;
+  });
+};
+
+export const GetPhone = (memberNo) => {
+  return GZAPI.get(`/api/members/${memberNo}/phone`)
+  .then((response) => response.data)
+  .catch((error) => {
+    console.error("핸드폰 번호 조회 중 에러 발생", error);
+    throw error;
+  });
 };
 
 export const MemberAPI = {

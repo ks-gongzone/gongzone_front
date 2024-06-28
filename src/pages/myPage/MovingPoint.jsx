@@ -3,14 +3,12 @@ import { useNavigate } from "react-router-dom";
 import MyInfo from "../myInfo/MyInfo";
 import Point from "../point/Point";
 import Board from "./Board";
-import Party from "./Party";
+import MyParty from "./MyParty";
 import Follow from "./Follow";
 import Block from "./Block";
 import {
   ChangeUserInfo,
   MyBoard,
-  MyParty,
-  MyPoint,
   Myfollow,
   BlockUser,
 } from "../../utils/repository";
@@ -19,12 +17,13 @@ import AuthStore from "../../utils/zustand/AuthStore";
 /**
  * 개별 토글 스위치 컴포넌트
  * @date: 2024-06-12
- * @last: 2024-06-25
- * @변경내용: 주스탠스로 상태관리 추가 (2024-06-25)
+ * @last: 2024-06-28
+ * @변경내용: point, party 컴포넌트 호출 (2024-06-28 수정)
  */
 export default function MyPage() {
   const [activeTab, setActiveTab] = useState("myInfo");
   const [content, setContent] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { userInfo, isLogin } = AuthStore();
   const navigate = useNavigate();
 
@@ -38,6 +37,8 @@ export default function MyPage() {
   }, [activeTab, isLogin]);
 
   const TapName = (tab) => {
+    setContent(null); 
+    setIsLoading(true);
     setActiveTab(tab);
     let changeData;
 
@@ -49,10 +50,10 @@ export default function MyPage() {
         changeData = MyBoard(userInfo.memberNo);
         break;
       case "myParty":
-        changeData = MyParty(userInfo.memberNo);
+        changeData = Promise.resolve(null); // 빈 프로미스로 설정
         break;
       case "myPoint":
-        setContent(null);
+        changeData = Promise.resolve(null); // 빈 프로미스로 설정
         break;
       case "myFollow":
         changeData = Myfollow(userInfo.memberNo);
@@ -61,28 +62,39 @@ export default function MyPage() {
         changeData = BlockUser(userInfo.memberNo);
         break;
       default:
+        setIsLoading(false);
         setContent(null);
         return;
     }
 
-    changeData
-      .then((data) => setContent(data))
+    if (changeData) {
+      changeData
+      .then((data) => {
+        setContent(data);
+        setIsLoading(false);
+      })
       .catch((error) => {
         console.log("변경중 에러발생", error);
         setContent({ error: `변경 중 에러 내용: ${error.message}` });
+        setIsLoading(false);
       });
+    }
   };
 
   const renderContent = () => {
+    if (isLoading) {
+      return <div>로딩 중...</div>
+    }
+
     switch (activeTab) {
       case "myInfo":
         return <MyInfo data={content || {}} memberNo={userInfo.memberNo} />;
       case "myBoard":
         return <Board data={content || []} memberNo={userInfo.memberNo} />;
       case "myParty":
-        return <Party data={content || []} memberNo={userInfo.memberNo} />;
+        return <MyParty />;
       case "myPoint":
-        return <Point data={content || []} memberNo={userInfo.memberNo} />;
+        return <Point />;
       case "myFollow":
         return <Follow data={content || []} memberNo={userInfo.memberNo} />;
       case "blockUser":
@@ -157,7 +169,7 @@ export default function MyPage() {
             renderContent()
           )
         ) : (
-          <div>content 클릭해주세요</div>
+          renderContent()
         )}
       </div>
     </div>

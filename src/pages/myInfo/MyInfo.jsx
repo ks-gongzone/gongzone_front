@@ -1,38 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import LocationSelect from "../../components/page/myInfo/LocationSelect";
-import ChangePassword, {
-  useDataSet,
-} from "../../components/page/myInfo/PasswordUpdate";
+import ChangePassword from "../../components/page/myInfo/PasswordUpdate";
 import AlarmSettings from "../../components/page/myInfo/AlarmSelect";
 import SaveButton from "../../components/page/myInfo/SubmitButton";
 import SetNickname from "../../components/page/myInfo/NickName";
 import { ChangeUserInfo, SaveUserData } from "../../utils/repository";
+import Phone from "../../components/page/myInfo/Phone";
 
 /**
  * 내 정보 컴포넌트 집합
  * @date: 2024-06-10
- * @last: 2024-06-25
- * @수정내용: 주스탠스로 상태처리로직 추가 (2024-06-25)
+ * @last: 2024-06-28
+ * @수정내용: 관련 컴포넌트 분리 (2024-06-28)
  */
-export default function MyInfo({ data, memberNo }) {
+export default function MyInfo({ memberNo }) {
   const navigate = useNavigate();
-
-  const [userData, setData] = useState({
-    nickname: "",
-    phone: "",
-    location: { do: "", si: "", gu: "" },
-    alarmSettings: {
-      sms: false,
-      email: false,
-      marketing: false,
-      member: false,
-      note: false,
-      bulletin: false,
-      party: false,
-      all: false,
-    },
-  });
+  const [userData, setData] = useState();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -48,20 +32,6 @@ export default function MyInfo({ data, memberNo }) {
         setLoading(false);
       });
   }, [memberNo, navigate]);
-
-  const { value: nickname, memberInput: changeNickname } = useDataSet(
-    userData.nickname
-  );
-  const { value: phoneNumber, memberInput: changePhoneNumber } = useDataSet(
-    userData.phone
-  );
-
-  useEffect(() => {
-    if (!loading) {
-      changeNickname(userData.nickname);
-      changePhoneNumber(userData.phone);
-    }
-  }, [userData, loading]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -92,21 +62,15 @@ export default function MyInfo({ data, memberNo }) {
             }}
           />
         </div>
-        <div className="mb-6">
-          <div className="text-gray-700 font-bold text-lg mb-2">휴대폰</div>
-          <input
-            className="w-full p-2 border border-gray-300 rounded mt-2"
-            placeholder="휴대폰 번호를 입력해 주세요."
-            value={phoneNumber}
-            onChange={changePhoneNumber}
-          />
+        <div>
+          <Phone memberNo={memberNo} />
         </div>
         <div className="mb-6 flex justify-end">
           <button className="bg-blue-500 text-white font-bold py-2 px-4 rounded">
-            본인인증
+            ! 본인인증
           </button>
         </div>
-        <AlarmSettings initialAlarms={userData.alarmSettings} />
+        <AlarmSettings memberNo={memberNo} />
         <div className="flex justify-end mt-4">
           <SaveButton userData={userData} onClick={handleSave} />
         </div>
