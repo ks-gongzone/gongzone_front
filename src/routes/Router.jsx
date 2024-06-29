@@ -23,7 +23,7 @@ export default createBrowserRouter([
       { path: "/party/accept", element: <Party /> },
       { path: "/board/list", element: <BoardList />},
       { path: "/register", element: <Register /> },
-      { path: "/callback", element: <NaverLogin /> },
+      { path: "/naver/callback", element: <NaverLogin /> },
 
       // point
       { path: "/point", element: <Point /> },

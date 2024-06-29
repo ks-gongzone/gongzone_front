@@ -16,6 +16,7 @@ export const loadNaverScript = () => {
   });
 };
 */
+/*
 export const naverClientId = 'YOUR_NAVER_CLIENT_ID';
 export const naverRedirectURL = 'YOUR_NAVER_REDIRECT_URL';
-export const naverSecret = 'YOUR_NAVER_SECRET';
+export const naverSecret = 'YOUR_NAVER_SECRET';*/

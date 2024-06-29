@@ -37,7 +37,7 @@ GZAPI.interceptors.response.use(
         window.localStorage.removeItem("accessToken");
         const url = window.location.href;
         window.localStorage.setItem("redirect", url);
-        window.location.href = "/";
+        //window.location.href = "/";
       }
     }
     // error.response -> error로 변경

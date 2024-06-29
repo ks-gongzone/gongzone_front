@@ -24,7 +24,10 @@ export default function ModalLogin({ isOpen, onClose }) {
   };
 
   const handleNaverLogin = () => {
-    window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=ViZy5l34ZQtLQtRQEPmO&redirect_uri=http://localhost:3000/callback&state=${new Date().getTime()}`;
+    const clientId = 'ViZy5l34ZQtLQtRQEPmO';
+    const redirectUri = encodeURI('http://localhost:3000/naver/callback');
+    const state = Math.random().toString(36).substr(2, 11);
+    window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}`;
   };
 
   return (

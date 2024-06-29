@@ -1,49 +1,50 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AuthStore from "../../utils/zustand/AuthStore";
 import { Auth } from "../../utils/repository";
-import { naverClientId, naverRedirectURL, naverSecret } from '../../utils/naverLoginOAuth';
 
-const { naver } = window;
 
-const NaverLogin = () => {
-  const initializeNaverLogin = () => {
-    if (window.naver) {
-      const naverLogin = new window.naver.LoginWithNaverId({
-        clientId: naverClientId,
-        callbackUrl: naverRedirectURL,
-        clientSecret: naverSecret,
-        isPopup: false,
-        loginButton: { color: 'green', type: 3, height: '60' },
-      });
-      naverLogin.init();
-
-      naverLogin.getLoginStatus((status) => {
-        if (status) {
-          const user = naverLogin.user;
-          Auth.Naver().then((res) => {
-            if (res.error) {
-              console.error(res.error);
-            } else {
-              // 네이버 로그인 성공 시 처리 로직
-              console.log('Naver login success:', res);
-              // 예: 사용자 정보를 로컬 스토리지에 저장
-              window.localStorage.setItem("accessToken", res.accessToken);
-              window.location.href = "/"; // 리디렉션
-            }
-          });
-        } else {
-          console.log('Naver login failed or user not logged in.');
-        }
-      });
-    } else {
-      console.error("Naver script not loaded");
-    }
-  };
+export default function NaverLogin() {
+  const navigate = useNavigate();
+  const { setIsLogin, setUserInfo } = AuthStore();
+  const [hasRequested, setHasRequested] = useState(false);
 
   useEffect(() => {
-    initializeNaverLogin();
-  }, []);
+    if (!hasRequested) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('code');
+      const state = urlParams.get('state');
 
-  return <div id="naverIdLogin" />;
+      console.log('Code:', code);  // 확인용 로그
+      console.log('State:', state);  // 확인용 로그
+
+      if (code) {
+        setHasRequested(true);
+        Auth.Naver(code, state)
+          .then((response) => {
+            // 로그인 성공 시 처리 로직
+            console.log('로그인 성공:', response);
+            window.localStorage.setItem('accessToken', response.jwtToken);
+            setIsLogin(true);
+            setUserInfo({
+              token: response.jwtToken,
+              memberNo: response.memberNo,
+              pointNo: response.pointNo,
+            });
+            navigate('/');
+          })
+          .catch((error) => {
+            console.error('로그인 오류:', error);
+          });
+      }
+    }
+  }, [navigate, setIsLogin, setUserInfo, hasRequested]);
+
+  return (
+    <div>
+      네이버 로그인 처리 중...
+    </div>
+  );
 };
 
-export default NaverLogin;
+

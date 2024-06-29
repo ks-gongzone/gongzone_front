@@ -19,21 +19,16 @@ export const Auth = {
       return { error: errorMessage };
     }
   },
-  Naver: async () => {
-    const originalBaseURL = GZAPI.defaults.baseURL;
-    GZAPI.defaults.baseURL = "https://openapi.naver.com/";
-
+  Naver: async (code, state) => {
     try {
-      const response = await GZAPI.get("/v1/nid/me", {
-        headers: {
-          Authorization: `Bearer ${window.localStorage.getItem("naverAccessToken")}`
-        }
-      });
+      console.log("Sending Axios request with code:", code, "and state:", state);
+      const response = await GZAPI.post('/api/naver/token', { code, state });
+      console.log("response  : ", response);
+      console.log("response.data  : ", response.data);
       return response.data;
     } catch (error) {
+      console.error("Error in Axios request:", error);
       return error.response ? error.response.data : error.message;
-    } finally {
-      GZAPI.defaults.baseURL = originalBaseURL;
     }
   }
 };
