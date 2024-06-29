@@ -6,7 +6,8 @@ import { Point, PointCharge, PointHistory } from "../pages/point/Index";
 import BoardList from "../pages/boardList/Index";
 import Register from "../pages/login/Register";
 import MovingPoint from "../pages/myPage/MovingPoint";
-import NaverLogin from "../pages/login/Naver";
+import NaverLogin from "../pages/login/NaverLogic";
+import GoogleLogin from "../pages/login/GoogleLogic";
 
 
 export default createBrowserRouter([
@@ -24,6 +25,7 @@ export default createBrowserRouter([
       { path: "/board/list", element: <BoardList />},
       { path: "/register", element: <Register /> },
       { path: "/naver/callback", element: <NaverLogin /> },
+      { path: "/google/callback", element: <GoogleLogin /> },
 
       // point
       { path: "/point", element: <Point /> },
