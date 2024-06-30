@@ -8,6 +8,7 @@ import Register from "../pages/login/Register";
 import MovingPoint from "../pages/myPage/MovingPoint";
 import NaverLogin from "../pages/login/NaverLogic";
 import GoogleLogin from "../pages/login/GoogleLogic";
+import KakaoLogin from "../pages/login/KakaoLogic";
 
 
 export default createBrowserRouter([
@@ -26,6 +27,7 @@ export default createBrowserRouter([
       { path: "/register", element: <Register /> },
       { path: "/naver/callback", element: <NaverLogin /> },
       { path: "/google/callback", element: <GoogleLogin /> },
+      { path: "/kakao/callback", element: <KakaoLogin /> },
 
       // point
       { path: "/point", element: <Point /> },

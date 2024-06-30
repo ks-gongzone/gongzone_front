@@ -42,6 +42,18 @@ export const Auth = {
       console.error("Error in Axios request:", error);
       return error.response ? error.response.data : error.message;
     }
+  },
+  Kakao: async (code, state) => {
+    try {
+      console.log("Sending Axios request with code:", code, "and state:", state);
+      const response = await GZAPI.post('/api/kakao/token', { code, state });
+      console.log("response  : ", response);
+      console.log("response.data  : ", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error in Axios request:", error);
+      return error.response ? error.response.data : error.message;
+    }
   }
 };
 

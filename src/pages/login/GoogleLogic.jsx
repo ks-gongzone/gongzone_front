@@ -21,16 +21,22 @@ export default function GoogleLogin() {
         setHasRequested(true);
         Auth.Google(code, state)
           .then((response) => {
-            // 로그인 성공 시 처리 로직
-            console.log('로그인 성공:', response);
-            window.localStorage.setItem('accessToken', response.jwtToken);
-            setIsLogin(true);
-            setUserInfo({
-              token: response.jwtToken,
-              memberNo: response.memberNo,
-              pointNo: response.pointNo,
-            });
-            navigate('/');
+            if (response.success) {
+              if (response.redirectUrl.includes('register')) {
+                navigate(response.redirectUrl);
+              } else {
+                window.localStorage.setItem('accessToken', response.token);
+                setIsLogin(true);
+                setUserInfo({
+                  token: response.token,
+                  memberNo: response.memberNo,
+                  pointNo: response.pointNo,
+                });
+                navigate('/');
+              }
+            } else {
+              console.error('로그인 실패:', response);
+            }
           })
           .catch((error) => {
             console.error('로그인 오류:', error);
