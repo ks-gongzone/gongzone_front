@@ -17,14 +17,13 @@ export default function BoardSearch() {
     });
   };
   const clickSearch = async () => {
-    
     try {
-      const response = await GZAPI.post("/api/boards/list", formData);
+      const response = await GZAPI.post("/board/list", formData);
       console.log(response.data);
-      console.log(response);  
+      console.log(response);
     } catch (error) {
-     console.error("Error during search request:", error);
-    };
+      console.error("Error during search request:", error);
+    }
   };
   const memberNo = AuthStore((state) => state.userInfo.memberNo);
 
@@ -116,7 +115,7 @@ export default function BoardSearch() {
         </button>
       </div>
       <div className="flex-item ml-auto">
-        <Link to={`/api/boards/write/${memberNo}`}>
+        <Link to={`/board/write/${memberNo}`}>
           <button className="bg-gray-900 text-white border border-gray-300 rounded-md px-4 py-2 flex items-center gap-2 text-base font-medium hover:bg-gray-500">
             글쓰기
           </button>

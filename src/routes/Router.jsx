@@ -23,8 +23,8 @@ export default createBrowserRouter([
       { path: "/myPage", element: <MyPage /> },
 
       { path: "/party/accept/:id", element: <Party /> },
-      { path: "/api/boards/list", element: <BoardList /> },
-      { path: "/api/boards/write/:memberNo", element: <BoardWrite /> },
+      { path: "/board/list", element: <BoardList /> },
+      { path: "/board/write/:memberNo", element: <BoardWrite /> },
       { path: "/register", element: <Register /> },
       { path: "/announce", element: <Announce /> },
       { path: "/announce/detail", element: <AnnounceDetail /> },
