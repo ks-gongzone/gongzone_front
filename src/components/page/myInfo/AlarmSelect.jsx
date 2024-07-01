@@ -40,11 +40,22 @@ const alarmSettings = [
 /**
  * 개별 토글 스위치 컴포넌트
  * @date: 2024-06-10
- * @last: 2024-06-28
+ * @last: 2024-07-01
  * @내용: 백엔드와 통신 후 값 확인
+ * @수정내용: 알람 데이터가 없는 유저 기본값 세팅 수정 (2024-07-01)
  */
 export default function AlarmSettings({ memberNo }) {
-  const [alarms, setAlarms] = useState(null);
+
+  const [alarms, setAlarms] = useState({
+    smsAlert: false,
+    emailAlert: false,
+    marketingAlert: false,
+    memberAlert: false,
+    noteAlert: false,
+    bulletinAlert: false,
+    partyAlert: false,
+    all: false
+  });
 
   useEffect(() => {
     GetAlertSetting(memberNo)
@@ -102,7 +113,7 @@ export default function AlarmSettings({ memberNo }) {
   };
 
   if (!alarms) {
-    return <div>Loading...</div>;
+    return <div>알람 데이터가 필요합니다.</div>;
   }
 
   return (
