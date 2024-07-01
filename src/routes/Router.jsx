@@ -7,6 +7,11 @@ import BoardList from "../pages/boardList/Index";
 import BoardWrite from "../pages/boardWrite/Index";
 
 import Register from "../pages/login/Register";
+import MovingPoint from "../pages/myPage/MovingPoint";
+import NaverLogin from "../pages/login/NaverLogic";
+import GoogleLogin from "../pages/login/GoogleLogic";
+import KakaoLogin from "../pages/login/KakaoLogic";
+
 import MyPage from "../pages/myPage/MovingPoint";
 import Announce from "../pages/announce/Index";
 import AnnounceDetail from "../pages/anoounceDetail/Index";
@@ -26,6 +31,9 @@ export default createBrowserRouter([
       { path: "/board/list", element: <BoardList /> },
       { path: "/board/write/:memberNo", element: <BoardWrite /> },
       { path: "/register", element: <Register /> },
+      { path: "/naver/callback", element: <NaverLogin /> },
+      { path: "/google/callback", element: <GoogleLogin /> },
+      { path: "/kakao/callback", element: <KakaoLogin /> },
       { path: "/announce", element: <Announce /> },
       { path: "/announce/detail", element: <AnnounceDetail /> },
 
