@@ -1,12 +1,19 @@
 import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { MemberAPI } from "../../utils/repository";
 
 export default function Register() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const queryParams = new URLSearchParams(location.search);
+  const isSocialLogin = queryParams.has('email') && queryParams.has('name');
+
   const [formValues, setFormValues] = useState({
-    memberId: '',
+    memberId: isSocialLogin ? generateRandomId() : '',
     memberPw: '',
-    memberName: '',
-    memberEmail: '',
+    memberName: isSocialLogin ? queryParams.get('name') : '',
+    memberEmail: isSocialLogin ? queryParams.get('email') : '',
     memberPhone: '',
     memberGender: '',
     memberAddress: '',
@@ -26,9 +33,15 @@ export default function Register() {
   });
 
   const [message, setMessage] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  function generateRandomId() {
+    return Math.random().toString(18).substr(2, 9);
+  }
 
   const checkField = async (name, value) => {
     let errorMsg;
+    console.log(`검증 중: ${name} = ${value}`);
 
     if (name === 'memberId') {
       errorMsg = checkMemberId(value);
@@ -41,7 +54,10 @@ export default function Register() {
       errorMsg = checkMemberName(value);
     } else if (name === 'memberPhone') {
       errorMsg = checkPhoneNumber(value);
+    } else if (name === 'memberGender') {
+      errorMsg = checkMemberGender(value);
     }
+    console.log(`검증 결과: ${name} = ${errorMsg}`);
 
     setErrors(prevErrors => ({ ...prevErrors, [name]: errorMsg }));
     return errorMsg;
@@ -49,7 +65,9 @@ export default function Register() {
 
   const onBlur = async (e) => {
     const { name, value } = e.target;
+    console.log(`검증 중: ${name} = ${value}`);
     await checkField(name, value);
+    console.log(`검증 결과: ${name} = ${errors[name]}`);
   };
 
   const handleCheck = (e) => {
@@ -63,29 +81,35 @@ export default function Register() {
   };
 
   const statusRegister = async (e) => {
-    // 여기부분 모달창 회원가입 완료 만들고 메인페이지 이동하게
     e.preventDefault();
+    console.log("statusRegister 실행")
     setMessage('');
 
-    const requiredFields = ['memberId', 'memberPw', 'memberName', 'memberPhone'];
-    const validationPromises = requiredFields.map(name => checkField(name, formValues[name]));
-     await Promise.all(validationPromises);
-    const requestMember = requiredFields.every(name => errors[name] === '');
+    const requiredFields = isSocialLogin ? ['memberPhone', 'memberGender'] : ['memberId', 'memberPw', 'memberName', 'memberPhone'];
+    console.log("필수 입력 필드:", requiredFields);
+    console.log("폼 값:", formValues);
 
+    const validationPromises = requiredFields.map(name => checkField(name, formValues[name]));
+    await Promise.all(validationPromises);
+    const requestMember = requiredFields.every(name => errors[name] === '');
+    console.log("검증 결과:", requestMember);
 
     if (requestMember) {
       try {
         const response = await MemberAPI.Register(formValues);
-        if (response.success) {
+        console.log("회원가입 응답:", response);
+        console.log("회원가입 응답:", response.data.success);
+        if (response.data.success) {
           setMessage('회원가입에 성공했습니다.');
+          setIsModalOpen(true);
         } else {
-          setMessage('회원가입 실패: ' + '입력하신 정보를 다시 확인해 주세요');
+          setMessage('회원가입 실패: 입력하신 정보를 다시 확인해 주세요');
         }
       } catch (error) {
         setMessage('회원가입 실패: 서버 오류가 발생했습니다.');
       }
     } else {
-      setMessage('입력한 정보를 확인해주세요.');
+      setMessage('입력한 정보를 확인해주시고 다시 눌러주세요.');
     }
   };
 
@@ -122,6 +146,13 @@ export default function Register() {
     return '';
   };
 
+  const checkMemberGender = (memberGender) => {
+    if (memberGender !== 'M' && memberGender !== 'F') {
+      return '성별을 선택해 주세요.';
+    }
+    return '';
+  };
+
   const checkPhoneNumber = (memberPhone) => {
     const phonePattern = /^\d{3}-\d{3,4}-\d{4}$/;
     if (!phonePattern.test(memberPhone)) {
@@ -150,39 +181,48 @@ export default function Register() {
     setErrors(prevErrors => ({ ...prevErrors, memberPhone: error }));
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+    navigate('/');
+  };
+
   return (
     <div>
       <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-6 text-center">회원가입</h2>
         <form onSubmit={statusRegister} className="space-y-4">
-          <div>
-            <label htmlFor="memberId" className="block text-sm font-medium text-gray-700">아이디</label>
-            <input
-              type="text"
-              id="memberId"
-              name="memberId"
-              value={formValues.memberId}
-              onChange={handleCheck}
-              onBlur={onBlur}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              required
-            />
-            {errors.memberId && <p style={{ color: 'red' }}>{errors.memberId}</p>}
-          </div>
-          <div>
-            <label htmlFor="memberPw" className="block text-sm font-medium text-gray-700">비밀번호</label>
-            <input
-              type="password"
-              id="memberPw"
-              name="memberPw"
-              value={formValues.memberPw}
-              onChange={handleCheck}
-              onBlur={onBlur}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              required
-            />
-            {errors.memberPw && <p style={{ color: 'red' }}>{errors.memberPw}</p>}
-          </div>
+          {!isSocialLogin && (
+            <>
+              <div>
+                <label htmlFor="memberId" className="block text-sm font-medium text-gray-700">아이디</label>
+                <input
+                  type="text"
+                  id="memberId"
+                  name="memberId"
+                  value={formValues.memberId}
+                  onChange={handleCheck}
+                  onBlur={onBlur}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  required
+                />
+                {errors.memberId && <p style={{ color: 'red' }}>{errors.memberId}</p>}
+              </div>
+              <div>
+                <label htmlFor="memberPw" className="block text-sm font-medium text-gray-700">비밀번호</label>
+                <input
+                  type="password"
+                  id="memberPw"
+                  name="memberPw"
+                  value={formValues.memberPw}
+                  onChange={handleCheck}
+                  onBlur={onBlur}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  required
+                />
+                {errors.memberPw && <p style={{ color: 'red' }}>{errors.memberPw}</p>}
+              </div>
+            </>
+          )}
           <div>
             <label htmlFor="memberName" className="block text-sm font-medium text-gray-700">이름</label>
             <input
@@ -292,6 +332,21 @@ export default function Register() {
           <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg">회원가입</button>
         </form>
         {message && <p>{message}</p>}
+      </div>
+      <Modal isOpen={isModalOpen} onClose={closeModal} />
+    </div>
+  );
+}
+
+function Modal({ isOpen, onClose }) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-80">
+        <h2 className="text-xl font-bold mb-4">회원가입 성공</h2>
+        <p className="mb-4">회원가입이 완료되었습니다.</p>
+        <button onClick={onClose} className="w-full bg-blue-500 text-white py-2 rounded-lg">확인</button>
       </div>
     </div>
   );

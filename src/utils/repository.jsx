@@ -21,11 +21,42 @@ export const Auth = {
       return { error: errorMessage };
     }
   },
-  Naver: async () => {
-    return GZAPI.get("/auth/naver")
-      .then((res) => res)
-      .catch((err) => err);
+  Naver: async (code, state) => {
+    try {
+      console.log("Sending Axios request with code:", code, "and state:", state);
+      const response = await GZAPI.post('/api/naver/token', { code, state });
+      console.log("response  : ", response);
+      console.log("response.data  : ", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error in Axios request:", error);
+      return error.response ? error.response.data : error.message;
+    }
   },
+  Google: async (code, state) => {
+    try {
+      console.log("Sending Axios request with code:", code, "and state:", state);
+      const response = await GZAPI.post('/api/google/token', { code, state });
+      console.log("response  : ", response);
+      console.log("response.data  : ", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error in Axios request:", error);
+      return error.response ? error.response.data : error.message;
+    }
+  },
+  Kakao: async (code, state) => {
+    try {
+      console.log("Sending Axios request with code:", code, "and state:", state);
+      const response = await GZAPI.post('/api/kakao/token', { code, state });
+      console.log("response  : ", response);
+      console.log("response.data  : ", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error in Axios request:", error);
+      return error.response ? error.response.data : error.message;
+    }
+  }
 };
 
 export const User = {
