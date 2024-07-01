@@ -161,7 +161,7 @@ export default function InsertForm() {
     }
 
     try {
-      const response = await GZAPI.post("/api/boards/write", formDataToSend);
+      const response = await GZAPI.post(`/api/boards/write/${memberNo}`, formDataToSend);
 
       if (response.status === 200) {
         alert("게시글이 성공적으로 등록되었습니다.");
