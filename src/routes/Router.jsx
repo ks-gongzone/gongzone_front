@@ -16,6 +16,8 @@ import MyPage from "../pages/myPage/MovingPoint";
 import Announce from "../pages/announce/Index";
 import AnnounceDetail from "../pages/anoounceDetail/Index";
 import Admin from "../admin/Admin";
+import AdminMember from "../admin/pages/AdminMember";
+
 
 export default createBrowserRouter([
   {
@@ -45,5 +47,6 @@ export default createBrowserRouter([
     ],
   },
   { path: "/_admin", element: <Admin /> },
-  //{ path: "/signup", element: <Signup /> },
+  { path: "/_admin/member", element: <AdminMember /> },
+
 ]);

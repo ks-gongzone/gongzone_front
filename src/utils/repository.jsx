@@ -1,4 +1,3 @@
-import axios from "axios";
 import GZAPI from "./api";
 
 // 해당 파일은 간단한 엑시오스 호출 함수 예시로
@@ -236,8 +235,13 @@ export const MemberAPI = {
       .then((res) => res)
       .catch((err) => err);
   },
-  Check: async (data) => {
-    return GZAPI.post("/api/check", data)
+  CheckId: async (data) => {
+    return GZAPI.post("/api/check/Id", data)
+      .then((res) => res.data)
+      .catch((err) => err);
+  },
+  CheckEmail: async (data) => {
+    return GZAPI.post("/api/check/Email", data)
       .then((res) => res.data)
       .catch((err) => err);
   },
