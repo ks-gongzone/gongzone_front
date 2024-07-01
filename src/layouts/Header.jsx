@@ -54,7 +54,7 @@ export default function LayoutHeader() {
               onMouseEnter={handleTabHover}
               onMouseLeave={handleTabLeave}
               className="hover:text-red-600 px-5"
-              to="/api/boards/list"
+              to="/board/list"
             >
               게시판
             </Link>
@@ -78,7 +78,7 @@ export default function LayoutHeader() {
             </Link>
           </div>
           <button
-            onClick={() => navigate("/api/boards/list")}
+            onClick={() => navigate("/board/list")}
             className="flex items-center bg-red-400 text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 whitespace-nowrap"
           >
             <MagnifyingGlassIcon className="w-5 h-5 mr-2" />
