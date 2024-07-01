@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { GetAlertSetting, UpdateAlertSetting } from "../../../utils/repository";
 
 /**
  * 개별 토글 스위치 컴포넌트
  * @date: 2024-06-10
- * @last: 2024-06-17
+ * @last: 2024-06-19
  */
 
 const ToggleSwitch = ({ label, checked, onChange }) => (
@@ -27,57 +28,82 @@ const ToggleSwitch = ({ label, checked, onChange }) => (
 );
 
 const alarmSettings = [
-  { label: "SMS 수신 여부", key: "sms" },
-  { label: "이메일 수신 여부", key: "email" },
-  { label: "광고성 정보 수신 여부", key: "marketing" },
-  { label: "회원 알림 수신 여부", key: "member" },
-  { label: "쪽지 알림 수신 여부", key: "note" },
-  { label: "게시글 알림 수신 여부", key: "bulletin" },
-  { label: "파티 수신 여부", key: "party" },
+  { label: "SMS 수신 여부", key: "smsAlert" },
+  { label: "이메일 수신 여부", key: "emailAlert" },
+  { label: "광고성 정보 수신 여부", key: "marketingAlert" },
+  { label: "회원 알림 수신 여부", key: "memberAlert" },
+  { label: "쪽지 알림 수신 여부", key: "noteAlert" },
+  { label: "게시글 알림 수신 여부", key: "bulletinAlert" },
+  { label: "파티 수신 여부", key: "partyAlert" },
 ];
 
-export default function AlarmSettings({ initialAlarms }) {
-  const [alarms, setAlarms] = useState(
-    initialAlarms ||
-      alarmSettings.reduce(
-        (acc, cur) => {
-          acc[cur.key] = false;
-          return acc;
-        },
-        { all: false }
-      )
-  );
+/**
+ * 개별 토글 스위치 컴포넌트
+ * @date: 2024-06-10
+ * @last: 2024-06-28
+ * @내용: 백엔드와 통신 후 값 확인
+ */
+export default function AlarmSettings({ memberNo }) {
+  const [alarms, setAlarms] = useState(null);
+
+  useEffect(() => {
+    GetAlertSetting(memberNo)
+      .then((data) => {
+        const newAlarms = { ...data, 
+          all: data.smsAlert &&
+          data.emailAlert &&
+          data.marketingAlert &&
+          data.memberAlert &&
+          data.noteAlert &&
+          data.bulletinAlert &&
+          data.partyAlert }
+        setAlarms(newAlarms);
+      }).catch((error) => {
+        console.error("알림 로드 중 에러",error);
+      });
+  }, []);
 
   const handleAllChange = () => {
+    if (!alarms) return; // 알람 로딩 안 됐을 때 종료로직 추가 (2024-06-28)
     const newValue = !alarms.all;
-    setAlarms({
+    const newAlarms = {
       all: newValue,
-      sms: newValue,
-      email: newValue,
-      marketing: newValue,
-      member: newValue,
-      note: newValue,
-      bulletin: newValue,
-      party: newValue,
-    });
+      smsAlert: newValue,
+      emailAlert: newValue,
+      marketingAlert: newValue,
+      memberAlert: newValue,
+      noteAlert: newValue,
+      bulletinAlert: newValue,
+      partyAlert: newValue,
+    };
+  setAlarms(newAlarms);
+  UpdateAlertSetting(memberNo, newAlarms)
+      .then(() => {
+        console.log("알림 설정 업데이트 완료");
+      }).catch((error) => {
+        console.error("알림 업데이트 중 에러",error);
+      });
   };
 
   const handleChange = (key) => {
-    setAlarms((prev) => {
+    if (!alarms) return; // 알람 로딩 안 됐을 때 종료로직 추가 (2024-06-28)
       const newAlarms = {
-        ...prev,
-        [key]: !prev[key],
+        ...alarms,
+        [key]: !alarms[key],
       };
       newAlarms.all = alarmSettings.every((setting) => newAlarms[setting.key]);
-      return newAlarms;
+      setAlarms(newAlarms);
+      UpdateAlertSetting(memberNo, newAlarms)
+          .then(() => {
+            console.log("알림 설정 업데이트 완료", newAlarms);
+          }).catch((error) => {
+            console.error("알림 업데이트 중 에러",error);
     });
   };
 
-  useEffect(() => {
-    if (initialAlarms) {
-      setAlarms(initialAlarms);
-    }
-  }, [initialAlarms]);
+  if (!alarms) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="p-8 bg-white shadow-md rounded-lg max-w-xl mx-auto">

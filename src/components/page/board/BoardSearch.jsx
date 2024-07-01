@@ -1,27 +1,31 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import AuthStore from "../../../utils/zustand/AuthStore";
 import GZAPI from "../../../utils/api";
 
 export default function BoardSearch() {
-  const [location, setLocation] = useState("*");
-  const [category, setCategory] = useState("*");
-  const [content, setContent] = useState("");
+  const [formData, setFormData] = useState({
+    location: "*",
+    category: "*",
+    content: "",
+  });
 
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
   const clickSearch = async () => {
     try {
-      const response = await GZAPI.get("/api/boards/list", {
-        params: {
-          location: location,
-          category: category,
-          content: content,
-        },
-      });
+      const response = await GZAPI.post("/board/list", formData);
       console.log(response.data);
       console.log(response);
     } catch (error) {
       console.error("Error during search request:", error);
     }
   };
+  const memberNo = AuthStore((state) => state.userInfo.memberNo);
 
   const cate = [
     { key: "c0", value: "*", label: "전체 카테고리" },
@@ -73,8 +77,9 @@ export default function BoardSearch() {
       <div className="mx-auto flex items-center space-x-2">
         <select
           className="border focus:ring-2 focus:ring-blue-500 mr-1"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
+          name="location"
+          value={formData.location}
+          onChange={handleChange}
         >
           {local.map((item) => (
             <option key={item.key} value={item.value}>
@@ -84,8 +89,9 @@ export default function BoardSearch() {
         </select>
         <select
           className="border focus:ring-2 focus:ring-blue-500 mr-1"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          name="category"
+          value={formData.category}
+          onChange={handleChange}
         >
           {cate.map((item) => (
             <option key={item.key} value={item.value}>
@@ -97,8 +103,9 @@ export default function BoardSearch() {
           type="text"
           className="w-60 px-2 py-1 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 mr-1"
           placeholder="검색어를 입력하세요."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+          name="content"
+          value={formData.content}
+          onChange={handleChange}
         />
         <button
           className="text-center bg-red-400 text-white px-2 py-1 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
@@ -108,7 +115,7 @@ export default function BoardSearch() {
         </button>
       </div>
       <div className="flex-item ml-auto">
-        <Link to="/board/write">
+        <Link to={`/board/write/${memberNo}`}>
           <button className="bg-gray-900 text-white border border-gray-300 rounded-md px-4 py-2 flex items-center gap-2 text-base font-medium hover:bg-gray-500">
             글쓰기
           </button>

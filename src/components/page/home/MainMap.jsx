@@ -1,91 +1,199 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useState, useEffect } from "react";
+import { Map, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk";
+import { Location } from "../../../utils/repository";
 
 export default function MainMap() {
-  const mapContainer = useRef(null);
-  const [location, setLocation] = useState({ lat: 33.450701, lng: 126.570667 }); // 초기 위치 설정
-  const [map, setMap] = useState(null);
-
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=846c7a714354f9ab075e6d046569fb84&autoload=false`;
-    script.async = true;
-    document.head.appendChild(script);
-
-    script.onload = () => {
-      console.log("Kakao Maps script loaded successfully.");
-      window.kakao.maps.load(() => {
-        console.log("Kakao Maps API loaded successfully.");
-        const options = {
-          center: new window.kakao.maps.LatLng(location.lat, location.lng),
-          level: 3,
-        };
-        const mapInstance = new window.kakao.maps.Map(
-          mapContainer.current,
-          options
-        );
-        setMap(mapInstance);
-        console.log("Map initialized:", mapInstance);
-      });
-    };
-
-    script.onerror = () => {
-      console.error("Failed to load Kakao Maps script.");
-    };
-
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, []);
+  const [state, setState] = useState({
+    center: {
+      lat: 33.450701,
+      lng: 126.570667,
+    },
+    errMsg: null,
+    isLoading: true,
+    locations: [], // 받아온 위치 데이터 저장
+  });
 
   useEffect(() => {
     if (navigator.geolocation) {
-      console.log("Attempting to get current location...");
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          console.log("Current position: ", position);
-          console.log(
-            `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}, Accuracy: ${position.coords.accuracy}`
-          );
-          setLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
+        async (position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+
+          setState((prev) => ({
+            ...prev,
+            center: {
+              lat: latitude,
+              lng: longitude,
+            },
+            isLoading: false,
+          }));
+
+          try {
+            const locationData = await Location.LocationSearch(
+              latitude,
+              longitude
+            );
+            if (Array.isArray(locationData)) {
+              setState((prev) => ({
+                ...prev,
+                locations: locationData,
+              }));
+            } else {
+              console.error("Fetched data is not an array:", locationData);
+              setState((prev) => ({
+                ...prev,
+                locations: [],
+              }));
+            }
+          } catch (error) {
+            console.error("Error fetching locations:", error);
+            setState((prev) => ({
+              ...prev,
+              locations: [],
+            }));
+          }
         },
-        (error) => {
-          console.error("Error getting location: ", error);
-        },
-        {
-          enableHighAccuracy: true, // 높은 정확도로 위치를 받아옵니다.
-          timeout: 5000, // 5초 이내에 위치를 받아오지 못하면 에러를 반환합니다.
-          maximumAge: 0, // 캐시된 위치 정보를 사용하지 않습니다.
+        (err) => {
+          setState((prev) => ({
+            ...prev,
+            errMsg: err.message,
+            isLoading: false,
+          }));
         }
       );
     } else {
-      console.error("Geolocation is not supported by this browser.");
+      setState((prev) => ({
+        ...prev,
+        errMsg: "geolocation을 사용할 수 없어요..",
+        isLoading: false,
+      }));
     }
   }, []);
-
-  useEffect(() => {
-    if (map) {
-      console.log("Updating map center with location:", location);
-      const moveLatLon = new window.kakao.maps.LatLng(
-        location.lat,
-        location.lng
-      );
-      map.setCenter(moveLatLon);
-      console.log("Map center updated:", moveLatLon);
-    }
-  }, [location, map]);
 
   return (
     <div>
       <div className="w-[1000px] mx-auto mb-6 text-lg font-bold text-[#526688] mt-14">
         내 주변 모임
       </div>
-      <div
-        ref={mapContainer}
-        className="w-[1000px] h-[600px] mx-auto rounded-md bg-gray-400"
-      ></div>
+      <div className="mx-auto rounded-md bg-gray-400">
+        <Map
+          center={state.center}
+          style={{ width: "1000px", height: "600px" }}
+          level={3} // 지도 확대 레벨
+        >
+          {!state.isLoading && (
+            <>
+              {Array.isArray(state.locations) &&
+                state.locations.map((location, index) => (
+                  <LocationMarker key={index} location={location} />
+                ))}
+              <MapMarker
+                position={state.center}
+                image={{
+                  src: "https://img.icons8.com/?size=100&id=qUb0xmzXSn62&format=png",
+                  size: {
+                    width: 48,
+                    height: 52,
+                  },
+                  options: {
+                    offset: {
+                      x: 24,
+                      y: 52,
+                    },
+                  },
+                }}
+              />
+              <CustomOverlayMap position={state.center} yAnchor={2.2}>
+                <div className="bg-white shadow-md rounded-lg p-3 text-center text-black font-semibold">
+                  {state.errMsg ? (
+                    <span className="text-red-500">{state.errMsg}</span>
+                  ) : (
+                    <span>현재 여기에 계신 것 같아요!</span>
+                  )}
+                </div>
+              </CustomOverlayMap>
+            </>
+          )}
+        </Map>
+      </div>
     </div>
+  );
+}
+
+function LocationMarker({ location }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const markerPosition = {
+    lat: parseFloat(location.latitude),
+    lng: parseFloat(location.longitude),
+  };
+
+  return (
+    <>
+      <MapMarker
+        position={markerPosition}
+        image={{
+          src: "https://img.icons8.com/?size=100&id=5U32J17gItTw&format=png",
+          size: {
+            width: 48,
+            height: 52,
+          },
+          options: {
+            offset: {
+              x: 24,
+              y: 52,
+            },
+          },
+        }}
+        onClick={() => setIsOpen(true)}
+      />
+      {isOpen && (
+        <CustomOverlayMap position={markerPosition} yAnchor={1.2}>
+          <div className="wrap w-[20em] bg-white rounded-lg shadow-lg p-4 flex justify-between">
+            <div className="w-full">
+              <div className="flex justify-between items-center border-b-2 pb-2">
+                <div className="text-lg font-bold">{location.boardTitle}</div>
+                <button
+                  type="button"
+                  className="close text-red-500"
+                  onClick={() => setIsOpen(false)}
+                  title="닫기"
+                >
+                  ❌
+                </button>
+              </div>
+              <div className="pt-2 pl-4">{location.address}</div>
+
+              <div className="w-full justify-center mt-2 flex">
+                <div className="img flex-none">
+                  <img
+                    src="//t1.daumcdn.net/thumb/C84x76/?fname=http://t1.daumcdn.net/cfile/2170353A51B82DE005"
+                    width="90"
+                    height="70"
+                    alt={location.boardTitle}
+                    className="rounded"
+                  />
+                </div>
+                <div className="ml-5">
+                  <div className="font-semibold">
+                    개당 가격 : {location.price}원
+                  </div>
+                  <div className="font-semibold">
+                    남은 수량: {location.remainAmount}개
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => window.open(location.link, "_blank")}
+                className="w-full mt-5 bg-red-300 text-white py-1 rounded hover:bg-red-500"
+              >
+                구경하기
+              </button>
+            </div>
+          </div>
+        </CustomOverlayMap>
+      )}
+    </>
   );
 }

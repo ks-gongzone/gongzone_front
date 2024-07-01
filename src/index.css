@@ -22,7 +22,19 @@
   font-family: "hangang";
   src: url("../public/font/SeoulHangangM.ttf");
 }
+@font-face {
+  font-family: "dohyeon";
+  src: url("../public/font/DoHyeon-Regular.ttf");
+}
+@font-face {
+  font-family: "jua";
+  src: url("../public/font/Jua-Regular.ttf");
+}
+@font-face {
+  font-family: "gamtan";
+  src: url("../public/font/Gamtan-Road.ttf");
+}
 
 body {
-  font-family: "hangang";
+  font-family: "gamtan";
 }

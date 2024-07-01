@@ -1,3 +1,4 @@
+import ScrollButton from "../components/button/scrollButton";
 import LayoutFooter from "./Footer";
 import LayoutHeader from "./Header";
 
@@ -9,6 +10,7 @@ export default function LayoutDefault({ children }) {
         <div className="w-full">{children}</div>
       </div>
       <LayoutFooter />
+      <ScrollButton />
     </div>
   );
 }

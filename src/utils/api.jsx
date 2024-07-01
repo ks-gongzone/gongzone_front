@@ -3,8 +3,8 @@ import axios from "axios";
 const GZAPI = axios.create({
   baseURL: "http://localhost:8088/", // API의 기본 URL을 설정
   headers: {
-    'Content-Type' : 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 });
 
 // 아래 주석은 예시 -> 디벨롭해서 개발이 필요합니다.
