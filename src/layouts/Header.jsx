@@ -72,7 +72,7 @@ export default function LayoutHeader() {
               onMouseEnter={handleTabHover}
               onMouseLeave={handleTabLeave}
               className="hover:text-red-600 px-5"
-              to="/"
+              to="/announce"
             >
               공지사항
             </Link>

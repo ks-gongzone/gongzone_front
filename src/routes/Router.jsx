@@ -8,6 +8,8 @@ import BoardWrite from "../pages/boardWrite/Index";
 
 import Register from "../pages/login/Register";
 import MyPage from "../pages/myPage/MovingPoint";
+import Announce from "../pages/announce/Index";
+import AnnounceDetail from "../pages/anoounceDetail/Index";
 
 export default createBrowserRouter([
   {
@@ -24,6 +26,8 @@ export default createBrowserRouter([
       { path: "/board/list", element: <BoardList /> },
       { path: "/board/write/:memberNo", element: <BoardWrite /> },
       { path: "/register", element: <Register /> },
+      { path: "/announce", element: <Announce /> },
+      { path: "/announce/detail", element: <AnnounceDetail /> },
 
       // point
       { path: "/point", element: <Point /> },
