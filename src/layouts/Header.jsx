@@ -4,8 +4,10 @@ import ModalLogin from "../components/modal/ModalLogin";
 import ModalSignup from "../components/modal/ModalRegister";
 import AuthStore from "../utils/zustand/AuthStore";
 import ModalStore from "../utils/zustand/ModalStore";
-import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
+import { MagnifyingGlassIcon, UserCircleIcon } from "@heroicons/react/16/solid";
 import logo from "../../src/assets/logo/GZlogo.PNG";
+import MyDropdownMenu from "../components/menu/MyDropdownMenu";
+import { PencilIcon } from "@heroicons/react/24/outline";
 
 export default function LayoutHeader() {
   const { isLogin, statusLogout, statusLogin, setIsLogin } = AuthStore();
@@ -35,6 +37,12 @@ export default function LayoutHeader() {
 
   const handleTabLeave = () => {
     borderRef.current.style.width = "0px";
+  };
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -79,40 +87,47 @@ export default function LayoutHeader() {
           </div>
           <button
             onClick={() => navigate("/board/list")}
-            className="flex items-center bg-red-400 text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 whitespace-nowrap"
+            className="flex items-center bg-red-400 text-white px-4 py-2 rounded-md hover:bg-red-600 whitespace-nowrap"
           >
-            <MagnifyingGlassIcon className="w-5 h-5 mr-2" />
+            <MagnifyingGlassIcon className="w-5 h-5" />
             검색
           </button>
+
           <div className="flex items-center">
             {isLogin ? (
               <div className="flex items-center whitespace-nowrap">
                 <button
-                  onClick={() => navigate("/myPage")}
-                  className="text-[10px] bg-white text-blue-500 py-2 px-2 rounded-l-lg hover:bg-gray-200"
+                  onClick={() => navigate("/board/write/:memberNo")}
+                  className="flex items-center bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-black whitespace-nowrap"
                 >
-                  마이페이지
+                  <PencilIcon className="w-5 h-5 mr-2" />
+                  글쓰기
                 </button>
-                <span className="text-[10px] text-blue-500 px-1">/</span>
-                <button
-                  onClick={statusLogout}
-                  className="text-[10px] bg-white text-blue-500 px-2 py-2 rounded-r-lg hover:bg-gray-200"
-                >
-                  로그아웃
-                </button>
+                <div className="relative inline-block">
+                  <button
+                    onClick={toggleDropdown}
+                    className="p-2 text-black rounded"
+                  >
+                    <UserCircleIcon className="w-10 h-10 text-gray-500" />
+                  </button>
+                  <MyDropdownMenu
+                    isOpen={isOpen}
+                    onClose={() => setIsOpen(false)}
+                  />
+                </div>
               </div>
             ) : (
               <div className="flex items-center whitespace-nowrap">
                 <button
                   onClick={() => setIsModalOpen(true)}
-                  className="text-[10px] bg-white text-blue-500 px-2 py-2 rounded-l-lg hover:bg-gray-200"
+                  className="text-[14px] bg-white text-gray-500 px-2 py-1 rounded-lg hover:bg-gray-200"
                 >
                   로그인
                 </button>
                 <span className="text-[10px] text-blue-500 px-1">/</span>
                 <button
                   onClick={() => setIsRegisterModalOpen(true)}
-                  className="text-[10px] bg-white text-blue-500 px-2 py-2 rounded-r-lg hover:bg-gray-200"
+                  className="text-[14px] bg-white text-gray-500 px-2 py-1 rounded-lg hover:bg-gray-200"
                 >
                   가입
                 </button>
