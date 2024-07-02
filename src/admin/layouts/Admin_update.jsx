@@ -1,6 +1,6 @@
 import Sidebar from "./Sidebar";
 
-export default function Admin({ children }) {
+export default function AdminUpdate({ children }) {
   return (
     <main class="relative h-screen overflow-hidden bg-gray-100 dark:bg-gray-800 rounded-2xl">
       <div class="flex items-start justify-between">
