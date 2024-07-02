@@ -29,19 +29,19 @@ export default function PointCharge({ isLoaded, renderPage }) {
           pointChange: -amount.value,
           changeType: "T030301",
           withdraw: {
-            bank: bank.value,
-            account: account.value,
-            amount: -amount.value,
-            name: name.value,
+            withdrawBank: bank.value,
+            withdrawAccount: account.value,
+            withdrawAmount: -amount.value,
+            withdrawName: name.value,
           }
         };
       const response = await GZAPI.post(`/api/members/${ pointNo }/point/withdraw`, data);
 
       if (response.data.result === "SUCCESS") {
-        alert('포인트 인출이 완료되었습니다.');
+        alert('포인트 인출 요청이 완료되었습니다.');
         renderPage.set("main");
       } else {
-        alert('포인트 인출에 실패하였습니다. 다시 시도해주세요.')
+        alert('포인트 인출 요청에 실패하였습니다. 다시 시도해주세요.')
       }
     },
     inputChangeHandler: (e) => {
@@ -108,7 +108,7 @@ export default function PointCharge({ isLoaded, renderPage }) {
               onClick={ actions.requestPointWithdraw }
               className="box-border border-2 rounded-xl px-4 py-2 bg-gray-400"
             >
-              !인출
+              인출
             </button>
           </div>
         </PointInnerSection>
