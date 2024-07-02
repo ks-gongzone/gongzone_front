@@ -2,7 +2,7 @@ import { createBrowserRouter, Outlet } from "react-router-dom";
 import LayoutDefault from "../layouts/Default";
 import Home from "../pages/home/Index";
 import Party from "../pages/party/Index";
-import { Point, PointCharge, PointHistory } from "../pages/point/Index";
+import { Point, PointCharge, PointHistory, PointWithdraw } from "../pages/point/Index";
 import BoardList from "../pages/boardList/Index";
 import BoardWrite from "../pages/boardWrite/Index";
 
@@ -41,6 +41,7 @@ export default createBrowserRouter([
       { path: "/point", element: <Point /> },
       { path: "/point/history", element: <PointHistory /> },
       { path: "/point/charge", element: <PointCharge /> },
+      { path: "/point/withdraw", element: <PointWithdraw /> },
     ],
   },
   //{ path: "/signup", element: <Signup /> },
