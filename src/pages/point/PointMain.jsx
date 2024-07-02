@@ -54,11 +54,7 @@ export default function PointMain({ isLoaded, renderPage }) {
         </PointInnerSection>
 
         {/* 포인트 내역*/ }
-        <PointInnerSection title={ "포인트 내역" }>
-          <div>
-            <PointHistory pointNo={ pointNo } isLoaded={ isLoaded } />
-          </div>
-        </PointInnerSection>
+        <PointHistory pointNo={ pointNo } isLoaded={ isLoaded } />
       </div>
     </PointSection>
   );
