@@ -3,8 +3,8 @@ import PointSection from "../../components/page/point/PointSection";
 import State from "../../utils/state/State";
 import PointInnerSection from "../../components/page/point/PointInnerSection";
 import { formatNumber } from "../../libs/utilities";
-import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../utils/zustand/AuthStore";
+import GZAPI from "../../utils/api";
 
 export default function PointCharge({ isLoaded, renderPage }) {
   const { memberNo, pointNo } = useAuthStore((state) => ({
@@ -17,7 +17,6 @@ export default function PointCharge({ isLoaded, renderPage }) {
   const account = State("account", '');
   const amount = State("amount", '');
   const name = State("name", '');
-  const navigate = useNavigate();
 
   useEffect(() => {
     isLoaded.set(true);
@@ -25,21 +24,25 @@ export default function PointCharge({ isLoaded, renderPage }) {
 
   const actions = {
     requestPointWithdraw: async () => {
-      const data = {
-        bank: bank.value,
-        account: account.value,
-        amount: amount.value,
-        name: name.value,
-      };
-      console.log(data)
-      // const response = await GZAPI.post(`/api/members/${ pointNo }/point/withdraw`, data);
+      const data =
+        {
+          pointChange: -amount.value,
+          changeType: "T030301",
+          withdraw: {
+            bank: bank.value,
+            account: account.value,
+            amount: -amount.value,
+            name: name.value,
+          }
+        };
+      const response = await GZAPI.post(`/api/members/${ pointNo }/point/withdraw`, data);
 
-      // if (response.data.result === "SUCCESS") {
-      //   alert('포인트 인출이 완료되었습니다.');
-      // } else {
-      //   alert('포인트 인출에 실패하였습니다. 다시 시도해주세요.')
-      // }
-      // navigate('/point');
+      if (response.data.result === "SUCCESS") {
+        alert('포인트 인출이 완료되었습니다.');
+        renderPage.set("main");
+      } else {
+        alert('포인트 인출에 실패하였습니다. 다시 시도해주세요.')
+      }
     },
     inputChangeHandler: (e) => {
       const value = e.target.value.replace(/,/g, "");
