@@ -7,7 +7,6 @@ import BoardList from "../pages/boardList/Index";
 import BoardWrite from "../pages/boardWrite/Index";
 
 import Register from "../pages/login/Register";
-import MovingPoint from "../pages/myPage/MovingPoint";
 import NaverLogin from "../pages/login/NaverLogic";
 import GoogleLogin from "../pages/login/GoogleLogic";
 import KakaoLogin from "../pages/login/KakaoLogic";

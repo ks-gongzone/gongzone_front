@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { GetAlertSetting, UpdateAlertSetting } from "../../../utils/repository";
+import { GetAlertSetting, UpdateAlertSetting, InsertAlertSetting } from "../../../utils/repository";
 
 /**
  * 개별 토글 스위치 컴포넌트
@@ -42,37 +42,53 @@ const alarmSettings = [
  * @date: 2024-06-10
  * @last: 2024-07-01
  * @내용: 백엔드와 통신 후 값 확인
- * @수정내용: 알람 데이터가 없는 유저 기본값 세팅 수정 (2024-07-01)
+ * @수정내용: 알람 데이터가 없는 유저 기본값 세팅 수정 및 데이터 가공처리(2024-07-01)
  */
 export default function AlarmSettings({ memberNo }) {
+  const [alarms, setAlarms] = useState(null);
+  const [isNewUser, setIsNewUser] = useState(false); // 알람 데이터 없는 유저 상태 추가
 
-  const [alarms, setAlarms] = useState({
-    smsAlert: false,
-    emailAlert: false,
-    marketingAlert: false,
-    memberAlert: false,
-    noteAlert: false,
-    bulletinAlert: false,
-    partyAlert: false,
-    all: false
-  });
-
+  // db에 없는 all: data 제거 로직 추가 (2024-07-01)
   useEffect(() => {
     GetAlertSetting(memberNo)
-      .then((data) => {
-        const newAlarms = { ...data, 
+      .then((response) => {
+        const data = response.alertData;
+        const newAlarms = { 
+          smsAlert: data.smsAlert,
+          emailAlert: data.emailAlert,
+          marketingAlert: data.marketingAlert,
+          memberAlert: data.memberAlert,
+          noteAlert: data.noteAlert,
+          bulletinAlert: data.bulletinAlert,
+          partyAlert: data.partyAlert,
           all: data.smsAlert &&
-          data.emailAlert &&
-          data.marketingAlert &&
-          data.memberAlert &&
-          data.noteAlert &&
-          data.bulletinAlert &&
-          data.partyAlert }
+               data.emailAlert &&
+               data.marketingAlert &&
+               data.memberAlert &&
+               data.noteAlert &&
+               data.bulletinAlert &&
+               data.partyAlert
+        };
         setAlarms(newAlarms);
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.error("알림 로드 중 에러",error);
+        if (error.response && error.response.status === 500) {
+          const defaultAlarms = {
+            smsAlert: false,
+            emailAlert: false,
+            marketingAlert: false,
+            memberAlert: false,
+            noteAlert: false,
+            bulletinAlert: false,
+            partyAlert: false,
+            all: false,
+          };
+          setAlarms(defaultAlarms);
+          setIsNewUser(true);
+        }
       });
-  }, []);
+  }, [memberNo]);
 
   const handleAllChange = () => {
     if (!alarms) return; // 알람 로딩 안 됐을 때 종료로직 추가 (2024-06-28)
@@ -87,13 +103,7 @@ export default function AlarmSettings({ memberNo }) {
       bulletinAlert: newValue,
       partyAlert: newValue,
     };
-  setAlarms(newAlarms);
-  UpdateAlertSetting(memberNo, newAlarms)
-      .then(() => {
-        console.log("알림 설정 업데이트 완료");
-      }).catch((error) => {
-        console.error("알림 업데이트 중 에러",error);
-      });
+    setAlarms(newAlarms);
   };
 
   const handleChange = (key) => {
@@ -104,13 +114,19 @@ export default function AlarmSettings({ memberNo }) {
       };
       newAlarms.all = alarmSettings.every((setting) => newAlarms[setting.key]);
       setAlarms(newAlarms);
-      UpdateAlertSetting(memberNo, newAlarms)
-          .then(() => {
-            console.log("알림 설정 업데이트 완료", newAlarms);
-          }).catch((error) => {
-            console.error("알림 업데이트 중 에러",error);
-    });
   };
+
+  const handleSave = () => {
+    const saveAlert = isNewUser ? InsertAlertSetting : UpdateAlertSetting;
+    saveAlert(memberNo, alarms)
+      .then(() => {
+        alert("알림 설정 저장완료");
+        setIsNewUser(false);
+      })
+      .catch((error) => {
+        console.error("알림 저장 중 에러 발생", error);
+    });
+  }
 
   if (!alarms) {
     return <div>알람 데이터가 필요합니다.</div>;
@@ -146,6 +162,14 @@ export default function AlarmSettings({ memberNo }) {
             onChange={() => handleChange(setting.key)}
           />
         ))}
+      </div>
+      <div>
+        <button
+          onClick={handleSave}
+          className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
+        >
+          알림 설정 저장
+        </button>
       </div>
     </div>
   );
