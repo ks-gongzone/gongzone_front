@@ -1,4 +1,4 @@
-import Sidebar from "./layouts/Sidebar";
+import Sidebar from "./Sidebar";
 
 export default function Admin({ children }) {
   return (

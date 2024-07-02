@@ -15,8 +15,9 @@ import KakaoLogin from "../pages/login/KakaoLogic";
 import MyPage from "../pages/myPage/MovingPoint";
 import Announce from "../pages/announce/Index";
 import AnnounceDetail from "../pages/anoounceDetail/Index";
-import Admin from "../admin/Admin";
+import Admin from "../admin/layouts/Admin";
 import AdminMember from "../admin/pages/AdminMember";
+import LayoutAdminDefault from "../admin/layouts/AdminDefault";
 
 
 export default createBrowserRouter([
@@ -46,7 +47,14 @@ export default createBrowserRouter([
       { path: "/point/charge", element: <PointCharge /> },
     ],
   },
-  { path: "/_admin", element: <Admin /> },
-  { path: "/_admin/member", element: <AdminMember /> },
-
+  {
+    element: (
+      <LayoutAdminDefault>
+      </LayoutAdminDefault>
+    ),
+    children: [
+      {path: "/_admin", element: <Admin/>},
+      {path: "/_admin/member", element: <AdminMember/>},
+    ],
+  }
 ]);
