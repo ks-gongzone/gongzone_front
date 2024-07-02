@@ -3,7 +3,6 @@ import PointSection from "../../components/page/point/PointSection";
 import State from "../../utils/state/State";
 import PointInnerSection from "../../components/page/point/PointInnerSection";
 import { formatNumber } from "../../libs/utilities";
-import { useNavigate } from "react-router-dom";
 import * as PortOne from "@portone/browser-sdk/v2";
 import GZAPI from "../../utils/api";
 import useAuthStore from "../../utils/zustand/AuthStore";
@@ -16,7 +15,6 @@ export default function PointCharge({ isLoaded, renderPage }) {
   const title = `${ memberNo }님의 포인트 충전 페이지`;
 
   const pointCharge = State("pointCharge", 0);
-  const navigate = useNavigate();
 
   useEffect(() => {
     isLoaded.set(true);
@@ -50,10 +48,10 @@ export default function PointCharge({ isLoaded, renderPage }) {
 
       if (response.data.result === "SUCCESS") {
         alert('포인트 결제가 완료되었습니다.');
+        renderPage.set("main");
       } else {
         alert('포인트 결제에 실패하였습니다. 다시 시도해주세요.')
       }
-      navigate('/point');
     },
     inputChangeHandler: (e) => {
       const value = e.target.value.replace(/,/g, "");
