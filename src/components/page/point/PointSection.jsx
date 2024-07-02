@@ -1,7 +1,7 @@
-export default function PointSection({ children, title }) {
+export default function PointSection({ children, title, renderPage }) {
   return (
     <div
-      id={"section"}
+      id={ "section" }
       className="flex flex-grow justify-center
                                      h-min-[45vh]
                                      my-16 mx-24"
@@ -11,9 +11,13 @@ export default function PointSection({ children, title }) {
                       w-[75vw] min-w-[650px] max-w-[1200px]"
       >
         <div className="bg-gray-50 w-full p-8">
-          <h2 className="text-2xl font-bold mt-4 ml-8">{title}</h2>
+          <div className="flex space-x-4">
+            <button className="items-center text-3xl"
+                    onClick={ () => renderPage.set("main") }>&lt;</button>
+            <h2 className="font-bold text-2xl">{ title }</h2>
+          </div>
           <hr className="my-12" />
-          {children}
+          { children }
         </div>
       </div>
     </div>
