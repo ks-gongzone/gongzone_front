@@ -8,7 +8,7 @@ import * as PortOne from "@portone/browser-sdk/v2";
 import GZAPI from "../../utils/api";
 import useAuthStore from "../../utils/zustand/AuthStore";
 
-export default function PointCharge() {
+export default function PointCharge({ isLoaded, renderPage }) {
   const { memberNo, pointNo } = useAuthStore((state) => ({
     memberNo: state.userInfo.memberNo,
     pointNo: state.userInfo.pointNo,
@@ -16,7 +16,6 @@ export default function PointCharge() {
   const title = `${ memberNo }님의 포인트 충전 페이지`;
 
   const pointCharge = State("pointCharge", 0);
-  const isLoaded = State("loaded", false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -77,15 +76,9 @@ export default function PointCharge() {
     },
   };
 
-  if (!isLoaded.value) {
-    return (
-      <PointSection title={ title }>
-        <div className="text-center">잠시만 기다려주세요..</div>
-      </PointSection>
-    );
-  }
+
   return (
-    <PointSection title={ title }>
+    <PointSection title={ title } renderPage={ renderPage }>
       <div className="flex flex-grow justify-center">
         <PointInnerSection title={ "포인트 충전하기" }>
           <div className="relative flex w-full justify-end">

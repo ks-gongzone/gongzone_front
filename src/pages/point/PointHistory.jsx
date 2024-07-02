@@ -3,7 +3,7 @@ import GZAPI from "../../utils/api";
 import { formatNumber } from "../../libs/utilities";
 import State from "../../utils/state/State";
 
-export default function PointHistory({ pointNo }) {
+export default function PointHistory({ pointNo, isLoaded }) {
   const pointHistory = State("pointHistory", []);
 
   useEffect(() => {
@@ -13,6 +13,7 @@ export default function PointHistory({ pointNo }) {
       const result = [...response.data.result];
       console.log(result);
       pointHistory.set(result);
+      isLoaded.set(true)
     })();
   }, []);
 

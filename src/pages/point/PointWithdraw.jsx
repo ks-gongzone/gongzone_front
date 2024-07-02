@@ -6,8 +6,7 @@ import { formatNumber } from "../../libs/utilities";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../utils/zustand/AuthStore";
 
-export default function PointCharge() {
-  ;
+export default function PointCharge({ isLoaded, renderPage }) {
   const { memberNo, pointNo } = useAuthStore((state) => ({
     memberNo: state.userInfo.memberNo,
     pointNo: state.userInfo.pointNo,
@@ -18,7 +17,6 @@ export default function PointCharge() {
   const account = State("account", '');
   const amount = State("amount", '');
   const name = State("name", '');
-  const isLoaded = State("loaded", false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,15 +50,9 @@ export default function PointCharge() {
     },
   };
 
-  if (!isLoaded.value) {
-    return (
-      <PointSection title={ title }>
-        <div className="text-center">잠시만 기다려주세요..</div>
-      </PointSection>
-    );
-  }
+
   return (
-    <PointSection title={ title }>
+    <PointSection title={ title } renderPage={ renderPage }>
       <div className="flex flex-grow justify-center">
         <PointInnerSection title={ "포인트 인출하기" }>
           <div className="flex flex-col w-full space-y-2">
