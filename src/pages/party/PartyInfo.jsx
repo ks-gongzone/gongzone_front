@@ -47,7 +47,7 @@ export default function PartyInfo() {
         period={formatDate(detail.endDate)}
         targetAmt={detail.partyAmount}
         remainAmt={detail.remainAmount}
-        img={detail.thumbnail}
+        img={detail.thumbnail} //이미지 부분 테이블과 백단 추가 수정 필요
       >
         <div className="text-sm px-3 pb-3">
           <div className="flex justify-between mb-3 text-[#888888]"></div>
