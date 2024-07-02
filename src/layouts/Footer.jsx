@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
+import logo from "../../src/assets/logo/GZlogo.PNG";
 
 export default function LayoutFooter() {
   return (
     <div>
       <div className="flex items-center h-80 justify-between max-w-5xl mx-auto">
         <div className="flex flex-col gap-2">
-          <Link className="text-2xl" to="/">
-            LOGO
+          <Link className="whitespace-nowrap" to="/">
+            <img alt="logo" src={logo} className="h-10 pr-20" />
           </Link>
           <br></br>
           <div className="text-[13px]">1:1 문의</div>

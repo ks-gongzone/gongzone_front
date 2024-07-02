@@ -47,10 +47,13 @@ export default function PartyCard({
         </div>
         <div className="w-full mt-2 ml-4 font-bold text-gray-500 flex flex-col relative">
           {like && (
-            <button type="button" className="self-end mr-4">
+            <button type="button" className="self-end mr-4" onClick={likeBtn}>
               <HeartIcon
-                className={`w-6 ${isLiked ? "text-red-500" : "text-[#e7e7e7]"}`}
-                onClick={likeBtn}
+                className={`w-6 transition-transform duration-200 ${
+                  isLiked
+                    ? "text-red-500 scale-125"
+                    : "text-[#e7e7e7] scale-100"
+                }`}
               />
             </button>
           )}
@@ -79,7 +82,7 @@ export default function PartyCard({
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                     role="menuitem"
                   >
-                    거래 내역 조회
+                    차단하기
                   </button>
                   <button
                     className="block px-4 py-2 text-sm text-red-700 hover:bg-gray-100 w-full text-left"

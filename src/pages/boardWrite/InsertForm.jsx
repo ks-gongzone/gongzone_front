@@ -13,6 +13,7 @@ export default function InsertForm() {
     title: "",
     category: "",
     URL: "",
+    price: "",
     total: "",
     amount: "",
     image: null,
@@ -22,7 +23,7 @@ export default function InsertForm() {
     gu: "",
     dong: "",
     detailAddress: "",
-    latitude: "", 
+    latitude: "",
     longitude: "",
     endDate: "",
   });
@@ -102,13 +103,13 @@ export default function InsertForm() {
   };
 
   const handleLocationChange = (location) => {
-    const parts = location.split(' '); 
-    const doCity = parts[0]; 
-    const siGun = parts[1]; 
-    const gu = parts[2]; 
+    const parts = location.split(" ");
+    const doCity = parts[0];
+    const siGun = parts[1];
+    const gu = parts[2];
     const dong = parts[3];
-    const detailAddress = parts.slice(4).join(' '); 
-  
+    const detailAddress = parts.slice(4).join(" ");
+
     setFormData((prevFormData) => ({
       ...prevFormData,
       doCity: doCity,
@@ -161,7 +162,17 @@ export default function InsertForm() {
     }
 
     try {
-      const response = await GZAPI.post(`/api/boards/write/${memberNo}`, formDataToSend);
+      const response = await GZAPI.post(`/api/boards/write/${memberNo}`,formDataToSend,{
+        headers: {
+          "Content-Type": "multipart/form-data",
+
+        },
+        transformRequest: [
+          function () {
+            return formDataToSend;
+          },
+        ],
+      });
 
       if (response.status === 200) {
         alert("게시글이 성공적으로 등록되었습니다.");
@@ -198,6 +209,7 @@ export default function InsertForm() {
   return (
     <form
       onSubmit={handleSubmit}
+      encType="multipart/form-data"
       className="p-4 space-y-4 w-[1000px] mx-auto mb-10 mt-14"
     >
       <div>
@@ -239,6 +251,19 @@ export default function InsertForm() {
           onChange={handleChange}
           className="border p-2 w-full"
           placeholder="제품 URL을 입력해주세요."
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block">제품 총 가격 (배송비 포함)</label>
+        <input
+          type="number"
+          name="price"
+          value={formData.price}
+          onChange={handleChange}
+          className="border p-2 w-full"
+          placeholder="제품 총 가격을 (숫자만) 입력해주세요."
           required
         />
       </div>
@@ -297,9 +322,7 @@ export default function InsertForm() {
       <div className="flex space-x-4">
         {/* 게시글 상세 내용 */}
         <div className="w-full">
-          <BoardContent 
-            onChange={handleContentChange} 
-          />
+          <BoardContent onChange={handleContentChange} />
         </div>
       </div>
       <div className="flex justify-between gap-10">
@@ -307,7 +330,7 @@ export default function InsertForm() {
         <div className="w-2/3">
           제품 수령 주소
           {/* <MapSearch /> */}
-          <BoardMap 
+          <BoardMap
             onLocationChange={handleLocationChange}
             onPositionChange={handlePositionChange}
           />

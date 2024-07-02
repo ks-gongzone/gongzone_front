@@ -21,11 +21,42 @@ export const Auth = {
       return { error: errorMessage };
     }
   },
-  Naver: async () => {
-    return GZAPI.get("/auth/naver")
-      .then((res) => res)
-      .catch((err) => err);
+  Naver: async (code, state) => {
+    try {
+      console.log("Sending Axios request with code:", code, "and state:", state);
+      const response = await GZAPI.post('/api/naver/token', { code, state });
+      console.log("response  : ", response);
+      console.log("response.data  : ", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error in Axios request:", error);
+      return error.response ? error.response.data : error.message;
+    }
   },
+  Google: async (code, state) => {
+    try {
+      console.log("Sending Axios request with code:", code, "and state:", state);
+      const response = await GZAPI.post('/api/google/token', { code, state });
+      console.log("response  : ", response);
+      console.log("response.data  : ", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error in Axios request:", error);
+      return error.response ? error.response.data : error.message;
+    }
+  },
+  Kakao: async (code, state) => {
+    try {
+      console.log("Sending Axios request with code:", code, "and state:", state);
+      const response = await GZAPI.post('/api/kakao/token', { code, state });
+      console.log("response  : ", response);
+      console.log("response.data  : ", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error in Axios request:", error);
+      return error.response ? error.response.data : error.message;
+    }
+  }
 };
 
 export const User = {
@@ -90,15 +121,6 @@ export const MyBoard = (memberNo) => {
 
 export const MyParty = (memberNo) => {
   return GZAPI.get(`/api/members/${memberNo}/party`)
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error("데이터 로드 중 에러 발생", error);
-      throw error;
-    });
-};
-
-export const MyPoint = (memberNo) => {
-  return GZAPI.get(`/api/members/${memberNo}/point`)
     .then((response) => response.data)
     .catch((error) => {
       console.error("데이터 로드 중 에러 발생", error);
@@ -179,6 +201,33 @@ export const UpdatePassword = (memberNo, payload) => {
       console.error("비밀번호 변경 에러 발생", error);
       throw error;
     });
+};
+
+export const GetAlertSetting = (memberNo) => {
+  return GZAPI.get(`/api/members/${memberNo}/alerts`)
+  .then((response) => response.data)
+  .catch((error) => {
+    console.error("알림 정보 로드 중 에러 발생", error);
+    throw error;
+  });
+};
+
+export const UpdateAlertSetting = (memberNo, alertData) => {
+  return GZAPI.get(`/api/members/${memberNo}/alerts/update`, alertData)
+  .then((response) => response.data)
+  .catch((error) => {
+    console.error("알림 정보 로드 중 에러 발생", error);
+    throw error;
+  });
+};
+
+export const GetPhone = (memberNo) => {
+  return GZAPI.get(`/api/members/${memberNo}/phone`)
+  .then((response) => response.data)
+  .catch((error) => {
+    console.error("핸드폰 번호 조회 중 에러 발생", error);
+    throw error;
+  });
 };
 
 export const MemberAPI = {
