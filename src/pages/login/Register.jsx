@@ -43,10 +43,10 @@ export default function Register() {
     let errorMsg;
     console.log(`검증 중: ${name} = ${value}`);
 
-    if (name === 'memberId') {
-      errorMsg = checkMemberId(value);
+    if (name === 'memberEmail') {
+      errorMsg = checkMemberEmail(value);
       if (!errorMsg) {
-        errorMsg = await checkMemberIdApi(value);
+        errorMsg = await checkMemberEmailApi(value);
       }
     } else if (name === 'memberPw') {
       errorMsg = checkMemberPw(value);
@@ -56,7 +56,13 @@ export default function Register() {
       errorMsg = checkPhoneNumber(value);
     } else if (name === 'memberGender') {
       errorMsg = checkMemberGender(value);
+    } if (name === 'memberId') {
+      errorMsg = checkMemberId(value);
+      if (!errorMsg) {
+        errorMsg = await checkMemberIdApi(value);
+      }
     }
+
     console.log(`검증 결과: ${name} = ${errorMsg}`);
 
     setErrors(prevErrors => ({ ...prevErrors, [name]: errorMsg }));
@@ -103,10 +109,10 @@ export default function Register() {
           setMessage('회원가입에 성공했습니다.');
           setIsModalOpen(true);
         } else {
-          setMessage('회원가입 실패: 입력하신 정보를 다시 확인해 주세요');
+          setMessage('회원가입 실패: 입력하신 정보를 다시 확인해 주세요.');
         }
       } catch (error) {
-        setMessage('회원가입 실패: 서버 오류가 발생했습니다.');
+        setMessage('회원가입 실패: 서버 오류가 발생했습니다 다시 시도해 주세요.');
       }
     } else {
       setMessage('입력한 정보를 확인해주시고 다시 눌러주세요.');
@@ -123,7 +129,7 @@ export default function Register() {
   };
 
   const checkMemberIdApi = async (memberId) => {
-    const checkMemberId = await MemberAPI.Check({memberId});
+    const checkMemberId = await MemberAPI.CheckId({memberId});
     if (!checkMemberId) {
       return '사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.';
     }
@@ -142,6 +148,22 @@ export default function Register() {
     const pwPattern = /^[가-힣]{2,}$/;
     if (!pwPattern.test(memberName)) {
       return '한글을 사용해 주세요.';
+    }
+    return '';
+  };
+
+  const checkMemberEmail = (memberEmail) => {
+    const pattern = /^[a-zA-Z0-9._%+-]{6,20}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!pattern.test(memberEmail)) {
+      return '이메일 형식이 올바르지 않습니다. 예: example@domain.com';
+    }
+    return '';
+  };
+
+  const checkMemberEmailApi = async (memberEmail) => {
+    const checkMemberEmail = await MemberAPI.CheckEmail({memberEmail});
+    if (!checkMemberEmail) {
+      return '사용할 수 없는 이메일입니다. 다른 이메일을 입력해 주세요.';
     }
     return '';
   };
@@ -250,6 +272,7 @@ export default function Register() {
               required
             />
           </div>
+          {errors.memberEmail && <p style={{ color: 'red' }}>{errors.memberEmail}</p>}
           <div>
             <label htmlFor="memberPhone" className="block text-sm font-medium text-gray-700">전화번호</label>
             <input

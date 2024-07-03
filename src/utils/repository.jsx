@@ -282,8 +282,13 @@ export const MemberAPI = {
       .then((res) => res)
       .catch((err) => err);
   },
-  Check: async (data) => {
-    return GZAPI.post("/api/check", data)
+  CheckId: async (data) => {
+    return GZAPI.post("/api/check/Id", data)
+      .then((res) => res.data)
+      .catch((err) => err);
+  },
+  CheckEmail: async (data) => {
+    return GZAPI.post("/api/check/Email", data)
       .then((res) => res.data)
       .catch((err) => err);
   },

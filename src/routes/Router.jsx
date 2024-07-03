@@ -15,6 +15,8 @@ import KakaoLogin from "../pages/login/KakaoLogic";
 import MyPage from "../pages/myPage/MovingPoint";
 import Announce from "../pages/announce/Index";
 import AnnounceDetail from "../pages/anoounceDetail/Index";
+import Admin from "../admin/pages/Index";
+import AdminLogin from "../admin/pages/AdminLogin";
 
 export default createBrowserRouter([
   {
@@ -44,5 +46,6 @@ export default createBrowserRouter([
       { path: "/point/withdraw", element: <PointWithdraw /> },
     ],
   },
-  //{ path: "/signup", element: <Signup /> },
+  { path: "/_admin", element: <AdminLogin /> },
+  { path: "/_admin/main", element: <Admin /> },
 ]);
