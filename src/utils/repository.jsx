@@ -163,6 +163,15 @@ export const GetNickname = (memberNo) => {
     });
 };
 
+export const UpdateNickname = (memberNo, nickname) => {
+  return GZAPI.post(`/api/members/${memberNo}/nickname`, { newMemberNick: nickname })
+    .then(response => response.data)
+    .catch(error => {
+      console.error("닉네임 업데이트 중 오류 발생", error)
+      throw error;
+    });
+};
+
 // DB에 존재하는 장소를 SELECT박스에 넣어둠
 export const GetLocationData = (memberNo) => {
   return GZAPI.get(`/api/members/${memberNo}/locations`)
@@ -204,7 +213,9 @@ export const UpdatePassword = (memberNo, payload) => {
 
 export const GetAlertSetting = (memberNo) => {
   return GZAPI.get(`/api/members/${memberNo}/alerts`)
-  .then((response) => response.data)
+  .then((response) => {
+    console.log('받은데이터', response.data);
+    return response.data})
   .catch((error) => {
     console.error("알림 정보 로드 중 에러 발생", error);
     throw error;
@@ -212,7 +223,16 @@ export const GetAlertSetting = (memberNo) => {
 };
 
 export const UpdateAlertSetting = (memberNo, alertData) => {
-  return GZAPI.get(`/api/members/${memberNo}/alerts/update`, alertData)
+  return GZAPI.post(`/api/members/${memberNo}/alerts/update`, alertData)
+  .then((response) => response.data)
+  .catch((error) => {
+    console.error("알림 정보 로드 중 에러 발생", error);
+    throw error;
+  });
+};
+
+export const InsertAlertSetting = (memberNo, alertData) => {
+  return GZAPI.post(`/api/members/${memberNo}/alerts/insert`, alertData)
   .then((response) => response.data)
   .catch((error) => {
     console.error("알림 정보 로드 중 에러 발생", error);
