@@ -13,6 +13,7 @@ export default function InsertForm() {
     title: "",
     category: "",
     URL: "",
+    price: "",
     total: "",
     amount: "",
     image: null,
@@ -161,7 +162,17 @@ export default function InsertForm() {
     }
 
     try {
-      const response = await GZAPI.post("/board/write", formDataToSend);
+      const response = await GZAPI.post(`/api/boards/write/${memberNo}`,formDataToSend,{
+        headers: {
+          "Content-Type": "multipart/form-data",
+
+        },
+        transformRequest: [
+          function () {
+            return formDataToSend;
+          },
+        ],
+      });
 
       if (response.status === 200) {
         alert("게시글이 성공적으로 등록되었습니다.");
@@ -198,6 +209,7 @@ export default function InsertForm() {
   return (
     <form
       onSubmit={handleSubmit}
+      encType="multipart/form-data"
       className="p-4 space-y-4 w-[1000px] mx-auto mb-10 mt-14"
     >
       <div>
@@ -239,6 +251,19 @@ export default function InsertForm() {
           onChange={handleChange}
           className="border p-2 w-full"
           placeholder="제품 URL을 입력해주세요."
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block">제품 총 가격 (배송비 포함)</label>
+        <input
+          type="number"
+          name="price"
+          value={formData.price}
+          onChange={handleChange}
+          className="border p-2 w-full"
+          placeholder="제품 총 가격을 (숫자만) 입력해주세요."
           required
         />
       </div>
