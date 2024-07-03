@@ -38,6 +38,7 @@ export default function ModalLogin({ isOpen, onClose }) {
   };
 
   const handleKakaoLogin = () => {
+    //여기서 상태 검증
     const clientId = '526e8f945f81281052ccfce1af49781c';
     const redirectUri = encodeURI('http://localhost:3000/kakao/callback');
     const state = Math.random().toString(36).substr(2, 11);

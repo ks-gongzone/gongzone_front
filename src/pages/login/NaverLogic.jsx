@@ -8,6 +8,7 @@ export default function NaverLogin() {
   const navigate = useNavigate();
   const { setIsLogin, setUserInfo } = AuthStore();
   const [hasRequested, setHasRequested] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (!hasRequested) {
@@ -23,17 +24,22 @@ export default function NaverLogin() {
         Auth.Naver(code, state)
           .then((response) => {
             // 로그인 성공 시 처리 로직
-            console.log('로그인 성공:', response);
-            window.localStorage.setItem('accessToken', response.jwtToken);
-            setIsLogin(true);
-            setUserInfo({
-              token: response.jwtToken,
-              memberNo: response.memberNo,
-              pointNo: response.pointNo,
-            });
-            navigate('/');
+            if (response.jwtToken) {
+              console.log('로그인 성공:', response);
+              window.localStorage.setItem('accessToken', response.jwtToken);
+              setIsLogin(true);
+              setUserInfo({
+                token: response.jwtToken,
+                memberNo: response.memberNo,
+                pointNo: response.pointNo,
+              });
+              navigate('/');
+            } else {
+              console.error('로그인 실패:', response);
+              setErrorMessage(response.error);
+            }
           })
-          .catch((error) => {
+          .catch((error, response) => {
             console.error('로그인 오류:', error);
           });
       }
@@ -43,6 +49,9 @@ export default function NaverLogin() {
   return (
     <div>
       네이버 로그인 처리 중...
+      {errorMessage && (
+        <div className="text-red-500 text-sm mt-2">{errorMessage}</div>
+      )}
     </div>
   );
 };
