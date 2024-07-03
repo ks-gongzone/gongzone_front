@@ -4,9 +4,11 @@ import Calendar from "../../components/page/board/BoardCalendar";
 import BoardMap from "../../components/page/board/BoardMap";
 import AuthStore from "../../utils/zustand/AuthStore";
 import GZAPI from "../../utils/api";
+import { useNavigate } from "react-router-dom";
 
 export default function InsertForm() {
   const memberNo = AuthStore((state) => state.userInfo.memberNo);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     memberNo: "",
@@ -31,6 +33,8 @@ export default function InsertForm() {
   const [numError, setNumError] = useState("");
   const [canSubmit, setCanSubmit] = useState(true);
   const [dateError, setDateError] = useState("");
+  const [submitError, setSubmitError] = useState(""); // 제출 오류 메시지 상태
+  const [submitSuccess, setSubmitSuccess] = useState(""); // 제출 성공 메시지 상태
 
   useEffect(() => {
     if (memberNo) {
@@ -175,14 +179,20 @@ export default function InsertForm() {
       });
 
       if (response.status === 200) {
-        alert("게시글이 성공적으로 등록되었습니다.");
+        setSubmitSuccess("게시글이 성공적으로 등록되었습니다!");
+        setSubmitError("");
+        setTimeout(() => {
+          navigate("/board/list"); // 성공 시 이동할 페이지 경로 설정
+        }, 500); // 0.5초 후에 페이지 이동
       } else {
-        alert("게시글 등록에 실패했습니다.");
+        setSubmitSuccess("");
+        setSubmitError("게시글 등록에 실패했습니다.");
       }
     } catch (error) {
       // 에러 처리
       console.error("폼 데이터 전송 중 오류가 발생했습니다.", error);
-      alert("게시글 등록 중 오류가 발생했습니다. 나중에 다시 시도하세요.");
+      setSubmitSuccess("");
+      setSubmitError("게시글 등록 중 오류가 발생했습니다. 나중에 다시 시도하세요.");
     }
   };
 
@@ -350,6 +360,9 @@ export default function InsertForm() {
           제출
         </button>
       </div>
+
+      {submitSuccess && <p className="text-green-500">{submitSuccess}</p>}
+      {submitError && <p className="text-red-500">{submitError}</p>}
     </form>
   );
 }
