@@ -14,10 +14,16 @@ export const Auth = {
       const response = await GZAPI.post("/api/login", data);
       return response.data; // response.data 반환
     } catch (err) {
-      const errorMessage =
-        err.response && err.response.data && err.response.data.errorMessage
-          ? err.response.data.errorMessage
-          : "로그인 중 오류가 발생했습니다.";
+      if (err.response.status === 403) {
+        return { error: "제재 되었거나 탈퇴된 계정입니다." }
+      } else if(err.response.status === 410) {
+        return { error: "휴면 계정입니다." }
+      }
+
+        const errorMessage =
+          err.response && err.response.data && err.response.data.errorMessage
+            ? err.response.data.errorMessage
+            : "로그인 중 오류가 발생했습니다.";
       return { error: errorMessage };
     }
   },
@@ -29,8 +35,15 @@ export const Auth = {
       console.log("response.data  : ", response.data);
       return response.data;
     } catch (error) {
+      if (error.response.status === 403) {
+        return { error: "제재 되었거나 탈퇴된 계정입니다." }
+      } else if(error.response.status === 410) {
+        return { error: "휴면 계정입니다." }
+      }
       console.error("Error in Axios request:", error);
-      return error.response ? error.response.data : error.message;
+      const errorMessage = error.response ? error.response.data : error.message;
+
+      return { error: errorMessage };
     }
   },
   Google: async (code, state) => {
@@ -41,8 +54,15 @@ export const Auth = {
       console.log("response.data  : ", response.data);
       return response.data;
     } catch (error) {
+      if (error.response.status === 403) {
+        return { error: "제재 되었거나 탈퇴된 계정입니다." }
+      } else if(error.response.status === 410) {
+        return { error: "휴면 계정입니다." }
+      }
       console.error("Error in Axios request:", error);
-      return error.response ? error.response.data : error.message;
+      const errorMessage = error.response ? error.response.data : error.message;
+
+      return { error: errorMessage };
     }
   },
   Kakao: async (code, state) => {
@@ -53,8 +73,15 @@ export const Auth = {
       console.log("response.data  : ", response.data);
       return response.data;
     } catch (error) {
+      if (error.response.status === 403) {
+        return { error: "제재 되었거나 탈퇴된 계정입니다." }
+      } else if(error.response.status === 410) {
+        return { error: "휴면 계정입니다." }
+      }
       console.error("Error in Axios request:", error);
-      return error.response ? error.response.data : error.message;
+      const errorMessage = error.response ? error.response.data : error.message;
+
+      return { error: errorMessage };
     }
   }
 };

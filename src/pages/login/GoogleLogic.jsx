@@ -7,6 +7,7 @@ export default function GoogleLogin() {
   const navigate = useNavigate();
   const { setIsLogin, setUserInfo } = AuthStore();
   const [hasRequested, setHasRequested] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (!hasRequested) {
@@ -36,6 +37,7 @@ export default function GoogleLogin() {
               }
             } else {
               console.error('로그인 실패:', response);
+              setErrorMessage(response.error);
             }
           })
           .catch((error) => {
@@ -48,6 +50,9 @@ export default function GoogleLogin() {
   return (
     <div>
       구글 로그인 처리 중...
+      {errorMessage && (
+        <div className="text-red-500 text-sm mt-2">{errorMessage}</div>
+      )}
     </div>
   );
 };
