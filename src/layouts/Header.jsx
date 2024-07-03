@@ -11,6 +11,7 @@ import { PencilIcon } from "@heroicons/react/24/outline";
 
 export default function LayoutHeader() {
   const { isLogin, statusLogout, statusLogin, setIsLogin } = AuthStore();
+  const memberNo = AuthStore((state) => state.userInfo.memberNo);
   const {
     isModalOpen,
     isRegisterModalOpen,
@@ -18,7 +19,6 @@ export default function LayoutHeader() {
     setIsRegisterModalOpen,
   } = ModalStore();
   const navigate = useNavigate();
-
   const [activeTab, setActiveTab] = useState(null);
   const borderRef = useRef();
 
@@ -71,7 +71,7 @@ export default function LayoutHeader() {
               onMouseEnter={handleTabHover}
               onMouseLeave={handleTabLeave}
               className="hover:text-red-600 px-5"
-              to="/"
+              to={`/party/${memberNo}`}
             >
               파티
             </Link>
@@ -86,6 +86,7 @@ export default function LayoutHeader() {
             </Link>
           </div>
           <button
+            type="button"
             onClick={() => navigate("/board/list")}
             className="flex items-center bg-red-400 text-white px-4 py-2 rounded-md hover:bg-red-600 whitespace-nowrap"
           >
@@ -97,6 +98,7 @@ export default function LayoutHeader() {
             {isLogin ? (
               <div className="flex items-center whitespace-nowrap">
                 <button
+                  type="button"
                   onClick={() => navigate("/board/write/:memberNo")}
                   className="flex items-center bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-black whitespace-nowrap"
                 >
@@ -107,6 +109,7 @@ export default function LayoutHeader() {
                   <button
                     onClick={toggleDropdown}
                     className="p-2 text-black rounded"
+                    type="button"
                   >
                     <UserCircleIcon className="w-10 h-10 text-gray-500" />
                   </button>
@@ -119,6 +122,7 @@ export default function LayoutHeader() {
             ) : (
               <div className="flex items-center whitespace-nowrap">
                 <button
+                  type="button"
                   onClick={() => setIsModalOpen(true)}
                   className="text-[14px] bg-white text-gray-500 px-2 py-1 rounded-lg hover:bg-gray-200"
                 >
@@ -126,6 +130,7 @@ export default function LayoutHeader() {
                 </button>
                 <span className="text-[10px] text-blue-500 px-1">/</span>
                 <button
+                  type="button"
                   onClick={() => setIsRegisterModalOpen(true)}
                   className="text-[14px] bg-white text-gray-500 px-2 py-1 rounded-lg hover:bg-gray-200"
                 >
