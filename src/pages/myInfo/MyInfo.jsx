@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import LocationSelect from "../../components/page/myInfo/LocationSelect";
 import ChangePassword from "../../components/page/myInfo/PasswordUpdate";
 import AlarmSettings from "../../components/page/myInfo/AlarmSelect";
-import SaveButton from "../../components/page/myInfo/SubmitButton";
 import SetNickname from "../../components/page/myInfo/NickName";
 import { ChangeUserInfo, SaveUserData } from "../../utils/repository";
 import Phone from "../../components/page/myInfo/Phone";
+import DeleteButton from "../../components/page/myInfo/DeleteButton";
 
 /**
  * 내 정보 컴포넌트 집합
@@ -72,7 +72,7 @@ export default function MyInfo({ memberNo }) {
         </div>
         <AlarmSettings memberNo={memberNo} />
         <div className="flex justify-end mt-4">
-          <SaveButton userData={userData} onClick={handleSave} />
+          <DeleteButton onClick={handleSave} />
         </div>
       </div>
     </div>

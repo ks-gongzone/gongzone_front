@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { GetNickname } from "../../../utils/repository";
+import { GetNickname, UpdateNickname } from "../../../utils/repository";
 
 /**
  * 닉네임 상태 관리 컴포넌트
  * @date: 2024-06-17
- * @last: 2024-06-21
+ * @last: 2024-07-02
+ * @수정내용: 데이터 저장 버튼 추가
  */
 export default function SetNickname({ memberNo }) {
   const [nickname, setNickname] = useState("");
@@ -26,6 +27,17 @@ export default function SetNickname({ memberNo }) {
     setNickname(e.target.value);
   };
 
+  const handleSaveNickname = () => {
+    UpdateNickname(memberNo, nickname)
+      .then(() => {
+        console.log("닉네임 저장 성공");
+        alert(`${nickname}으로 변경 완료`);
+      })
+      .catch((error) => {
+        console.error("닉네임 수정 오류", error);
+      });
+  };
+
   if (loading) return <div>Loading...</div>;
 
   return (
@@ -37,6 +49,14 @@ export default function SetNickname({ memberNo }) {
         value={nickname}
         onChange={changeNickname}
       />
+      <div className="mt-2 flex justify-end">
+        <button
+          onClick={handleSaveNickname}
+          className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
+        >
+          닉네임 저장
+        </button>
+      </div>
     </div>
   );
 }
