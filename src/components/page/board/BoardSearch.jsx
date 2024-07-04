@@ -11,14 +11,16 @@ export default function BoardSearch() {
   });
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
+
   const clickSearch = async () => {
     try {
-      const response = await GZAPI.post("/board/list", formData);
+      const response = await GZAPI.post("/api/boards/list", formData);
       console.log(response.data);
       console.log(response);
     } catch (error) {
