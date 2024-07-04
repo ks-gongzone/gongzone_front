@@ -11,18 +11,18 @@ import BoardList from "../pages/boardList/Index";
 import BoardWrite from "../pages/boardWrite/Index";
 
 import Register from "../pages/login/Register";
-import MovingPoint from "../pages/myPage/MovingPoint";
 import NaverLogin from "../pages/login/NaverLogic";
 import GoogleLogin from "../pages/login/GoogleLogic";
 import KakaoLogin from "../pages/login/KakaoLogic";
 
-import MyPage from "../pages/myPage/MovingPoint";
+import MyPage from "../pages/myPage/MyPage";
 import Announce from "../pages/announce/Index";
 import AnnounceDetail from "../pages/anoounceDetail/Index";
 import Admin from "../admin/pages/Index";
 import AdminLogin from "../admin/pages/AdminLogin";
 import PartyDetail from "../pages/partyDetail/Index";
 import PartyList from "../pages/partyList/Index";
+import { BlockUser, MyInfo, MyParty, Follow, Board } from "../pages/myPage/Index";
 
 export default createBrowserRouter([
   {
@@ -33,7 +33,23 @@ export default createBrowserRouter([
     ),
     children: [
       { path: "/", element: <Home /> },
-      { path: "/myPage", element: <MyPage /> },
+      { 
+        path: "/myPage",
+        element: <MyPage />,
+        children: [
+          { path: "myInfo", element: <MyInfo />},
+          { path: "myParty", element: <MyParty />},
+          { path: "myBoard", element: <Board />},
+          { path: "blockUser", element: <BlockUser />},
+          { path: "myFollow", element: <Follow />},
+
+          // point
+          { path: "point", element: <Point /> },
+          { path: "point/history", element: <PointHistory /> },
+          { path: "point/charge", element: <PointCharge /> },
+          { path: "point/withdraw", element: <PointWithdraw /> },
+        ],
+      },
 
       { path: "/party/detail/:id", element: <PartyDetail /> },
       { path: "/party/:id", element: <PartyList /> },
@@ -46,11 +62,6 @@ export default createBrowserRouter([
       { path: "/announce", element: <Announce /> },
       { path: "/announce/detail", element: <AnnounceDetail /> },
 
-      // point
-      { path: "/point", element: <Point /> },
-      { path: "/point/history", element: <PointHistory /> },
-      { path: "/point/charge", element: <PointCharge /> },
-      { path: "/point/withdraw", element: <PointWithdraw /> },
     ],
   },
   { path: "/_admin", element: <AdminLogin /> },

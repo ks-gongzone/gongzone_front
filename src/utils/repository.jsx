@@ -293,7 +293,6 @@ export const AnnounceAPI = {
   },
 };
 
-
 export const MemberAPI = {
   Register: async (data) => {
     return GZAPI.post("/api/register", data)
