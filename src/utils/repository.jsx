@@ -276,6 +276,24 @@ export const GetPhone = (memberNo) => {
   });
 };
 
+/**
+ * @작성자: 한동환
+ * @내용: 공지사항 type_code값에 따라 다른 통신
+ */
+export const AnnounceAPI = {
+  getAnnouncements: async (page = 1, size = 10, type = "") => {
+    const params = new URLSearchParams({ page, size });
+    if (type) params.append("type", type);
+    return GZAPI.get(`/api/announce?${params.toString()}`)
+      .then((res) => res.data)
+      .catch((err) => {
+        console.error("Error fetching announcements:", err);
+        throw err;
+      });
+  },
+};
+
+
 export const MemberAPI = {
   Register: async (data) => {
     return GZAPI.post("/api/register", data)
