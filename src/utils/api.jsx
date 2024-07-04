@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const GZAPI = axios.create({
-  baseURL: "http://localhost:8088/", // API의 기본 URL을 설정
+  baseURL: process.env.REACT_APP_API_URL, // API의 기본 URL을 설정
   headers: {
     "Content-Type": "application/json",
   },
@@ -11,17 +11,17 @@ const GZAPI = axios.create({
 // const Token = window.localStorage.getItem("accessToken") || null;
 // login token
 GZAPI.interceptors.request.use(
-  (config) => {
-    const token = window.localStorage.getItem("accessToken");
-    if (token) {
-      //console.log(token);
-      config.headers["Authorization"] = `Bearer ${token}`;
+    (config) => {
+      const token = window.localStorage.getItem("accessToken");
+      if (token) {
+        //console.log(token);
+        config.headers["Authorization"] = `Bearer ${ token }`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
     }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
 );
 
 // if (Token) {
@@ -29,20 +29,20 @@ GZAPI.interceptors.request.use(
 // }
 
 GZAPI.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    //console.log(error);
-    if (error.response) {
-      if (error.response.status === 401) {
-        window.localStorage.removeItem("accessToken");
-        const url = window.location.href;
-        window.localStorage.setItem("redirect", url);
-        //window.location.href = "/";
+    (response) => response,
+    (error) => {
+      //console.log(error);
+      if (error.response) {
+        if (error.response.status === 401) {
+          window.localStorage.removeItem("accessToken");
+          const url = window.location.href;
+          window.localStorage.setItem("redirect", url);
+          //window.location.href = "/";
+        }
       }
+      // error.response -> error로 변경
+      return Promise.reject(error);
     }
-    // error.response -> error로 변경
-    return Promise.reject(error);
-  }
 );
 
 export default GZAPI;
