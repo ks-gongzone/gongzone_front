@@ -5,16 +5,16 @@ import State from "../../utils/state/State";
 import PointInnerSection from "../../components/page/point/PointInnerSection";
 import { Link } from "react-router-dom";
 
-export default function PointHistory({ pointNo }) {
-  const histories = State("pointHistories", []);
+export default function PointDetail({ pointNo, historyNo }) {
+  const pointHistory = State("pointHistory", []);
 
   useEffect(() => {
     (async () => {
-      const url = `/api/members/${ pointNo }/point/history`;
+      const url = `/api/members/${ pointNo }/point/history/${ historyNo }`;
       const response = await GZAPI.get(url);
       const result = [...response.data.result];
       console.log(result);
-      histories.set(result);
+      pointHistory.set(result);
     })();
   }, []);
 
@@ -34,7 +34,7 @@ export default function PointHistory({ pointNo }) {
             <TableHeader width="w-[16%]">변동후</TableHeader>
             <TableHeader width="w-[12%]">상태</TableHeader>
           </div>
-          { histories.value.map((history, index) => {
+          { pointHistory.value.map((history, index) => {
             return <PointHistoryRow key={ index } pointHistory={ history } />;
           }) }
         </div>

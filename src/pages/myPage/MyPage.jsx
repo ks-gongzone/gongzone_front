@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import MypageSidebar from "../../components/page/myInfo/MyPageSidebar";
 import AuthStore from "../../utils/zustand/AuthStore";
-import { MyInfo, MyParty, BlockUser, Board, Follow } from "./Index"
-import { Point } from "../point/Index";
+import { BlockUser, Board, Follow, MyInfo, MyParty } from "./Index"
+import { Point } from "../point";
 
 /**
  * 개별 토글 스위치 컴포넌트
