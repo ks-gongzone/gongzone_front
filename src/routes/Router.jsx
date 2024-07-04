@@ -22,7 +22,7 @@ import Admin from "../admin/pages/Index";
 import AdminLogin from "../admin/pages/AdminLogin";
 import PartyDetail from "../pages/partyDetail/Index";
 import PartyList from "../pages/partyList/Index";
-import { BlockUser, MyInfo, MyParty, Follow } from "../pages/myPage/Index";
+import { BlockUser, MyInfo, MyParty, Follow, Board } from "../pages/myPage/Index";
 
 export default createBrowserRouter([
   {
@@ -39,7 +39,7 @@ export default createBrowserRouter([
         children: [
           { path: "myInfo", element: <MyInfo />},
           { path: "myParty", element: <MyParty />},
-          { path: "myBoard", element: <MyBoard />},
+          { path: "myBoard", element: <Board />},
           { path: "blockUser", element: <BlockUser />},
           { path: "myFollow", element: <Follow />},
 
