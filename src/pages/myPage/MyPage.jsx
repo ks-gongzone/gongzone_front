@@ -12,7 +12,7 @@ import { Point } from "../point/Index";
  * @변경내용: 화면송출 형식변경 (useState로 상태관리 -> useNavigate 링크로 전환)
  */
 export default function MyPage() {
-  const [activeTab, setActiveTab] = useState("myInfo");
+  const [activeTab, setActiveTab] = useState("");
   const { userInfo, isLogin } = AuthStore();
   const navigate = useNavigate();
   const location = useLocation(); // URL 정보 전달위해 사용
@@ -23,6 +23,10 @@ export default function MyPage() {
       navigate("/");
     } else {
       const path = location.pathname.split("/")[2];
+      if (!path) {
+        navigate("/myPage/myInfo");
+        setActiveTab("myInfo");
+      }
       setActiveTab(path);
     }
   }, [location.pathname, isLogin, navigate]);
