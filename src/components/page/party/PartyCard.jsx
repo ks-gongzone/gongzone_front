@@ -59,6 +59,7 @@ export default function PartyCard({
           )}
           <div className="relative" ref={dropdownRef}>
             <button
+              type="button"
               onClick={toggleDropdown}
               className="font-bold text-gray-500 text-sm focus:outline-none"
             >
@@ -71,22 +72,26 @@ export default function PartyCard({
                   role="menu"
                   aria-orientation="vertical"
                   aria-labelledby="options-menu"
+                  type="button"
                 >
                   <button
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                     role="menuitem"
+                    type="button"
                   >
                     쪽지보내기
                   </button>
                   <button
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                     role="menuitem"
+                    type="button"
                   >
                     차단하기
                   </button>
                   <button
                     className="block px-4 py-2 text-sm text-red-700 hover:bg-gray-100 w-full text-left"
                     role="menuitem"
+                    type="button"
                   >
                     신고하기
                   </button>

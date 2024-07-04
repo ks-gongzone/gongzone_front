@@ -1,8 +1,12 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import LayoutDefault from "../layouts/Default";
 import Home from "../pages/home/Index";
-import Party from "../pages/party/Index";
-import { Point, PointCharge, PointHistory, PointWithdraw } from "../pages/point/Index";
+import {
+  Point,
+  PointCharge,
+  PointHistory,
+  PointWithdraw,
+} from "../pages/point/Index";
 import BoardList from "../pages/boardList/Index";
 import BoardWrite from "../pages/boardWrite/Index";
 
@@ -17,6 +21,8 @@ import Announce from "../pages/announce/Index";
 import AnnounceDetail from "../pages/anoounceDetail/Index";
 import Admin from "../admin/pages/Index";
 import AdminLogin from "../admin/pages/AdminLogin";
+import PartyDetail from "../pages/partyDetail/Index";
+import PartyList from "../pages/partyList/Index";
 
 export default createBrowserRouter([
   {
@@ -29,7 +35,8 @@ export default createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/myPage", element: <MyPage /> },
 
-      { path: "/party/accept/:id", element: <Party /> },
+      { path: "/party/detail/:id", element: <PartyDetail /> },
+      { path: "/party/:id", element: <PartyList /> },
       { path: "/board/list", element: <BoardList /> },
       { path: "/board/write/:memberNo", element: <BoardWrite /> },
       { path: "/register", element: <Register /> },
