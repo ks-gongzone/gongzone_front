@@ -41,10 +41,12 @@ export default function AnnounceItems({ items, totalPages, currentPage, onPageCh
               </li>
             ))}
           </ul>
+          { /*
           <div className="flex justify-between p-4">
-            <div>Total Pages: {totalPages}</div>
-            <div>Current Page: {currentPage}</div>
+            <div>전체 페이지: {totalPages}</div>
+            <div>현재 페이지: {currentPage}</div>
           </div>
+          */ }
           <div className="flex justify-center p-4">
             {Array.from({ length: totalPages }, (_, index) => (
               <button
