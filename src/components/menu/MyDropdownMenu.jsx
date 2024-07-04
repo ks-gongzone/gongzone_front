@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthStore from "../../utils/zustand/AuthStore";
 import sample1 from "../../assets/images/sample1.PNG";
@@ -5,13 +6,33 @@ import sample1 from "../../assets/images/sample1.PNG";
 export default function MyDropdownMenu({ isOpen, onClose }) {
   const { statusLogout } = AuthStore();
   const navigate = useNavigate();
+  const dropdownRef = useRef(null);
 
   const handleLogout = () => {
     statusLogout();
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, onClose]);
+
   return (
     <div
+      ref={dropdownRef}
       className={`absolute right-0 mt-2 w-[20em] bg-white rounded-md shadow-lg z-20 ${
         isOpen ? "block" : "hidden"
       }`}
@@ -19,6 +40,7 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
       <div className="absolute top-[-0.5rem] right-[1.5rem] w-0 h-0 border-l-8 border-l-transparent border-r-8 border-r-transparent border-b-8 border-b-white"></div>
       <div className="flex justify-end w-full">
         <button
+          type="button"
           className="text-[13px] rounded-xl bg-gray-400 text-white mt-3 mr-3 py-1 px-4"
           onClick={handleLogout}
         >
@@ -74,22 +96,32 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
       <div className="px-8 pt-8">
         <div className="font-semibold text-gray-900">신규 알림 (2)</div>
         <div className="mt-2">
-          <button className="w-full text-left text-gray-500 break-words overflow-hidden">
+          <button
+            type="button"
+            className="w-full text-left text-gray-500 break-words overflow-hidden"
+          >
             [쪽지] 안녕하세요
           </button>
         </div>
         <div className="mt-2">
-          <button className="w-full text-left text-gray-500 break-words overflow-hidden">
+          <button
+            type="button"
+            className="w-full text-left text-gray-500 break-words overflow-hidden"
+          >
             [공지] 공지사항
           </button>
         </div>
         <div className="mt-2">
-          <button className="w-full text-left text-blue-500 text-[12px]">
+          <button
+            type="button"
+            className="w-full text-left text-blue-500 text-[12px]"
+          >
             이 외 0개의 메시지가 있습니다.
           </button>
         </div>
       </div>
       <button
+        type="button"
         className="w-full text-right text-[13px] mt-4 pr-4 text-red-500"
         onClick={onClose}
       >
