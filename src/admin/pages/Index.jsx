@@ -3,6 +3,7 @@ import { useState } from "react";
 import AdminMember from "./AdminMember";
 import AuthStore from "../../utils/zustand/AuthStore";
 import { useNavigate } from "react-router-dom";
+import AdminAnnounce from "../components/announce/AdminAnnounce";
 
 export default function Admin() {
   const [content, setContent] = useState({
@@ -52,7 +53,7 @@ export default function Admin() {
           {renderButton("board", "게시판관리", <div>게시판관리</div>)}
           {renderButton("party", "파티관리", <div>파티관리</div>)}
           {renderButton("report", "신고관리", <div>신고관리</div>)}
-          {renderButton("notice", "공지사항", <div>공지사항</div>)}
+          {renderButton("notice", "공지사항", <AdminAnnounce />)}
           {renderButton("etc", "기타", <div>기타</div>)}
         </div>
       </div>

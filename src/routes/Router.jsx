@@ -24,6 +24,8 @@ import PartyDetail from "../pages/partyDetail/Index";
 import PartyList from "../pages/partyList/Index";
 import { BlockUser, MyInfo, MyParty, Follow, Board } from "../pages/myPage/Index";
 
+import AdminWriteDetail from "../admin/pages/announce/AdminWriteDetail";
+
 export default createBrowserRouter([
   {
     element: (
@@ -60,10 +62,11 @@ export default createBrowserRouter([
       { path: "/google/callback", element: <GoogleLogin /> },
       { path: "/kakao/callback", element: <KakaoLogin /> },
       { path: "/announce", element: <Announce /> },
-      { path: "/announce/detail", element: <AnnounceDetail /> },
+      { path: "/announce/detail/:announceNo", element: <AnnounceDetail /> },
 
     ],
   },
   { path: "/_admin", element: <AdminLogin /> },
   { path: "/_admin/main", element: <Admin /> },
+  { path: "/_admin/announce/write", element: <AdminWriteDetail/> },
 ]);
