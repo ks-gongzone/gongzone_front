@@ -11,6 +11,9 @@ export const Auth = {
   Login: async (data) => {
     try {
       const response = await GZAPI.post("/api/login", data);
+      const { token, refreshToken } = response.data;
+      window.localStorage.setItem("accessToken", token);
+      window.localStorage.setItem("refreshToken", refreshToken);
       return response.data; // response.data 반환
     } catch (err) {
       if (err.response.status === 403) {
