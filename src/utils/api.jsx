@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const GZAPI = axios.create({
-  baseURL: process.env.REACT_APP_API_URL, // API의 기본 URL을 설정
+  baseURL: "http://localhost:8088/", // API의 기본 URL을 설정
   headers: {
     "Content-Type": "application/json",
   },
@@ -50,33 +50,44 @@ GZAPI.interceptors.response.use(
   async (error) => {
     const firstRequest = error.config;
 
-
     if (error.response && error.response.status === 401 && !firstRequest._retry) {
       firstRequest._retry = true;
 
-      const refreshToken = window.localStorage.getItem("refreshToken");
+      const tokenExpired = error.response.headers["token-expired"];
+      if (tokenExpired) {
+        console.log("tokenExpired 들어옴", tokenExpired);
+        const refreshToken = window.localStorage.getItem("refreshToken");
+        if (refreshToken) {
+          try {
+            console.log("Attempting to refresh token with refresh token: ", refreshToken);
+            const response = await axios.post('http://localhost:8088/api/refresh', {
+              refreshToken: refreshToken,
+            });
 
-      if (refreshToken) {
-        try {
-          const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/refresh`, {
-            refreshToken: refreshToken,
-          });
-
-          if (response.status === 200) {
-            const newAccessToken = response.data.newAccessToken;
-            window.localStorage.setItem("accessToken", newAccessToken);
-            firstRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-            return axios(firstRequest);
+            if (response.status === 200) {
+              const newAccessToken = response.data.newAccessToken;
+              console.log("리프레시 토큰 요청 성공", newAccessToken);
+              window.localStorage.setItem("accessToken", newAccessToken);
+              firstRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+              return axios(firstRequest);
+            } else {
+              console.error("리프레시 토큰 요청 실패", response);
+              handleLogout();
+            }
+          } catch (err) {
+            console.error("리프레시 토큰 요청 실패", err);
+            handleLogout();
           }
-        } catch (err) {
-          console.error("리프레시 토큰 요청 실패", err);
-          // 토큰이 유효하지 않거나 다른 이유로 실패한 경우, 사용자 로그아웃 처리
+        } else {
           handleLogout();
         }
-      } else {
-        // 리프레시 토큰이 없는 경우, 사용자 로그아웃 처리
-        handleLogout();
       }
+    }
+
+    // 404 Not Found 처리
+    if (error.response && error.response.status === 404) {
+      console.error("404 Not Found", error.response);
+      window.location.href = "/404";
     }
 
     return Promise.reject(error);

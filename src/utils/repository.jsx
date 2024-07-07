@@ -11,9 +11,13 @@ export const Auth = {
   Login: async (data) => {
     try {
       const response = await GZAPI.post("/api/login", data);
-      const { token, refreshToken } = response.data;
+      const { token, refreshToken, tokenExpiresIn } = response.data;
+      console.log("Login response data: ", response.data);
+      console.log("Login successful. Access token expires at: ", new Date(tokenExpiresIn));
+
       window.localStorage.setItem("accessToken", token);
       window.localStorage.setItem("refreshToken", refreshToken);
+      window.localStorage.setItem("tokenExpiresIn", tokenExpiresIn);
       return response.data; // response.data 반환
     } catch (err) {
       if (err.response.status === 403) {
