@@ -6,13 +6,17 @@ import PartyListCard from "../../components/page/party/PartyListCard";
 import { Party } from "../../utils/repository";
 import { useEffect, useState } from "react";
 import AuthStore from "../../utils/zustand/AuthStore";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function PartyList() {
+  const { id } = useParams(); // URL 파라미터에서 ID 가져오기
   const [data, setData] = useState([]);
   const memberNo = AuthStore((state) => state.userInfo.memberNo);
+  const navigate = useNavigate();
+  const baseURL = "http://localhost:8088";
 
   const fetch = async () => {
-    const detailData = await Party.PartyAccept(memberNo);
+    const detailData = await Party.PartyAccept(id);
     const responseData = Array.isArray(detailData.data)
       ? detailData.data
       : [detailData.data]; // 배열로 변환
@@ -21,10 +25,14 @@ export default function PartyList() {
   };
 
   useEffect(() => {
-    if (memberNo) {
+    if (id) {
       fetch();
     }
-  }, [memberNo]);
+  }, [id]);
+
+  const handleCardClick = (partyNo) => {
+    navigate(`/party/detail/${memberNo}`, { state: { partyNo, data } });
+  };
 
   return (
     <div className="w-[65em] mx-auto mb-10 mt-14">
@@ -34,9 +42,9 @@ export default function PartyList() {
       <div className="grid grid-cols-3 gap-4">
         {data.length > 0 ? (
           data.map((e) => (
-            <div key={e.partyNo}>
+            <div key={e.partyNo} onClick={() => handleCardClick(e.partyNo)}>
               <PartyListCard
-                img={sample1}
+                img={`${baseURL}${e.img}`}
                 desc={e.boardBody}
                 title={e.boardTitle}
                 id={e.partyNo}
