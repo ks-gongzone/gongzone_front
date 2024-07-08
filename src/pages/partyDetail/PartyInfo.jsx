@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Party } from "../../utils/repository";
 import PartyParticipant from "./PartyParticipant";
 import PartyRequest from "./PartyRequest";
+import "./PartyAnimation.css"; // 애니메이션 스타일 정의
 
 export default function PartyDetail() {
   const { id: memberNo } = useParams();
@@ -21,7 +22,7 @@ export default function PartyDetail() {
       : [detailData.data];
     setData(responseData);
     if (!partyNo && responseData.length > 0) {
-      setPartyNo(responseData[0].partyNo); // 기본값 설정
+      setPartyNo(responseData[0].partyNo);
     }
     const partyDetail = responseData.find((party) => party.partyNo === partyNo);
     setDetail(partyDetail);
@@ -42,7 +43,7 @@ export default function PartyDetail() {
     }
   }, [partyNo, navigate, memberNo]);
 
-  console.log(detail);
+  console.log("Detail:", detail);
 
   const formatDate = (datetime) => {
     const date = new Date(datetime);
@@ -56,10 +57,30 @@ export default function PartyDetail() {
     return <div>Loading...</div>;
   }
 
+  const handleAccept = async (memberNo, partyNo) => {
+    try {
+      await Party.HandleMember(memberNo, partyNo, "S060202");
+      await fetch();
+    } catch (error) {
+      console.error("Accept error:", error);
+    }
+  };
+
+  const handleKick = async (memberNo, partyNo) => {
+    try {
+      await Party.HandleMember(memberNo, partyNo, "S060205");
+      await fetch();
+    } catch (error) {
+      console.error("Kick error:", error);
+    }
+  };
+
   const participants = detail.participants || [];
   const requestMembers = (detail.requestMember || []).filter(
-    (member) => member.requestStatus !== "S060202"
+    (member) => member.requestStatus === "S060201"
   );
+
+  console.log("Request Members:", requestMembers);
 
   return (
     <div className="w-[65em] mx-auto mb-10 mt-14">
@@ -88,8 +109,9 @@ export default function PartyDetail() {
       <PartyParticipant
         participants={participants}
         partyLeader={detail.partyLeader}
+        onKick={handleKick}
       />
-      <PartyRequest requestMembers={requestMembers} />
+      <PartyRequest requestMembers={requestMembers} onAccept={handleAccept} />
     </div>
   );
 }

@@ -13,7 +13,10 @@ export const Auth = {
       const response = await GZAPI.post("/api/login", data);
       const { token, refreshToken, tokenExpiresIn } = response.data;
       console.log("Login response data: ", response.data);
-      console.log("Login successful. Access token expires at: ", new Date(tokenExpiresIn));
+      console.log(
+        "Login successful. Access token expires at: ",
+        new Date(tokenExpiresIn)
+      );
 
       window.localStorage.setItem("accessToken", token);
       window.localStorage.setItem("refreshToken", refreshToken);
@@ -21,30 +24,35 @@ export const Auth = {
       return response.data; // response.data 반환
     } catch (err) {
       if (err.response.status === 403) {
-        return { error: "제재 되었거나 탈퇴된 계정입니다." }
-      } else if(err.response.status === 410) {
-        return { error: "휴면 계정입니다." }
+        return { error: "제재 되었거나 탈퇴된 계정입니다." };
+      } else if (err.response.status === 410) {
+        return { error: "휴면 계정입니다." };
       }
 
-        const errorMessage =
-          err.response && err.response.data && err.response.data.errorMessage
-            ? err.response.data.errorMessage
-            : "로그인 중 오류가 발생했습니다.";
+      const errorMessage =
+        err.response && err.response.data && err.response.data.errorMessage
+          ? err.response.data.errorMessage
+          : "로그인 중 오류가 발생했습니다.";
       return { error: errorMessage };
     }
   },
   Naver: async (code, state) => {
     try {
-      console.log("Sending Axios request with code:", code, "and state:", state);
-      const response = await GZAPI.post('/api/naver/token', { code, state });
+      console.log(
+        "Sending Axios request with code:",
+        code,
+        "and state:",
+        state
+      );
+      const response = await GZAPI.post("/api/naver/token", { code, state });
       console.log("response  : ", response);
       console.log("response.data  : ", response.data);
       return response.data;
     } catch (error) {
       if (error.response.status === 403) {
-        return { error: "제재 되었거나 탈퇴된 계정입니다." }
-      } else if(error.response.status === 410) {
-        return { error: "휴면 계정입니다." }
+        return { error: "제재 되었거나 탈퇴된 계정입니다." };
+      } else if (error.response.status === 410) {
+        return { error: "휴면 계정입니다." };
       }
       console.error("Error in Axios request:", error);
       const errorMessage = error.response ? error.response.data : error.message;
@@ -54,16 +62,21 @@ export const Auth = {
   },
   Google: async (code, state) => {
     try {
-      console.log("Sending Axios request with code:", code, "and state:", state);
-      const response = await GZAPI.post('/api/google/token', { code, state });
+      console.log(
+        "Sending Axios request with code:",
+        code,
+        "and state:",
+        state
+      );
+      const response = await GZAPI.post("/api/google/token", { code, state });
       console.log("response  : ", response);
       console.log("response.data  : ", response.data);
       return response.data;
     } catch (error) {
       if (error.response.status === 403) {
-        return { error: "제재 되었거나 탈퇴된 계정입니다." }
-      } else if(error.response.status === 410) {
-        return { error: "휴면 계정입니다." }
+        return { error: "제재 되었거나 탈퇴된 계정입니다." };
+      } else if (error.response.status === 410) {
+        return { error: "휴면 계정입니다." };
       }
       console.error("Error in Axios request:", error);
       const errorMessage = error.response ? error.response.data : error.message;
@@ -73,23 +86,28 @@ export const Auth = {
   },
   Kakao: async (code, state) => {
     try {
-      console.log("Sending Axios request with code:", code, "and state:", state);
-      const response = await GZAPI.post('/api/kakao/token', { code, state });
+      console.log(
+        "Sending Axios request with code:",
+        code,
+        "and state:",
+        state
+      );
+      const response = await GZAPI.post("/api/kakao/token", { code, state });
       console.log("response  : ", response);
       console.log("response.data  : ", response.data);
       return response.data;
     } catch (error) {
       if (error.response.status === 403) {
-        return { error: "제재 되었거나 탈퇴된 계정입니다." }
-      } else if(error.response.status === 410) {
-        return { error: "휴면 계정입니다." }
+        return { error: "제재 되었거나 탈퇴된 계정입니다." };
+      } else if (error.response.status === 410) {
+        return { error: "휴면 계정입니다." };
       }
       console.error("Error in Axios request:", error);
       const errorMessage = error.response ? error.response.data : error.message;
 
       return { error: errorMessage };
     }
-  }
+  },
 };
 
 export const User = {
@@ -108,6 +126,14 @@ export const User = {
 export const Party = {
   PartyAccept: async (id) => {
     return GZAPI.get(`/api/party/accept/${id}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  HandleMember: async (id, partyNo, requestStatus) => {
+    return GZAPI.post(`api/party/accept/${id}/Status`, {
+      partyNo: partyNo,
+      statusCode: requestStatus,
+    })
       .then((res) => res)
       .catch((err) => err);
   },
@@ -198,10 +224,12 @@ export const GetNickname = (memberNo) => {
 };
 
 export const UpdateNickname = (memberNo, nickname) => {
-  return GZAPI.post(`/api/members/${memberNo}/nickname`, { newMemberNick: nickname })
-    .then(response => response.data)
-    .catch(error => {
-      console.error("닉네임 업데이트 중 오류 발생", error)
+  return GZAPI.post(`/api/members/${memberNo}/nickname`, {
+    newMemberNick: nickname,
+  })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("닉네임 업데이트 중 오류 발생", error);
       throw error;
     });
 };
@@ -247,40 +275,41 @@ export const UpdatePassword = (memberNo, payload) => {
 
 export const GetAlertSetting = (memberNo) => {
   return GZAPI.get(`/api/members/${memberNo}/alerts`)
-  .then((response) => {
-    console.log('받은데이터', response.data);
-    return response.data})
-  .catch((error) => {
-    console.error("알림 정보 로드 중 에러 발생", error);
-    throw error;
-  });
+    .then((response) => {
+      console.log("받은데이터", response.data);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error("알림 정보 로드 중 에러 발생", error);
+      throw error;
+    });
 };
 
 export const UpdateAlertSetting = (memberNo, alertData) => {
   return GZAPI.post(`/api/members/${memberNo}/alerts/update`, alertData)
-  .then((response) => response.data)
-  .catch((error) => {
-    console.error("알림 정보 로드 중 에러 발생", error);
-    throw error;
-  });
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("알림 정보 로드 중 에러 발생", error);
+      throw error;
+    });
 };
 
 export const InsertAlertSetting = (memberNo, alertData) => {
   return GZAPI.post(`/api/members/${memberNo}/alerts/insert`, alertData)
-  .then((response) => response.data)
-  .catch((error) => {
-    console.error("알림 정보 로드 중 에러 발생", error);
-    throw error;
-  });
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("알림 정보 로드 중 에러 발생", error);
+      throw error;
+    });
 };
 
 export const GetPhone = (memberNo) => {
   return GZAPI.get(`/api/members/${memberNo}/phone`)
-  .then((response) => response.data)
-  .catch((error) => {
-    console.error("핸드폰 번호 조회 중 에러 발생", error);
-    throw error;
-  });
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("핸드폰 번호 조회 중 에러 발생", error);
+      throw error;
+    });
 };
 
 /**
