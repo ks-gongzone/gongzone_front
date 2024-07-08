@@ -7,7 +7,8 @@ const AuthStore = create(
     (set) => ({
       isLogin: false,
       userInfo: {
-        token: null,
+        accessToken: null,
+        refreshToken: null,
         memberNo: null,
         pointNo: null,
       },
@@ -22,17 +23,19 @@ const AuthStore = create(
 
   statusLogin: async (data) => {
     const response = await Auth.Login(data);
-    if (response && response.accessToken) {
+    if (response && response.accessToken && response.refreshToken) {
       set({ isLogin: true });
       set((state) => ({
         userInfo: {
           ...state.userInfo,
-          token: response.accessToken,
+          accessToken: response.accessToken,
+          refreshToken: response.refreshToken,
           memberNo: response.memberNo,
           pointNo: response.pointNo,
         },
       }));
       window.localStorage.setItem("accessToken", response.accessToken);
+      window.localStorage.setItem("refreshToken", response.refreshToken);
       return response;
     } else {
       return response;
@@ -41,16 +44,16 @@ const AuthStore = create(
 
   statusLogout: () => {
     window.localStorage.removeItem("accessToken");
-    //window.sessionStorage.removeItem("auth-storage");
+    window.localStorage.removeItem("refreshToken");
     set({ isLogin: false });
     set({
       userInfo: {
-        token: null,
+        accessToken: null,
+        refreshToken: null,
         memberNo: null,
         pointNo: null,
       },
     });
-    // 주스탠드 상태 리셋 (초기화)
     sessionStorage.clear();
     localStorage.clear();
   },
