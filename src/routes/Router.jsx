@@ -1,12 +1,7 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import LayoutDefault from "../layouts/Default";
 import Home from "../pages/home/Index";
-import {
-  Point,
-  PointCharge,
-  PointHistory,
-  PointWithdraw,
-} from "../pages/point/Index";
+import { Point, PointCharge, PointHistory, PointMain, PointWithdraw, } from "../pages/point/Index";
 import BoardList from "../pages/boardList/Index";
 import BoardWrite from "../pages/boardWrite/Index";
 
@@ -22,7 +17,7 @@ import Admin from "../admin/pages/Index";
 import AdminLogin from "../admin/pages/AdminLogin";
 import PartyDetail from "../pages/partyDetail/Index";
 import PartyList from "../pages/partyList/Index";
-import { BlockUser, MyInfo, MyParty, Follow, Board } from "../pages/myPage/Index";
+import { BlockUser, Board, Follow, MyInfo, MyParty } from "../pages/myPage/Index";
 
 export default createBrowserRouter([
   {
@@ -44,10 +39,16 @@ export default createBrowserRouter([
           { path: "myFollow", element: <Follow />},
 
           // point
-          { path: "point", element: <Point /> },
-          { path: "point/history", element: <PointHistory /> },
-          { path: "point/charge", element: <PointCharge /> },
-          { path: "point/withdraw", element: <PointWithdraw /> },
+          {
+            path: "point",
+            element: <Point />,
+            children: [
+              { path: "", element: <PointMain /> },
+              { path: "history", element: <PointHistory /> },
+              { path: "charge", element: <PointCharge /> },
+              { path: "withdraw", element: <PointWithdraw /> },
+            ]
+          },
         ],
       },
 
