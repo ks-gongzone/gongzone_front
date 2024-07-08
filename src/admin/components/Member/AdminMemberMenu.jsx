@@ -2,15 +2,20 @@ import { useState } from "react";
 import AdminMember from "../../pages/AdminMember";
 import BasicTapMenu from "../../../components/menu/BasicTapMenu";
 import AdminPunishModal from "./AdminPunishModal";
+import MemberPunish from "../../pages/member/MemberPunish";
+import MemberSleep from "../../pages/member/MemberSleep";
+import MemberQuit from "../../pages/member/MemberQuit";
+import MemberList from "../../pages/member/MemberList";
 
 export default function AdminMemberMenu() {
   const tabItems = [
-    { id: "dormant", label: "휴면 회원 관리" },
+    { id: "list", label: "전체 회원 관리" },
+    { id: "sleep", label: "휴면 회원 관리" },
     { id: "punish", label: "회원 제재 관리" },
-    { id: "report", label: "신고 회원 관리" },
+    { id: "quit", label: "탈퇴 회원 관리" },
   ];
 
-  const [activeTab, setActiveTab] = useState("dormant");
+  const [activeTab, setActiveTab] = useState("list");
   const [showModal, setShowModal] = useState(false);
   const [selectedReport, setSelectedReport] = useState(null);
 
@@ -39,9 +44,10 @@ export default function AdminMemberMenu() {
         />
       </div>
       <div className="p-4">
-        {activeTab === "dormant" && <div>휴면 회원 관리 내용</div>}
-        {activeTab === "punish" && <AdminMember openModal={openModal} />}
-        {activeTab === "report" && <div>신고 회원 관리 내용</div>}
+        {activeTab === "list" && <MemberList openModal={openModal} />}
+        {activeTab === "sleep" && <MemberSleep openModal={openModal} />}
+        {activeTab === "punish" && <MemberPunish openModal={openModal} />}
+        {activeTab === "quit" && <MemberQuit openModal={openModal} />}
       </div>
       {showModal && selectedReport && (
         <AdminPunishModal
