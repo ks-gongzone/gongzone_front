@@ -16,11 +16,11 @@ export default function AdminWriteDetail() {
   const memberNo = userInfo.memberNo;
   const navigete = useNavigate();
 
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-  const [type, setType] = useState("공지");
+  const [announceTitle, setAnnounceTitle] = useState("");
+  const [announceBody, setAnnounceBody] = useState("");
+  const [typeCode, setTypeCode] = useState("공지");
 
-  const adminAddr = "/_admin";
+  const adminAddr = "/_admin/main";
 
   // CKEditor 라이브러리 설정용
   const editorConfiguration = {
@@ -45,7 +45,7 @@ export default function AdminWriteDetail() {
   // 작성 내용 핸들러 함수
   const handleEditorChange = (e, editor) => {
     const data = editor.getData();
-    setBody(data);
+    setAnnounceBody(data);
   };
   
   const handleSubmit = () => {
@@ -54,7 +54,7 @@ export default function AdminWriteDetail() {
       navigete("/");
       return;
     }
-    AnnounceAPI.createAnnouncement({ title, body, type, memberNo })
+    AnnounceAPI.createAnnouncement({ announceTitle, announceBody, typeCode, memberNo })
       .then(response => {
         alert("공지사항이 성공적으로 작성되었습니다.");
         navigete(adminAddr);
@@ -72,9 +72,9 @@ export default function AdminWriteDetail() {
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">제목</label>
           <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            typeCode="text"
+            value={announceTitle}
+            onChange={(e) => setAnnounceTitle(e.target.value)}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
           />
         </div>
@@ -86,7 +86,7 @@ export default function AdminWriteDetail() {
               editorConfiguration,
               placeholder: "내용을 입력해주세요"
             }}
-            data={body}
+            data={announceBody}
             onChange={handleEditorChange}
             />
             <style jsx global>{`
@@ -99,13 +99,13 @@ export default function AdminWriteDetail() {
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">유형</label>
           <select
-            value={type}
-            onChange={(e) => setType(e.target.value)}
+            value={typeCode}
+            onChange={(e) => setTypeCode(e.target.value)}
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
           >
             <option value="공지">공지</option>
             <option value="FAQ">FAQ</option>
-            <option value="업데이트">업데이트</option>
+            <option value="프로모션">프로모션</option>
           </select>
         </div>
         <div className="flex justify-end">

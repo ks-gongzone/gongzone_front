@@ -1,10 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import AuthStore from "../../../utils/zustand/AuthStore";
+import { AnnounceAPI } from "../../../utils/repository";
 
 /**
- * @수정일: 2024-07-05
+ * @수정일: 2024-07-08
  * @내용: 로딩상태 추가 및 10개의 데이터씩 보여주는 로직
- * @수정내용: 관리자일때 글쓰기 버튼 활성화 추가
+ * @수정내용: sessionStorage사용하지 않고 Link에 announceNo를 담아 보내주도록 변경
  */
 export default function AnnounceItems({ items, totalPages, currentPage, onPageChange }) {
   // 관리자 계정 확인 작업
@@ -17,9 +18,12 @@ export default function AnnounceItems({ items, totalPages, currentPage, onPageCh
   }
 
   const handleItemClick = (announceNo) => {
-    sessionStorage.setItem("announceNo", announceNo);
-    navigate("/announce/detail");
-  }
+    console.log("클릭 annonuceNo: ", announceNo);
+    AnnounceAPI.incrementAnnounceViews(announceNo, navigate)
+      .catch((error) => {
+        console.log("조회수 증가 실패", error);
+      });
+  }  
 
   return (
     <div className="flex flex-col items-center box-border p-4">
@@ -29,9 +33,7 @@ export default function AnnounceItems({ items, totalPages, currentPage, onPageCh
             {items.map((item, index) => (
               <li
                 key={index}
-                className="flex justify-between p-4 border-b hover:bg-gray-100"
-                onClick={() => handleItemClick(item.announceNo)}
-              >
+                className="flex justify-between p-4 border-b hover:bg-gray-100">
                 <div className="flex items-center">
                   <div
                     className={`w-[5em] text-center px-2 py-1 rounded mr-2 ${
@@ -42,9 +44,15 @@ export default function AnnounceItems({ items, totalPages, currentPage, onPageCh
                         : 'bg-green-200'
                     }`}
                   >
+
                     {item.type}
                   </div>
-                  <span>{item.title}</span>
+                  <Link
+                    to={`/announce/detail/${item.announceNo}`}
+                    onClick={() => handleItemClick(item.announceNo)}
+                    >
+                      {item.title}
+                    </Link>
                 </div>
                 <div className="flex items-center">
                   <span className="mr-4">{item.date}</span>
@@ -72,7 +80,7 @@ export default function AnnounceItems({ items, totalPages, currentPage, onPageCh
                 <Link 
                   to="/_admin/announce/write"
                   className="bg-blue-500 text-white px-4 py-2 rounded mx-1"
-                  >
+                >
                   글쓰기
                 </Link>
               </div>
