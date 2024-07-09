@@ -7,6 +7,8 @@ export default function PartyParticipant({
   participants,
   partyLeader,
   onKick,
+  onLeave,
+  currentUser,
 }) {
   if (!participants || participants.length === 0) {
     return <div className="w-full text-center py-4">참가자가 없습니다.</div>;
@@ -24,7 +26,7 @@ export default function PartyParticipant({
         파티 참가자
       </div>
       <TransitionGroup className="grid grid-cols-3 gap-4">
-        {sortedParticipants.map((participant, index) => (
+        {sortedParticipants.map((participant) => (
           <CSSTransition
             key={participant.memberNo}
             timeout={500}
@@ -52,15 +54,21 @@ export default function PartyParticipant({
                   </div>
                 ) : (
                   <div className="flex text-xs pt-2">
-                    <button
-                      type="button"
-                      className="w-full mx-1 h-6 rounded-md bg-blue-300 hover:bg-blue-500 text-xs font-bold text-[white]"
-                      onClick={() =>
-                        onKick(participant.memberNo, participant.partyNo)
-                      }
-                    >
-                      강퇴하기
-                    </button>
+                    {participant.memberNo === currentUser ? (
+                      <button
+                        type="button"
+                        className="w-full mx-1 h-6 rounded-md bg-red-300 hover:bg-red-500 text-xs font-bold text-[white]"
+                        onClick={() =>
+                          onLeave(participant.memberNo, participant.partyNo)
+                        }
+                      >
+                        파티 탈퇴하기
+                      </button>
+                    ) : (
+                      <div className="w-full mx-1 h-6 rounded-md bg-gray-300 text-xs font-bold text-[black] text-center flex items-center justify-center">
+                        파티 신청자
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

@@ -137,6 +137,16 @@ export const Party = {
       .then((res) => res)
       .catch((err) => err);
   },
+  RequestJoin: async (id, partyNo, requestStatus, requestAmount) => {
+    return GZAPI.post(`api/party/accept/${id}/Status`, {
+      memberNo: id,
+      partyNo: partyNo,
+      statusCode: requestStatus,
+      requestAmount: requestAmount,
+    })
+      .then((res) => res)
+      .catch((err) => err);
+  },
 };
 
 export const Location = {

@@ -3,7 +3,14 @@ import PartyCard from "../../components/page/party/PartyCard";
 import sample1 from "../../assets/images/sample1.PNG";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-export default function PartyRequest({ requestMembers, onAccept }) {
+export default function PartyRequest({
+  requestMembers,
+  onAccept,
+  onRefuse,
+  onLeave,
+  partyLeader,
+  currentUser,
+}) {
   console.log("Request members in PartyRequest:", requestMembers);
 
   if (!requestMembers || requestMembers.length === 0) {
@@ -34,21 +41,48 @@ export default function PartyRequest({ requestMembers, onAccept }) {
                 <div className="flex justify-between mb-3 text-[#888888]"></div>
                 <hr className="w-full" />
                 <div className="flex text-xs pt-2">
-                  <button
-                    type="button"
-                    className="w-full mx-1 h-6 rounded-md bg-blue-300 hover:bg-blue-500 text-xs font-bold text-[white]"
-                    onClick={() =>
-                      onAccept(requestMember.memberNo, requestMember.partyNo)
-                    }
-                  >
-                    수락
-                  </button>
-                  <button
-                    type="button"
-                    className="w-full mx-1 h-6 rounded-md bg-red-300 hover:bg-red-500 text-xs font-bold text-[white]"
-                  >
-                    거절
-                  </button>
+                  {requestMember.memberNo === partyLeader ? (
+                    <>
+                      <button
+                        type="button"
+                        className="w-full mx-1 h-6 rounded-md bg-blue-300 hover:bg-blue-500 text-xs font-bold text-[white]"
+                        onClick={() =>
+                          onAccept(
+                            requestMember.memberNo,
+                            requestMember.partyNo
+                          )
+                        }
+                      >
+                        수락
+                      </button>
+                      <button
+                        type="button"
+                        className="w-full mx-1 h-6 rounded-md bg-blue-300 hover:bg-blue-500 text-xs font-bold text-[white]"
+                        onClick={() =>
+                          onRefuse(
+                            requestMember.memberNo,
+                            requestMember.partyNo
+                          )
+                        }
+                      >
+                        거절
+                      </button>
+                    </>
+                  ) : requestMember.memberNo === currentUser ? (
+                    <button
+                      type="button"
+                      className="w-full mx-1 h-6 rounded-md bg-red-300 hover:bg-red-500 text-xs font-bold text-[white]"
+                      onClick={() =>
+                        onLeave(requestMember.memberNo, requestMember.partyNo)
+                      }
+                    >
+                      신청 취소하기
+                    </button>
+                  ) : (
+                    <div className="w-full mx-1 h-6 rounded-md bg-gray-300 text-xs font-bold text-[black] text-center flex items-center justify-center">
+                      파티원
+                    </div>
+                  )}
                 </div>
               </div>
             </PartyCard>
