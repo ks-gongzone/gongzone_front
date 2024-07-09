@@ -41,7 +41,7 @@ export default function PartyRequest({
                 <div className="flex justify-between mb-3 text-[#888888]"></div>
                 <hr className="w-full" />
                 <div className="flex text-xs pt-2">
-                  {requestMember.memberNo === partyLeader ? (
+                  {currentUser === partyLeader ? (
                     <>
                       <button
                         type="button"
@@ -80,7 +80,7 @@ export default function PartyRequest({
                     </button>
                   ) : (
                     <div className="w-full mx-1 h-6 rounded-md bg-gray-300 text-xs font-bold text-[black] text-center flex items-center justify-center">
-                      파티원
+                      파티 신청자
                     </div>
                   )}
                 </div>

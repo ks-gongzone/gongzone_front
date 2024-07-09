@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import { Party } from "../../../utils/repository";
 
-export default function RequestModal({ isOpen, onClose, memberNo, partyNo }) {
+export default function RequestModal({
+  isOpen,
+  onClose,
+  memberNo,
+  partyNo,
+  remainAmount,
+}) {
   const [requestAmount, setRequestAmount] = useState(1);
 
   const handleSubmit = async () => {
-    const requestStatus = "S060201";
     try {
-      await Party.RequestJoin(memberNo, partyNo, requestStatus, requestAmount);
+      await Party.RequestJoin(memberNo, partyNo, "S060201", requestAmount);
       onClose();
     } catch (error) {
       console.error("Request join error:", error);
@@ -23,9 +28,13 @@ export default function RequestModal({ isOpen, onClose, memberNo, partyNo }) {
         <input
           type="number"
           value={requestAmount}
-          onChange={(e) => setRequestAmount(e.target.value)}
+          onChange={(e) => {
+            const value = Math.min(Math.max(e.target.value, 1), remainAmount);
+            setRequestAmount(value);
+          }}
           className="w-full border rounded p-2 mb-4"
           min="1"
+          max={remainAmount} // 입력 필드의 최대값을 remainAmount로 설정
         />
         <div className="flex justify-end">
           <button

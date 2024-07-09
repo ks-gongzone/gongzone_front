@@ -59,15 +59,21 @@ export default function PartyParticipant({
                         type="button"
                         className="w-full mx-1 h-6 rounded-md bg-red-300 hover:bg-red-500 text-xs font-bold text-[white]"
                         onClick={() =>
-                          onLeave(participant.memberNo, participant.partyNo)
+                          onKick(participant.memberNo, participant.partyNo)
                         }
                       >
                         파티 탈퇴하기
                       </button>
                     ) : (
-                      <div className="w-full mx-1 h-6 rounded-md bg-gray-300 text-xs font-bold text-[black] text-center flex items-center justify-center">
-                        파티 신청자
-                      </div>
+                      <button
+                        type="button"
+                        className="w-full mx-1 h-6 rounded-md bg-blue-300 hover:bg-blue-500 text-xs font-bold text-[white]"
+                        onClick={() =>
+                          onKick(participant.memberNo, participant.partyNo)
+                        }
+                      >
+                        강퇴하기
+                      </button>
                     )}
                   </div>
                 )}

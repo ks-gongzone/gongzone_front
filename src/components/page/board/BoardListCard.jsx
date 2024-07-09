@@ -21,7 +21,9 @@ export default function BoardListCard({
   };
 
   const handleCardClick = () => {
-    navigate(`/party/detail/${memberNo}/${partyNo}`);
+    navigate(`/party/detail/${memberNo}/${partyNo}`, {
+      state: { memberNo, partyNo },
+    });
   };
 
   return (

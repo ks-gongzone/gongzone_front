@@ -9,30 +9,26 @@ import RequestModal from "../../components/page/party/RequestModal";
 
 export default function PartyDetail() {
   const { id: memberNo, no: partyNoParam } = useParams();
-  const { state } = useLocation();
+  const location = useLocation();
   const navigate = useNavigate();
   const baseURL = "http://localhost:8088";
-  const [partyNo, setPartyNo] = useState(partyNoParam);
-  const [data, setData] = useState([]);
+  const [partyNo, setPartyNo] = useState(
+    partyNoParam || location.state?.partyNo
+  );
+  const [data, setData] = useState(location.state?.data || []);
   const [detail, setDetail] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const fetch = async () => {
     try {
-      const detailData = await Party.PartyAccept(memberNo);
-      const responseData = Array.isArray(detailData.data)
+      const detailData = await Party.PartyDetail(partyNo);
+      const responseData = detailData.data
         ? detailData.data
         : [detailData.data];
       setData(responseData);
 
-      const partyDetail = responseData.find(
-        (party) => party.partyNo === partyNo
-      );
-      setDetail(partyDetail);
-      if (!partyNo) {
-        setPartyNo(partyDetail.partyNo);
-      }
+      setDetail(responseData);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -41,12 +37,13 @@ export default function PartyDetail() {
   };
 
   useEffect(() => {
-    if (!partyNo) {
-      navigate(`/party`);
-    } else {
+    if (!detail) {
       fetch();
     }
-  }, [partyNo, memberNo]);
+  }, [partyNo]);
+
+  console.log(data);
+  console.log(detail);
 
   const formatDate = (datetime) => {
     const date = new Date(datetime);
@@ -93,11 +90,11 @@ export default function PartyDetail() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>; // 로딩 중일 때 로딩 메시지를 표시합니다.
   }
 
   if (!detail) {
-    return <div>Party not found</div>;
+    return <div>Party not found</div>; // detail 값이 없을 때 표시합니다.
   }
 
   const participants = detail.participants || [];
@@ -113,8 +110,9 @@ export default function PartyDetail() {
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
+  const closeModal = async () => {
     setIsModalOpen(false);
+    await fetch();
   };
 
   return (
@@ -158,7 +156,7 @@ export default function PartyDetail() {
         participants={participants}
         partyLeader={detail.partyLeader}
         onKick={handleKick}
-        onLeave={handleLeave}
+        onLeave={handleKick}
         currentUser={memberNo}
       />
       <PartyRequest
@@ -175,6 +173,7 @@ export default function PartyDetail() {
         onClose={closeModal}
         memberNo={memberNo}
         partyNo={partyNo}
+        remainAmount={detail.remainAmount}
       />
     </div>
   );
