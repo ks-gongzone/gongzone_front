@@ -1,31 +1,53 @@
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import AuthStore from "../../../utils/zustand/AuthStore";
 import GZAPI from "../../../utils/api";
 
-export default function BoardSearch() {
+export default function BoardSearch({ onSearch }) {
   const [formData, setFormData] = useState({
     location: "*",
     category: "*",
     content: "",
+    memberNo: "",
   });
+  
+  const memberNo = AuthStore((state) => state.userInfo.memberNo);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await GZAPI.post("/api/boards/list", {
+          location: "*",
+          category: "*",
+          content: "",
+          memberNo: memberNo,
+        });
+        // 응답 데이터를 상태에 반영하거나 처리할 수 있습니다.
+        onSearch(response.data);
+      } catch (error) {
+        console.error("초기 데이터 요청 중 오류 발생:", error);
+      }
+    };
+
+    fetchData();
+  }, [memberNo]);
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
+
   const clickSearch = async () => {
     try {
-      const response = await GZAPI.post("/board/list", formData);
-      console.log(response.data);
-      console.log(response);
+      const response = await GZAPI.post("/api/boards/list", formData);
+      onSearch(response.data);
     } catch (error) {
       console.error("Error during search request:", error);
     }
   };
-  const memberNo = AuthStore((state) => state.userInfo.memberNo);
 
   const cate = [
     { key: "c0", value: "*", label: "전체 카테고리" },

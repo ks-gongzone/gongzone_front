@@ -5,6 +5,7 @@ import {
   Point,
   PointCharge,
   PointHistory,
+  PointMain,
   PointWithdraw,
 } from "../pages/point/Index";
 import BoardList from "../pages/boardList/Index";
@@ -24,11 +25,13 @@ import PartyDetail from "../pages/partyDetail/Index";
 import PartyList from "../pages/partyList/Index";
 import {
   BlockUser,
+  Board,
+  Follow,
   MyInfo,
   MyParty,
-  Follow,
-  Board,
 } from "../pages/myPage/Index";
+
+import AdminWriteDetail from "../admin/pages/announce/AdminWriteDetail";
 
 export default createBrowserRouter([
   {
@@ -50,10 +53,16 @@ export default createBrowserRouter([
           { path: "myFollow", element: <Follow /> },
 
           // point
-          { path: "point", element: <Point /> },
-          { path: "point/history", element: <PointHistory /> },
-          { path: "point/charge", element: <PointCharge /> },
-          { path: "point/withdraw", element: <PointWithdraw /> },
+          {
+            path: "point",
+            element: <Point />,
+            children: [
+              { path: "", element: <PointMain /> },
+              { path: "history", element: <PointHistory /> },
+              { path: "charge", element: <PointCharge /> },
+              { path: "withdraw", element: <PointWithdraw /> },
+            ],
+          },
         ],
       },
 
@@ -66,9 +75,10 @@ export default createBrowserRouter([
       { path: "/google/callback", element: <GoogleLogin /> },
       { path: "/kakao/callback", element: <KakaoLogin /> },
       { path: "/announce", element: <Announce /> },
-      { path: "/announce/detail", element: <AnnounceDetail /> },
+      { path: "/announce/detail/:announceNo", element: <AnnounceDetail /> },
     ],
   },
   { path: "/_admin", element: <AdminLogin /> },
   { path: "/_admin/main", element: <Admin /> },
+  { path: "/_admin/announce/write", element: <AdminWriteDetail /> },
 ]);

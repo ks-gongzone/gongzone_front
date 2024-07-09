@@ -161,6 +161,7 @@ export default function PartyDetail() {
         onAccept={handleAccept}
         onRefuse={handleRefuse}
         onLeave={handleLeave}
+        partyLeader={detail.partyLeader}
         currentUser={memberNo}
       />
 
