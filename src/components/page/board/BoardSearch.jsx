@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import AuthStore from "../../../utils/zustand/AuthStore";
 import GZAPI from "../../../utils/api";
@@ -8,24 +8,35 @@ export default function BoardSearch() {
     location: "*",
     category: "*",
     content: "",
+    memberNo: "",
   });
+  
+  const memberNo = AuthStore((state) => state.userInfo.memberNo);
+  
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      memberNo: memberNo,
+    }));
+  }, [memberNo]);
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
+
   const clickSearch = async () => {
     try {
-      const response = await GZAPI.post("/board/list", formData);
+      const response = await GZAPI.post("/api/boards/list", formData);
       console.log(response.data);
       console.log(response);
     } catch (error) {
       console.error("Error during search request:", error);
     }
   };
-  const memberNo = AuthStore((state) => state.userInfo.memberNo);
 
   const cate = [
     { key: "c0", value: "*", label: "전체 카테고리" },

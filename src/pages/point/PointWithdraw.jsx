@@ -1,12 +1,13 @@
-import { useEffect } from "react";
 import PointSection from "../../components/page/point/PointSection";
 import State from "../../utils/state/State";
 import PointInnerSection from "../../components/page/point/PointInnerSection";
 import { formatNumber } from "../../libs/utilities";
 import useAuthStore from "../../utils/zustand/AuthStore";
 import GZAPI from "../../utils/api";
+import { useNavigate } from "react-router-dom";
 
-export default function PointCharge({ isLoaded, renderPage }) {
+export default function PointCharge() {
+  const navigate = useNavigate();
   const { memberNo, pointNo } = useAuthStore((state) => ({
     memberNo: state.userInfo.memberNo,
     pointNo: state.userInfo.pointNo,
@@ -18,28 +19,27 @@ export default function PointCharge({ isLoaded, renderPage }) {
   const amount = State("amount", '');
   const name = State("name", '');
 
-  useEffect(() => {
-    isLoaded.set(true);
-  }, []);
 
   const actions = {
     requestPointWithdraw: async () => {
-      const data =
-        {
-          pointChange: -amount.value,
-          changeType: "T030301",
-          withdraw: {
-            withdrawBank: bank.value,
-            withdrawAccount: account.value,
-            withdrawAmount: -amount.value,
-            withdrawName: name.value,
-          }
-        };
+      if (!window.confirm("입력하신 정보를 확인하셨습니까?")) {
+        return;
+      }
+      const data = {
+        pointChange: -amount.value,
+        changeType: "T030301",
+        withdraw: {
+          withdrawBank: bank.value,
+          withdrawAccount: account.value,
+          withdrawAmount: -amount.value,
+          withdrawName: name.value,
+        }
+      };
       const response = await GZAPI.post(`/api/members/${ pointNo }/point/withdraw`, data);
 
       if (response.data.result === "SUCCESS") {
         alert('포인트 인출 요청이 완료되었습니다.');
-        renderPage.set("main");
+        navigate('/myPage/point');
       } else {
         alert('포인트 인출 요청에 실패하였습니다. 다시 시도해주세요.')
       }
@@ -55,9 +55,10 @@ export default function PointCharge({ isLoaded, renderPage }) {
 
 
   return (
-    <PointSection title={ title } renderPage={ renderPage }>
+    <PointSection title={ title }>
       <div className="flex flex-grow justify-center">
-        <PointInnerSection title={ "포인트 인출하기" }>
+        <PointInnerSection title={ "포인트 인출하기" }
+                           description={ "(인출하실 계좌 정보를 정확히 입력해주세요.)" }>
           <div className="flex flex-col w-full space-y-2">
             {/* 은행명 */ }
             <BankSelect bank={ bank } />
