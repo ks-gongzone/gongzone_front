@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {AdminMemberAPI} from "../../../utils/repository";
+import { AdminMemberAPI } from "../../../utils/repository";
 
 export default function MemberList({ openModal }) {
   const [members, setMembers] = useState([]);
@@ -65,11 +65,12 @@ export default function MemberList({ openModal }) {
             <div key={member.memberNo}>
               <div className="grid grid-cols-6 gap-4 p-4 border-b hover:bg-gray-100 flex items-center">
                 <div
-                  className="w-[15em] text-center px-2 py-1 rounded text-sm">
+                  className="w-[15em] px-2 py-1 rounded text-sm">
                   {member.memberNo}
                 </div>
                 <div className="text-sm text-gray-500">{member.memberName}</div>
                 <div className="text-sm text-gray-500">{member.memberEmail}</div>
+                <div className="text-sm text-gray-500">{member.memberStatus}</div>
 
                 <div
                   className="text-sm text-gray-500 cursor-pointer"
@@ -77,7 +78,7 @@ export default function MemberList({ openModal }) {
                 >
                   클릭하여 상세 내용 보기
                 </div>
-                <div className="text-sm text-gray-500">{member.memberStatus}</div>
+
                 <div className="text-sm text-gray-500">
                   <select className="text-sm text-gray-500">
                     <option value="처리 대기중">처리 대기중</option>

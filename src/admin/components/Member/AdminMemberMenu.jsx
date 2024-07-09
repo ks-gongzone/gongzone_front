@@ -23,8 +23,9 @@ export default function AdminMemberMenu() {
     setActiveTab(id);
   };
 
-  const openModal = (report) => {
-    setSelectedReport(report);
+  const openModal = (member) => {
+    setSelectedReport(member);
+    console.log("member " ,member);
     setShowModal(true);
   };
 

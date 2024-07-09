@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import {AdminMemberAPI} from "../../../utils/repository";
+import { AdminMemberAPI } from "../../../utils/repository";
+
+function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  return date.toLocaleString();
+}
 
 export default function MemberList({ openModal }) {
   const [members, setMembers] = useState([]);
@@ -14,8 +19,13 @@ export default function MemberList({ openModal }) {
             memberNo: member.memberNo,
             memberName: member.memberName,
             memberEmail: member.memberEmail,
+            punishType: member.punishType,
+            punishReason: member.punishReason,
             details: [
               member.memberId,
+              formatDate(member.punishStartDate),
+              member.punishPeriod,
+              formatDate(member.punishEndPeriod),
               member.memberPhone,
               member.memberGender,
               member.memberAddress,
@@ -54,22 +64,27 @@ export default function MemberList({ openModal }) {
     <div className="flex flex-col items-center box-border p-4">
       <div className="w-full max-w-8xl">
         <div className="bg-white shadow rounded-lg overflow-x-auto">
-          <div className="grid grid-cols-6 gap-4 bg-gray-50 p-4 font-bold">
+          <div className="grid grid-cols-8 gap-4 bg-gray-50 p-4 font-bold">
             <div className="font-medium text-gray-500">회원 고유번호</div>
             <div className="font-medium text-gray-500">회원 이름</div>
             <div className="font-medium text-gray-500">회원 이메일</div>
+            <div className="font-medium text-gray-500">제재 사유</div>
+            <div className="font-medium text-gray-500">제재 상세</div>
             <div className="font-medium text-gray-500">회원 상태</div>
             <div className="font-medium text-gray-500">세부 사항</div>
           </div>
           {members.map((member) => (
             <div key={member.memberNo}>
-              <div className="grid grid-cols-6 gap-4 p-4 border-b hover:bg-gray-100 flex items-center">
+              <div className="grid grid-cols-8 gap-4 p-4 border-b hover:bg-gray-100 flex items-center">
                 <div
-                  className="w-[15em] text-center px-2 py-1 rounded text-sm">
+                  className="w-[15em] px-2 py-1 rounded text-sm">
                   {member.memberNo}
                 </div>
                 <div className="text-sm text-gray-500">{member.memberName}</div>
                 <div className="text-sm text-gray-500">{member.memberEmail}</div>
+                <div className="text-sm text-gray-500">{member.punishType}</div>
+                <div className="text-sm text-gray-500">{member.punishReason}</div>
+                <div className="text-sm text-gray-500">{member.memberStatus}</div>
 
                 <div
                   className="text-sm text-gray-500 cursor-pointer"
@@ -77,7 +92,7 @@ export default function MemberList({ openModal }) {
                 >
                   클릭하여 상세 내용 보기
                 </div>
-                <div className="text-sm text-gray-500">{member.memberStatus}</div>
+
                 <div className="text-sm text-gray-500">
                   <select className="text-sm text-gray-500">
                     <option value="처리 대기중">처리 대기중</option>
@@ -99,11 +114,14 @@ export default function MemberList({ openModal }) {
               {expandedRows.includes(member.memberNo) && (
                 <div className="col-span-6 bg-gray-100 px-4 py-8">
                   <p>아이디: {member.details[0]}</p>
-                  <p>전화번호: {member.details[1]}</p>
-                  <p>성별: {member.details[2]}</p>
-                  <p>주소: {member.details[3]}</p>
-                  <p>생일: {member.details[4]}</p>
-                  <p>닉네임: {member.details[5]}</p>
+                  <p>제재일시: {member.details[1]}</p>
+                  <p>제재기간: {member.details[2]}</p>
+                  <p>제재해재예정일: {member.details[3]}</p>
+                  <p>전화번호: {member.details[4]}</p>
+                  <p>성별: {member.details[5]}</p>
+                  <p>주소: {member.details[6]}</p>
+                  <p>생일: {member.details[7]}</p>
+                  <p>닉네임: {member.details[8]}</p>
                 </div>
               )}
             </div>
