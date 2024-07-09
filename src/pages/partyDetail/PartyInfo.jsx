@@ -6,6 +6,7 @@ import PartyParticipant from "./PartyParticipant";
 import PartyRequest from "./PartyRequest";
 import "./PartyAnimation.css"; // 애니메이션 스타일 정의
 import RequestModal from "../../components/page/party/RequestModal";
+import PartyReply from "../../components/page/party/PartyReply";
 
 export default function PartyDetail() {
   const { id: memberNo, no: partyNoParam } = useParams();
@@ -175,6 +176,7 @@ export default function PartyDetail() {
         partyNo={partyNo}
         remainAmount={detail.remainAmount}
       />
+      <PartyReply partyNo={partyNo} />
     </div>
   );
 }
