@@ -1,85 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {AdminMemberAPI} from "../../../utils/repository";
 
-export default function MemberQuit({ openModal }) {
-  const getBackgroundColor = (type) => {
-    switch (type) {
-      case "부적절한 콘텐츠":
-        return "bg-red-200";
-      case "사기 및 사기성 행위":
-        return "bg-yellow-200";
-      case "스팸 및 악성 행위":
-        return "bg-orange-200";
-      case "지적 재산권 침해":
-        return "bg-blue-200";
-      case "사생활 침해 및 개인정보 보호":
-        return "bg-purple-200";
-      case "사용자 행위 관련":
-        return "bg-green-200";
-      case "기타":
-        return "bg-gray-200";
-      default:
-        return "bg-gray-200";
-    }
-  };
+export default function MemberList({ openModal }) {
+  const [members, setMembers] = useState([]);
+  const [error, setError] = useState(null);
 
-  const items = [
-    {
-      id: "1",
-      reportingUser: "UserA",
-      reportedUser: "UserB",
-      type: "부적절한 콘텐츠",
-      details: "마약 판매 진행했습니다.",
-      date: "2023-07-01",
-    },
-    {
-      id: "2",
-      reportingUser: "UserC",
-      reportedUser: "UserD",
-      type: "사기 및 사기성 행위",
-      details: "Fraudulent transaction reported",
-      date: "2023-07-02",
-    },
-    {
-      id: "3",
-      reportingUser: "UserE",
-      reportedUser: "UserF",
-      type: "스팸 및 악성 행위",
-      details: "Repeated spam messages",
-      date: "2023-07-03",
-    },
-    {
-      id: "4",
-      reportingUser: "UserG",
-      reportedUser: "UserH",
-      type: "지적 재산권 침해",
-      details: "Unauthorized use of copyrighted material",
-      date: "2023-07-04",
-    },
-    {
-      id: "5",
-      reportingUser: "UserI",
-      reportedUser: "UserJ",
-      type: "사생활 침해 및 개인정보 보호",
-      details: "Sharing private information without consent",
-      date: "2023-07-05",
-    },
-    {
-      id: "6",
-      reportingUser: "UserK",
-      reportedUser: "UserL",
-      type: "사용자 행위 관련",
-      details: "Harassment and bullying",
-      date: "2023-07-06",
-    },
-    {
-      id: "7",
-      reportingUser: "UserM",
-      reportedUser: "UserN",
-      type: "기타",
-      details: "Other inappropriate behavior",
-      date: "2023-07-07",
-    },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await AdminMemberAPI.MemberQuitList({});
+        if (response.status === 200) {
+          const item = response.data.map(member => ({
+            memberNo: member.memberNo,
+            memberName: member.memberName,
+            memberEmail: member.memberEmail,
+            details: [
+              member.memberId,
+              member.memberPhone,
+              member.memberGender,
+              member.memberAddress,
+              member.memberBirthday,
+              member.memberNick,
+            ],
+            memberStatus: member.memberStatus,
+          }));
+          setMembers(item);
+        } else {
+          setError('Failed to fetch members');
+        }
+      } catch (error) {
+        setError('An error occurred while fetching the member data');
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const [expandedRows, setExpandedRows] = useState([]);
 
@@ -91,39 +46,38 @@ export default function MemberQuit({ openModal }) {
     );
   };
 
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="flex flex-col items-center box-border p-4">
       <div className="w-full max-w-8xl">
         <div className="bg-white shadow rounded-lg overflow-x-auto">
           <div className="grid grid-cols-6 gap-4 bg-gray-50 p-4 font-bold">
-            <div className="font-medium text-gray-500">신고 타입</div>
-            <div className="font-medium text-gray-500">신고한 회원</div>
-            <div className="font-medium text-gray-500">신고 당한 회원</div>
-            <div className="font-medium text-gray-500">신고 사유 상세</div>
-            <div className="font-medium text-gray-500">신고 일시</div>
-            <div className="font-medium text-gray-500">신고 접수 상태</div>
+            <div className="font-medium text-gray-500">회원 고유번호</div>
+            <div className="font-medium text-gray-500">회원 이름</div>
+            <div className="font-medium text-gray-500">회원 이메일</div>
+            <div className="font-medium text-gray-500">회원 상태</div>
+            <div className="font-medium text-gray-500">세부 사항</div>
           </div>
-          {items.map((item) => (
-            <div key={item.id}>
+          {members.map((member) => (
+            <div key={member.memberNo}>
               <div className="grid grid-cols-6 gap-4 p-4 border-b hover:bg-gray-100 flex items-center">
                 <div
-                  className={`w-[15em] text-center px-2 py-1 rounded text-sm ${getBackgroundColor(
-                    item.type
-                  )}`}
-                >
-                  {item.type}
+                  className="w-[15em] text-center px-2 py-1 rounded text-sm">
+                  {member.memberNo}
                 </div>
-                <div className="text-sm text-gray-500">
-                  {item.reportingUser}
-                </div>
-                <div className="text-sm text-gray-500">{item.reportedUser}</div>
+                <div className="text-sm text-gray-500">{member.memberName}</div>
+                <div className="text-sm text-gray-500">{member.memberEmail}</div>
+
                 <div
                   className="text-sm text-gray-500 cursor-pointer"
-                  onClick={() => toggleRow(item.id)}
+                  onClick={() => toggleRow(member.memberNo)}
                 >
                   클릭하여 상세 내용 보기
                 </div>
-                <div className="text-sm text-gray-500">{item.date}</div>
+                <div className="text-sm text-gray-500">{member.memberStatus}</div>
                 <div className="text-sm text-gray-500">
                   <select className="text-sm text-gray-500">
                     <option value="처리 대기중">처리 대기중</option>
@@ -135,16 +89,21 @@ export default function MemberQuit({ openModal }) {
                     className="ml-4 p-2 bg-red-500 text-white rounded"
                     onClick={(e) => {
                       e.stopPropagation();
-                      openModal(item);
+                      openModal(member);
                     }}
                   >
                     제재하기
                   </button>
                 </div>
               </div>
-              {expandedRows.includes(item.id) && (
+              {expandedRows.includes(member.memberNo) && (
                 <div className="col-span-6 bg-gray-100 px-4 py-8">
-                  {item.details}
+                  <p>아이디: {member.details[0]}</p>
+                  <p>전화번호: {member.details[1]}</p>
+                  <p>성별: {member.details[2]}</p>
+                  <p>주소: {member.details[3]}</p>
+                  <p>생일: {member.details[4]}</p>
+                  <p>닉네임: {member.details[5]}</p>
                 </div>
               )}
             </div>

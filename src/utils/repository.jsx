@@ -317,3 +317,26 @@ export const MemberAPI = {
       .catch((err) => err);
   },
 };
+
+export const AdminMemberAPI = {
+  MemberList: async (data) => {
+    return GZAPI.get("/admin/member/listAll", data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  MemberQuitList: async (data) => {
+    return GZAPI.get("/admin/member/quitListALl", data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  MemberSleepList: async (data) => {
+    return GZAPI.get("/admin/member/sleepListALl", data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  MemberPunishList: async (data) => {
+    return GZAPI.get("/admin/member/punishListALl", data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+};
