@@ -1,19 +1,15 @@
 import { useEffect } from "react";
-import PointSection from "../../components/page/point/PointSection";
+import { PointInnerSection, PointSection } from "../../components/page/point/Index";
 import { formatNumber } from "../../libs/utilities";
 import GZAPI from "../../utils/api";
 import State from "../../utils/state/State";
 import { PointHistory } from "./Index";
-import PointInnerSection from "../../components/page/point/PointInnerSection";
-import useAuthStore from "../../utils/zustand/AuthStore";
 import { Link } from "react-router-dom";
+import { usePointData } from "./context/PointContext";
 
 
 export default function Point() {
-  const { memberNo, pointNo } = useAuthStore((state) => ({
-    memberNo: state.userInfo.memberNo,
-    pointNo: state.userInfo.pointNo,
-  }));
+  const { memberNo, pointNo } = usePointData();
   const title = `${ memberNo }님의 포인트 페이지`;
 
   const memberPoint = State("memberPoint", "");

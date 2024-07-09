@@ -2,10 +2,13 @@ import { useEffect } from "react";
 import GZAPI from "../../utils/api";
 import { formatNumber } from "../../libs/utilities";
 import State from "../../utils/state/State";
-import PointInnerSection from "../../components/page/point/PointInnerSection";
+import { PointInnerSection } from "../../components/page/point/Index";
 import { Link } from "react-router-dom";
+import { usePointData } from "./context/PointContext";
 
-export default function PointHistory({ pointNo }) {
+export default function PointHistory() {
+  const { memberNo, pointNo } = usePointData();
+
   const histories = State("pointHistories", []);
 
   useEffect(() => {

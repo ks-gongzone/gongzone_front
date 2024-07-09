@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import GZAPI from "../../utils/api";
 import State from "../../utils/state/State";
-import PointInnerSection from "../../components/page/point/PointInnerSection";
+import { PointInnerSection } from "../../components/page/point/Index";
 import { useLocation } from "react-router-dom";
 
 export default function PointDetail() {
   const location = useLocation();
   const { pointNo, historyNo } = location.state || {};
+
   const pointHistory = State("pointHistory", {});
 
   useEffect(() => {
