@@ -3,7 +3,7 @@ import BasicTapMenu from "../../menu/BasicTapMenu";
 import AnnounceItems from "./AnnounceItems";
 import { AnnounceAPI } from "../../../utils/repository"
 
-export default function AnnounceMenu() {
+export default function AnnounceMenu({ memberNo }) {
   const tabItems = [
     { id: "all", label: "전체" },
     { id: "공지", label: "공지" },
@@ -62,6 +62,7 @@ export default function AnnounceMenu() {
           totalPages={totalPages}
           currentPage={currentPage}
           onPageChange={handlePageChange}
+          memberNo={memberNo}
         />
       </div>
     </div>

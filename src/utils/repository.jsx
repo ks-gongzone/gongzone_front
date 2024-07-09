@@ -298,6 +298,65 @@ export const AnnounceAPI = {
         throw err;
       });
   },
+  getAnnouncementDetail: async (announceNo) => {
+    if(!announceNo) {
+      throw new Error("공지사항 번호가 없습니다.");
+    }
+    return GZAPI.get(`/api/announce/detail/${announceNo}`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("공지사항 세부조회중 에러 발생[API]", error)
+        throw error;
+      });
+  },
+  incrementAnnounceViews: async (announceNo, navigate) => {
+    console.log("클릭 annonuceNo: ", announceNo);
+    return GZAPI.post(`/api/announce/${announceNo}/increment`)
+      .then((response) => {
+        console.log("조회수 증가 성공", response);
+        navigate(`/announce/detail/${announceNo}`);
+        return response.data;
+      })
+      .catch((error) => {
+        console.error("조회수 증가 실패", error);
+        throw error;
+      });
+  },
+
+  // 관리자 기능에 해당하여 /api/admin/announce로 변경
+  createAnnouncement: (announcementData) => {
+    const { memberNo, announceTitle, announceBody, typeCode } = announcementData;
+
+    if (!memberNo || !announceTitle || !announceBody || !typeCode) {
+      console.log(memberNo)
+      console.log(announceTitle)
+      console.log(announceBody)
+      console.log(typeCode)
+      return Promise.reject(new Error("필수 필드가 누락되었습니다."));
+    }
+    return GZAPI.post("/api/_admin/announce/write", { memberNo, announceTitle, announceBody, typeCodeDes: typeCode })
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("공지사항 작성 중 에러 발생[API]", error);
+        throw error;
+      });
+  },
+  updateAnnouncement: (announceNo, announcementData) => {
+    return GZAPI.put(`/api/_admin/main/announce/${announceNo}`, announcementData)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("공지사항 수정 중 에러 발생[API]", error);
+      throw error;
+    });
+  },
+  deleteAnnouncement: (announceNo) => {
+    return GZAPI.delete(`/api/_admin/main/announce/${announceNo}`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("공지사항 삭제 중 에러 발생[API]", error);
+        throw error;
+      });
+  },
 };
 
 export const MemberAPI = {
