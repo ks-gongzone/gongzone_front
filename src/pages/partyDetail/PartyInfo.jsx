@@ -8,14 +8,15 @@ import "./PartyAnimation.css"; // 애니메이션 스타일 정의
 import RequestModal from "../../components/page/party/RequestModal";
 
 export default function PartyDetail() {
-  const { id: memberNo } = useParams();
+  const { id: memberNo, no: partyNoParam } = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
   const baseURL = "http://localhost:8088";
-  const [partyNo, setPartyNo] = useState(state?.partyNo || null);
+  const [partyNo, setPartyNo] = useState(partyNoParam);
   const [data, setData] = useState([]);
   const [detail, setDetail] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const fetch = async () => {
     try {
@@ -25,27 +26,27 @@ export default function PartyDetail() {
         : [detailData.data];
       setData(responseData);
 
-      const partyDetail =
-        responseData.find((party) => party.partyNo === partyNo) ||
-        responseData[0];
+      const partyDetail = responseData.find(
+        (party) => party.partyNo === partyNo
+      );
       setDetail(partyDetail);
       if (!partyNo) {
         setPartyNo(partyDetail.partyNo);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetch();
-  }, [partyNo, memberNo]);
-
-  useEffect(() => {
     if (!partyNo) {
-      navigate(`/party/${memberNo}`);
+      navigate(`/party`);
+    } else {
+      fetch();
     }
-  }, [partyNo, navigate, memberNo]);
+  }, [partyNo, memberNo]);
 
   const formatDate = (datetime) => {
     const date = new Date(datetime);
@@ -91,8 +92,12 @@ export default function PartyDetail() {
     }
   };
 
-  if (!detail) {
+  if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (!detail) {
+    return <div>Party not found</div>;
   }
 
   const participants = detail.participants || [];
@@ -153,7 +158,7 @@ export default function PartyDetail() {
         participants={participants}
         partyLeader={detail.partyLeader}
         onKick={handleKick}
-        onLeave={handleKick}
+        onLeave={handleLeave}
         currentUser={memberNo}
       />
       <PartyRequest

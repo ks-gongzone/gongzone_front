@@ -31,7 +31,9 @@ export default function PartyList() {
   }, [id]);
 
   const handleCardClick = (partyNo) => {
-    navigate(`/party/detail/${memberNo}`, { state: { partyNo, data } });
+    navigate(`/party/detail/${memberNo}/${partyNo}`, {
+      state: { partyNo, data },
+    });
   };
 
   return (

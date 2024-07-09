@@ -10,6 +10,7 @@ export default function BoardListCard({
   cate,
   amount,
   memberNo,
+  partyNo,
   like = false,
 }) {
   const [isLiked, setIsLiked] = useState(false);
@@ -20,13 +21,13 @@ export default function BoardListCard({
   };
 
   const handleCardClick = () => {
-    navigate(`/party/detail/${memberNo}`);
+    navigate(`/party/detail/${memberNo}/${partyNo}`);
   };
 
   return (
     <button
       type="button"
-      className="w-full text-left rounded-xl overflow-hidden shadow-lg bg-white border hover:border-red-200"
+      className="w-full h-full text-left rounded-xl overflow-hidden shadow-lg bg-white border hover:border-red-200"
       onClick={handleCardClick}
     >
       <div className="relative">

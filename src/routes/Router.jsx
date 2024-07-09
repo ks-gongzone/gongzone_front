@@ -66,7 +66,7 @@ export default createBrowserRouter([
         ],
       },
 
-      { path: "/party/detail/:id", element: <PartyDetail /> },
+      { path: "/party/detail/:id/:no", element: <PartyDetail /> },
       { path: "/party/:id", element: <PartyList /> },
       { path: "/board/list", element: <BoardList /> },
       { path: "/board/write/:memberNo", element: <BoardWrite /> },
