@@ -24,8 +24,10 @@ export default function AdminMemberMenu() {
   };
 
   const openModal = (member) => {
-    setSelectedReport(member);
+    const isPunishUpdate = activeTab === "punish";
+    setSelectedReport({ ...member, isPunishUpdate });
     console.log("member " ,member);
+    console.log("isPunishUpdate ", isPunishUpdate);
     setShowModal(true);
   };
 

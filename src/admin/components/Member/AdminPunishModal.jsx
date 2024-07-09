@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { AdminMemberAPI } from "../../../utils/repository";
+import AuthStore from "../../../utils/zustand/AuthStore";
 
 export default function AdminPunishModal({ selectedReport, closeModal }) {
   const [punishDuration, setPunishDuration] = useState(1);
@@ -17,17 +19,38 @@ export default function AdminPunishModal({ selectedReport, closeModal }) {
     setTypeCodeValue(e.target.value);
   }
 
-  const handleButton = (e) => {
-    const memberNo = selectedReport.memberNo;
-    const typeCode = typeCodeValue;
-    const reasonDetail = textareaValue;
-    const period = punishDuration;
-    console.log(memberNo);
-    console.log(typeCode);
-    console.log(reasonDetail);
-    console.log(period);
-    console.log('1111111111111');
-  }
+  const handleButton = async () => {
+    const data = {
+      memberNo: selectedReport.memberNo,
+      typeCode: typeCodeValue,
+      reasonDetail: textareaValue,
+      period: punishDuration,
+    };
+    console.log('Data to send:', data);
+
+    const apiCall = selectedReport.isPunishUpdate
+      ? AdminMemberAPI.PunishUpdate({
+        ...data,
+      })
+      : AdminMemberAPI.PunishInsert({
+        ...data,
+        memberAdminNo: AuthStore.getState().userInfo.memberNo,
+        statusCode: 'S010502',
+        memberStatusCode: 'S010103'
+      });
+
+    try {
+      const response = await apiCall;
+      if (response.status === 200) {
+        console.log('Successfully sent data:', data);
+        closeModal();
+      } else {
+        console.error('Failed to send data:', response);
+      }
+    } catch (error) {
+      console.error('Error sending data:', error);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">

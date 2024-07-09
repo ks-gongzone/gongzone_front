@@ -339,4 +339,16 @@ export const AdminMemberAPI = {
       .then((res) => res)
       .catch((err) => err);
   },
+  PunishUpdate: async (data) => {
+    const { memberNo, ...rest } = data;
+    return GZAPI.post(`/admin/punish/update/${memberNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  PunishInsert: async (data) => {
+    const { memberNo, ...rest } = data;
+    return GZAPI.post(`/admin/punish/insert/${memberNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
 };
