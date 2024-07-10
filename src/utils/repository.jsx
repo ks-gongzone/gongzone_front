@@ -463,4 +463,20 @@ export const AdminMemberAPI = {
       .then((res) => res)
       .catch((err) => err);
   },
+  ReportList: async (data) => {
+    return GZAPI.get(`/api/ReportMember/listReportAll`, data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  ReportPunishInsert: async (data) => {
+    const { memberNo, ...rest } = data;
+    return GZAPI.post(`/api/ReportMember/punish/${memberNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  ReportMemberInsert: async (data) => {
+    return GZAPI.post(`/api/ReportMember/report`, data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
 };

@@ -90,11 +90,11 @@ export default function MemberList({ openModal }) {
                   클릭하여 상세 내용 보기
                 </div>
                 <div className="text-sm text-gray-500">
-                  <select className="text-sm text-gray-500">
+                  {/*<select className="text-sm text-gray-500">
                     <option value="처리 대기중">처리 대기중</option>
                     <option value="처리 완료">처리 완료</option>
                     <option value="보류">보류</option>
-                  </select>
+                  </select>*/}
                   <button
                     type="button"
                     className="ml-4 p-2 bg-red-500 text-white rounded"
