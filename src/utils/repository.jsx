@@ -152,6 +152,11 @@ export const Party = {
       .then((res) => res)
       .catch((err) => err);
   },
+  CompleteParty: async (id) => {
+    return GZAPI.post(`api/party/updateStatus/${id}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
 };
 
 export const Location = {

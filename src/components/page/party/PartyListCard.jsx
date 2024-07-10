@@ -23,6 +23,10 @@ export default function PartyListCard({
     navigate(`/party/detail/${memberNo}`);
   };
 
+  const stripHtmlTags = (str) => {
+    return str.replace(/<\/?[^>]+(>|$)/g, "");
+  };
+
   return (
     <button
       type="button"
@@ -50,8 +54,10 @@ export default function PartyListCard({
         )}
       </div>
       <div className="px-6 py-3">
-        <div className="font-bold text-ml mb-2">{title}</div>
-        <div className="text-right text-gray-700 text-xs">{desc}</div>
+        <div className="font-bold text-ml mb-2">{stripHtmlTags(title)}</div>
+        <div className="text-right text-gray-700 text-xs">
+          {stripHtmlTags(desc)}
+        </div>
         <div className="text-right font-bold text-gray-500 text-xl mt-2 mb-3">
           구매수량 : {amount}
         </div>
