@@ -22,14 +22,17 @@ const cate = [
   { key: "CF9901", value: "식품-기타-건강식품" },
 ];
 
+const baseURL = "http://localhost:8088";
+
 function getCategoryaValue(category) {
-  const value = cate.find(item => item.key === category)
+  const value = cate.find((item) => item.key === category);
   return value.value;
 }
 
 export default function BoardCardSection({ data }) {
-
   const memberNo = AuthStore((state) => state.userInfo.memberNo);
+
+  useEffect(() => {}, []);
 
   return (
     <div className="w-[65em] mx-auto mb-10 mt-14">
@@ -38,14 +41,15 @@ export default function BoardCardSection({ data }) {
       </div>
       <div className="grid grid-cols-3 gap-4">
         {data.length > 0 ? (
-          data.map((e) => (
+          data.map((e, index) => (
             <div key={e.boardNo}>
               <BoardListCard
-                img={e.files}
+                img={`${baseURL}${data[index].files[0].filePath}`}
                 cate={getCategoryaValue(e.category)}
                 title={e.boardTitle}
                 id={e.partyNo}
                 memberNo={memberNo}
+                partyNo={e.partyNo}
                 note={e.partyCateCode}
                 like={e.like}
                 amount={e.remain}

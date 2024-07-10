@@ -1,7 +1,13 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import LayoutDefault from "../layouts/Default";
 import Home from "../pages/home/Index";
-import { Point, PointCharge, PointHistory, PointMain, PointWithdraw, } from "../pages/point/Index";
+import {
+  Point,
+  PointCharge,
+  PointHistory,
+  PointMain,
+  PointWithdraw,
+} from "../pages/point/Index";
 import BoardList from "../pages/boardList/Index";
 import BoardWrite from "../pages/boardWrite/Index";
 
@@ -17,7 +23,13 @@ import Admin from "../admin/pages/Index";
 import AdminLogin from "../admin/pages/AdminLogin";
 import PartyDetail from "../pages/partyDetail/Index";
 import PartyList from "../pages/partyList/Index";
-import { BlockUser, Board, Follow, MyInfo, MyParty } from "../pages/myPage/Index";
+import {
+  BlockUser,
+  Board,
+  Follow,
+  MyInfo,
+  MyParty,
+} from "../pages/myPage/Index";
 
 import AdminWriteDetail from "../admin/pages/announce/AdminWriteDetail";
 
@@ -30,15 +42,15 @@ export default createBrowserRouter([
     ),
     children: [
       { path: "/", element: <Home /> },
-      { 
+      {
         path: "/myPage",
         element: <MyPage />,
         children: [
-          { path: "myInfo", element: <MyInfo />},
-          { path: "myParty", element: <MyParty />},
-          { path: "myBoard", element: <Board />},
-          { path: "blockUser", element: <BlockUser />},
-          { path: "myFollow", element: <Follow />},
+          { path: "myInfo", element: <MyInfo /> },
+          { path: "myParty", element: <MyParty /> },
+          { path: "myBoard", element: <Board /> },
+          { path: "blockUser", element: <BlockUser /> },
+          { path: "myFollow", element: <Follow /> },
 
           // point
           {
@@ -49,13 +61,13 @@ export default createBrowserRouter([
               { path: "history", element: <PointHistory /> },
               { path: "charge", element: <PointCharge /> },
               { path: "withdraw", element: <PointWithdraw /> },
-            ]
+            ],
           },
         ],
       },
 
-      { path: "/party/detail/:id", element: <PartyDetail /> },
-      { path: "/party/:id", element: <PartyList /> },
+      { path: "/party/detail/:id/:no", element: <PartyDetail /> },
+      { path: "/party/detail/:id", element: <PartyList /> },
       { path: "/board/list", element: <BoardList /> },
       { path: "/board/write/:memberNo", element: <BoardWrite /> },
       { path: "/register", element: <Register /> },
@@ -64,10 +76,9 @@ export default createBrowserRouter([
       { path: "/kakao/callback", element: <KakaoLogin /> },
       { path: "/announce", element: <Announce /> },
       { path: "/announce/detail/:announceNo", element: <AnnounceDetail /> },
-
     ],
   },
   { path: "/_admin", element: <AdminLogin /> },
   { path: "/_admin/main", element: <Admin /> },
-  { path: "/_admin/announce/write", element: <AdminWriteDetail/> },
+  { path: "/_admin/announce/write", element: <AdminWriteDetail /> },
 ]);
