@@ -1,7 +1,7 @@
 import { useState } from "react";
 import AdminPunishModal from "../components/Member/AdminPunishModal";
 
-export default function AdminMember() {
+export default function AdminMember({ openModal }) {
   const getBackgroundColor = (type) => {
     switch (type) {
       case "부적절한 콘텐츠":
@@ -83,8 +83,6 @@ export default function AdminMember() {
   ];
 
   const [expandedRows, setExpandedRows] = useState([]);
-  const [selectedReport, setSelectedReport] = useState(null);
-  const [showModal, setShowModal] = useState(false);
 
   const toggleRow = (id) => {
     setExpandedRows(
@@ -92,16 +90,6 @@ export default function AdminMember() {
         ? expandedRows.filter((rowId) => rowId !== id)
         : [...expandedRows, id]
     );
-  };
-
-  const openModal = (report) => {
-    setSelectedReport(report);
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    setSelectedReport(null);
   };
 
   return (
@@ -164,13 +152,6 @@ export default function AdminMember() {
           ))}
         </div>
       </div>
-
-      {showModal && selectedReport && (
-        <AdminPunishModal
-          selectedReport={selectedReport}
-          closeModal={closeModal}
-        />
-      )}
     </div>
   );
 }

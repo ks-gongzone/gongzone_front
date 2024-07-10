@@ -71,7 +71,7 @@ export default function LayoutHeader() {
               onMouseEnter={handleTabHover}
               onMouseLeave={handleTabLeave}
               className="hover:text-red-600 px-5"
-              to={`/party/${memberNo}`}
+              to={`/party/detail/${memberNo}`}
             >
               파티
             </Link>

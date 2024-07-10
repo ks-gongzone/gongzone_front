@@ -2,14 +2,15 @@ import { HeartIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function PartyListCard({
+export default function BoardListCard({
   children,
   img,
   title,
   id,
-  desc,
+  cate,
   amount,
   memberNo,
+  partyNo,
   like = false,
 }) {
   const [isLiked, setIsLiked] = useState(false);
@@ -20,7 +21,9 @@ export default function PartyListCard({
   };
 
   const handleCardClick = () => {
-    navigate(`/party/detail/${memberNo}`);
+    navigate(`/party/detail/${memberNo}/${partyNo}`, {
+      state: { memberNo, partyNo },
+    });
   };
 
   return (
@@ -51,9 +54,9 @@ export default function PartyListCard({
       </div>
       <div className="px-6 py-3">
         <div className="font-bold text-ml mb-2">{title}</div>
-        <div className="text-right text-gray-700 text-xs">{desc}</div>
+        <div className="text-right text-gray-700 text-xs">{cate}</div>
         <div className="text-right font-bold text-gray-500 text-xl mt-2 mb-3">
-          구매수량 : {amount}
+          남은수량 : {amount}
         </div>
       </div>
     </button>
