@@ -50,12 +50,13 @@ export default function AnnounceItems({ items, totalPages, currentPage, onPageCh
                   <Link
                     to={`/announce/detail/${item.announceNo}`}
                     onClick={() => handleItemClick(item.announceNo)}
+                    state={{ memeberNo: userInfo.memberNo }}
                     >
                       {item.title}
                     </Link>
                 </div>
                 <div className="flex items-center">
-                  <span className="mr-4">{item.date}</span>
+                  <span className="mr-4">{item.date.substring(0, 10)}</span>
                   {item.views && <div className="w-[40px] text-right">{item.views}</div>}
                 </div>
               </li>

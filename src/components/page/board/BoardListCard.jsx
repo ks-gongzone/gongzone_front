@@ -1,6 +1,7 @@
 import { HeartIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import GZAPI from "../../../utils/api";
 
 export default function BoardListCard({
   children,
@@ -10,22 +11,40 @@ export default function BoardListCard({
   cate,
   amount,
   memberNo,
+  boardNo,
   partyNo,
+  wish,
   like = false,
 }) {
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(wish);
   const navigate = useNavigate();
 
   const likeBtn = () => {
     setIsLiked(!isLiked);
   };
 
-  const handleCardClick = () => {
-    navigate(`/party/detail/${memberNo}/${partyNo}`, {
-      state: { memberNo, partyNo },
-    });
+  const handleCardClick = async () => {
+    try{
+      await GZAPI.post(`/api/boards/addView/${boardNo}`)
+
+      navigate(`/party/detail/${memberNo}/${partyNo}`, {
+        state: { memberNo, partyNo },
+      });
+    } catch (error) {
+      console.error('서버 요청 중 오류 발생:', error);
+    }
   };
 
+  const handleLikeClick = async (e) => {
+    e.stopPropagation();
+    try{
+      likeBtn();
+      await GZAPI.post(`/api/boards/wish/${boardNo}/${memberNo}`)
+    } catch (error) {
+      console.error('서버 요청 중 오류 발생:', error);
+    }
+  };
+  
   return (
     <button
       type="button"
@@ -41,10 +60,7 @@ export default function BoardListCard({
         {like && (
           <div
             className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md cursor-pointer"
-            onClick={(e) => {
-              e.stopPropagation();
-              likeBtn();
-            }}
+            onClick={handleLikeClick}
           >
             <HeartIcon
               className={`w-6 ${isLiked ? "text-red-500" : "text-[#e7e7e7]"}`}
