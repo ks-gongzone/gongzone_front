@@ -74,7 +74,7 @@ export default function Admin() {
           </div>
         </div>
 
-        <div className="h-screen p-6 bg-gray-100">{content.component}</div>
+        <div className="h-screen p-6 bg-gray-100 overflow-auto" >{content.component}</div>
       </div>
     </div>
   );
