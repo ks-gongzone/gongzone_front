@@ -1,13 +1,7 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import LayoutDefault from "../layouts/Default";
 import Home from "../pages/home/Index";
-import {
-  Point,
-  PointCharge,
-  PointHistory,
-  PointMain,
-  PointWithdraw,
-} from "../pages/point/Index";
+import { Point, PointCharge, PointDetail, PointHistory, PointMain, PointWithdraw, } from "../pages/point/Index";
 import BoardList from "../pages/boardList/Index";
 import BoardWrite from "../pages/boardWrite/Index";
 
@@ -43,15 +37,15 @@ export default createBrowserRouter([
     ),
     children: [
       { path: "/", element: <Home /> },
-      {
+      { 
         path: "/myPage",
         element: <MyPage />,
         children: [
-          { path: "myInfo", element: <MyInfo /> },
-          { path: "myParty", element: <MyParty /> },
-          { path: "myBoard", element: <Board /> },
-          { path: "blockUser", element: <BlockUser /> },
-          { path: "myFollow", element: <Follow /> },
+          { path: "myInfo", element: <MyInfo />},
+          { path: "myParty", element: <MyParty />},
+          { path: "myBoard", element: <Board />},
+          { path: "blockUser", element: <BlockUser />},
+          { path: "myFollow", element: <Follow />},
 
           // point
           {
@@ -60,9 +54,10 @@ export default createBrowserRouter([
             children: [
               { path: "", element: <PointMain /> },
               { path: "history", element: <PointHistory /> },
+              { path: "detail", element: <PointDetail /> },
               { path: "charge", element: <PointCharge /> },
               { path: "withdraw", element: <PointWithdraw /> },
-            ],
+            ]
           },
         ],
       },
