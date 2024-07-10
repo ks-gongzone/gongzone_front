@@ -13,9 +13,10 @@ export default function BoardListCard({
   memberNo,
   boardNo,
   partyNo,
+  wish,
   like = false,
 }) {
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(wish);
   const navigate = useNavigate();
 
   const likeBtn = () => {
@@ -34,6 +35,16 @@ export default function BoardListCard({
     }
   };
 
+  const handleLikeClick = async (e) => {
+    e.stopPropagation();
+    try{
+      likeBtn();
+      await GZAPI.post(`/api/boards/wish/${boardNo}/${memberNo}`)
+    } catch (error) {
+      console.error('서버 요청 중 오류 발생:', error);
+    }
+  };
+  
   return (
     <button
       type="button"
@@ -49,10 +60,7 @@ export default function BoardListCard({
         {like && (
           <div
             className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md cursor-pointer"
-            onClick={(e) => {
-              e.stopPropagation();
-              likeBtn();
-            }}
+            onClick={handleLikeClick}
           >
             <HeartIcon
               className={`w-6 ${isLiked ? "text-red-500" : "text-[#e7e7e7]"}`}

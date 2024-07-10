@@ -62,7 +62,8 @@ export default function BoardCardSection({ data }) {
                 boardNo={e.boardNo}
                 partyNo={e.partyNo}
                 note={e.partyCateCode}
-                like={e.like}
+                like={true}
+                wish={e.wish}
                 amount={e.remain}
               >
                 <div className="text-sm px-3 pb-3">
