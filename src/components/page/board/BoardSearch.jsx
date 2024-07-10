@@ -1,4 +1,4 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AuthStore from "../../../utils/zustand/AuthStore";
 import GZAPI from "../../../utils/api";
@@ -10,9 +10,9 @@ export default function BoardSearch({ onSearch }) {
     content: "",
     memberNo: "",
   });
-  
+
   const memberNo = AuthStore((state) => state.userInfo.memberNo);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -22,8 +22,10 @@ export default function BoardSearch({ onSearch }) {
           content: "",
           memberNo: memberNo,
         });
+
         // 응답 데이터를 상태에 반영하거나 처리할 수 있습니다.
         onSearch(response.data);
+        console.log(response.data.files);
       } catch (error) {
         console.error("초기 데이터 요청 중 오류 발생:", error);
       }
