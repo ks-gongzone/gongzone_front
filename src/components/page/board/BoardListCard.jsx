@@ -1,6 +1,7 @@
 import { HeartIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import GZAPI from "../../../utils/api";
 
 export default function BoardListCard({
   children,
@@ -10,6 +11,7 @@ export default function BoardListCard({
   cate,
   amount,
   memberNo,
+  boardNo,
   partyNo,
   like = false,
 }) {
@@ -20,10 +22,16 @@ export default function BoardListCard({
     setIsLiked(!isLiked);
   };
 
-  const handleCardClick = () => {
-    navigate(`/party/detail/${memberNo}/${partyNo}`, {
-      state: { memberNo, partyNo },
-    });
+  const handleCardClick = async () => {
+    try{
+      await GZAPI.post(`/api/boards/addView/${boardNo}`)
+
+      navigate(`/party/detail/${memberNo}/${partyNo}`, {
+        state: { memberNo, partyNo },
+      });
+    } catch (error) {
+      console.error('서버 요청 중 오류 발생:', error);
+    }
   };
 
   return (

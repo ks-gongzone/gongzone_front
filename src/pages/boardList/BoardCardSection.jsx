@@ -1,7 +1,7 @@
-import { HeartIcon } from "@heroicons/react/20/solid";
+import { useState, useEffect } from "react";
 import BoardListCard from "../../components/page/board/BoardListCard";
-import { useEffect, useState } from "react";
 import AuthStore from "../../utils/zustand/AuthStore";
+import GZAPI from "../../utils/api";
 
 const cate = [
   { key: "CF0101", value: "식품-신선식품-채소" },
@@ -24,15 +24,25 @@ const cate = [
 
 const baseURL = "http://localhost:8088";
 
-function getCategoryaValue(category) {
+function getCategoryValue(category) {
   const value = cate.find((item) => item.key === category);
-  return value.value;
+  return value ? value.value : "";
 }
 
 export default function BoardCardSection({ data }) {
   const memberNo = AuthStore((state) => state.userInfo.memberNo);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(9); // 페이지당 항목 수 설정
 
-  useEffect(() => {}, []);
+  useEffect(() => {}, [currentPage]);
+
+  // 현재 페이지의 데이터 계산
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+
+  // 페이지 번호 변경 함수
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="w-[65em] mx-auto mb-10 mt-14">
@@ -40,15 +50,16 @@ export default function BoardCardSection({ data }) {
         모집중인 파티
       </div>
       <div className="grid grid-cols-3 gap-4">
-        {data.length > 0 ? (
-          data.map((e, index) => (
+        {currentItems.length > 0 ? (
+          currentItems.map((e) => (
             <div key={e.boardNo}>
               <BoardListCard
-                img={`${baseURL}${data[index].files[0].filePath}`}
-                cate={getCategoryaValue(e.category)}
+                img={`${baseURL}${e.files[0].filePath}`}
+                cate={getCategoryValue(e.category)}
                 title={e.boardTitle}
                 id={e.partyNo}
                 memberNo={memberNo}
+                boardNo={e.boardNo}
                 partyNo={e.partyNo}
                 note={e.partyCateCode}
                 like={e.like}
@@ -61,9 +72,46 @@ export default function BoardCardSection({ data }) {
             </div>
           ))
         ) : (
-          <div>Loading...</div>
+          <div className="text-center py-4 text-gray-500">Loading...</div>
         )}
+      </div>
+      {/* 페이지네이션 컴포넌트 추가 */}
+      <div className="flex justify-center mt-4">
+        <Pagination
+          itemsPerPage={itemsPerPage}
+          totalItems={data.length}
+          paginate={paginate}
+          currentPage={currentPage}
+        />
       </div>
     </div>
   );
 }
+
+// 페이지네이션 컴포넌트
+const Pagination = ({ itemsPerPage, totalItems, currentPage, paginate }) => {
+  const pageNumbers = [];
+
+  for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
+  return (
+    <nav>
+      <ul className="flex justify-center space-x-2">
+        {pageNumbers.map((number) => (
+          <li key={number}>
+            <button
+              onClick={() => paginate(number)}
+              className={`px-4 py-2 rounded-md border border-gray-300 focus:outline-none ${
+                currentPage === number ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"
+              }`}
+            >
+              {number}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+};
