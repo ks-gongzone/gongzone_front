@@ -31,7 +31,8 @@ import {
   MyParty,
 } from "../pages/myPage/Index";
 
-import AdminWriteDetail from "../admin/pages/announce/AdminWriteDetail";
+import AdminWriteDetail from "../admin/pages/announceCreate/AdminWriteDetail";
+import AdminUpdateDetail from "../admin/pages/announceUpdate/AdminUpdateDetail";
 
 export default createBrowserRouter([
   {
@@ -80,5 +81,6 @@ export default createBrowserRouter([
   },
   { path: "/_admin", element: <AdminLogin /> },
   { path: "/_admin/main", element: <Admin /> },
-  { path: "/_admin/announce/write", element: <AdminWriteDetail /> },
+  { path: "/_admin/announce/write", element: <AdminWriteDetail/> },
+  { path: "/_admin/announce/update", element: <AdminUpdateDetail/> },
 ]);

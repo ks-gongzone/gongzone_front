@@ -391,19 +391,17 @@ export const AnnounceAPI = {
         throw error;
       });
   },
-  updateAnnouncement: (announceNo, announcementData) => {
-    return GZAPI.put(
-      `/api/_admin/main/announce/${announceNo}`,
-      announcementData
-    )
-      .then((response) => response.data)
-      .catch((error) => {
-        console.error("공지사항 수정 중 에러 발생[API]", error);
-        throw error;
-      });
+  updateAnnouncement: (announceNo, announce) => {
+    console.log("공지 수정 [API] 번호: ", announceNo)
+    return GZAPI.put(`/api/_admin/announce/update/${announceNo}`, announce)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("공지사항 수정 중 에러 발생[API]", error);
+      throw error;
+    });
   },
   deleteAnnouncement: (announceNo) => {
-    return GZAPI.delete(`/api/_admin/main/announce/${announceNo}`)
+    return GZAPI.delete(`/api/_admin/announce/delete/${announceNo}`)
       .then((response) => response.data)
       .catch((error) => {
         console.error("공지사항 삭제 중 에러 발생[API]", error);
@@ -460,6 +458,22 @@ export const AdminMemberAPI = {
   PunishInsert: async (data) => {
     const { memberNo, ...rest } = data;
     return GZAPI.post(`/admin/punish/insert/${memberNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  ReportList: async (data) => {
+    return GZAPI.get(`/api/ReportMember/listReportAll`, data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  ReportPunishInsert: async (data) => {
+    const { memberNo, ...rest } = data;
+    return GZAPI.post(`/api/ReportMember/punish/${memberNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  ReportMemberInsert: async (data) => {
+    return GZAPI.post(`/api/ReportMember/report`, data)
       .then((res) => res)
       .catch((err) => err);
   },
