@@ -60,11 +60,12 @@ export default function ChangePassword({ memberNo }) {
     const payload = { newPassword: password };
     UpdatePassword(memberNo, payload)
       .then((response) => {
+        console.log(response);
         alert(response);
       })
       .catch((error) => {
         console.error("비밀번호 변경 에러입니다.", error);
-        alert("해당 유저가 존재하지 않습니다.");
+        alert("비밀번호 변경 에러입니다.");
       });
   };
 
