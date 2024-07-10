@@ -429,3 +429,38 @@ export const MemberAPI = {
       .catch((err) => err);
   },
 };
+
+export const AdminMemberAPI = {
+  MemberList: async (data) => {
+    return GZAPI.get("/admin/member/listAll", data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  MemberQuitList: async (data) => {
+    return GZAPI.get("/admin/member/quitListALl", data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  MemberSleepList: async (data) => {
+    return GZAPI.get("/admin/member/sleepListALl", data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  MemberPunishList: async (data) => {
+    return GZAPI.get("/admin/member/punishListALl", data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  PunishUpdate: async (data) => {
+    const { memberNo, ...rest } = data;
+    return GZAPI.post(`/admin/punish/update/${memberNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  PunishInsert: async (data) => {
+    const { memberNo, ...rest } = data;
+    return GZAPI.post(`/admin/punish/insert/${memberNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+};

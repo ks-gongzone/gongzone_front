@@ -1,10 +1,55 @@
 import { useState } from "react";
+import { AdminMemberAPI } from "../../../utils/repository";
+import AuthStore from "../../../utils/zustand/AuthStore";
 
 export default function AdminPunishModal({ selectedReport, closeModal }) {
   const [punishDuration, setPunishDuration] = useState(1);
+  const [textareaValue, setTextareaValue] = useState("");
+  const [typeCodeValue, setTypeCodeValue] = useState("");
 
   const handleDurationChange = (e) => {
     setPunishDuration(e.target.value);
+  };
+
+  const handleTextareaChange = (e) => {
+    setTextareaValue(e.target.value);
+  };
+
+  const typeCodeChange = (e) => {
+    setTypeCodeValue(e.target.value);
+  }
+
+  const handleButton = async () => {
+    const data = {
+      memberNo: selectedReport.memberNo,
+      typeCode: typeCodeValue,
+      reasonDetail: textareaValue,
+      period: punishDuration,
+    };
+    console.log('Data to send:', data);
+
+    const apiCall = selectedReport.isPunishUpdate
+      ? AdminMemberAPI.PunishUpdate({
+        ...data,
+      })
+      : AdminMemberAPI.PunishInsert({
+        ...data,
+        memberAdminNo: AuthStore.getState().userInfo.memberNo,
+        statusCode: 'S010502',
+        memberStatusCode: 'S010103'
+      });
+
+    try {
+      const response = await apiCall;
+      if (response.status === 200) {
+        console.log('Successfully sent data:', data);
+        closeModal();
+      } else {
+        console.error('Failed to send data:', response);
+      }
+    } catch (error) {
+      console.error('Error sending data:', error);
+    }
   };
 
   return (
@@ -15,23 +60,23 @@ export default function AdminPunishModal({ selectedReport, closeModal }) {
           <div className="block text-gray-700">대상 회원</div>
           <input
             type="text"
-            value={selectedReport.reportedUser}
+            value={selectedReport.memberNo}
             readOnly
             className="mt-1 p-2 border rounded w-full"
           />
         </div>
         <div className="mb-4">
           <div className="block text-gray-700">제재 유형</div>
-          <select className="mt-1 p-2 border rounded w-full">
-            <option value="부적절한 콘텐츠">부적절한 콘텐츠</option>
-            <option value="사기 및 사기성 행위">사기 및 사기성 행위</option>
-            <option value="스팸 및 악성 행위">스팸 및 악성 행위</option>
-            <option value="지적 재산권 침해">지적 재산권 침해</option>
-            <option value="사생활 침해 및 개인정보 보호">
+          <select className="mt-1 p-2 border rounded w-full" onClick={typeCodeChange}>
+            <option value="T010401">부적절한 콘텐츠</option>
+            <option value="T010402">사기 및 사기성 행위</option>
+            <option value="T010403">스팸 및 악성 행위</option>
+            <option value="T010405">지적 재산권 침해</option>
+            <option value="T010406">
               사생활 침해 및 개인정보 보호
             </option>
-            <option value="사용자 행위 관련">사용자 행위 관련</option>
-            <option value="기타">기타</option>
+            <option value="T010406">사용자 행위 관련</option>
+            <option value="T010407">기타</option>
           </select>
         </div>
         <div className="mb-4">
@@ -39,6 +84,8 @@ export default function AdminPunishModal({ selectedReport, closeModal }) {
           <textarea
             className="mt-1 p-2 border rounded w-full"
             rows="3"
+            value={textareaValue}
+            onChange={handleTextareaChange}
           ></textarea>
         </div>
         <div className="mb-4">
@@ -63,7 +110,7 @@ export default function AdminPunishModal({ selectedReport, closeModal }) {
           >
             취소
           </button>
-          <button type="button" className="p-2 bg-blue-500 text-white rounded">
+          <button type="button" className="p-2 bg-blue-500 text-white rounded"  onClick={handleButton}>
             저장
           </button>
         </div>

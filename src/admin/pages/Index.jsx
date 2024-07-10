@@ -3,6 +3,7 @@ import { useState } from "react";
 import AdminMember from "./AdminMember";
 import AuthStore from "../../utils/zustand/AuthStore";
 import { useNavigate } from "react-router-dom";
+import AdminMemberMenu from "../components/Member/AdminMemberMenu";
 import AdminAnnounce from "../components/announce/AdminAnnounce";
 
 export default function Admin() {
@@ -49,7 +50,7 @@ export default function Admin() {
             className="w-full h-auto max-w-[150px] max-h-[50px] mb-10"
           />
           {renderButton("dashboard", "DASHBOARD", <div>DASHBOARD</div>)}
-          {renderButton("member", "회원관리", <AdminMember />)}
+          {renderButton("member", "회원관리", <AdminMemberMenu />)}
           {renderButton("board", "게시판관리", <div>게시판관리</div>)}
           {renderButton("party", "파티관리", <div>파티관리</div>)}
           {renderButton("report", "신고관리", <div>신고관리</div>)}
