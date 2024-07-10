@@ -5,6 +5,7 @@ import AuthStore from "../../utils/zustand/AuthStore";
 import { useNavigate } from "react-router-dom";
 import AdminMemberMenu from "../components/Member/AdminMemberMenu";
 import AdminAnnounce from "../components/announce/AdminAnnounce";
+import ReportList from "./report/ReportList";
 
 export default function Admin() {
   const [content, setContent] = useState({
@@ -53,7 +54,7 @@ export default function Admin() {
           {renderButton("member", "회원관리", <AdminMemberMenu />)}
           {renderButton("board", "게시판관리", <div>게시판관리</div>)}
           {renderButton("party", "파티관리", <div>파티관리</div>)}
-          {renderButton("report", "신고관리", <div>신고관리</div>)}
+          {renderButton("report", "신고관리", <ReportList />)}
           {renderButton("notice", "공지사항", <AdminAnnounce />)}
           {renderButton("etc", "기타", <div>기타</div>)}
         </div>
