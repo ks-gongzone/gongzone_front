@@ -23,6 +23,8 @@ export default function PartyDetail() {
   const [loading, setLoading] = useState(true);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
+  console.log(partyNo);
+
   const fetch = async () => {
     try {
       const detailData = await Party.PartyDetail(partyNo);
@@ -174,9 +176,9 @@ export default function PartyDetail() {
 
       {memberNo === detail.partyLeader && (
         <>
-          {detail.partyStatus === "S060103" ? (
+          {detail.status === "S060103" ? (
             <button
-              className="w-full h-10 mt-4 rounded-md bg-yellow-500 text-white font-bold"
+              className="w-full h-10 mt-4 rounded-md bg-blue-500 text-white font-bold"
               disabled
             >
               파티원 포인트 결제 대기
@@ -200,16 +202,19 @@ export default function PartyDetail() {
         onKick={handleKick}
         onLeave={handleKick}
         currentUser={memberNo}
-        status={detail.partyStatus} // status prop 추가
+        status={detail.status}
       />
-      <PartyRequest
-        requestMembers={requestMembers}
-        onAccept={handleAccept}
-        onRefuse={handleRefuse}
-        onLeave={handleLeave}
-        partyLeader={detail.partyLeader}
-        currentUser={memberNo}
-      />
+
+      {Number(detail.remainAmount) !== 0 && (
+        <PartyRequest
+          requestMembers={requestMembers}
+          onAccept={handleAccept}
+          onRefuse={handleRefuse}
+          onLeave={handleLeave}
+          partyLeader={detail.partyLeader}
+          currentUser={memberNo}
+        />
+      )}
 
       <RequestModal
         isOpen={isModalOpen}

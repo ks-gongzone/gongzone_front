@@ -1,4 +1,3 @@
-import { HeartIcon } from "@heroicons/react/20/solid";
 import sample1 from "../../assets/images/sample1.PNG";
 import sample2 from "../../assets/images/sample2.PNG";
 import sample3 from "../../assets/images/sample3.PNG";
@@ -54,6 +53,7 @@ export default function PartyList() {
                 note={e.partyCateCode}
                 like={e.like}
                 amount={e.partyAmount}
+                status={e.status}
               >
                 <div className="text-sm px-3 pb-3">
                   <div className="flex justify-between mb-3 text-[#888888]"></div>
