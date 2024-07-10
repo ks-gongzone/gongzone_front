@@ -482,4 +482,21 @@ export const AdminMemberAPI = {
       .then((res) => res)
       .catch((err) => err);
   },
+  QuestionList: async (data) => {
+    return GZAPI.get(`/api/QuestionMember/listQuestionAll`, data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  QuestionMemberInsert: async (data) => {
+    return GZAPI.post(`/api/QuestionMember/insert`, data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  QuestionStatusList: async (data) => {
+    const { memberQuestionNo, ...rest } = data;
+    console.log(rest);
+    return GZAPI.post(`/api/QuestionStatusUpdate/${memberQuestionNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
 };
