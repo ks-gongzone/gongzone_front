@@ -1,11 +1,13 @@
 import { HeartIcon } from "@heroicons/react/20/solid";
 import { useState, useEffect, useRef } from "react";
+import ReportModal from "../../modal/ReportModal";
 
 export default function PartyCard({
   children,
   img,
   id,
   desc,
+  memberTargetNo,
   amount,
   note = false,
   like = false,
@@ -13,6 +15,7 @@ export default function PartyCard({
   const [isLiked, setIsLiked] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   const likeBtn = () => {
     setIsLiked(!isLiked);
@@ -26,6 +29,15 @@ export default function PartyCard({
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsDropdownOpen(false);
     }
+  };
+
+  const handleReport = () => {
+    setIsReportModalOpen(true);
+    setIsDropdownOpen(false);
+  };
+
+  const closeReportModal = () => {
+    setIsReportModalOpen(false);
   };
 
   useEffect(() => {
@@ -92,6 +104,7 @@ export default function PartyCard({
                     className="block px-4 py-2 text-sm text-red-700 hover:bg-gray-100 w-full text-left"
                     role="menuitem"
                     type="button"
+                    onClick={handleReport}
                   >
                     신고하기
                   </button>
@@ -116,6 +129,15 @@ export default function PartyCard({
         </div>
       )}
       <div>{children}</div>
+
+      {isReportModalOpen && (
+        <ReportModal
+          isOpen={isReportModalOpen}
+          closeModal={closeReportModal}
+          memberTargetNo={memberTargetNo}
+          memberNick={desc}
+        />
+      )}
     </div>
   );
 }

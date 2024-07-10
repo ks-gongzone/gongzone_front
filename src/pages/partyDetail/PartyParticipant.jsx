@@ -9,6 +9,7 @@ export default function PartyParticipant({
   onKick,
   onLeave,
   currentUser,
+  status,
 }) {
   if (!participants || participants.length === 0) {
     return <div className="w-full text-center py-4">참가자가 없습니다.</div>;
@@ -39,6 +40,7 @@ export default function PartyParticipant({
               note={true}
               like={true}
               amount={participant.memberAmount}
+              memberTargetNo={participant.memberNo}
             >
               <div className="text-sm px-3 pb-3">
                 <div className="flex justify-between mb-3 text-[#888888]"></div>
@@ -54,12 +56,16 @@ export default function PartyParticipant({
                   </div>
                 ) : (
                   <div className="flex text-xs pt-2">
-                    {participant.memberNo === currentUser ? (
+                    {status === "S060103" ? (
+                      <div className="w-full mx-1 h-6 rounded-md bg-red-200 text-xs font-bold text-[white] text-center flex items-center justify-center">
+                        결제 대기 중
+                      </div>
+                    ) : participant.memberNo === currentUser ? (
                       <button
                         type="button"
                         className="w-full mx-1 h-6 rounded-md bg-red-300 hover:bg-red-500 text-xs font-bold text-[white]"
                         onClick={() =>
-                          onKick(participant.memberNo, participant.partyNo)
+                          onLeave(participant.memberNo, participant.partyNo)
                         }
                       >
                         파티 탈퇴하기
