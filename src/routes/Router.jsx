@@ -27,6 +27,7 @@ import {
 
 import AdminWriteDetail from "../admin/pages/announceCreate/AdminWriteDetail";
 import AdminUpdateDetail from "../admin/pages/announceUpdate/AdminUpdateDetail";
+import MemberPage from "../pages/memberInteractionList";
 
 export default createBrowserRouter([
   {
@@ -61,6 +62,8 @@ export default createBrowserRouter([
           },
         ],
       },
+      // memberList
+      { path: "/member/list", element: <MemberPage /> },
 
       { path: "/party/detail/:id/:no", element: <PartyDetail /> },
       { path: "/party/detail/:id", element: <PartyList /> },

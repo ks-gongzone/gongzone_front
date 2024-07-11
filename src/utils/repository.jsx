@@ -347,6 +347,69 @@ export const DropDownAPI = {
       });
   },
 }
+  // 유저 리스트 업 후 팔로우 차단 API
+ export const MemberListAPI = {
+  getMemberList: async (page = 1, size = 15) => {
+    const params = new URLSearchParams({ page, size });
+    console.log("현재 페이지",page);
+    console.log("페이지 내 데이터", params);
+      return GZAPI.get(`/api/members/interaction?${params.toString()}`)
+        .then((response) => response.data)
+        .catch((error) => {
+          console.error("유저데이터 로드 중 에러발생", error);
+          throw error;
+        });
+  },
+
+  searchMemberList: async (page = 1, size = 15, memberName = "") => {
+    const params = new URLSearchParams({ page, size, memberName });
+    return GZAPI.get(`/api/members/interaction?${params.toString()}`)
+      .then(response => response.data)
+      .catch(error => {
+        console.error("유저 검색 중 에러 발생", error);
+        throw error;
+      });
+  },
+
+  getFollowList: (page = 1, size = 15, memberNo) => {
+    const params = new URLSearchParams({ page, size, memberNo });
+    return GZAPI.get(`/api/members/follow/list?${params.toString()}`)
+      .then(response => response.data)
+      .catch(error => {
+        console.error("팔로우 리스트 로드 중 에러 발생", error);
+        throw error;
+      });
+  },
+
+  getFollowingList: (page = 1, size = 15, memberNo) => {
+    const params = new URLSearchParams({ page, size, memberNo });
+    return GZAPI.get(`/api/members/following/list?${params.toString()}`)
+      .then(response => response.data)
+      .catch(error => {
+        console.error("팔로잉 리스트 로드 중 에러 발생", error);
+        throw error;
+      });
+  },
+
+  followMember: (memberNo) => {
+    return GZAPI.post(`/api/members/follow/${memberNo}`)
+      .then(response => response.data)
+      .catch(error => {
+        console.error("멤버 팔로우 중 에러 발생", error);
+        throw error;
+      });
+  },
+
+  blockMember: (memberNo) => {
+    return GZAPI.post(`/api/members/block/${memberNo}`)
+      .then(response => response.data)
+      .catch(error => {
+        console.error("멤버 차단 중 에러 발생", error);
+        throw error;
+      });
+  },
+};
+
 
 /**
  * @작성자: 한동환
