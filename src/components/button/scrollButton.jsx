@@ -1,9 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowUpCircleIcon, BellAlertIcon } from "@heroicons/react/24/outline";
+import { Note } from "../../utils/repository";
+import AuthStore from "../../utils/zustand/AuthStore";
 
 export default function ScrollButton() {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("messages");
+  const [messages, setMessages] = useState([]);
+  const [notifications, setNotifications] = useState([
+    { id: "1", title: "알림 제목 1", author: "작성자 A" },
+    { id: "2", title: "알림 제목 2", author: "작성자 B" },
+    { id: "3", title: "알림 제목 3", author: "작성자 C" },
+  ]);
+
+  const memberNo = AuthStore((state) => state.userInfo.memberNo);
+
+  useEffect(() => {
+    if (isAlertOpen && activeTab === "messages") {
+      fetchMessages();
+    }
+  }, [isAlertOpen, activeTab]);
+
+  const fetchMessages = async () => {
+    try {
+      const response = await Note.NoteList({ memberNo });
+      if (response && response.data) {
+        setMessages(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -12,18 +39,6 @@ export default function ScrollButton() {
   const toggleAlert = () => {
     setIsAlertOpen(!isAlertOpen);
   };
-
-  const messages = [
-    { id: "1", title: "메시지 제목 1", author: "작성자 1" },
-    { id: "2", title: "메시지 제목 2", author: "작성자 2" },
-    { id: "3", title: "메시지 제목 3", author: "작성자 3" },
-  ];
-
-  const notifications = [
-    { id: "1", title: "알림 제목 1", author: "작성자 A" },
-    { id: "2", title: "알림 제목 2", author: "작성자 B" },
-    { id: "3", title: "알림 제목 3", author: "작성자 C" },
-  ];
 
   return (
     <div>
