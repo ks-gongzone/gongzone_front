@@ -152,6 +152,11 @@ export const Party = {
       .then((res) => res)
       .catch((err) => err);
   },
+  CompleteParty: async (id) => {
+    return GZAPI.post(`api/party/updateStatus/${id}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
 };
 
 export const Location = {
@@ -490,6 +495,23 @@ export const AdminMemberAPI = {
   },
   ReportMemberInsert: async (data) => {
     return GZAPI.post(`/api/ReportMember/report`, data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  QuestionList: async (data) => {
+    return GZAPI.get(`/api/QuestionMember/listQuestionAll`, data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  QuestionMemberInsert: async (data) => {
+    return GZAPI.post(`/api/QuestionMember/insert`, data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  QuestionStatusList: async (data) => {
+    const { memberQuestionNo, ...rest } = data;
+    console.log(rest);
+    return GZAPI.post(`/api/QuestionStatusUpdate/${memberQuestionNo}`, rest)
       .then((res) => res)
       .catch((err) => err);
   },

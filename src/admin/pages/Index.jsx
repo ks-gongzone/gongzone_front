@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import AdminMemberMenu from "../components/Member/AdminMemberMenu";
 import AdminAnnounce from "../components/announce/AdminAnnounce";
 import ReportList from "./report/ReportList";
+import QuestionList from "./question/QuestionList";
 
 export default function Admin() {
   const [content, setContent] = useState({
@@ -56,7 +57,7 @@ export default function Admin() {
           {renderButton("party", "파티관리", <div>파티관리</div>)}
           {renderButton("report", "신고관리", <ReportList />)}
           {renderButton("notice", "공지사항", <AdminAnnounce />)}
-          {renderButton("etc", "기타", <div>기타</div>)}
+          {renderButton("etc", "문의내역", <QuestionList />)}
         </div>
       </div>
       <div className="flex flex-col w-full">
@@ -73,7 +74,7 @@ export default function Admin() {
           </div>
         </div>
 
-        <div className="h-screen p-6 bg-gray-100">{content.component}</div>
+        <div className="h-screen p-6 bg-gray-100 overflow-auto" >{content.component}</div>
       </div>
     </div>
   );

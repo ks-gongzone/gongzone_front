@@ -7,6 +7,7 @@ import PartyRequest from "./PartyRequest";
 import "./PartyAnimation.css"; // 애니메이션 스타일 정의
 import RequestModal from "../../components/page/party/RequestModal";
 import PartyReply from "../../components/page/party/PartyReply";
+import ConfirmModal from "../../components/page/party/ConfirmModal";
 
 export default function PartyDetail() {
   const { id: memberNo, no: partyNoParam } = useParams();
@@ -20,6 +21,9 @@ export default function PartyDetail() {
   const [detail, setDetail] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+
+  console.log(partyNo);
 
   const fetch = async () => {
     try {
@@ -52,6 +56,10 @@ export default function PartyDetail() {
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}년 ${month}월 ${day}일`;
+  };
+
+  const stripHtmlTags = (str) => {
+    return str.replace(/<\/?[^>]+(>|$)/g, "");
   };
 
   const handleAccept = async (memberNo, partyNo) => {
@@ -116,6 +124,18 @@ export default function PartyDetail() {
     await fetch();
   };
 
+  const handleConfirm = () => {
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleComplete = async (partyNo) => {
+    setIsConfirmModalOpen(false);
+    await Party.CompleteParty(partyNo);
+    await fetch();
+  };
+
+  console.log("🚀 ~ PartyDetail ~ detail.remainAmount:", detail.remainAmount);
+
   return (
     <div className="w-[65em] mx-auto mb-10 mt-14">
       <div className="w-full mb-6 text-lg font-bold text-[#526688]">
@@ -125,7 +145,7 @@ export default function PartyDetail() {
       <InfoCard
         key={detail.partyNo}
         title={detail.partyCateCode}
-        desc={detail.boardBody}
+        desc={stripHtmlTags(detail.boardBody)}
         link={detail.productUrl}
         price={
           Math.ceil(
@@ -137,6 +157,7 @@ export default function PartyDetail() {
         targetAmt={detail.partyAmount}
         remainAmt={detail.remainAmount}
         img={`${baseURL}${detail.img}`} // 이미지 부분 테이블과 백단 추가 수정 필요
+        memberTargetNo={detail.requestMember.memberNo}
       >
         <div className="text-sm px-3 pb-3">
           <div className="flex justify-between mb-3 text-[#888888]"></div>
@@ -153,21 +174,47 @@ export default function PartyDetail() {
         </button>
       )}
 
+      {memberNo === detail.partyLeader && (
+        <>
+          {detail.status === "S060103" ? (
+            <button
+              className="w-full h-10 mt-4 rounded-md bg-blue-500 text-white font-bold"
+              disabled
+            >
+              파티원 포인트 결제 대기
+            </button>
+          ) : (
+            Number(detail.remainAmount) === 0 && (
+              <button
+                onClick={handleConfirm}
+                className="w-full h-10 mt-4 rounded-md bg-gray-400 text-white font-bold"
+              >
+                모집 완료하기
+              </button>
+            )
+          )}
+        </>
+      )}
+
       <PartyParticipant
         participants={participants}
         partyLeader={detail.partyLeader}
         onKick={handleKick}
         onLeave={handleKick}
         currentUser={memberNo}
+        status={detail.status}
       />
-      <PartyRequest
-        requestMembers={requestMembers}
-        onAccept={handleAccept}
-        onRefuse={handleRefuse}
-        onLeave={handleLeave}
-        partyLeader={detail.partyLeader}
-        currentUser={memberNo}
-      />
+
+      {Number(detail.remainAmount) !== 0 && (
+        <PartyRequest
+          requestMembers={requestMembers}
+          onAccept={handleAccept}
+          onRefuse={handleRefuse}
+          onLeave={handleLeave}
+          partyLeader={detail.partyLeader}
+          currentUser={memberNo}
+        />
+      )}
 
       <RequestModal
         isOpen={isModalOpen}
@@ -175,6 +222,13 @@ export default function PartyDetail() {
         memberNo={memberNo}
         partyNo={partyNo}
         remainAmount={detail.remainAmount}
+      />
+
+      <ConfirmModal
+        isConfirmModalOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={handleComplete}
+        partyNo={partyNo}
       />
       <PartyReply partyNo={partyNo} />
     </div>

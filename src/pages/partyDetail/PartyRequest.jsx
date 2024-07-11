@@ -36,6 +36,7 @@ export default function PartyRequest({
               note={true}
               like={true}
               amount={requestMember.memberAmount}
+              memberTargetNo={requestMember.memberNo}
             >
               <div className="text-sm px-3 pb-3">
                 <div className="flex justify-between mb-3 text-[#888888]"></div>
@@ -57,7 +58,7 @@ export default function PartyRequest({
                       </button>
                       <button
                         type="button"
-                        className="w-full mx-1 h-6 rounded-md bg-blue-300 hover:bg-blue-500 text-xs font-bold text-[white]"
+                        className="w-full mx-1 h-6 rounded-md bg-red-300 hover:bg-red-500 text-xs font-bold text-[white]"
                         onClick={() =>
                           onRefuse(
                             requestMember.memberNo,

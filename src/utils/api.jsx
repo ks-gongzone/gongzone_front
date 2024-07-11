@@ -1,24 +1,24 @@
 import axios from "axios";
 
 const GZAPI = axios.create({
-  baseURL: "http://localhost:8088/", // API의 기본 URL을 설정
+  baseURL: process.env.REACT_APP_API_URL, // API의 기본 URL을 설정
   headers: {
     "Content-Type": "application/json",
   },
 });
 
 GZAPI.interceptors.request.use(
-    (config) => {
-      const token = window.localStorage.getItem("accessToken");
-      if (token) {
-        //console.log(token);
-        config.headers["Authorization"] = `Bearer ${ token }`;
-      }
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
+  (config) => {
+    const token = window.localStorage.getItem("accessToken");
+    if (token) {
+      //console.log(token);
+      config.headers["Authorization"] = `Bearer ${ token }`;
     }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
 GZAPI.interceptors.response.use(
@@ -44,7 +44,7 @@ GZAPI.interceptors.response.use(
               const newAccessToken = response.data.newAccessToken;
               console.log("리프레시 토큰 요청 성공", newAccessToken);
               window.localStorage.setItem("accessToken", newAccessToken);
-              firstRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+              firstRequest.headers["Authorization"] = `Bearer ${ newAccessToken }`;
               return axios(firstRequest);
             } else {
               console.error("리프레시 토큰 요청 실패", response);
