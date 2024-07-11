@@ -4,10 +4,15 @@ import { useEffect, useState } from "react";
 import { Party } from "../../utils/repository";
 import PartyParticipant from "./PartyParticipant";
 import PartyRequest from "./PartyRequest";
-import "./PartyAnimation.css"; // 애니메이션 스타일 정의
+import "./PartyAnimation.css";
 import RequestModal from "../../components/page/party/RequestModal";
 import PartyReply from "../../components/page/party/PartyReply";
 import ConfirmModal from "../../components/page/party/ConfirmModal";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import AuthStore from "../../utils/zustand/AuthStore";
+
+const MySwal = withReactContent(Swal);
 
 export default function PartyDetail() {
   const { id: memberNo, no: partyNoParam } = useParams();
@@ -22,6 +27,7 @@ export default function PartyDetail() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const loginMember = AuthStore((state) => state.userInfo.memberNo);
 
   console.log(partyNo);
 
@@ -42,10 +48,20 @@ export default function PartyDetail() {
   };
 
   useEffect(() => {
-    if (!detail) {
-      fetch();
-    }
+    fetch();
   }, [partyNo]);
+
+  useEffect(() => {
+    if (detail && loginMember !== memberNo) {
+      MySwal.fire({
+        title: "접근 불가",
+        text: "다른 사용자의 파티 상세 페이지에 접근할 수 없습니다.",
+        icon: "error",
+      }).then(() => {
+        navigate("/"); // 접근 불가 시 홈 페이지로 리다이렉트
+      });
+    }
+  }, [detail, loginMember, memberNo, navigate]);
 
   console.log(data);
   console.log(detail);
@@ -98,8 +114,60 @@ export default function PartyDetail() {
     }
   };
 
+  const handlePurchase = async (memberNo, partyNo) => {
+    try {
+      const response = await Party.PurchaseInfo(memberNo, partyNo);
+      const { purchaseNo, purchasePrice, memberPoint } = response.data;
+      console.log("🚀 ~ handlePurchase ~  response.data:", response.data);
+
+      await MySwal.fire({
+        title: "포인트 결제하기",
+        html: `
+          <div style="text-align: left;">
+            <p><strong>결제 예정 포인트:</strong> ${purchasePrice}</p>
+            <p><strong>보유 포인트:</strong> ${memberPoint}</p>
+          </div>
+        `,
+        showCancelButton: true,
+        confirmButtonText: "결제하기",
+        cancelButtonText: "취소",
+        showDenyButton: true,
+        denyButtonText: "충전하기",
+        preConfirm: () => {
+          if (purchasePrice > memberPoint) {
+            Swal.showValidationMessage(
+              "보유 포인트가 결제 예정 포인트보다 적습니다. 포인트를 충전하세요."
+            );
+            return false;
+          }
+          return { purchaseNo, purchasePrice, memberPoint };
+        },
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            await Party.ConfirmPurchase(memberNo, purchaseNo);
+            MySwal.fire(
+              "결제 완료",
+              "결제가 성공적으로 완료되었습니다.",
+              "success"
+            );
+            fetch();
+          } catch (error) {
+            MySwal.fire("오류", "결제 중 오류가 발생했습니다.", "error");
+            console.error("Error during purchase:", error);
+          }
+        } else if (result.isDenied) {
+          window.location.href = "/myPage/point";
+        }
+      });
+    } catch (error) {
+      MySwal.fire("오류", "결제 요청 중 오류가 발생했습니다.", "error");
+      console.error("Error during purchase:", error);
+    }
+  };
+
   if (loading) {
-    return <div>Loading...</div>; // 로딩 중일 때 로딩 메시지를 표시합니다.
+    return <div>Loading...</div>;
   }
 
   if (!detail) {
@@ -174,7 +242,7 @@ export default function PartyDetail() {
         </button>
       )}
 
-      {memberNo === detail.partyLeader && (
+      {memberNo === detail.partyLeader ? (
         <>
           {detail.status === "S060103" ? (
             <button
@@ -194,6 +262,15 @@ export default function PartyDetail() {
             )
           )}
         </>
+      ) : (
+        detail.status === "S060103" && (
+          <button
+            className="w-full h-10 mt-4 rounded-md bg-green-500 text-white font-bold"
+            onClick={() => handlePurchase(memberNo, partyNo)}
+          >
+            내꺼 결제하기
+          </button>
+        )
       )}
 
       <PartyParticipant
