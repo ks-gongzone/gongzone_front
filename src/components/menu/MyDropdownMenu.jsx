@@ -1,12 +1,25 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthStore from "../../utils/zustand/AuthStore";
 import sample1 from "../../assets/images/sample1.PNG";
+import { DropDownAPI } from "../../utils/repository";
 
+/**
+ * @수정일: 2024-07-10
+ * @수정내용: 드롭다운 박스 노출 시 데이터 로드
+ */ 
 export default function MyDropdownMenu({ isOpen, onClose }) {
+  const { userInfo } = AuthStore((state) => ({ userInfo: state.userInfo }));
+  const { memberNo, pointNo } = userInfo;
   const { statusLogout } = AuthStore();
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
+  const [dropDownData, setDropDownData] = useState({
+    memberNo: "",
+    memberName: "",
+    pointNo: "",
+    memberPoint: 0,
+  });
 
   const handleLogout = () => {
     statusLogout();
@@ -21,6 +34,19 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
 
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
+      console.log("memberNo", memberNo);
+      console.log("pointNo", pointNo);
+      // 2024-07-10 한동환 추가
+      if (memberNo && pointNo) {
+        DropDownAPI.getDropDownData(memberNo)
+        .then((data) => {
+          console.log("데이터 받는 형식: ", data);
+          setDropDownData(data);
+        })
+        .catch((error) => {
+          console.error("드롭다운 메뉴 로드 중 에러발생", error);
+        });
+      }
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
     }
@@ -28,7 +54,7 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, memberNo, pointNo]);
 
   return (
     <div
@@ -48,18 +74,18 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
         </button>
       </div>
       <div className="flex items-center px-8">
-        <Link to="/myPage" className="flex items-center">
+        <Link to="/myPage/point" className="flex items-center">
           <img
             className="w-20 h-20 rounded-full"
             src={sample1}
             alt="User avatar"
           />
           <div className="ml-3">
-            <div className="text-gray-900 font-semibold">고자이마스</div>
+            <div className="text-gray-900 font-semibold">{dropDownData.memberName}</div>
             <p className="text-red-500 text-sm mt-2">보유 포인트</p>
             <div className="flex justify-between">
               <div className="flex w-[8em] rounded-lg justify-end items-center pr-4 text-[13px]">
-                0P
+                {dropDownData.memberPoint}P
               </div>
               <button
                 type="button"
