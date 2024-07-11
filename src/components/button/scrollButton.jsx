@@ -24,11 +24,34 @@ export default function ScrollButton() {
   const fetchMessages = async () => {
     try {
       const response = await Note.NoteList({ memberNo });
-      if (response && response.data) {
+      console.log("API response:", response);
+      if (Array.isArray(response)) {
+        setMessages(response);
+      } else if (response && Array.isArray(response.data)) {
         setMessages(response.data);
+      } else {
+        console.error("Unexpected response format:", response);
+        setMessages([]);
       }
     } catch (error) {
       console.error("Error fetching messages:", error);
+      setMessages([]);
+    }
+  };
+
+  const handleReadMessage = async (noteNo) => {
+    console.log("Reading message with noteNo:", noteNo);
+    try {
+      await Note.NoteCheck(noteNo);
+      setMessages((prevMessages) =>
+        prevMessages.map((message) =>
+          message.noteNo === noteNo
+            ? { ...message, statusCode: "S010402" }
+            : message
+        )
+      );
+    } catch (error) {
+      console.error("Error updating message status:", error);
     }
   };
 
@@ -96,11 +119,19 @@ export default function ScrollButton() {
           {activeTab === "messages" ? (
             <ul>
               {messages.map((message) => (
-                <li key={message.id} className="mb-2">
-                  <button className="w-full text-left p-2 rounded-md hover:bg-gray-100">
-                    <div className="font-medium">{message.title}</div>
+                <li
+                  key={message.noteNo}
+                  className="mb-2"
+                  onClick={() => handleReadMessage(message.noteNo)}
+                >
+                  <button
+                    className={`w-full text-left p-2 rounded-md hover:bg-gray-100 ${
+                      message.statusCode === "S010402" ? "text-gray-400" : ""
+                    }`}
+                  >
+                    <div className="font-medium">{message.memberNo}</div>
                     <div className="text-sm text-gray-500">
-                      {message.author}
+                      {message.noteBody}
                     </div>
                   </button>
                 </li>

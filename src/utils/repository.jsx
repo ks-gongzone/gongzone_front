@@ -455,9 +455,8 @@ export const MemberAPI = {
 };
 
 export const Note = {
-  NoteCheck: async (data) => {
-    const { noteNo, ...rest } = data;
-    return GZAPI.post(`/api/noteCheck/${noteNo}`, rest)
+  NoteCheck: async (noteNo) => {
+    return GZAPI.post(`/api/noteCheck/${noteNo}`)
       .then((res) => res)
       .catch((err) => err);
   },
