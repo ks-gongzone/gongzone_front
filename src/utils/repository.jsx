@@ -157,6 +157,11 @@ export const Party = {
       .then((res) => res)
       .catch((err) => err);
   },
+  PurchaseInfo: async (memberNo, partyNo) => {
+    return GZAPI.get(`api/party/purchase/${memberNo}/${partyNo}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
 };
 
 export const Location = {
@@ -332,6 +337,22 @@ export const GetPhone = (memberNo) => {
     });
 };
 
+// 드롭다운 데이터 받기
+export const DropDownAPI = {
+  getDropDownData: async (memberNo) => {
+    console.log("memberNo: ", memberNo);
+    if (!memberNo) {
+      throw new Error("회원 번호 또는 포인트 번호가 없습니다.");
+    }
+    return GZAPI.get(`/api/member/dropDown/${memberNo}`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("Error fetching drop down data:", error);
+        throw error;
+      });
+  },
+};
+
 /**
  * @작성자: 한동환
  * @내용: 공지사항 type_code값에 따라 다른 통신
@@ -341,10 +362,10 @@ export const AnnounceAPI = {
     const params = new URLSearchParams({ page, size });
     if (type) params.append("type", type);
     return GZAPI.get(`/api/announce?${params.toString()}`)
-      .then((res) => res.data)
-      .catch((err) => {
-        console.error("Error fetching announcements:", err);
-        throw err;
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("Error fetching announcements:", error);
+        throw error;
       });
   },
   getAnnouncementDetail: async (announceNo) => {
@@ -397,13 +418,13 @@ export const AnnounceAPI = {
       });
   },
   updateAnnouncement: (announceNo, announce) => {
-    console.log("공지 수정 [API] 번호: ", announceNo)
+    console.log("공지 수정 [API] 번호: ", announceNo);
     return GZAPI.put(`/api/_admin/announce/update/${announceNo}`, announce)
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error("공지사항 수정 중 에러 발생[API]", error);
-      throw error;
-    });
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("공지사항 수정 중 에러 발생[API]", error);
+        throw error;
+      });
   },
   deleteAnnouncement: (announceNo) => {
     return GZAPI.delete(`/api/_admin/announce/delete/${announceNo}`)
