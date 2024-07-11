@@ -31,7 +31,7 @@ export default function DeleteButton() {
         onClick={handleDelete}
         className="bg-red-500 text-white font-bold py-2 px-4 rounded"
       >
-        회원 탈퇴
+        !회원 탈퇴
       </button>
       {inConfirm && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
