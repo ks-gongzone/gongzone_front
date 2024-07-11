@@ -500,3 +500,15 @@ export const AdminMemberAPI = {
       .catch((err) => err);
   },
 };
+
+export const Board = {
+  BoardReply: async(boardNo, connectMemberNo, Reply) => {
+    return GZAPI.post(`/api/boards/reply/add`, {
+      boardNo: boardNo,
+      memberNo: connectMemberNo,
+      replyBody: Reply
+    })
+    .then((res) => res)
+    .catch((err) => err);
+  }
+}
