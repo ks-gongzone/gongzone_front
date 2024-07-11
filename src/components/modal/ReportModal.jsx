@@ -9,7 +9,7 @@ export default function ReportModal({
   memberNick,
 }) {
   const [textareaValue, setTextareaValue] = useState("");
-  const [typeCodeValue, setTypeCodeValue] = useState("");
+  const [typeCodeValue, setTypeCodeValue] = useState("T010501");
 
   const handleTextareaChange = (e) => {
     setTextareaValue(e.target.value);
@@ -65,6 +65,7 @@ export default function ReportModal({
           <select
             className="mt-1 p-2 border rounded w-full"
             onClick={typeCodeChange}
+            value={typeCodeValue}
           >
             <option value="T010501">부적절한 콘텐츠</option>
             <option value="T010502">사기 및 사기성 행위</option>

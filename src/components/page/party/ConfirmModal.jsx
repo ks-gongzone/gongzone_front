@@ -17,7 +17,7 @@ export default function ConfirmModal({
       MySwal.fire({
         title: (
           <div>
-            <div className="text-ms font-semi-bold mb-1 pt-5 text-center">
+            <div className="text-xs font-semi-bold mb-1 pt-5 text-center">
               모집 완료 상태로 변경 후 파티를 해제하실 경우
             </div>
             <div className="text-lg text-red-500 font-bold text-center pb-2">
