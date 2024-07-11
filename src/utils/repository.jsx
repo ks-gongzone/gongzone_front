@@ -582,8 +582,36 @@ export const AdminMemberAPI = {
   },
   QuestionStatusList: async (data) => {
     const { memberQuestionNo, ...rest } = data;
-    console.log(rest);
     return GZAPI.post(`/api/QuestionStatusUpdate/${memberQuestionNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  NoteCheck: async (data) => {
+    const { noteNo, ...rest } = data;
+    return GZAPI.post(`/api/noteCheck/${noteNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  NoteList: async (data) => {
+    const { memberNo, ...rest } = data;
+    return GZAPI.post(`/api/noteList/${memberNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  InsertNote: async (data) => {
+    return GZAPI.post(`/api/insertNote`, data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  UpdateReadTimeNote: async (data) => {
+    const { noteNo, ...rest } = data;
+    return GZAPI.post(`/api/updateReadTime/${noteNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  UpdateDeleteNote: async (data) => {
+    const { noteNo, ...rest } = data;
+    return GZAPI.post(`/api/updateDelete/${noteNo}`, rest)
       .then((res) => res)
       .catch((err) => err);
   },
