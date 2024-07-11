@@ -704,6 +704,7 @@ export const AdminMemberAPI = {
   },
   QuestionStatusList: async (data) => {
     const { memberQuestionNo, ...rest } = data;
+    console.log(rest);
     return GZAPI.post(`/api/QuestionStatusUpdate/${memberQuestionNo}`, rest)
       .then((res) => res)
       .catch((err) => err);
