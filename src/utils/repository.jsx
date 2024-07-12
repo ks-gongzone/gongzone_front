@@ -108,6 +108,11 @@ export const Auth = {
       return { error: errorMessage };
     }
   },
+  Logout: async () => {
+    return GZAPI.post("/api/logout")
+      .then((res) => res)
+      .catch((err) => err);
+  },
 };
 
 export const User = {
