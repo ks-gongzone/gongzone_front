@@ -99,7 +99,7 @@ export default function LayoutHeader() {
               <div className="flex items-center whitespace-nowrap">
                 <button
                   type="button"
-                  onClick={() => navigate("/board/write/:memberNo")}
+                  onClick={() => navigate(`/board/write/${memberNo}`)}
                   className="flex items-center bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-black whitespace-nowrap"
                 >
                   <PencilIcon className="w-5 h-5 mr-2" />

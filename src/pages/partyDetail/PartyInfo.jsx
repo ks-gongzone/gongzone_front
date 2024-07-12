@@ -29,6 +29,8 @@ export default function PartyDetail() {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const loginMember = AuthStore((state) => state.userInfo.memberNo);
 
+  const connectNo = AuthStore((state) => state.userInfo.memberNo);
+
   console.log(partyNo);
 
   const fetch = async () => {
@@ -226,6 +228,10 @@ export default function PartyDetail() {
         remainAmt={detail.remainAmount}
         img={`${baseURL}${detail.img}`} // 이미지 부분 테이블과 백단 추가 수정 필요
         memberTargetNo={detail.requestMember.memberNo}
+        writeNo={detail.partyLeader}
+        connectNo={connectNo}
+        boardNo={detail.boardNo}
+
       >
         <div className="text-sm px-3 pb-3">
           <div className="flex justify-between mb-3 text-[#888888]"></div>

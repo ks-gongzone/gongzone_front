@@ -27,6 +27,7 @@ import {
 
 import AdminWriteDetail from "../admin/pages/announceCreate/AdminWriteDetail";
 import AdminUpdateDetail from "../admin/pages/announceUpdate/AdminUpdateDetail";
+import UpdateForm from "../pages/boardUpdate/UpdateForm";
 
 export default createBrowserRouter([
   {
@@ -66,6 +67,7 @@ export default createBrowserRouter([
       { path: "/party/detail/:id", element: <PartyList /> },
       { path: "/board/list", element: <BoardList /> },
       { path: "/board/write/:memberNo", element: <BoardWrite /> },
+      { path: "/board/update/:boardNo", element: <UpdateForm />},
       { path: "/register", element: <Register /> },
       { path: "/naver/callback", element: <NaverLogin /> },
       { path: "/google/callback", element: <GoogleLogin /> },

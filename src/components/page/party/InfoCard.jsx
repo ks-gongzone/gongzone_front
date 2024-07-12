@@ -7,7 +7,7 @@ import {
   ShoppingCartIcon,
 } from "@heroicons/react/24/outline";
 import { MapPinIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function InfoCard({
   chirdren,
@@ -20,8 +20,13 @@ export default function InfoCard({
   address,
   price,
   period,
+  writeNo,
+  connectNo,
+  boardNo
 }) {
   const [isCopied, setIsCopied] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleShareClick = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
@@ -31,6 +36,10 @@ export default function InfoCard({
       }, 1000); // 2초 후에 안내 메시지 숨기기
     });
   };
+
+  const handleBoardUpdate = () => {
+    navigate(`/board/update/${boardNo}`)
+  }
 
   return (
     <div className="w-full flex justify-between">
@@ -47,7 +56,21 @@ export default function InfoCard({
             <div className="font-bold ml-5 mt-5 text-[1vw]">{title}</div>
             <div className="ml-5 py-7 font-semibold text-gray-700">{desc}</div>
           </div>
-          <div className="relative">
+          <div className="relative flex items-center">
+            {writeNo === connectNo && (
+              <>
+              {/* 수정 버튼 */}
+              <button 
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded w-14 h-8"
+                onClick={handleBoardUpdate}>
+              수정
+              </button>
+              {/* 삭제 버튼 */}
+              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded ml-1 w-14 h-8">
+              삭제
+              </button>
+            </>
+            )}
             <button onClick={handleShareClick}>
               <ShareIcon className="mt-3 w-8 h-8" />
             </button>
