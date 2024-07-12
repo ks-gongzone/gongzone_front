@@ -3,6 +3,7 @@ import {
   ArrowUpCircleIcon,
   BellAlertIcon,
   TrashIcon,
+  PencilSquareIcon,
 } from "@heroicons/react/24/outline";
 import { Alert, Note } from "../../utils/repository";
 import AuthStore from "../../utils/zustand/AuthStore";
@@ -16,8 +17,13 @@ export default function ScrollButton() {
   const [activeTab, setActiveTab] = useState("messages");
   const [messages, setMessages] = useState([]);
   const [alerts, setAlerts] = useState([]);
+  const [hasUnread, setHasUnread] = useState(false);
 
   const memberNo = AuthStore((state) => state.userInfo.memberNo);
+
+  useEffect(() => {
+    fetchInitialData();
+  }, []);
 
   useEffect(() => {
     if (isAlertOpen) {
@@ -28,6 +34,15 @@ export default function ScrollButton() {
       }
     }
   }, [isAlertOpen, activeTab]);
+
+  useEffect(() => {
+    checkUnreadStatus();
+  }, [messages, alerts]);
+
+  const fetchInitialData = async () => {
+    await Promise.all([fetchMessages(), fetchAlerts()]);
+    checkUnreadStatus();
+  };
 
   const fetchMessages = async () => {
     try {
@@ -151,12 +166,52 @@ export default function ScrollButton() {
     }
   };
 
+  const handleReplyMessage = async (message) => {
+    const { value: noteBody } = await MySwal.fire({
+      title: `${message.memberId}에게 답장`,
+      input: "textarea",
+      inputLabel: "내용을 입력하세요",
+      inputPlaceholder: "내용을 입력하세요...",
+      inputAttributes: {
+        "aria-label": "내용을 입력하세요",
+      },
+      showCancelButton: true,
+      confirmButtonText: "보내기",
+      cancelButtonText: "취소",
+    });
+
+    if (noteBody) {
+      const data = {
+        memberNo,
+        memberTargetNo: message.memberNo,
+        noteBody,
+      };
+
+      try {
+        await Note.InsertNote(data);
+        MySwal.fire("성공", "쪽지가 성공적으로 보내졌습니다.", "success");
+      } catch (error) {
+        MySwal.fire("실패", "쪽지 보내기 중 오류가 발생했습니다.", "error");
+      }
+    }
+  };
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const toggleAlert = () => {
     setIsAlertOpen(!isAlertOpen);
+  };
+
+  const checkUnreadStatus = () => {
+    const hasUnreadMessages = messages.some(
+      (message) => message.statusCode === "S010301"
+    );
+    const hasUnreadAlerts = alerts.some(
+      (alert) => alert.statusCode === "S010401"
+    );
+    setHasUnread(hasUnreadMessages || hasUnreadAlerts);
   };
 
   const formatDate = (dateString) => {
@@ -177,16 +232,19 @@ export default function ScrollButton() {
         <button
           type="button"
           onClick={scrollToTop}
-          className="w-12 h-12 rounded-full bg-blue-400 flex justify-center items-center"
+          className="relative w-12 h-12 rounded-full bg-blue-400 flex justify-center items-center"
         >
           <ArrowUpCircleIcon className="text-white w-8 h-8" />
         </button>
         <button
           type="button"
           onClick={toggleAlert}
-          className="w-12 h-12 rounded-full flex justify-center items-center bg-black"
+          className="relative w-12 h-12 rounded-full flex justify-center items-center bg-black"
         >
           <BellAlertIcon className="text-white w-8 h-8" />
+          {hasUnread && (
+            <span className="absolute top-0 right-0 block h-3 w-3 rounded-full ring-2 ring-white bg-red-500"></span>
+          )}
         </button>
       </div>
 
@@ -243,6 +301,12 @@ export default function ScrollButton() {
                       <div className="text-sm text-gray-500">
                         {message.noteBody}
                       </div>
+                    </button>
+                    <button
+                      className="text-blue-500 ml-2"
+                      onClick={() => handleReplyMessage(message)}
+                    >
+                      <PencilSquareIcon className="h-5 w-5" />
                     </button>
                     <button
                       className="text-red-500 ml-2"

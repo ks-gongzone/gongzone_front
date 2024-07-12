@@ -34,11 +34,8 @@ export default function PartyDetail() {
   const fetch = async () => {
     try {
       const detailData = await Party.PartyDetail(partyNo);
-      const responseData = detailData.data
-        ? detailData.data
-        : [detailData.data];
+      const responseData = detailData.data ? detailData.data : detailData;
       setData(responseData);
-
       setDetail(responseData);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -145,7 +142,20 @@ export default function PartyDetail() {
       }).then(async (result) => {
         if (result.isConfirmed) {
           try {
-            await Party.ConfirmPurchase(memberNo, purchaseNo);
+            const purchaseData = {
+              pointBefore: memberPoint,
+              pointChange: purchasePrice,
+              pointAfter: memberPoint - purchasePrice,
+              changeType: "T030303",
+              detail: {
+                purchaseDetailNo: "", // 필요한 경우 추가
+                purchaseNo: purchaseNo,
+                pointHistoryNo: "", // 필요한 경우 추가
+                purchasePrice: purchasePrice,
+                purchaseDate: new Date().toISOString(), // 현재 날짜 및 시간
+              },
+            };
+            await Party.PartyPurchase(partyNo, memberNo, purchaseData);
             MySwal.fire(
               "결제 완료",
               "결제가 성공적으로 완료되었습니다.",
@@ -210,28 +220,30 @@ export default function PartyDetail() {
         파티 정보
       </div>
 
-      <InfoCard
-        key={detail.partyNo}
-        title={detail.partyCateCode}
-        desc={stripHtmlTags(detail.boardBody)}
-        link={detail.productUrl}
-        price={
-          Math.ceil(
-            Number(detail.partyPrice) / Number(detail.partyAmount) / 10
-          ) * 10
-        }
-        address={detail.address}
-        period={formatDate(detail.endDate)}
-        targetAmt={detail.partyAmount}
-        remainAmt={detail.remainAmount}
-        img={`${baseURL}${detail.img}`} // 이미지 부분 테이블과 백단 추가 수정 필요
-        memberTargetNo={detail.requestMember.memberNo}
-      >
-        <div className="text-sm px-3 pb-3">
-          <div className="flex justify-between mb-3 text-[#888888]"></div>
-          <hr className="w-full" />
-        </div>
-      </InfoCard>
+      {detail && (
+        <InfoCard
+          key={detail.partyNo}
+          title={detail.partyCateCode}
+          desc={stripHtmlTags(detail.boardBody)}
+          link={detail.productUrl}
+          price={
+            Math.ceil(
+              Number(detail.partyPrice) / Number(detail.partyAmount) / 10
+            ) * 10
+          }
+          address={detail.address}
+          period={formatDate(detail.endDate)}
+          targetAmt={detail.partyAmount}
+          remainAmt={detail.remainAmount}
+          img={`${baseURL}${detail.img}`} // 이미지 부분 테이블과 백단 추가 수정 필요
+          memberTargetNo={detail.requestMember.memberNo}
+        >
+          <div className="text-sm px-3 pb-3">
+            <div className="flex justify-between mb-3 text-[#888888]"></div>
+            <hr className="w-full" />
+          </div>
+        </InfoCard>
+      )}
 
       {!isMember && (
         <button
@@ -297,6 +309,7 @@ export default function PartyDetail() {
         isOpen={isModalOpen}
         onClose={closeModal}
         memberNo={memberNo}
+        leaderNo={detail.partyLeader}
         partyNo={partyNo}
         remainAmount={detail.remainAmount}
       />

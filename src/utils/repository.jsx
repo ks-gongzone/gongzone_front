@@ -138,7 +138,7 @@ export const Party = {
       .catch((err) => err);
   },
   RequestJoin: async (id, partyNo, requestStatus, requestAmount) => {
-    return GZAPI.post(`api/party/accept/${id}/Status`, {
+    return GZAPI.post(`api/alertSSE/party/accept/${id}/Status`, {
       memberNo: id,
       partyNo: partyNo,
       statusCode: requestStatus,
@@ -153,12 +153,17 @@ export const Party = {
       .catch((err) => err);
   },
   CompleteParty: async (id) => {
-    return GZAPI.post(`api/party/updateStatus/${id}`)
+    return GZAPI.post(`api/alertSSE/party/updateStatus/${id}`)
       .then((res) => res)
       .catch((err) => err);
   },
   PurchaseInfo: async (memberNo, partyNo) => {
     return GZAPI.get(`api/party/purchase/${memberNo}/${partyNo}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  PartyPurchase: async (partyNo, memberNo, request) => {
+    return GZAPI.post(`api/party/${partyNo}/purchase/${memberNo}`, request)
       .then((res) => res)
       .catch((err) => err);
   },
