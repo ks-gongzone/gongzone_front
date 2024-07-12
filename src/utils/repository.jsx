@@ -130,7 +130,7 @@ export const Party = {
       .catch((err) => err);
   },
   HandleMember: async (id, partyNo, requestStatus) => {
-    return GZAPI.post(`api/party/accept/${id}/Status`, {
+    return GZAPI.post(`api/alertSSE/party/accept/${id}/Status`, {
       partyNo: partyNo,
       statusCode: requestStatus,
     })
@@ -462,42 +462,40 @@ export const Note = {
   },
   NoteList: async (data) => {
     const { memberNo, ...rest } = data;
-    return GZAPI.get(`/api/noteList/${memberNo}`, rest)
+    return GZAPI.get(`/api/note/noteList/${memberNo}`, rest)
       .then((res) => res)
       .catch((err) => err);
   },
   InsertNote: async (data) => {
-    return GZAPI.post(`/api/insertNote`, data)
+    return GZAPI.post(`/api/note/insertNote`, data)
       .then((res) => res)
       .catch((err) => err);
   },
-  UpdateReadTimeNote: async (data) => {
-    const { noteNo, ...rest } = data;
-    return GZAPI.post(`/api/updateReadTime/${noteNo}`, rest)
+  UpdateReadTimeNote: async (noteNo) => {
+    return GZAPI.post(`/api/note/updateReadTime/${noteNo}`)
       .then((res) => res)
       .catch((err) => err);
   },
-  UpdateDeleteNote: async (data) => {
-    const { noteNo, ...rest } = data;
-    return GZAPI.post(`/api/updateDelete/${noteNo}`, rest)
+  UpdateDeleteNote: async (noteNo) => {
+    return GZAPI.post(`/note/updateDelete/${noteNo}`)
       .then((res) => res)
       .catch((err) => err);
   },
 };
 
 export const Alert = {
-  InsertNote: async (id) => {
-    return GZAPI.post(`/api/members/${id}/alerts/update`)
+  AlertList: async (memberNo) => {
+    return GZAPI.get(`/api/alertSSE/AlertSSEList/${memberNo}`)
       .then((res) => res)
       .catch((err) => err);
   },
-  UpdateReadTimeNote: async (id) => {
-    return GZAPI.post(`/api/members/${id}/alerts/insert`)
+  AlertRead: async (alertNo) => {
+    return GZAPI.post(`/api/alertSSE/updateReadTime/${alertNo}`)
       .then((res) => res)
       .catch((err) => err);
   },
-  UpdateDeleteNote: async (id) => {
-    return GZAPI.get(`/api/members/${id}/alerts`)
+  AlertDelete: async (alertNo) => {
+    return GZAPI.post(`/api/alertSSE/updateReadTime/${alertNo}`)
       .then((res) => res)
       .catch((err) => err);
   },
