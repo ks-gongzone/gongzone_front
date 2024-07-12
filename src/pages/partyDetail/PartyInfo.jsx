@@ -307,7 +307,10 @@ export default function PartyDetail() {
         onConfirm={handleComplete}
         partyNo={partyNo}
       />
-      <PartyReply partyNo={partyNo} />
+      <PartyReply 
+        boardNo={detail.boardNo} 
+        boardReply={detail.boardReply}
+      />
     </div>
   );
 }
