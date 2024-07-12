@@ -4,6 +4,7 @@ import { Board } from "../../../utils/repository";
 
 export default function PartyReply({ boardNo, boardReply }) {
   const [reply, setReply] = useState("");
+  const [updateReply, setUpdateReply] = useState("");
   const connectMemberNo = AuthStore((state) => state.userInfo.memberNo);
   const [replies, setReplies] = useState(boardReply); // 초기 댓글 목록 설정
   const [editingIndex, setEditingIndex] = useState(-1);
@@ -30,6 +31,7 @@ export default function PartyReply({ boardNo, boardReply }) {
   
   const handleEdit = (index) => {
     setEditingIndex(index);
+    setUpdateReply(replies[index].replyBody);
   }
 
   const handleReplySubmit = async () => {
@@ -46,14 +48,28 @@ export default function PartyReply({ boardNo, boardReply }) {
   };
 
   const handleReplyUpdate = async (replyNo) => {
-    //if (reply.trim()) {
+    if (updateReply.trim()) {
       try {
-        console.log(replyNo);
-        // 수정 로직 구현
+        const updateReplies = await Board.UpdateBoardReply(replyNo, boardNo, connectMemberNo, updateReply)
+        console.log(updateReplies.data);
+        setReplies(updateReplies.data);
+        setUpdateReply("");
+        setEditingIndex(-1);
       } catch (error) {
         console.error('Error updating reply:', error);
       }
-    //}
+    }
+  };
+
+  const handleDelete = async (index) => {
+    const deleteNo = replies[index].replyNo;
+    try {
+      const deletedReply = await Board.DeleteBoardReply(deleteNo, boardNo, connectMemberNo);
+      console.log(deletedReply);
+      setReplies(deletedReply.data);
+    } catch (error) {
+      console.error("Error deleting reply:", error);
+    }
   };
 
   return (
@@ -110,8 +126,8 @@ export default function PartyReply({ boardNo, boardReply }) {
               // 수정 중인 댓글이면 수정 가능한 입력 칸을 보여줌
               <div className="flex">
                 <textarea
-                  value={reply.replyBody}
-                  onChange={(e) => setReply(e.target.value)}
+                  value={updateReply}
+                  onChange={(e) => setUpdateReply(e.target.value)}
                   className="w-full border rounded p-2"
                 />
                 <button
@@ -135,7 +151,7 @@ export default function PartyReply({ boardNo, boardReply }) {
                   </button>
                   <button
                     className="text-sm text-black-500 hover:underline"
-                    // onClick={() => handleDelete(index)}
+                    onClick={() => handleDelete(index)}
                   >
                     삭제
                   </button>

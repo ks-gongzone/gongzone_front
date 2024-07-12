@@ -531,5 +531,26 @@ export const Board = {
     })
     .then((res) => res)
     .catch((err) => err);
+  },
+
+  UpdateBoardReply: async(replyNo, boardNo, connectMemberNo, updateReply) => {
+    return GZAPI.post(`/api/boards/reply/update`, {
+      replyNo: replyNo,
+      boardNo: boardNo,
+      memberNo: connectMemberNo,
+      replyBody: updateReply
+    })
+    .then((res) => res)
+    .catch((err) => err);
+  },
+
+  DeleteBoardReply: async(deleteNo, boardNo, connectMemberNo) => {
+    return GZAPI.delete(`/api/boards/reply/delete`, {
+      data: {replyNo: deleteNo,
+      boardNo: boardNo,
+      memberNo: connectMemberNo}
+    })
+    .then((res) => res)
+    .catch((err) => err);
   }
 }
