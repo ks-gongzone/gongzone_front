@@ -60,6 +60,22 @@ export default function PartyParticipant({
                       <div className="w-full mx-1 h-6 rounded-md bg-red-200 text-xs font-bold text-[white] text-center flex items-center justify-center">
                         결제 대기 중
                       </div>
+                    ) : status === "S060104" ? (
+                      <div className="w-full mx-1 h-6 rounded-md bg-yellow-200 text-xs font-bold text-[white] text-center flex items-center justify-center">
+                        구매 대기중
+                      </div>
+                    ) : status === "S060105" ? (
+                      <div className="w-full mx-1 h-6 rounded-md bg-green-300 text-xs font-bold text-[white] text-center flex items-center justify-center">
+                        배송 대기중
+                      </div>
+                    ) : status === "S060106" ? (
+                      <div className="w-full mx-1 h-6 rounded-md bg-green-300 text-xs font-bold text-[white] text-center flex items-center justify-center">
+                        수취 대기중
+                      </div>
+                    ) : status === "S060107" || status === "S060108" ? (
+                      <div className="w-full mx-1 h-6 rounded-md bg-green-300 text-xs font-bold text-[white] text-center flex items-center justify-center">
+                        제품 수령 완료
+                      </div>
                     ) : participant.memberNo === currentUser ? (
                       <button
                         type="button"

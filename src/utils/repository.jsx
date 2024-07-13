@@ -167,6 +167,21 @@ export const Party = {
       .then((res) => res)
       .catch((err) => err);
   },
+  InsertShipping: async (partyNo, shippingNo, request) => {
+    return GZAPI.patch(`api/party/${partyNo}/shipping/${shippingNo}`, request)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  CompleteShipping: async (partyNo, shippingNo) => {
+    return GZAPI.post(`api/party/${partyNo}/shipping/${shippingNo}/complete`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  CompleteReception: async (partyNo, receptionNo, request) => {
+    return GZAPI.patch(`api/party/${partyNo}/reception/${receptionNo}`, request)
+      .then((res) => res)
+      .catch((err) => err);
+  },
 };
 
 export const Location = {

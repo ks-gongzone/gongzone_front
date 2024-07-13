@@ -58,6 +58,7 @@ export default function ScrollButton() {
       setMessages([]);
     }
   };
+  console.log(messages);
 
   const fetchAlerts = async () => {
     try {
@@ -76,7 +77,7 @@ export default function ScrollButton() {
     setMessages((prevMessages) =>
       fetchedMessages.map((message) => {
         const existingMessage = prevMessages.find(
-          (m) => m.noteNo === message.noteNo
+          (m) => memberNo === messages.memberTargetNo
         );
         if (existingMessage) {
           return {

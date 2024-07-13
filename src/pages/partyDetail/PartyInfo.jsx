@@ -142,17 +142,13 @@ export default function PartyDetail() {
       }).then(async (result) => {
         if (result.isConfirmed) {
           try {
+            const pointChange = -purchasePrice;
             const purchaseData = {
-              pointBefore: memberPoint,
-              pointChange: purchasePrice,
-              pointAfter: memberPoint - purchasePrice,
+              pointChange: pointChange,
               changeType: "T030303",
               detail: {
-                purchaseDetailNo: "", // 필요한 경우 추가
                 purchaseNo: purchaseNo,
-                pointHistoryNo: "", // 필요한 경우 추가
                 purchasePrice: purchasePrice,
-                purchaseDate: new Date().toISOString(), // 현재 날짜 및 시간
               },
             };
             await Party.PartyPurchase(partyNo, memberNo, purchaseData);
@@ -161,6 +157,7 @@ export default function PartyDetail() {
               "결제가 성공적으로 완료되었습니다.",
               "success"
             );
+            console.log(pointChange);
             fetch();
           } catch (error) {
             MySwal.fire("오류", "결제 중 오류가 발생했습니다.", "error");
@@ -174,6 +171,89 @@ export default function PartyDetail() {
       MySwal.fire("오류", "결제 요청 중 오류가 발생했습니다.", "error");
       console.error("Error during purchase:", error);
     }
+  };
+
+  const handleRegisterShipping = async () => {
+    const { value: formValues } = await MySwal.fire({
+      title: "제품 운송장 등록하기",
+      html: `
+        <p><strong>꼭! 올바른 운송장을 확인 후 등록해주세요</strong></P>
+      <input id="swal-input1" class="swal2-input" placeholder="택배사" />
+      <input id="swal-input2" class="swal2-input" placeholder="운송장 번호" />
+    `,
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: "등록",
+      cancelButtonText: "취소",
+      preConfirm: () => {
+        const invoiceCourier = document.getElementById("swal-input1").value;
+        const invoiceCode = document.getElementById("swal-input2").value;
+
+        if (!invoiceCourier || !invoiceCode) {
+          Swal.showValidationMessage("모든 필드를 입력해 주세요.");
+          return false;
+        }
+
+        return { invoiceCourier, invoiceCode };
+      },
+    });
+
+    if (formValues) {
+      const { invoiceCourier, invoiceCode } = formValues;
+      const request = { invoiceCourier, invoiceCode };
+      try {
+        await Party.InsertShipping(detail.partyNo, detail.shippingNo, request);
+        MySwal.fire(
+          "등록 완료",
+          "운송장이 성공적으로 등록되었습니다.",
+          "success"
+        );
+        fetch();
+      } catch (error) {
+        MySwal.fire("오류", "운송장 등록 중 오류가 발생했습니다.", "error");
+      }
+    }
+  };
+
+  const handleShippingComplete = async () => {
+    await Party.CompleteShipping(detail.partyNo, detail.shippingNo);
+    MySwal.fire("배송 완료", "배송 완료 처리되었습니다!", "success");
+    fetch();
+  };
+
+  const handleConfirmReceipt = async () => {
+    const loginUser = participants.find(
+      (participant) => participant.memberNo === memberNo
+    );
+    if (!loginUser || !loginUser.receptionNo) {
+      MySwal.fire("오류", "수취 확인 정보가 없습니다.", "error");
+      return;
+    }
+
+    const { value: receptionComment } = await MySwal.fire({
+      title: "수취 확인",
+      input: "textarea",
+      inputLabel: "수취 확인 코멘트를 입력해주세요",
+      inputPlaceholder: "코멘트를 입력해주세요...",
+      showCancelButton: true,
+      confirmButtonText: "확인",
+      cancelButtonText: "취소",
+      preConfirm: (comment) => {
+        if (!comment) {
+          MySwal.showValidationMessage("코멘트를 입력해야 합니다.");
+          return false;
+        }
+        return comment;
+      },
+    });
+    const request = { receptionComment };
+    await Party.CompleteReception(
+      detail.partyNo,
+      loginUser.receptionNo,
+      request
+    );
+    MySwal.fire("수취 확인", "수취 확인 처리되었습니다!", "success");
+    fetch();
   };
 
   if (loading) {
@@ -263,6 +343,34 @@ export default function PartyDetail() {
             >
               파티원 포인트 결제 대기
             </button>
+          ) : detail.status === "S060104" ? (
+            <button
+              onClick={handleRegisterShipping}
+              className="w-full h-10 mt-4 rounded-md bg-green-500 text-white font-bold"
+            >
+              제품 운송장 등록하기
+            </button>
+          ) : detail.status === "S060105" ? (
+            <button
+              onClick={handleShippingComplete}
+              className="w-full h-10 mt-4 rounded-md bg-green-500 text-white font-bold"
+            >
+              제품 도착 알림 보내기
+            </button>
+          ) : detail.status === "S060106" ? (
+            <button
+              className="w-full h-10 mt-4 rounded-md bg-gray-500 text-white font-bold"
+              disabled
+            >
+              파티원 수취 대기중
+            </button>
+          ) : detail.status === "S060107" ? (
+            <button
+              onClick={handleShippingComplete}
+              className="w-full h-10 mt-4 rounded-md bg-green-500 text-white font-bold"
+            >
+              포인트 정산 요청하기
+            </button>
           ) : (
             Number(detail.remainAmount) === 0 && (
               <button
@@ -274,16 +382,24 @@ export default function PartyDetail() {
             )
           )}
         </>
-      ) : (
-        detail.status === "S060103" && (
-          <button
-            className="w-full h-10 mt-4 rounded-md bg-green-500 text-white font-bold"
-            onClick={() => handlePurchase(memberNo, partyNo)}
-          >
-            내꺼 결제하기
-          </button>
-        )
-      )}
+      ) : detail.status === "S060106" &&
+        participants.some(
+          (participant) => participant.memberNo === memberNo
+        ) ? (
+        <button
+          className="w-full h-10 mt-4 rounded-md bg-blue-500 text-white font-bold"
+          onClick={handleConfirmReceipt}
+        >
+          수취 확인하기
+        </button>
+      ) : detail.status === "S060103" ? (
+        <button
+          className="w-full h-10 mt-4 rounded-md bg-green-500 text-white font-bold"
+          onClick={() => handlePurchase(memberNo, partyNo)}
+        >
+          내꺼 결제하기
+        </button>
+      ) : null}
 
       <PartyParticipant
         participants={participants}
