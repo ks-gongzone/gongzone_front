@@ -11,6 +11,7 @@ export default function RequestModal({
   memberNo,
   partyNo,
   remainAmount,
+  leaderNo,
 }) {
   const [requestAmount, setRequestAmount] = useState(1);
 
