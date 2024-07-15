@@ -18,15 +18,13 @@ import AdminLogin from "../admin/pages/AdminLogin";
 import PartyDetail from "../pages/partyDetail/Index";
 import PartyList from "../pages/partyList/Index";
 import {
-  BlockUser,
-  Board,
-  Follow,
   MyInfo,
   MyParty,
 } from "../pages/myPage/Index";
 
 import AdminWriteDetail from "../admin/pages/announceCreate/AdminWriteDetail";
 import AdminUpdateDetail from "../admin/pages/announceUpdate/AdminUpdateDetail";
+import MemberPage from "../pages/memberInteractionList";
 
 export default createBrowserRouter([
   {
@@ -43,9 +41,6 @@ export default createBrowserRouter([
         children: [
           { path: "myInfo", element: <MyInfo /> },
           { path: "myParty", element: <MyParty /> },
-          { path: "myBoard", element: <Board /> },
-          { path: "blockUser", element: <BlockUser /> },
-          { path: "myFollow", element: <Follow /> },
 
           // point
           {
@@ -61,6 +56,8 @@ export default createBrowserRouter([
           },
         ],
       },
+      // memberList
+      { path: "/member/list", element: <MemberPage /> },
 
       { path: "/party/detail/:id/:no", element: <PartyDetail /> },
       { path: "/party/detail/:id", element: <PartyList /> },

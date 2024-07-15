@@ -376,7 +376,99 @@ export const DropDownAPI = {
         throw error;
       });
   },
+}
+  // 유저 리스트 업 후 팔로우 차단 API
+ export const MemberListAPI = {
+  getMemberList: async (page = 1, size = 8) => {
+    console.log("getMemberList실행: ");
+    const params = new URLSearchParams({ page, size });
+      return GZAPI.get(`/api/members/interaction?${params.toString()}`)
+        .then((response) => response.data)
+        .catch((error) => {
+          console.error("유저데이터 로드 중 에러발생", error);
+          throw error;
+        });
+  },
+
+  searchMemberList: async (page = 1, size = 8, memberName = "") => {
+    const params = new URLSearchParams({ page, size, memberName });
+    return GZAPI.get(`/api/members/interaction?${params.toString()}`)
+      .then(response => response.data)
+      .catch(error => {
+        console.error("유저 검색 중 에러 발생", error);
+        throw error;
+      });
+  },
+
+  followMember: (currentUserNo, targetMemberNo) => {
+    console.log("타겟멤버", targetMemberNo)
+    console.log("현재유저", currentUserNo)
+    return GZAPI.post(`/api/members/interaction/follow`, { currentUserNo, targetMemberNo })
+      .then(response => response.data)
+      .catch(error => {
+        console.error("멤버 팔로우 중 에러 발생", error);
+        throw error;
+      });
+  },
+
+  unFollowMember: (currentUserNo, targetMemberNo) => {
+    console.log("언팔로우 타겟멤버", targetMemberNo);
+    console.log("언팔로우 현재유저", currentUserNo);
+    return GZAPI.delete(`/api/members/interaction/follow`,
+       { data: { currentUserNo, targetMemberNo }})
+    .then(response => {
+      console.log("언팔 성공", response.data);
+      return response.data
+    })
+    .catch(error => {
+      console.error("멤버 팔로우 중 에러 발생", error);
+      throw error;
+    });
+  },
+
+  blockMember: (currentUserNo, targetMemberNo) => {
+    console.log("차단 타겟멤버", targetMemberNo);
+    console.log("차단시도 유저", currentUserNo);
+    return GZAPI.post(`/api/members/interaction/block`, { currentUserNo, targetMemberNo })
+      .then(response => response.data)
+      .catch(error => {
+        console.error("멤버 차단 중 에러 발생", error);
+        throw error;
+      });
+  },
+
+  unBlockMember: (currentUserNo, targetMemberNo) => {
+    console.log("차단해제 타겟멤버", targetMemberNo);
+    console.log("차단해제시도 유저", currentUserNo);
+    return GZAPI.delete(`/api/members/interaction/block`, 
+      { data: { currentUserNo, targetMemberNo } })
+      .then(response => response.data)
+      .catch(error => {
+        console.error("멤버 차단해제 중 에러 발생", error);
+        throw error;
+      });
+  },
+
+    // 추가된 함수
+    getFollowList: async (memberNo) => {
+      return GZAPI.get(`/api/members/interaction/${memberNo}/follow`)
+        .then(response => response.data)
+        .catch(error => {
+          console.error(`${memberNo} 팔로우 리스트를 가져오는 중 오류 발생: `, error);
+          throw error;
+        });
+    },
+  
+    getBlockList: async (memberNo) => {
+      return GZAPI.get(`/api/members/interaction/${memberNo}/block`)
+        .then(response => response.data)
+        .catch(error => {
+          console.error(`${memberNo} 차단 리스트를 가져오는 중 오류 발생: `, error);
+          throw error;
+        });
+    },
 };
+
 
 /**
  * @작성자: 한동환

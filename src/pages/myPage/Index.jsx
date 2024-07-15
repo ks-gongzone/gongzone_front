@@ -1,7 +1,7 @@
+import MyInfoDetail from "./MyInfoDetail";
 import MyInfo from "./MyInfo";
 import MyParty from "./MyPageParty";
-import BlockUser from "./MyPageBlock";
-import Board from "./MyPageBoard";
-import Follow from "./MyPageFollow";
+import BlockList from "./BlockList";
+import FollowList from "./FollowList";
 
-export { MyInfo, MyParty, BlockUser, Board, Follow };
+export { MyInfoDetail, MyInfo, MyParty, BlockList, FollowList };
