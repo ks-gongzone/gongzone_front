@@ -3,10 +3,11 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 import DaumPostcode from "react-daum-postcode";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
-export default function BoardUpdateMap({ onLocationChange, onPositionChange, locationX, locationY }) {
+export default function BoardUpdateMap({ onLocationChange, onPositionChange, locationX, locationY, detailAddr }) {
   const [map, setMap] = useState(null);
   const [markerPosition, setMarkerPosition] = useState({ lat: locationX, lng: locationY });
   const [address, setAddress] = useState("");
+  const [detailAddress, setDetailAddress] = useState(detailAddr);
   const [showPostcode, setShowPostcode] = useState(false);
   const [currentPosition, setCurrentPosition] = useState({
     lat: locationX,
@@ -91,6 +92,12 @@ export default function BoardUpdateMap({ onLocationChange, onPositionChange, loc
     );
   };
 
+  const handleDetailAddressChange = (e) => {
+    const detailAddr = e.target.value;
+    setDetailAddress(detailAddr);
+    onLocationChange(`${address} ${detailAddr}`);
+  };
+
   return (
     <div className="flex flex-col items-center relative">
       {showPostcode && (
@@ -119,8 +126,8 @@ export default function BoardUpdateMap({ onLocationChange, onPositionChange, loc
         <input
           id="detailAddr"
           className="mt-2 p-2 border rounded w-full"
-          placeholder="상세주소를 입력하세요"
-          onChange={(e) => onLocationChange(`${address} ${e.target.value}`)}
+          value={detailAddr}
+          onChange={handleDetailAddressChange}
         />
       </div>
       <div

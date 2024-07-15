@@ -71,7 +71,7 @@ export default function UpdateForm() {
             category: response.data[0].category,
             URL: response.data[0].productUrl,
             price: response.data[0].totalPrice,
-            remain: response.data[0].remain + response.data[0].amount,
+            total: response.data[0].remain + response.data[0].amount,
             amount: response.data[0].amount,
             content: response.data[0].boardBody,
             doCity: response.data[0].locationDo,
@@ -83,7 +83,6 @@ export default function UpdateForm() {
             longitude: response.data[0].locationY,
             endDate: response.data[0].endDate,
           });
-
       } catch (error) {
         console.error("초기 데이터 요청 중 오류 발생:", error);
       }
@@ -103,11 +102,11 @@ export default function UpdateForm() {
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
 
-    if (type === "file") {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: files[0],
-      }));
+    if (type === "file" && files.length > 0) {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          [name]: files[0],
+        }));
     } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -118,16 +117,16 @@ export default function UpdateForm() {
 
   const handleBlur = (e) => {
     const { name, value } = e.target;
-    if (name === "remain" || name === "amount") {
+    if (name === "total" || name === "amount") {
       validateAmount(
-        name === "remain" ? value : formData.remain,
+        name === "total" ? value : formData.total,
         name === "amount" ? value : formData.amount
       );
     }
   };
 
-  const validateAmount = (remain, amount) => {
-    if (parseInt(amount) > parseInt(remain)) {
+  const validateAmount = (total, amount) => {
+    if (parseInt(amount) > parseInt(total)) {
       setNumError("구매 희망 수량은 남은 수량보다 많을 수 없습니다.");
       setCanSubmit(false);
     } else {
@@ -207,35 +206,35 @@ export default function UpdateForm() {
       console.log(`${key}:`, value);
     }
 
-    // try {
-    //   const response = await GZAPI.post(`/api/boards/write/${memberNo}`,formDataToSend,{
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
+    try {
+      const response = await GZAPI.post(`/api/boards/update/${boardNo}`,formDataToSend,{
+        headers: {
+          "Content-Type": "multipart/form-data",
 
-    //     },
-    //     transformRequest: [
-    //       function () {
-    //         return formDataToSend;
-    //       },
-    //     ],
-    //   });
+        },
+        transformRequest: [
+          function () {
+            return formDataToSend;
+          },
+        ],
+      });
 
-    //   if (response.status === 200) {
-    //     setSubmitSuccess("게시글이 성공적으로 등록되었습니다!");
-    //     setSubmitError("");
-    //     setTimeout(() => {
-    //       navigate("/board/list"); // 성공 시 이동할 페이지 경로 설정
-    //     }, 500); // 0.5초 후에 페이지 이동
-    //   } else {
-    //     setSubmitSuccess("");
-    //     setSubmitError("게시글 등록에 실패했습니다.");
-    //   }
-    // } catch (error) {
-    //   // 에러 처리
-    //   console.error("폼 데이터 전송 중 오류가 발생했습니다.", error);
-    //   setSubmitSuccess("");
-    //   setSubmitError("게시글 등록 중 오류가 발생했습니다. 나중에 다시 시도하세요.");
-    // }
+      if (response.status === 200) {
+        setSubmitSuccess("게시글이 성공적으로 수정되었습니다!");
+        setSubmitError("");
+        setTimeout(() => {
+          navigate("/board/list"); // 성공 시 이동할 페이지 경로 설정
+        }, 500); // 0.5초 후에 페이지 이동
+      } else {
+        setSubmitSuccess("");
+        setSubmitError("게시글 등록에 실패했습니다.");
+      }
+    } catch (error) {
+      // 에러 처리
+      console.error("폼 데이터 전송 중 오류가 발생했습니다.", error);
+      setSubmitSuccess("");
+      setSubmitError("게시글 등록 중 오류가 발생했습니다. 나중에 다시 시도하세요.");
+    }
   };
 
   const cate = [
@@ -325,8 +324,8 @@ export default function UpdateForm() {
           <label className="block">남은 수량</label>
           <input
             type="number"
-            name="remain"
-            value={formData.remain}
+            name="total"
+            value={formData.total}
             onChange={handleChange}
             onBlur={handleBlur}
             className="border p-2 w-full"
@@ -399,6 +398,7 @@ export default function UpdateForm() {
             onPositionChange={handlePositionChange}
             locationX = {formData.latitude}
             locationY = {formData.longitude}
+            detailAddr = {formData.detailAddress.split(' ').slice(1).join(' ')}
           />
         </div>
         <div className="w-1/3">
