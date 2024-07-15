@@ -108,6 +108,11 @@ export const Auth = {
       return { error: errorMessage };
     }
   },
+  Logout: async () => {
+    return GZAPI.post("/api/logout")
+      .then((res) => res)
+      .catch((err) => err);
+  },
 };
 
 export const User = {
@@ -130,7 +135,7 @@ export const Party = {
       .catch((err) => err);
   },
   HandleMember: async (id, partyNo, requestStatus) => {
-    return GZAPI.post(`api/party/accept/${id}/Status`, {
+    return GZAPI.post(`api/alertSSE/party/accept/${id}/Status`, {
       partyNo: partyNo,
       statusCode: requestStatus,
     })
@@ -138,7 +143,7 @@ export const Party = {
       .catch((err) => err);
   },
   RequestJoin: async (id, partyNo, requestStatus, requestAmount) => {
-    return GZAPI.post(`api/party/accept/${id}/Status`, {
+    return GZAPI.post(`api/alertSSE/party/accept/${id}/Status`, {
       memberNo: id,
       partyNo: partyNo,
       statusCode: requestStatus,
@@ -153,12 +158,32 @@ export const Party = {
       .catch((err) => err);
   },
   CompleteParty: async (id) => {
-    return GZAPI.post(`api/party/updateStatus/${id}`)
+    return GZAPI.post(`api/alertSSE/party/updateStatus/${id}`)
       .then((res) => res)
       .catch((err) => err);
   },
   PurchaseInfo: async (memberNo, partyNo) => {
     return GZAPI.get(`api/party/purchase/${memberNo}/${partyNo}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  PartyPurchase: async (partyNo, memberNo, request) => {
+    return GZAPI.post(`api/party/${partyNo}/purchase/${memberNo}`, request)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  InsertShipping: async (partyNo, shippingNo, request) => {
+    return GZAPI.patch(`api/party/${partyNo}/shipping/${shippingNo}`, request)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  CompleteShipping: async (partyNo, shippingNo) => {
+    return GZAPI.post(`api/party/${partyNo}/shipping/${shippingNo}/complete`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  CompleteReception: async (partyNo, receptionNo, request) => {
+    return GZAPI.patch(`api/party/${partyNo}/reception/${receptionNo}`, request)
       .then((res) => res)
       .catch((err) => err);
   },
@@ -454,6 +479,53 @@ export const MemberAPI = {
   },
 };
 
+export const Note = {
+  NoteCheck: async (noteNo) => {
+    return GZAPI.post(`/api/noteCheck/${noteNo}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  NoteList: async (data) => {
+    const { memberNo, ...rest } = data;
+    return GZAPI.get(`/api/note/noteList/${memberNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  InsertNote: async (data) => {
+    return GZAPI.post(`/api/note/insertNote`, data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  UpdateReadTimeNote: async (noteNo) => {
+    return GZAPI.post(`/api/note/updateReadTime/${noteNo}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  UpdateDeleteNote: async (noteNo) => {
+    return GZAPI.post(`/note/updateDelete/${noteNo}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+};
+
+export const Alert = {
+  AlertList: async (memberNo) => {
+    return GZAPI.get(`/api/alertSSE/AlertSSEList/${memberNo}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  AlertRead: async (alertNo) => {
+    return GZAPI.post(`/api/alertSSE/updateReadTime/${alertNo}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  AlertDelete: async (alertNo) => {
+    return GZAPI.post(`/api/alertSSE/updateReadTime/${alertNo}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+};
+
 export const AdminMemberAPI = {
   MemberList: async (data) => {
     return GZAPI.get("/admin/member/listAll", data)
@@ -515,8 +587,36 @@ export const AdminMemberAPI = {
   },
   QuestionStatusList: async (data) => {
     const { memberQuestionNo, ...rest } = data;
-    console.log(rest);
     return GZAPI.post(`/api/QuestionStatusUpdate/${memberQuestionNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  NoteCheck: async (data) => {
+    const { noteNo, ...rest } = data;
+    return GZAPI.post(`/api/noteCheck/${noteNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  NoteList: async (data) => {
+    const { memberNo, ...rest } = data;
+    return GZAPI.post(`/api/noteList/${memberNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  InsertNote: async (data) => {
+    return GZAPI.post(`/api/insertNote`, data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  UpdateReadTimeNote: async (data) => {
+    const { noteNo, ...rest } = data;
+    return GZAPI.post(`/api/updateReadTime/${noteNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  UpdateDeleteNote: async (data) => {
+    const { noteNo, ...rest } = data;
+    return GZAPI.post(`/api/updateDelete/${noteNo}`, rest)
       .then((res) => res)
       .catch((err) => err);
   },

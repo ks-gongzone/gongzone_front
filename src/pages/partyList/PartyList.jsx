@@ -38,6 +38,12 @@ export default function PartyList() {
   // 중복 제거를 위한 Set
   const processedParties = new Set();
 
+  const waitingForPurchaseParties = data.filter((e) => {
+    const isWaiting = e.status === "S060104";
+    if (isWaiting) processedParties.add(e.partyNo);
+    return isWaiting;
+  });
+
   const completedParties = data.filter((e) => {
     const isCompleted = e.status === "S060108";
     if (isCompleted) processedParties.add(e.partyNo);
@@ -96,6 +102,17 @@ export default function PartyList() {
 
   return (
     <div className="w-[65em] mx-auto mb-10 mt-14">
+      {waitingForPurchaseParties.length > 0 && (
+        <>
+          <div className="w-full mb-6 text-lg font-bold text-[#526688] mt-10">
+            제품 구매 대기중인 파티
+          </div>
+          <div className="grid grid-cols-3 gap-4">
+            {renderPartyCards(waitingForPurchaseParties)}
+          </div>
+        </>
+      )}
+
       {closedParties.length > 0 && (
         <>
           <div className="w-full mb-6 text-lg font-bold text-[#526688] mt-10">
