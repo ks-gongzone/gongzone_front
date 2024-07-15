@@ -26,7 +26,8 @@ export default function FollowButton({
         }
         onFollowChange({ 
           memberNo: targetMemberNo,
-          memberName: targetMemberName, isFollowing: !isFollowing })
+          memberName: targetMemberName,
+          isFollowing: !isFollowing })
       }
     } catch (error) {
       console.error("[버튼] 멤버 팔로우 중 에러 발생", error);

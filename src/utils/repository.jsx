@@ -354,7 +354,7 @@ export const DropDownAPI = {
 }
   // 유저 리스트 업 후 팔로우 차단 API
  export const MemberListAPI = {
-  getMemberList: async (page = 1, size = 15) => {
+  getMemberList: async (page = 1, size = 8) => {
     console.log("getMemberList실행: ");
     const params = new URLSearchParams({ page, size });
       return GZAPI.get(`/api/members/interaction?${params.toString()}`)
@@ -365,7 +365,7 @@ export const DropDownAPI = {
         });
   },
 
-  searchMemberList: async (page = 1, size = 15, memberName = "") => {
+  searchMemberList: async (page = 1, size = 8, memberName = "") => {
     const params = new URLSearchParams({ page, size, memberName });
     return GZAPI.get(`/api/members/interaction?${params.toString()}`)
       .then(response => response.data)
@@ -423,6 +423,25 @@ export const DropDownAPI = {
         throw error;
       });
   },
+
+    // 추가된 함수
+    getFollowList: async (memberNo) => {
+      return GZAPI.get(`/api/members/interaction/${memberNo}/follow`)
+        .then(response => response.data)
+        .catch(error => {
+          console.error(`${memberNo} 팔로우 리스트를 가져오는 중 오류 발생: `, error);
+          throw error;
+        });
+    },
+  
+    getBlockList: async (memberNo) => {
+      return GZAPI.get(`/api/members/interaction/${memberNo}/block`)
+        .then(response => response.data)
+        .catch(error => {
+          console.error(`${memberNo} 차단 리스트를 가져오는 중 오류 발생: `, error);
+          throw error;
+        });
+    },
 };
 
 

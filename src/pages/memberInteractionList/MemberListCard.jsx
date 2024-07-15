@@ -14,11 +14,9 @@ export default function MemberListCard({
   const { userInfo } = AuthStore((state) => ({ userInfo: state.userInfo }));
   const currentUserNo = userInfo.memberNo;
   const isAdmin = userInfo.memberNo === "M000001";
-  const isPopular = member.isPopular;
-  const isWarning = member.isWarning;
 
   return (
-    <div className="w-full h-full relative text-left rounded-xl overflow-hidden shadow-lg bg-white border hover:border-red-200 p-4">
+    <div className="w-full h-70 relative text-left rounded-xl overflow-hidden shadow-lg bg-white border hover:border-red-200 p-6 flex flex-col justify-between">
       <div className="relative flex items-center justify-between">
         <div className="flex items-center">
           <div 
@@ -28,7 +26,7 @@ export default function MemberListCard({
           </div>
           <div className="ml-4">
             <div className="font-bold text-lg flex items-center">
-              name: {member.memberName}
+              {member.memberName}
               {currentUserNo !== member.memberNo && (
                 <div className="ml-2">
                   <FollowButton
@@ -40,13 +38,13 @@ export default function MemberListCard({
                 </div>
               )}
             </div>
-            <div className="font-bold text-lg">gender: {member.gender}</div>
+            <div className="text-gray-600">성별: {member.gender === 'M' ? '남성' : '여성'}</div>
             {isAdmin && (
               <div className="mt-2">
-                {isPopular && (
+                {member.isPopular && (
                   <div className="text-blue-500">인기유저</div>
                 )}
-                {isWarning && (
+                {member.isWarning && (
                   <div className="text-red-500">블랙리스트유저</div>
                 )}
               </div>
@@ -55,7 +53,7 @@ export default function MemberListCard({
         </div>
       </div>
       <div className="flex justify-between items-center mt-4">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded">! 작성글보기</button>
+        <button className="bg-blue-500 text-white px-4 py-2 rounded">작성글보기</button>
         {currentUserNo !== member.memberNo && (
           <BlockButton
             targetMemberNo={member.memberNo}
