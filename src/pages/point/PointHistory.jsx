@@ -7,7 +7,7 @@ import { usePointData } from "./context/PointContext";
 import { PointInnerSection } from "../../components/page/point/Index";
 
 export default function PointHistory() {
-  const { memberNo, pointNo } = usePointData();
+  const { memberNo } = usePointData();
   const [pageSize, pageNo] = [
     State('pageSize', 10),
     State('PageNo', 1)
@@ -23,7 +23,7 @@ export default function PointHistory() {
       <div>
         <div></div>
       </div>
-      <PointHistoryTable pointNo={ pointNo } pageSize={ pageSize.value } pageNo={ pageNo.value } />
+      <PointHistoryTable memberNo={ memberNo } pageSize={ pageSize.value } pageNo={ pageNo.value } />
       <div className="flex justify-end">
         <div className="w-1/6"></div>
         <div className="w-4/6">
@@ -44,7 +44,7 @@ export default function PointHistory() {
   );
 }
 
-export function PointHistoryTable({ pointNo, pageSize = 10, pageNo = 1 }) {
+export function PointHistoryTable({ memberNo, pageSize = 10, pageNo = 1 }) {
   const histories = State("pointHistories", []);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export function PointHistoryTable({ pointNo, pageSize = 10, pageNo = 1 }) {
         pageSize: pageSize,
         pageNo: pageNo,
       });
-      const url = `/api/members/${ pointNo }/point/history?${ params.toString() }`;
+      const url = `/api/members/${ memberNo }/point/history?${ params.toString() }`;
       const response = await GZAPI.get(url);
       const result = response.data.result;
       histories.set(result);
@@ -73,9 +73,10 @@ export function PointHistoryTable({ pointNo, pageSize = 10, pageNo = 1 }) {
           <TableHeader width="w-[16%]">변동후</TableHeader>
           <TableHeader width="w-[12%]">상태</TableHeader>
         </div>
-        { histories.value.map((history) => {
+        { histories.value.map((history, index) => {
           return (
-            <PointHistoryRow pointNo={ pointNo }
+            <PointHistoryRow key={ index }
+                             memberNo={ memberNo }
                              pointHistory={ history } />
           );
         }) }
@@ -84,7 +85,7 @@ export function PointHistoryTable({ pointNo, pageSize = 10, pageNo = 1 }) {
   );
 }
 
-function PointHistoryRow({ pointNo, pointHistory }) {
+function PointHistoryRow({ memberNo, pointHistory }) {
   return (
     <div className="flex w-full border-y border-y-gray-300 bg-gray-50 text-center">
       <TableCell width="w-3/12">{ pointHistory.pointHistoryDate.substring(0, 11) }</TableCell>
@@ -96,7 +97,7 @@ function PointHistoryRow({ pointNo, pointHistory }) {
         <Link to={ '/myPage/point/detail' }
               state={
                 {
-                  pointNo: pointNo,
+                  memberNo: memberNo,
                   historyNo: pointHistory.pointHistoryNo
                 }
               }>

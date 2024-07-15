@@ -9,14 +9,14 @@ import { PointHistoryTable } from "./PointHistory";
 
 
 export default function Point() {
-  const { memberNo, pointNo } = usePointData();
+  const { memberNo } = usePointData();
   const title = `${ memberNo }님의 포인트 페이지`;
 
   const memberPoint = State("memberPoint", "");
 
   useEffect(() => {
     (async () => {
-      const url = `/api/members/${ pointNo }/point`;
+      const url = `/api/members/${ memberNo }/point`;
       const response = await GZAPI.get(url);
       const result = response.data.result;
       memberPoint.set(result);
@@ -46,7 +46,7 @@ export default function Point() {
         {/* 포인트 내역*/ }
         <PointInnerSection title={ "포인트 내역" }
                            description={ "(!현재 페이지에는 최근 10건만 표시됩니다.)" }>
-          <PointHistoryTable pointNo={ pointNo } />
+          <PointHistoryTable memberNo={ memberNo } />
           <div className="flex justify-center">
             <Link to="/myPage/point/history"
                   className="w-1/5 text-center box-border border-2 rounded-xl px-4 py-2 bg-gray-400"

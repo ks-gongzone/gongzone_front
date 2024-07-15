@@ -1,6 +1,12 @@
 import { HeartIcon } from "@heroicons/react/20/solid";
 import { useState, useEffect, useRef } from "react";
 import ReportModal from "../../modal/ReportModal";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { Note } from "../../../utils/repository";
+import AuthStore from "../../../utils/zustand/AuthStore";
+
+const MySwal = withReactContent(Swal);
 
 export default function PartyCard({
   children,
@@ -16,6 +22,7 @@ export default function PartyCard({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const memberNo = AuthStore((state) => state.userInfo.memberNo);
 
   const likeBtn = () => {
     setIsLiked(!isLiked);
@@ -38,6 +45,36 @@ export default function PartyCard({
 
   const closeReportModal = () => {
     setIsReportModalOpen(false);
+  };
+
+  const handleNote = async () => {
+    const { value: noteBody } = await MySwal.fire({
+      title: "쪽지 전송",
+      input: "textarea",
+      inputLabel: `to : ${id}`,
+      inputPlaceholder: "내용을 입력하세요...",
+      inputAttributes: {
+        "aria-label": "내용을 입력하세요",
+      },
+      showCancelButton: true,
+      confirmButtonText: "보내기",
+      cancelButtonText: "취소",
+    });
+
+    if (noteBody) {
+      const data = {
+        memberNo,
+        memberTargetNo,
+        noteBody,
+      };
+
+      try {
+        await Note.InsertNote(data);
+        MySwal.fire("성공", "쪽지가 성공적으로 보내졌습니다.", "success");
+      } catch (error) {
+        MySwal.fire("실패", "쪽지 보내기 중 오류가 발생했습니다.", "error");
+      }
+    }
   };
 
   useEffect(() => {
@@ -78,7 +115,7 @@ export default function PartyCard({
               {id}
             </button>
             {isDropdownOpen && (
-              <div className="absolute mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10">
+              <div className="absolute mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
                 <div
                   className="py-1"
                   role="menu"
@@ -90,8 +127,9 @@ export default function PartyCard({
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                     role="menuitem"
                     type="button"
+                    onClick={handleNote}
                   >
-                    쪽지보내기
+                    쪽지 보내기
                   </button>
                   <button
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
