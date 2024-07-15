@@ -23,7 +23,7 @@ export default function PointCharge() {
       const data = {
         pointChange: -amount.value,
         changeType: "T030301",
-        withdraw: {
+        detail: {
           withdrawBank: bank.value,
           withdrawAccount: account.value,
           withdrawAmount: -amount.value,

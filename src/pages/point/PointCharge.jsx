@@ -31,7 +31,7 @@ export default function PointCharge() {
       const data = {
         pointChange: pointCharge.value,
         changeType: "T030101",
-        payment: {
+        detail: {
           ...payResponse,
           type: "TOSSPAY",
           status: "S030201",
