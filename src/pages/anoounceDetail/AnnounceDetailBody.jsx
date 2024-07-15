@@ -5,8 +5,8 @@ import AuthStore from "../../utils/zustand/AuthStore";
 import DeleteButton from "../../admin/components/announce/AnnounceDeleteButton";
 
 /**
- * @수정일: 2024-07-10
- * @수정내용: 날짜 substring으로 가공하여 노출
+ * @수정일: 2024-07-11
+ * @수정내용: 삭제버튼 관리자 유무에 따라 표시
  */
 export default function AnnounceDetailBody() {
   const { announceNo } = useParams();
@@ -64,7 +64,7 @@ export default function AnnounceDetailBody() {
       <div className="text-gray-400 text-[0.8vw]">작성일: {announce.announceDate.substring(0, 10)}</div>
       <div className="w-[1200px] flex py-4 border-gray-300 border-b"></div>
       <div className="py-16 leading-10" dangerouslySetInnerHTML={{ __html: announce.announceBody }} />
-      <DeleteButton announceNo={announceNo} />
+      {isAdmin && (<DeleteButton announceNo={announceNo} />)}
       <div className="w-[1200px] flex py-4 border-gray-300 border-b"></div>
     </div>
   );

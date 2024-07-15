@@ -17,12 +17,6 @@ export default function MypageSidebar() {
       <NavLink to="point" className={({ isActive }) => `w-full p-4 text-left text-lg ${isActive ? "bg-blue-500 text-white" : "bg-white text-black"}`}>
         포인트
       </NavLink>
-      <NavLink to="myFollow" className={({ isActive }) => `w-full p-4 text-left text-lg ${isActive ? "bg-blue-500 text-white" : "bg-white text-black"}`}>
-        팔로우
-      </NavLink>
-      <NavLink to="blockUser" className={({ isActive }) => `w-full p-4 text-left text-lg ${isActive ? "bg-blue-500 text-white" : "bg-white text-black"}`}>
-        차단목록
-      </NavLink>
       </div>
     </div>
   );
