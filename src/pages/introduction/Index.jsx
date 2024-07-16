@@ -4,6 +4,7 @@ import "../../index.css";
 import { Link, useNavigate } from "react-router-dom";
 import ERD from "../../assets/images/GongzoneERD.png";
 import AuthStore from "../../utils/zustand/AuthStore";
+import logo from "../../assets/logo/GONGZONE_logo_white.png";
 
 export default function Intro() {
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ export default function Intro() {
           />
         ))}
       </div>
-      <section className="snap-section snap-start bg-[#5cb8ff] min-h-screen flex flex-col items-center justify-center px-4 md:px-8 lg:px-16">
+      <section className="snap-section snap-start bg-[#6ea2d4] min-h-screen flex flex-col items-center justify-center px-4 md:px-8 lg:px-16">
         <div className="font-bold text-[5vw] md:text-[3vw] lg:text-[1.2vw] mt-12">
           1인 가구 공동구매 플랫폼
         </div>
@@ -83,7 +84,7 @@ export default function Intro() {
           to="/home"
           className="font-bold text-[8vw] md:text-[6vw] lg:text-[4vw]"
         >
-          GONGZONE
+          <img alt="logo" src={logo} className="w-[5em]" />
         </Link>
         <div className="text-[3vw] md:text-[2vw] lg:text-[1vw] font-GGothicssi20g mb-4">
           로고 클릭 시 메인페이지로 이동합니다.
@@ -188,7 +189,7 @@ export default function Intro() {
           </svg>
         </div>
       </section>
-      <section className="snap-section snap-start bg-[#282828] min-h-screen flex flex-col items-center justify-center">
+      <section className="snap-section snap-start bg-[#6ea2d4] min-h-screen flex flex-col items-center justify-center">
         <div className="animate-bounce mb-auto mt-4 transform">
           <svg
             className="w-6 h-6 rotate-180"
@@ -212,10 +213,10 @@ export default function Intro() {
             각 단계별 유저 참여 프로세스
           </div>
           <div className="text-2xl whitespace-nowrap">
-            <img alt="logo" src={serviceProcess} className="w-[65em]" />
+            <img alt="process" src={serviceProcess} className="w-[65em]" />
           </div>
         </div>
-        <div className="border-t w-[80%] my-8 border-gray-500" />
+        <div className="border-t border-white w-[80%] my-8 border-gray-500" />
         <div className="text-2xl mb-8 text-center">
           각 버튼을 통해 서비스 이용이 가능합니다.
         </div>
