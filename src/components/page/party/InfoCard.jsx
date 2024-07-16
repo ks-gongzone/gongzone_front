@@ -8,6 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
+import GZAPI from "../../../utils/api";
 
 export default function InfoCard({
   chirdren,
@@ -22,7 +23,8 @@ export default function InfoCard({
   period,
   writeNo,
   connectNo,
-  boardNo
+  boardNo,
+  partyNo
 }) {
   const [isCopied, setIsCopied] = useState(false);
 
@@ -39,6 +41,24 @@ export default function InfoCard({
 
   const handleBoardUpdate = () => {
     navigate(`/board/update/${boardNo}`)
+  }
+
+  const handleBoardDelete = async () => {
+    try{
+      const response = await GZAPI.delete(`api/boards/delete/${boardNo}/${partyNo}`)
+      console.log(response);
+      if (response.status === 200) {
+        // 성공적으로 삭제되었음을 사용자에게 알림
+        alert('게시글이 성공적으로 삭제되었습니다.');
+        navigate(`/board/list`)
+      } else {
+        const errorData = await response.text();
+        alert(errorData || '게시글 삭제에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('Error deleting board:', error);
+      alert('파티원이 있는 게시글은 삭제할 수 없습니다.');
+    }
   }
 
   return (
@@ -66,7 +86,10 @@ export default function InfoCard({
               수정
               </button>
               {/* 삭제 버튼 */}
-              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded ml-1 w-14 h-8">
+              <button 
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded ml-1 w-14 h-8"
+                onClick={handleBoardDelete}
+              >
               삭제
               </button>
             </>

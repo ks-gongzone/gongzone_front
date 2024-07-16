@@ -320,8 +320,9 @@ export default function PartyDetail() {
           img={`${baseURL}${detail.img}`} // 이미지 부분 테이블과 백단 추가 수정 필요
           memberTargetNo={detail.requestMember.memberNo}
           writeNo={detail.partyLeader}
-        connectNo={connectNo}
-        boardNo={detail.boardNo}
+          connectNo={connectNo}
+          boardNo={detail.boardNo}
+          partyNo={detail.partyNo}
 
       >
           <div className="text-sm px-3 pb-3">
