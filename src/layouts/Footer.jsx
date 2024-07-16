@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import logo from "../../src/assets/logo/GZlogo.PNG";
+import QuestionModal from "../components/modal/QuestionModal";
 
 export default function LayoutFooter() {
   return (
@@ -10,7 +11,7 @@ export default function LayoutFooter() {
             <img alt="logo" src={logo} className="h-10 pr-20" />
           </Link>
           <br></br>
-          <div className="text-[13px]">1:1 문의</div>
+          <div className="text-[13px]" ><QuestionModal /></div>
           <div className="text-[13px]">운영자 상담</div>
           <div className="text-[13px]">오픈 챗</div>
           <div className="text-[13px]">제휴문의</div>
