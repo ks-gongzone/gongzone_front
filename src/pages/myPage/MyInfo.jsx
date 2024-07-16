@@ -11,12 +11,12 @@ export default function MyInfo({ memberNo, onNextPage }) {
   const handleToggleFollowList = () => {
     setShowFollowList(!showFollowList);
     setShowBlockList(false);
-  }
+  };
 
   const handleToggleBlockList = () => {
     setShowBlockList(!showBlockList);
     setShowFollowList(false);
-  }
+  };
 
   return (
     <div className="w-[65em] mx-auto mb-10 mt-14">
@@ -26,17 +26,17 @@ export default function MyInfo({ memberNo, onNextPage }) {
             <ProfilePictureUpload memberNo={memberNo} />
           </div>
         </div>
-          <div className="flex justify-end mt-4">
-            <button
-              onClick={onNextPage}
-              className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
-            >
-              정보상세수정
-        </button>
+        <div className="flex justify-end mt-4">
+          <button
+            onClick={onNextPage}
+            className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
+          >
+            정보상세수정
+          </button>
         </div>
       </div>
-        <div className="flex flex-col items-center mb-8">
-          <div className="flex space-x-4 mb-8">
+      <div className="flex flex-col items-center mb-8">
+        <div className="flex space-x-4 mb-8">
           <button
             onClick={handleToggleFollowList}
             className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
@@ -52,7 +52,7 @@ export default function MyInfo({ memberNo, onNextPage }) {
         </div>
       </div>
       {showFollowList && <FollowList memberNo={memberNo} />}
-      {showBlockList && <BlockList mebmerNo={memberNo} /> }
+      {showBlockList && <BlockList mebmerNo={memberNo} />}
       <div className="flex justify-end mt-4">
         <Link
           to="/member/list"

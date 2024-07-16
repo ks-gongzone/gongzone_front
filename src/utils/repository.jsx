@@ -130,7 +130,9 @@ export const User = {
 
 export const Party = {
   PartyAccept: async (id) => {
-    return GZAPI.get(`/api/party/accept/${id}`)
+    const url =
+      id === "_admin" ? `/api/party/accept/_admin` : `/api/party/accept/${id}`;
+    return GZAPI.get(url)
       .then((res) => res)
       .catch((err) => err);
   },
@@ -184,6 +186,11 @@ export const Party = {
   },
   CompleteReception: async (partyNo, receptionNo, request) => {
     return GZAPI.patch(`api/party/${partyNo}/reception/${receptionNo}`, request)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  SettlementParty: async (partyNo) => {
+    return GZAPI.post(`_admin/api/party/${partyNo}/settlement`)
       .then((res) => res)
       .catch((err) => err);
   },
@@ -376,36 +383,39 @@ export const DropDownAPI = {
         throw error;
       });
   },
-}
-  // 유저 리스트 업 후 팔로우 차단 API
- export const MemberListAPI = {
+};
+// 유저 리스트 업 후 팔로우 차단 API
+export const MemberListAPI = {
   getMemberList: async (page = 1, size = 8) => {
     console.log("getMemberList실행: ");
     const params = new URLSearchParams({ page, size });
-      return GZAPI.get(`/api/members/interaction?${params.toString()}`)
-        .then((response) => response.data)
-        .catch((error) => {
-          console.error("유저데이터 로드 중 에러발생", error);
-          throw error;
-        });
+    return GZAPI.get(`/api/members/interaction?${params.toString()}`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("유저데이터 로드 중 에러발생", error);
+        throw error;
+      });
   },
 
   searchMemberList: async (page = 1, size = 8, memberName = "") => {
     const params = new URLSearchParams({ page, size, memberName });
     return GZAPI.get(`/api/members/interaction?${params.toString()}`)
-      .then(response => response.data)
-      .catch(error => {
+      .then((response) => response.data)
+      .catch((error) => {
         console.error("유저 검색 중 에러 발생", error);
         throw error;
       });
   },
 
   followMember: (currentUserNo, targetMemberNo) => {
-    console.log("타겟멤버", targetMemberNo)
-    console.log("현재유저", currentUserNo)
-    return GZAPI.post(`/api/members/interaction/follow`, { currentUserNo, targetMemberNo })
-      .then(response => response.data)
-      .catch(error => {
+    console.log("타겟멤버", targetMemberNo);
+    console.log("현재유저", currentUserNo);
+    return GZAPI.post(`/api/members/interaction/follow`, {
+      currentUserNo,
+      targetMemberNo,
+    })
+      .then((response) => response.data)
+      .catch((error) => {
         console.error("멤버 팔로우 중 에러 발생", error);
         throw error;
       });
@@ -414,24 +424,28 @@ export const DropDownAPI = {
   unFollowMember: (currentUserNo, targetMemberNo) => {
     console.log("언팔로우 타겟멤버", targetMemberNo);
     console.log("언팔로우 현재유저", currentUserNo);
-    return GZAPI.delete(`/api/members/interaction/follow`,
-       { data: { currentUserNo, targetMemberNo }})
-    .then(response => {
-      console.log("언팔 성공", response.data);
-      return response.data
+    return GZAPI.delete(`/api/members/interaction/follow`, {
+      data: { currentUserNo, targetMemberNo },
     })
-    .catch(error => {
-      console.error("멤버 팔로우 중 에러 발생", error);
-      throw error;
-    });
+      .then((response) => {
+        console.log("언팔 성공", response.data);
+        return response.data;
+      })
+      .catch((error) => {
+        console.error("멤버 팔로우 중 에러 발생", error);
+        throw error;
+      });
   },
 
   blockMember: (currentUserNo, targetMemberNo) => {
     console.log("차단 타겟멤버", targetMemberNo);
     console.log("차단시도 유저", currentUserNo);
-    return GZAPI.post(`/api/members/interaction/block`, { currentUserNo, targetMemberNo })
-      .then(response => response.data)
-      .catch(error => {
+    return GZAPI.post(`/api/members/interaction/block`, {
+      currentUserNo,
+      targetMemberNo,
+    })
+      .then((response) => response.data)
+      .catch((error) => {
         console.error("멤버 차단 중 에러 발생", error);
         throw error;
       });
@@ -440,35 +454,41 @@ export const DropDownAPI = {
   unBlockMember: (currentUserNo, targetMemberNo) => {
     console.log("차단해제 타겟멤버", targetMemberNo);
     console.log("차단해제시도 유저", currentUserNo);
-    return GZAPI.delete(`/api/members/interaction/block`, 
-      { data: { currentUserNo, targetMemberNo } })
-      .then(response => response.data)
-      .catch(error => {
+    return GZAPI.delete(`/api/members/interaction/block`, {
+      data: { currentUserNo, targetMemberNo },
+    })
+      .then((response) => response.data)
+      .catch((error) => {
         console.error("멤버 차단해제 중 에러 발생", error);
         throw error;
       });
   },
 
-    // 추가된 함수
-    getFollowList: async (memberNo) => {
-      return GZAPI.get(`/api/members/interaction/${memberNo}/follow`)
-        .then(response => response.data)
-        .catch(error => {
-          console.error(`${memberNo} 팔로우 리스트를 가져오는 중 오류 발생: `, error);
-          throw error;
-        });
-    },
-  
-    getBlockList: async (memberNo) => {
-      return GZAPI.get(`/api/members/interaction/${memberNo}/block`)
-        .then(response => response.data)
-        .catch(error => {
-          console.error(`${memberNo} 차단 리스트를 가져오는 중 오류 발생: `, error);
-          throw error;
-        });
-    },
-};
+  // 추가된 함수
+  getFollowList: async (memberNo) => {
+    return GZAPI.get(`/api/members/interaction/${memberNo}/follow`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error(
+          `${memberNo} 팔로우 리스트를 가져오는 중 오류 발생: `,
+          error
+        );
+        throw error;
+      });
+  },
 
+  getBlockList: async (memberNo) => {
+    return GZAPI.get(`/api/members/interaction/${memberNo}/block`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error(
+          `${memberNo} 차단 리스트를 가져오는 중 오류 발생: `,
+          error
+        );
+        throw error;
+      });
+  },
+};
 
 /**
  * @작성자: 한동환
@@ -715,34 +735,32 @@ export const AdminMemberAPI = {
 };
 
 export const Board = {
-  BoardReply: async(boardNo, connectMemberNo, Reply) => {
+  BoardReply: async (boardNo, connectMemberNo, Reply) => {
     return GZAPI.post(`/api/boards/reply/add`, {
       boardNo: boardNo,
       memberNo: connectMemberNo,
-      replyBody: Reply
+      replyBody: Reply,
     })
-    .then((res) => res)
-    .catch((err) => err);
+      .then((res) => res)
+      .catch((err) => err);
   },
 
-  UpdateBoardReply: async(replyNo, boardNo, connectMemberNo, updateReply) => {
+  UpdateBoardReply: async (replyNo, boardNo, connectMemberNo, updateReply) => {
     return GZAPI.post(`/api/boards/reply/update`, {
       replyNo: replyNo,
       boardNo: boardNo,
       memberNo: connectMemberNo,
-      replyBody: updateReply
+      replyBody: updateReply,
     })
-    .then((res) => res)
-    .catch((err) => err);
+      .then((res) => res)
+      .catch((err) => err);
   },
 
-  DeleteBoardReply: async(deleteNo, boardNo, connectMemberNo) => {
+  DeleteBoardReply: async (deleteNo, boardNo, connectMemberNo) => {
     return GZAPI.delete(`/api/boards/reply/delete`, {
-      data: {replyNo: deleteNo,
-      boardNo: boardNo,
-      memberNo: connectMemberNo}
+      data: { replyNo: deleteNo, boardNo: boardNo, memberNo: connectMemberNo },
     })
-    .then((res) => res)
-    .catch((err) => err);
-  }
-}
+      .then((res) => res)
+      .catch((err) => err);
+  },
+};

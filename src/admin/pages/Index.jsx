@@ -7,6 +7,7 @@ import AdminMemberMenu from "../components/Member/AdminMemberMenu";
 import AdminAnnounce from "../components/announce/AdminAnnounce";
 import ReportList from "./report/ReportList";
 import QuestionList from "./question/QuestionList";
+import AdminPartyMenu from "../components/party/AdminPartyMenu";
 
 export default function Admin() {
   const [content, setContent] = useState({
@@ -39,7 +40,7 @@ export default function Admin() {
 
   const handleLogout = () => {
     statusLogout();
-    navigate("/");
+    navigate("/home");
   };
 
   return (
@@ -54,7 +55,7 @@ export default function Admin() {
           {renderButton("dashboard", "DASHBOARD", <div>DASHBOARD</div>)}
           {renderButton("member", "회원관리", <AdminMemberMenu />)}
           {renderButton("board", "게시판관리", <div>게시판관리</div>)}
-          {renderButton("party", "파티관리", <div>파티관리</div>)}
+          {renderButton("party", "파티관리", <AdminPartyMenu />)}
           {renderButton("report", "신고관리", <ReportList />)}
           {renderButton("notice", "공지사항", <AdminAnnounce />)}
           {renderButton("etc", "문의내역", <QuestionList />)}
@@ -74,7 +75,9 @@ export default function Admin() {
           </div>
         </div>
 
-        <div className="h-screen p-6 bg-gray-100 overflow-auto" >{content.component}</div>
+        <div className="h-screen p-6 bg-gray-100 overflow-auto">
+          {content.component}
+        </div>
       </div>
     </div>
   );

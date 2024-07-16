@@ -34,7 +34,19 @@
   font-family: "gamtan";
   src: url("../public/font/Gamtan-Road.ttf");
 }
+@font-face {
+  font-family: "GGothicssi40g";
+  src: url("../public/font/HGGGothicssi_Pro_40g.otf");
+}
+@font-face {
+  font-family: "GGothicssi80g";
+  src: url("../public/font/HGGGothicssi_Pro_80g.otf");
+}
+@font-face {
+  font-family: "GGothicssi20g";
+  src: url("../public/font/HGGGothicssi_Pro_20g.otf");
+}
 
 body {
-  font-family: "gamtan";
+  font-family: "GGothicssi40g";
 }

@@ -1,7 +1,6 @@
 import MainSlider from "../../components/page/home/MainSlider";
 import MainMap from "../../components/page/home/MainMap";
 import SubSlider from "../../components/page/home/SubSlider";
-import MyParty from "../myPage/MyPageParty";
 import BoardCardSection from "../boardList/BoardCardSection";
 import { useState } from "react";
 import BoardSearch from "../../components/page/board/BoardSearch";
@@ -18,7 +17,8 @@ export default function Home() {
       <MainSlider />
       <MainMap />
       <SubSlider />
-      <BoardCardSection onSearch={handleSearch} data={searchResults} />
+      <BoardSearch onSearch={handleSearch} />
+      <BoardCardSection data={searchResults} />
     </div>
   );
 }
