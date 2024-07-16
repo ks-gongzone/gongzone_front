@@ -108,6 +108,11 @@ export const Auth = {
       return { error: errorMessage };
     }
   },
+  Logout: async () => {
+    return GZAPI.post("/api/logout")
+      .then((res) => res)
+      .catch((err) => err);
+  },
 };
 
 export const User = {
@@ -125,12 +130,14 @@ export const User = {
 
 export const Party = {
   PartyAccept: async (id) => {
-    return GZAPI.get(`/api/party/accept/${id}`)
+    const url =
+      id === "_admin" ? `/api/party/accept/_admin` : `/api/party/accept/${id}`;
+    return GZAPI.get(url)
       .then((res) => res)
       .catch((err) => err);
   },
   HandleMember: async (id, partyNo, requestStatus) => {
-    return GZAPI.post(`api/party/accept/${id}/Status`, {
+    return GZAPI.post(`api/alertSSE/party/accept/${id}/Status`, {
       partyNo: partyNo,
       statusCode: requestStatus,
     })
@@ -138,7 +145,7 @@ export const Party = {
       .catch((err) => err);
   },
   RequestJoin: async (id, partyNo, requestStatus, requestAmount) => {
-    return GZAPI.post(`api/party/accept/${id}/Status`, {
+    return GZAPI.post(`api/alertSSE/party/accept/${id}/Status`, {
       memberNo: id,
       partyNo: partyNo,
       statusCode: requestStatus,
@@ -153,7 +160,37 @@ export const Party = {
       .catch((err) => err);
   },
   CompleteParty: async (id) => {
-    return GZAPI.post(`api/party/updateStatus/${id}`)
+    return GZAPI.post(`api/alertSSE/party/updateStatus/${id}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  PurchaseInfo: async (memberNo, partyNo) => {
+    return GZAPI.get(`api/party/purchase/${memberNo}/${partyNo}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  PartyPurchase: async (partyNo, memberNo, request) => {
+    return GZAPI.post(`api/party/${partyNo}/purchase/${memberNo}`, request)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  InsertShipping: async (partyNo, shippingNo, request) => {
+    return GZAPI.patch(`api/party/${partyNo}/shipping/${shippingNo}`, request)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  CompleteShipping: async (partyNo, shippingNo) => {
+    return GZAPI.post(`api/party/${partyNo}/shipping/${shippingNo}/complete`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  CompleteReception: async (partyNo, receptionNo, request) => {
+    return GZAPI.patch(`api/party/${partyNo}/reception/${receptionNo}`, request)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  SettlementParty: async (partyNo) => {
+    return GZAPI.post(`_admin/api/party/${partyNo}/settlement`)
       .then((res) => res)
       .catch((err) => err);
   },
@@ -332,6 +369,127 @@ export const GetPhone = (memberNo) => {
     });
 };
 
+// 드롭다운 데이터 받기
+export const DropDownAPI = {
+  getDropDownData: async (memberNo) => {
+    console.log("memberNo: ", memberNo);
+    if (!memberNo) {
+      throw new Error("회원 번호 또는 포인트 번호가 없습니다.");
+    }
+    return GZAPI.get(`/api/member/dropDown/${memberNo}`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("Error fetching drop down data:", error);
+        throw error;
+      });
+  },
+};
+// 유저 리스트 업 후 팔로우 차단 API
+export const MemberListAPI = {
+  getMemberList: async (page = 1, size = 8) => {
+    console.log("getMemberList실행: ");
+    const params = new URLSearchParams({ page, size });
+    return GZAPI.get(`/api/members/interaction?${params.toString()}`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("유저데이터 로드 중 에러발생", error);
+        throw error;
+      });
+  },
+
+  searchMemberList: async (page = 1, size = 8, memberName = "") => {
+    const params = new URLSearchParams({ page, size, memberName });
+    return GZAPI.get(`/api/members/interaction?${params.toString()}`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("유저 검색 중 에러 발생", error);
+        throw error;
+      });
+  },
+
+  followMember: (currentUserNo, targetMemberNo) => {
+    console.log("타겟멤버", targetMemberNo);
+    console.log("현재유저", currentUserNo);
+    return GZAPI.post(`/api/members/interaction/follow`, {
+      currentUserNo,
+      targetMemberNo,
+    })
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("멤버 팔로우 중 에러 발생", error);
+        throw error;
+      });
+  },
+
+  unFollowMember: (currentUserNo, targetMemberNo) => {
+    console.log("언팔로우 타겟멤버", targetMemberNo);
+    console.log("언팔로우 현재유저", currentUserNo);
+    return GZAPI.delete(`/api/members/interaction/follow`, {
+      data: { currentUserNo, targetMemberNo },
+    })
+      .then((response) => {
+        console.log("언팔 성공", response.data);
+        return response.data;
+      })
+      .catch((error) => {
+        console.error("멤버 팔로우 중 에러 발생", error);
+        throw error;
+      });
+  },
+
+  blockMember: (currentUserNo, targetMemberNo) => {
+    console.log("차단 타겟멤버", targetMemberNo);
+    console.log("차단시도 유저", currentUserNo);
+    return GZAPI.post(`/api/members/interaction/block`, {
+      currentUserNo,
+      targetMemberNo,
+    })
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("멤버 차단 중 에러 발생", error);
+        throw error;
+      });
+  },
+
+  unBlockMember: (currentUserNo, targetMemberNo) => {
+    console.log("차단해제 타겟멤버", targetMemberNo);
+    console.log("차단해제시도 유저", currentUserNo);
+    return GZAPI.delete(`/api/members/interaction/block`, {
+      data: { currentUserNo, targetMemberNo },
+    })
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("멤버 차단해제 중 에러 발생", error);
+        throw error;
+      });
+  },
+
+  // 추가된 함수
+  getFollowList: async (memberNo) => {
+    return GZAPI.get(`/api/members/interaction/${memberNo}/follow`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error(
+          `${memberNo} 팔로우 리스트를 가져오는 중 오류 발생: `,
+          error
+        );
+        throw error;
+      });
+  },
+
+  getBlockList: async (memberNo) => {
+    return GZAPI.get(`/api/members/interaction/${memberNo}/block`)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error(
+          `${memberNo} 차단 리스트를 가져오는 중 오류 발생: `,
+          error
+        );
+        throw error;
+      });
+  },
+};
+
 /**
  * @작성자: 한동환
  * @내용: 공지사항 type_code값에 따라 다른 통신
@@ -341,10 +499,10 @@ export const AnnounceAPI = {
     const params = new URLSearchParams({ page, size });
     if (type) params.append("type", type);
     return GZAPI.get(`/api/announce?${params.toString()}`)
-      .then((res) => res.data)
-      .catch((err) => {
-        console.error("Error fetching announcements:", err);
-        throw err;
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("Error fetching announcements:", error);
+        throw error;
       });
   },
   getAnnouncementDetail: async (announceNo) => {
@@ -397,13 +555,13 @@ export const AnnounceAPI = {
       });
   },
   updateAnnouncement: (announceNo, announce) => {
-    console.log("공지 수정 [API] 번호: ", announceNo)
+    console.log("공지 수정 [API] 번호: ", announceNo);
     return GZAPI.put(`/api/_admin/announce/update/${announceNo}`, announce)
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error("공지사항 수정 중 에러 발생[API]", error);
-      throw error;
-    });
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("공지사항 수정 중 에러 발생[API]", error);
+        throw error;
+      });
   },
   deleteAnnouncement: (announceNo) => {
     return GZAPI.delete(`/api/_admin/announce/delete/${announceNo}`)
@@ -429,6 +587,53 @@ export const MemberAPI = {
   CheckEmail: async (data) => {
     return GZAPI.post("/api/check/Email", data)
       .then((res) => res.data)
+      .catch((err) => err);
+  },
+};
+
+export const Note = {
+  NoteCheck: async (noteNo) => {
+    return GZAPI.post(`/api/noteCheck/${noteNo}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  NoteList: async (data) => {
+    const { memberNo, ...rest } = data;
+    return GZAPI.get(`/api/note/noteList/${memberNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  InsertNote: async (data) => {
+    return GZAPI.post(`/api/note/insertNote`, data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  UpdateReadTimeNote: async (noteNo) => {
+    return GZAPI.post(`/api/note/updateReadTime/${noteNo}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  UpdateDeleteNote: async (noteNo) => {
+    return GZAPI.post(`/note/updateDelete/${noteNo}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+};
+
+export const Alert = {
+  AlertList: async (memberNo) => {
+    return GZAPI.get(`/api/alertSSE/AlertSSEList/${memberNo}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  AlertRead: async (alertNo) => {
+    return GZAPI.post(`/api/alertSSE/updateReadTime/${alertNo}`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  AlertDelete: async (alertNo) => {
+    return GZAPI.post(`/api/alertSSE/updateReadTime/${alertNo}`)
+      .then((res) => res)
       .catch((err) => err);
   },
 };
@@ -494,8 +699,67 @@ export const AdminMemberAPI = {
   },
   QuestionStatusList: async (data) => {
     const { memberQuestionNo, ...rest } = data;
-    console.log(rest);
     return GZAPI.post(`/api/QuestionStatusUpdate/${memberQuestionNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  NoteCheck: async (data) => {
+    const { noteNo, ...rest } = data;
+    return GZAPI.post(`/api/noteCheck/${noteNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  NoteList: async (data) => {
+    const { memberNo, ...rest } = data;
+    return GZAPI.post(`/api/noteList/${memberNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  InsertNote: async (data) => {
+    return GZAPI.post(`/api/insertNote`, data)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  UpdateReadTimeNote: async (data) => {
+    const { noteNo, ...rest } = data;
+    return GZAPI.post(`/api/updateReadTime/${noteNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+  UpdateDeleteNote: async (data) => {
+    const { noteNo, ...rest } = data;
+    return GZAPI.post(`/api/updateDelete/${noteNo}`, rest)
+      .then((res) => res)
+      .catch((err) => err);
+  },
+};
+
+export const Board = {
+  BoardReply: async (boardNo, connectMemberNo, Reply) => {
+    return GZAPI.post(`/api/boards/reply/add`, {
+      boardNo: boardNo,
+      memberNo: connectMemberNo,
+      replyBody: Reply,
+    })
+      .then((res) => res)
+      .catch((err) => err);
+  },
+
+  UpdateBoardReply: async (replyNo, boardNo, connectMemberNo, updateReply) => {
+    return GZAPI.post(`/api/boards/reply/update`, {
+      replyNo: replyNo,
+      boardNo: boardNo,
+      memberNo: connectMemberNo,
+      replyBody: updateReply,
+    })
+      .then((res) => res)
+      .catch((err) => err);
+  },
+
+  DeleteBoardReply: async (deleteNo, boardNo, connectMemberNo) => {
+    return GZAPI.delete(`/api/boards/reply/delete`, {
+      data: { replyNo: deleteNo, boardNo: boardNo, memberNo: connectMemberNo },
+    })
       .then((res) => res)
       .catch((err) => err);
   },

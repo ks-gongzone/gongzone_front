@@ -4,11 +4,11 @@ const PointDataContext = createContext();
 
 const usePointData = () => useContext(PointDataContext);
 
-const PointDataProvider = ({ memberNo, pointNo, children }) => {
+const PointDataProvider = ({ memberNo, children }) => {
   return (
-      <PointDataContext.Provider value={ { memberNo, pointNo } }>
-        { children }
-      </PointDataContext.Provider>
+    <PointDataContext.Provider value={ { memberNo } }>
+      { children }
+    </PointDataContext.Provider>
   );
 };
 

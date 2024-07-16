@@ -91,10 +91,9 @@ export default function ModalLogin({ isOpen, onClose }) {
           {errorMessage && (
             <div className="text-red-500 text-sm mt-2">{errorMessage}</div>
           )}
-          <div className="flex justify-between items-center mt-4">
-            <button className="text-sm text-gray-500">ID/PW 찾기</button>
-            <div>
-              <button type="submit" className="text-sm text-blue-500">
+          <div className="flex justify-between mt-4">
+            <div className="ml-auto">
+              <button type="submit" className="text-right text-blue-500">
                 CONTINUE
               </button>
             </div>

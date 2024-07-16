@@ -5,7 +5,7 @@ import ModalSignup from "../components/modal/ModalRegister";
 import AuthStore from "../utils/zustand/AuthStore";
 import ModalStore from "../utils/zustand/ModalStore";
 import { MagnifyingGlassIcon, UserCircleIcon } from "@heroicons/react/16/solid";
-import logo from "../../src/assets/logo/GZlogo.PNG";
+import logo from "../../src/assets/logo/GONGZONE_logo_blue.png";
 import MyDropdownMenu from "../components/menu/MyDropdownMenu";
 import { PencilIcon } from "@heroicons/react/24/outline";
 
@@ -46,22 +46,22 @@ export default function LayoutHeader() {
   };
 
   return (
-    <div className="shadow-md z-10">
+    <div className="shadow-md z-10 sticky top-0 bg-white">
       <div className="flex items-center h-16 relative">
         <div className="flex items-center max-w-5xl mx-auto gap-4 justify-between flex-wrap w-full">
-          <Link className="text-2xl whitespace-nowrap" to="/">
-            <img alt="logo" src={logo} className="h-10 pr-20" />
+          <Link className="text-2xl whitespace-nowrap" to="/home">
+            <img alt="logo" src={logo} className="h-12 pr-20" />
           </Link>
           <div className="flex flex-grow justify-start text-[15px] whitespace-nowrap font-semibold relative py-2">
             <div
               ref={borderRef}
-              className="absolute bottom-0 h-0.5 bg-red-600 transition-all duration-300"
+              className="absolute bottom-0 h-0.5 bg-[#1d5091] transition-all duration-300"
               style={{ width: "0px", transform: "translateX(0px)" }}
             ></div>
             <Link
               onMouseEnter={handleTabHover}
               onMouseLeave={handleTabLeave}
-              className="hover:text-red-600 px-5"
+              className="hover:text-[#1d5091] px-5"
               to="/board/list"
             >
               게시판
@@ -70,7 +70,7 @@ export default function LayoutHeader() {
             <Link
               onMouseEnter={handleTabHover}
               onMouseLeave={handleTabLeave}
-              className="hover:text-red-600 px-5"
+              className="hover:text-[#1d5091] px-5"
               to={`/party/detail/${memberNo}`}
             >
               파티
@@ -79,7 +79,7 @@ export default function LayoutHeader() {
             <Link
               onMouseEnter={handleTabHover}
               onMouseLeave={handleTabLeave}
-              className="hover:text-red-600 px-5"
+              className="hover:text-[#1d5091] px-5"
               to="/announce"
             >
               공지사항
@@ -88,7 +88,7 @@ export default function LayoutHeader() {
           <button
             type="button"
             onClick={() => navigate("/board/list")}
-            className="flex items-center bg-red-400 text-white px-4 py-2 rounded-md hover:bg-red-600 whitespace-nowrap"
+            className="flex items-center bg-[#6ea2d4] text-white px-4 py-2 rounded-md hover:bg-[#14396a] whitespace-nowrap"
           >
             <MagnifyingGlassIcon className="w-5 h-5" />
             검색
@@ -100,7 +100,7 @@ export default function LayoutHeader() {
                 <button
                   type="button"
                   onClick={() => navigate("/board/write/:memberNo")}
-                  className="flex items-center bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-black whitespace-nowrap"
+                  className="flex items-center bg-[#1d5091] text-white px-4 py-2 rounded-md hover:bg-[#0d2544] whitespace-nowrap"
                 >
                   <PencilIcon className="w-5 h-5 mr-2" />
                   글쓰기
@@ -111,7 +111,7 @@ export default function LayoutHeader() {
                     className="p-2 text-black rounded"
                     type="button"
                   >
-                    <UserCircleIcon className="w-10 h-10 text-gray-500" />
+                    <UserCircleIcon className="w-10 h-10 text-[#1d5091]" />
                   </button>
                   <MyDropdownMenu
                     isOpen={isOpen}

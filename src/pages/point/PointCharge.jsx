@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { usePointData } from "./context/PointContext";
 
 export default function PointCharge() {
-  const { memberNo, pointNo } = usePointData();
+  const { memberNo } = usePointData();
   const title = `${ memberNo }님의 포인트 충전 페이지`;
 
   const pointCharge = State("pointCharge", 0);
@@ -31,17 +31,17 @@ export default function PointCharge() {
       const data = {
         pointChange: pointCharge.value,
         changeType: "T030101",
-        payment: {
+        detail: {
           ...payResponse,
           type: "TOSSPAY",
           status: "S030201",
         },
       }
-      const response = await GZAPI.post(`/api/members/${ pointNo }/point/charge`, data);
+      const response = await GZAPI.post(`/api/members/${ memberNo }/point/charge`, data);
 
       if (response.data.result === "SUCCESS") {
         alert('포인트 결제가 완료되었습니다.');
-        navigate('/');
+        navigate('/myPage/point');
       } else {
         alert('포인트 결제에 실패하였습니다. 다시 시도해주세요.')
       }
@@ -57,7 +57,7 @@ export default function PointCharge() {
       return () => {
         if (pointCharge.value + amount > 999_999) {
           alert(
-              "최대 충전 가능 금액을 초과했습니다.\n(최대 충전 가능 금액: 100만 원)"
+            "최대 충전 가능 금액을 초과했습니다.\n(최대 충전 가능 금액: 100만 원)"
           );
           pointCharge.set(999_999);
           return;
@@ -69,89 +69,89 @@ export default function PointCharge() {
 
 
   return (
-      <PointSection title={ title }>
-        <div className="flex flex-grow justify-center">
-          <PointInnerSection title={ "포인트 충전하기" }>
-            <div className="relative flex w-full justify-end">
-              <input
-                  onChange={ actions.inputChangeHandler }
-                  className="w-1/2 h-16
+    <PointSection title={ title }>
+      <div className="flex flex-grow justify-center">
+        <PointInnerSection title={ "포인트 충전하기" }>
+          <div className="relative flex w-full justify-end">
+            <input
+              onChange={ actions.inputChangeHandler }
+              className="w-1/2 h-16
                               border-2 border-gray-300 rounded-xl
                               p-4 pl-6
                               text-2xl"
-                  value={ formatNumber(pointCharge.value) }
-                  maxLength="7"
-              />
-              <span className="absolute inset-y-4 right-4 text-2xl">{ '\u20A9' }</span>
-            </div>
-            <div className="flex justify-end">
-              <button
-                  onClick={ actions.addAmount(10_000) }
-                  className="box-border border-2 rounded-xl px-4 py-2 bg-gray-300"
-              >
-                +1만
-              </button>
-              <button
-                  onClick={ actions.addAmount(30_000) }
-                  className="box-border border-2 rounded-xl px-4 py-2 bg-gray-300"
-              >
-                +3만
-              </button>
-              <button
-                  onClick={ actions.addAmount(50_000) }
-                  className="box-border border-2 rounded-xl px-4 py-2 bg-gray-300"
-              >
-                +5만
-              </button>
-              <button
-                  onClick={ actions.addAmount(100_000) }
-                  className="box-border border-2 rounded-xl px-4 py-2 bg-gray-300"
-              >
-                +10만
-              </button>
-              <button
-                  onClick={ () => pointCharge.set(0) }
-                  className="box-border border-2 rounded-xl px-4 py-2 bg-gray-400"
-              >
-                초기화
-              </button>
-            </div>
-            <div className="w-full">
-              <h2 className="text-xl">일반결제</h2>
-              <div className="flex w-full space-x-2">
-                <div className="w-1/4">
-                  <button className="w-full box-border border-2 border-gray-400 rounded py-4">!신용카드</button>
-                </div>
-                <div className="w-1/4">
-                  <button className="w-full box-border border-2 border-gray-400 rounded py-4">!휴대폰결제</button>
-                </div>
-                <div className="w-1/4">
-                  <button className="w-full box-border border-2 border-gray-400 rounded py-4">!계좌이체</button>
-                </div>
-                <div className="w-1/4">
-                  <button className="w-full box-border border-2 border-gray-400 rounded py-4">!가상계좌</button>
-                </div>
+              value={ formatNumber(pointCharge.value) }
+              maxLength="7"
+            />
+            <span className="absolute inset-y-4 right-4 text-2xl">{ '\u20A9' }</span>
+          </div>
+          <div className="flex justify-end">
+            <button
+              onClick={ actions.addAmount(10_000) }
+              className="box-border border-2 rounded-xl px-4 py-2 bg-gray-300"
+            >
+              +1만
+            </button>
+            <button
+              onClick={ actions.addAmount(30_000) }
+              className="box-border border-2 rounded-xl px-4 py-2 bg-gray-300"
+            >
+              +3만
+            </button>
+            <button
+              onClick={ actions.addAmount(50_000) }
+              className="box-border border-2 rounded-xl px-4 py-2 bg-gray-300"
+            >
+              +5만
+            </button>
+            <button
+              onClick={ actions.addAmount(100_000) }
+              className="box-border border-2 rounded-xl px-4 py-2 bg-gray-300"
+            >
+              +10만
+            </button>
+            <button
+              onClick={ () => pointCharge.set(0) }
+              className="box-border border-2 rounded-xl px-4 py-2 bg-gray-400"
+            >
+              초기화
+            </button>
+          </div>
+          <div className="w-full">
+            <h2 className="text-xl">일반결제</h2>
+            <div className="flex w-full space-x-2">
+              <div className="w-1/4">
+                <button className="w-full box-border border-2 border-gray-400 rounded py-4">!신용카드</button>
+              </div>
+              <div className="w-1/4">
+                <button className="w-full box-border border-2 border-gray-400 rounded py-4">!휴대폰결제</button>
+              </div>
+              <div className="w-1/4">
+                <button className="w-full box-border border-2 border-gray-400 rounded py-4">!계좌이체</button>
+              </div>
+              <div className="w-1/4">
+                <button className="w-full box-border border-2 border-gray-400 rounded py-4">!가상계좌</button>
               </div>
             </div>
-            <div className="w-full">
-              <h2 className="text-xl">간편결제</h2>
-              <div className="flex w-full space-x-2">
-                <div className="w-1/4">
-                  <button
-                      onClick={ actions.requestPointCharge }
-                      className="w-full box-border border-2 border-[#3182f6] rounded py-4"
-                  >
-                    토스페이
-                  </button>
-                </div>
-                <div className="w-1/4"></div>
-                <div className="w-1/4"></div>
-                <div className="w-1/4"></div>
+          </div>
+          <div className="w-full">
+            <h2 className="text-xl">간편결제</h2>
+            <div className="flex w-full space-x-2">
+              <div className="w-1/4">
+                <button
+                  onClick={ actions.requestPointCharge }
+                  className="w-full box-border border-2 border-[#3182f6] rounded py-4"
+                >
+                  토스페이
+                </button>
               </div>
+              <div className="w-1/4"></div>
+              <div className="w-1/4"></div>
+              <div className="w-1/4"></div>
             </div>
-          </PointInnerSection>
-        </div>
-      </PointSection>
+          </div>
+        </PointInnerSection>
+      </div>
+    </PointSection>
   );
 }
 

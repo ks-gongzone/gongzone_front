@@ -7,7 +7,8 @@ import {
   ShoppingCartIcon,
 } from "@heroicons/react/24/outline";
 import { MapPinIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import GZAPI from "../../../utils/api";
 
 export default function InfoCard({
   chirdren,
@@ -20,8 +21,14 @@ export default function InfoCard({
   address,
   price,
   period,
+  writeNo,
+  connectNo,
+  boardNo,
+  partyNo
 }) {
   const [isCopied, setIsCopied] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleShareClick = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
@@ -31,6 +38,28 @@ export default function InfoCard({
       }, 1000); // 2초 후에 안내 메시지 숨기기
     });
   };
+
+  const handleBoardUpdate = () => {
+    navigate(`/board/update/${boardNo}`)
+  }
+
+  const handleBoardDelete = async () => {
+    try{
+      const response = await GZAPI.delete(`api/boards/delete/${boardNo}/${partyNo}`)
+      console.log(response);
+      if (response.status === 200) {
+        // 성공적으로 삭제되었음을 사용자에게 알림
+        alert('게시글이 성공적으로 삭제되었습니다.');
+        navigate(`/board/list`)
+      } else {
+        const errorData = await response.text();
+        alert(errorData || '게시글 삭제에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('Error deleting board:', error);
+      alert('파티원이 있는 게시글은 삭제할 수 없습니다.');
+    }
+  }
 
   return (
     <div className="w-full flex justify-between">
@@ -47,7 +76,24 @@ export default function InfoCard({
             <div className="font-bold ml-5 mt-5 text-[1vw]">{title}</div>
             <div className="ml-5 py-7 font-semibold text-gray-700">{desc}</div>
           </div>
-          <div className="relative">
+          <div className="relative flex items-center">
+            {writeNo === connectNo && (
+              <>
+              {/* 수정 버튼 */}
+              <button 
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded w-14 h-8"
+                onClick={handleBoardUpdate}>
+              수정
+              </button>
+              {/* 삭제 버튼 */}
+              <button 
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded ml-1 w-14 h-8"
+                onClick={handleBoardDelete}
+              >
+              삭제
+              </button>
+            </>
+            )}
             <button onClick={handleShareClick}>
               <ShareIcon className="mt-3 w-8 h-8" />
             </button>
