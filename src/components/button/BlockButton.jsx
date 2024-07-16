@@ -4,10 +4,11 @@ import AuthStore from "../../utils/zustand/AuthStore";
 
 export default function BlockButton({ 
   targetMemberNo, targetMemberName,
-  isBlocked, onBlockChange }) {
+  initialBlocked }) {
   const [isLoading, setIsLoading] = useState(false);
   const { userInfo } = AuthStore((state) => ({ userInfo: state.userInfo }));
   const currentUserNo = userInfo.memberNo;
+  const [isBlocked, setIsBlocked] = useState(initialBlocked);
 
   const handleBlock = async () => {
     setIsLoading(true);
@@ -18,17 +19,17 @@ export default function BlockButton({
       if(window.confirm(confirmMessage)) {
         if (isBlocked) {
           console.log("차단해제 타겟", targetMemberNo);
-          MemberListAPI.unBlockMember(currentUserNo, targetMemberNo);
+          await MemberListAPI.unBlockMember(currentUserNo, targetMemberNo);
         } else {
           console.log("차단 타겟", targetMemberNo);
-          MemberListAPI.blockMember(currentUserNo, targetMemberNo);
+          await MemberListAPI.blockMember(currentUserNo, targetMemberNo);
         }
-        onBlockChange({ 
-          memberNo: targetMemberNo,
-          memberName: targetMemberName, isBlocked: !isBlocked });
+        setIsBlocked(!isBlocked);
       }
+      setIsLoading(false);
     } catch (error) {
       console.error("[버튼] 멤버 차단 중 에러 발생", error);
+      setIsBlocked(false);
     }
   };
 

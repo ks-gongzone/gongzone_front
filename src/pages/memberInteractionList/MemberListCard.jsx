@@ -1,19 +1,51 @@
-import React from "react";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import FollowButton from "../../components/button/FollowButton";
 import BlockButton from "../../components/button/BlockButton";
 import AuthStore from "../../utils/zustand/AuthStore";
+import { Note } from "../../utils/repository";
+
+const MySwal = withReactContent(Swal);
 
 /**
  * @작성일: 2024-07-11
  * @내용: 회원별 프로필 카드 
  */
-export default function MemberListCard({ 
-  member,
-  onFollowChange, onBlockChange }) {
+export default function MemberListCard({ member }) {
 
   const { userInfo } = AuthStore((state) => ({ userInfo: state.userInfo }));
   const currentUserNo = userInfo.memberNo;
   const isAdmin = userInfo.memberNo === "M000001";
+
+  const handleNote = async () => {
+    const { value: noteBody } = await MySwal.fire({
+      title: "쪽지 전송",
+      input: "textarea",
+      inputLabel: `to : ${member.memberName}`,
+      inputPlaceholder: "내용을 입력하세요...",
+      inputAttributes: {
+        "aria-label": "내용을 입력하세요",
+      },
+      showCancelButton: true,
+      confirmButtonText: "보내기",
+      cancelButtonText: "취소",
+    });
+
+    if (noteBody) {
+      const data = {
+        memberNo: currentUserNo,
+        memberTargetNo: member.memberNo,
+        noteBody,
+      };
+
+      try {
+        await Note.InsertNote(data);
+        MySwal.fire("성공", "쪽지가 성공적으로 보내졌습니다.", "success");
+      } catch (error) {
+        MySwal.fire("실패", "쪽지 보내기 중 오류가 발생했습니다.", "error");
+      }
+    }
+  };
 
   return (
     <div className="w-full h-70 relative text-left rounded-xl overflow-hidden shadow-lg bg-white border hover:border-red-200 p-6 flex flex-col justify-between">
@@ -32,8 +64,7 @@ export default function MemberListCard({
                   <FollowButton
                     targetMemberNo={member.memberNo}
                     targetMemberName={member.memberName}
-                    isFollowing={member.following}
-                    onFollowChange={onFollowChange}
+                    initialFollowing={member.isFollowing}
                   />
                 </div>
               )}
@@ -55,12 +86,19 @@ export default function MemberListCard({
       <div className="flex justify-between items-center mt-4">
         <button className="bg-blue-500 text-white px-4 py-2 rounded">작성글보기</button>
         {currentUserNo !== member.memberNo && (
-          <BlockButton
-            targetMemberNo={member.memberNo}
-            targetMemberName={member.memberName}
-            isBlocked={member.blocked}
-            onBlockChange={onBlockChange}
-          />
+          <div className="flex space-x-2">
+            <button
+              onClick={handleNote}
+              className="bg-gray-200 text-gray-600 px-4 py-2 rounded flex items-center justify-center"
+            >
+              <span className="text-xl">✉️</span>
+            </button>
+            <BlockButton
+              targetMemberNo={member.memberNo}
+              targetMemberName={member.memberName}
+              initialBlocked={member.isBlocked}
+            />
+          </div>
         )}
       </div>
     </div>
