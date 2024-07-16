@@ -57,7 +57,7 @@ export default function PartyDetail() {
         text: "다른 사용자의 파티 상세 페이지에 접근할 수 없습니다.",
         icon: "error",
       }).then(() => {
-        navigate("/"); // 접근 불가 시 홈 페이지로 리다이렉트
+        navigate("/home"); // 접근 불가 시 홈 페이지로 리다이렉트
       });
     }
   }, [detail, loginMember, memberNo, navigate]);
@@ -373,10 +373,19 @@ export default function PartyDetail() {
             </button>
           ) : detail.status === "S060107" ? (
             <button
-              onClick={handleShippingComplete}
+              type="button"
               className="w-full h-10 mt-4 rounded-md bg-green-500 text-white font-bold"
+              disabled
             >
-              포인트 정산 요청하기
+              포인트 정산 대기중(정산은 3영업일 이내 진행됩니다.)
+            </button>
+          ) : detail.status === "S060108" ? (
+            <button
+              type="button"
+              className="w-full h-10 mt-4 rounded-md bg-green-500 text-white font-bold"
+              disabled
+            >
+              파티 종료
             </button>
           ) : (
             Number(detail.remainAmount) === 0 && (
@@ -443,10 +452,7 @@ export default function PartyDetail() {
         onConfirm={handleComplete}
         partyNo={partyNo}
       />
-      <PartyReply 
-        boardNo={detail.boardNo} 
-        boardReply={detail.boardReply}
-      />
+      <PartyReply boardNo={detail.boardNo} boardReply={detail.boardReply} />
     </div>
   );
 }

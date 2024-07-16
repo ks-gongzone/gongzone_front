@@ -49,7 +49,7 @@ export default function LayoutHeader() {
     <div className="shadow-md z-10">
       <div className="flex items-center h-16 relative">
         <div className="flex items-center max-w-5xl mx-auto gap-4 justify-between flex-wrap w-full">
-          <Link className="text-2xl whitespace-nowrap" to="/">
+          <Link className="text-2xl whitespace-nowrap" to="/home">
             <img alt="logo" src={logo} className="h-10 pr-20" />
           </Link>
           <div className="flex flex-grow justify-start text-[15px] whitespace-nowrap font-semibold relative py-2">

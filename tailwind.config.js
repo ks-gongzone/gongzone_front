@@ -7,6 +7,8 @@ module.exports = {
         roboto: ["roboto"],
         over: ["over"],
         over_b: ["over-bold"],
+        GGothicssi40g: ["GGothicssi40g", "sans-serif"],
+        GGothicssi20g: ["GGothicssi20g", "sans-serif"],
       },
       spacing: {
         72: "18rem",

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import MypageSidebar from "../../components/page/myInfo/MyPageSidebar";
 import AuthStore from "../../utils/zustand/AuthStore";
-import { MyInfoDetail, MyInfo, MyParty, BlockList, FollowList } from "./Index"
+import { MyInfoDetail, MyInfo, MyParty, BlockList, FollowList } from "./Index";
 import { Point } from "../point/Index";
 import GZAPI from "../../utils/api";
 import BoardCardSection from "../boardList/BoardCardSection";
@@ -24,7 +24,7 @@ export default function MyPage() {
   useEffect(() => {
     if (!isLogin) {
       console.log("로그인이 필요한 서비스");
-      navigate("/");
+      navigate("/home");
     } else {
       const path = location.pathname.split("/")[2];
       if (!path) {
@@ -41,7 +41,9 @@ export default function MyPage() {
           content: "",
           memberNo: userInfo.memberNo, // 현재 로그인 중인 유저의 회원 번호 사용
         });
-        const usePosts = response.data.filter(post => post.memberNo === userInfo.memberNo);
+        const usePosts = response.data.filter(
+          (post) => post.memberNo === userInfo.memberNo
+        );
         setSearchResults(usePosts);
         console.log(response.data);
         console.log(response.data.memberNo);
@@ -52,7 +54,7 @@ export default function MyPage() {
     if (activeTab === "myBoard") {
       fetchDefaultData();
     }
-}, [location.pathname, isLogin, navigate, userInfo.memberNo, activeTab]);
+  }, [location.pathname, isLogin, navigate, userInfo.memberNo, activeTab]);
 
   const handleNextPage = () => setInfoPage(2);
   const handlePreviousPage = () => setInfoPage(1);
@@ -82,9 +84,7 @@ export default function MyPage() {
   return (
     <div className="flex">
       <MypageSidebar />
-      <div className="flex-1 p-8">
-        {renderContent()}
-      </div>
+      <div className="flex-1 p-8">{renderContent()}</div>
     </div>
-  )
+  );
 }
