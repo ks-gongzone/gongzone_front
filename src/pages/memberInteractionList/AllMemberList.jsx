@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AuthStore from "../../utils/zustand/AuthStore";
 import { MemberListAPI } from "../../utils/repository";
 import MemberListCard from "./MemberListCard";
+import { useNavigate } from "react-router-dom";
 
 /**
  * @수정일: 2024-07-11
@@ -14,6 +15,14 @@ export default function MemberList({ searchQuery }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [size] = useState(8);
   const [totalMembers, setTotalMembers] = useState(0);
+  const navigate = useNavigate();
+
+  useEffect (() => {
+    if (!currentUserNo) {
+      // alert("로그인이 필요한 서비스입니다.");
+      navigate("/");
+    }
+  }, [currentUserNo, navigate]);
 
   // 페이지 처리
   const changeMembersList = async (page, size) => {
@@ -22,7 +31,9 @@ export default function MemberList({ searchQuery }) {
       const processedData = data.memberList.map(member => ({
         ...member,
         isPopular: member.popular,
-        isWarning: member.warning
+        isWarning: member.warning,
+        isFollowing: member.following,
+        isBlocked: member.blocked
       }));
       console.log("Allmember 컴포넌트:", processedData); // 데이터 확인용 로그
       setMemberList(processedData);
@@ -37,23 +48,6 @@ export default function MemberList({ searchQuery }) {
     changeMembersList(currentPage, size);
   }, [currentPage, size]);
 
-  // 팔로우, 차단
-  const handleFollowChange = (updatedMember) => {
-    console.log("[팔로우] updateMember: ", updatedMember)
-    setMemberList((prevList) => 
-      prevList.map((member) => 
-        member.memberNo === updatedMember.memberNo ? { 
-          ...member, isFollowing: updatedMember.isFollowing } : member)
-    );
-  };
-  const handleBlockChange = (updatedMember) => {
-    setMemberList((prevList) => 
-      prevList.map((member) =>
-        member.memberNo === updatedMember.memberNo ? { 
-          ...member, isBlocked: updatedMember.isBlocked } : member)
-    );
-  };
-
   const filteredMembers = Array.isArray(memberList) ? memberList.filter((member) => {
     if (searchQuery && !member.memberName.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false;
@@ -67,8 +61,6 @@ export default function MemberList({ searchQuery }) {
         <MemberListCard
           currentUserNo={currentUserNo}
           member={member}
-          onFollowChange={handleFollowChange}
-          onBlockChange={handleBlockChange}
         />
       </div>
     ));
