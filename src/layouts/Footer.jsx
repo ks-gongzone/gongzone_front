@@ -6,7 +6,7 @@ export default function LayoutFooter() {
     <div>
       <div className="flex items-center h-80 justify-between max-w-5xl mx-auto">
         <div className="flex flex-col gap-2">
-          <Link className="whitespace-nowrap" to="/">
+          <Link className="whitespace-nowrap" to="/home">
             <img alt="logo" src={logo} className="h-10 pr-20" />
           </Link>
           <br></br>
