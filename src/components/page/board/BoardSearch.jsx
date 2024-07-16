@@ -99,7 +99,7 @@ export default function BoardSearch({ onSearch }) {
     <div className="w-[1000px] flex-container flex justify-center mx-auto mt-10">
       <div className="mx-auto flex items-center space-x-2">
         <select
-          className="border focus:ring-2 focus:ring-blue-500 mr-1"
+          className="px-2 py-2 border rounded-md focus:ring-2 focus:ring-blue-500"
           name="location"
           value={formData.location}
           onChange={handleChange}
@@ -111,7 +111,7 @@ export default function BoardSearch({ onSearch }) {
           ))}
         </select>
         <select
-          className="border focus:ring-2 focus:ring-blue-500 mr-1"
+          className="px-2 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 mr-1"
           name="category"
           value={formData.category}
           onChange={handleChange}
