@@ -37,7 +37,7 @@ export default function PointCharge() {
           status: "S030201",
         },
       }
-      const response = await GZAPI.post(`/api/members/${ memberNo }/point/charge`, data);
+      const response = await GZAPI.post(`/api/members/${ memberNo }/point/payment`, data);
 
       if (response.data.result === "SUCCESS") {
         alert('포인트 결제가 완료되었습니다.');

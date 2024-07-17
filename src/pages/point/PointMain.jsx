@@ -45,7 +45,7 @@ export default function Point() {
 
         {/* 포인트 내역*/ }
         <PointInnerSection title={ "포인트 내역" }
-                           description={ "(!현재 페이지에는 최근 10건만 표시됩니다.)" }>
+                           description={ "(현재 페이지에는 최근 10건만 표시됩니다.)" }>
           <PointHistoryTable memberNo={ memberNo } />
           <div className="flex justify-center">
             <Link to="/myPage/point/history"
