@@ -131,7 +131,7 @@ export default function BoardSearch({ onSearch }) {
           onChange={handleChange}
         />
         <button
-          className="text-center bg-red-400 text-white px-2 py-1 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+          className="text-center bg-[#6ea2d4] text-white px-2 py-1 rounded-lg hover:bg-[#1d5091] focus:outline-none"
           onClick={clickSearch}
         >
           검색
@@ -139,7 +139,7 @@ export default function BoardSearch({ onSearch }) {
       </div>
       <div className="flex-item ml-auto">
         <Link to={`/board/write/${memberNo}`}>
-          <button className="bg-gray-900 text-white border border-gray-300 rounded-md px-4 py-2 flex items-center gap-2 text-base font-medium hover:bg-gray-500">
+          <button className="bg-[#1d5091] text-white border border-gray-300 rounded-md px-4 py-2 flex items-center gap-2 text-base font-medium hover:bg-[#0d2544]">
             글쓰기
           </button>
         </Link>

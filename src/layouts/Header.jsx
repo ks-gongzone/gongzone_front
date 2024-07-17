@@ -87,7 +87,13 @@ export default function LayoutHeader() {
           </div>
           <button
             type="button"
-            onClick={() => navigate("/board/list")}
+            onClick={() => {
+              navigate("/board/list");
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+              });
+            }}
             className="flex items-center bg-[#6ea2d4] text-white px-4 py-2 rounded-md hover:bg-[#14396a] whitespace-nowrap"
           >
             <MagnifyingGlassIcon className="w-5 h-5" />
@@ -99,7 +105,13 @@ export default function LayoutHeader() {
               <div className="flex items-center whitespace-nowrap">
                 <button
                   type="button"
-                  onClick={() => navigate("/board/write/:memberNo")}
+                  onClick={() => {
+                    navigate(`/board/write/${memberNo}`);
+                    window.scrollTo({
+                      top: 0,
+                      behavior: "smooth"
+                    });
+                  }}
                   className="flex items-center bg-[#1d5091] text-white px-4 py-2 rounded-md hover:bg-[#0d2544] whitespace-nowrap"
                 >
                   <PencilIcon className="w-5 h-5 mr-2" />
