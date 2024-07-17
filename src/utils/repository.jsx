@@ -488,6 +488,12 @@ export const MemberListAPI = {
         throw error;
       });
   },
+
+  getStaticMember: async () => {
+    return GZAPI.post(`/api/admin/statisticalDate/login`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
 };
 
 /**
@@ -732,6 +738,11 @@ export const AdminMemberAPI = {
       .then((res) => res)
       .catch((err) => err);
   },
+  UncheckedReport: async () => {
+    return GZAPI.post(`/api/admin/statistical/report`)
+      .then((res) => res)
+      .catch((err) => err);
+  },
 };
 
 export const Board = {
@@ -760,6 +771,12 @@ export const Board = {
     return GZAPI.delete(`/api/boards/reply/delete`, {
       data: { replyNo: deleteNo, boardNo: boardNo, memberNo: connectMemberNo },
     })
+      .then((res) => res)
+      .catch((err) => err);
+  },
+
+  GetBoardAdmin: async () => {
+    return GZAPI.post(`/api/boards/_admin`)
       .then((res) => res)
       .catch((err) => err);
   },

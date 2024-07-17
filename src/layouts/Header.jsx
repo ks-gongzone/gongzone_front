@@ -19,7 +19,6 @@ export default function LayoutHeader() {
     setIsRegisterModalOpen,
   } = ModalStore();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState(null);
   const borderRef = useRef();
 
   useEffect(() => {
@@ -46,7 +45,7 @@ export default function LayoutHeader() {
   };
 
   return (
-    <div className="shadow-md z-10 sticky top-0 bg-white">
+    <div className="shadow-md z-50 sticky top-0 bg-white">
       <div className="flex items-center h-16 relative">
         <div className="flex items-center max-w-5xl mx-auto gap-4 justify-between flex-wrap w-full">
           <Link className="text-2xl whitespace-nowrap" to="/home">
@@ -94,7 +93,7 @@ export default function LayoutHeader() {
                 behavior: "smooth"
               });
             }}
-            className="flex items-center bg-[#6ea2d4] text-white px-4 py-2 rounded-md hover:bg-[#14396a] whitespace-nowrap"
+            className="flex items-center bg-[#b93d40] text-white px-4 py-2 rounded-md hover:bg-[#14396a] whitespace-nowrap"
           >
             <MagnifyingGlassIcon className="w-5 h-5" />
             검색
