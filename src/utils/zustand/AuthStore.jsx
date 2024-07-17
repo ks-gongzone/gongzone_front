@@ -65,7 +65,6 @@ const AuthStore = create(
         });
         sessionStorage.clear();
         localStorage.clear();
-        window.location.reload();
       },
     }),
     {
