@@ -89,7 +89,7 @@ export default function Intro() {
         <div className="text-[3vw] md:text-[2vw] lg:text-[1vw] font-GGothicssi20g mb-4">
           로고 클릭 시 메인페이지로 이동합니다.
         </div>
-        <div className="text-gray-700 h-auto w-full lg:w-[104em] p-6 rounded-md text-left bg-blue-100 bg-opacity-70 mb-4">
+        <div className="text-gray-700 h-auto w-full p-6 rounded-md text-left bg-blue-100 bg-opacity-70 mb-4 shadow-xl">
           <div className="flex flex-col lg:flex-row gap-12 justify-center">
             <div className="text-ms">
               <div>
@@ -117,7 +117,7 @@ export default function Intro() {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
           {[
             {
               name: "고 윤 영",
@@ -162,10 +162,10 @@ export default function Intro() {
           ].map((member, index) => (
             <div
               key={index}
-              className="bg-blue-100 bg-opacity-70 text-black h-[32em] w-[16em] md:w-[18em] lg:w-[20em] p-4 rounded-md shadow-md flex flex-col items-center"
+              className="bg-blue-100 bg-opacity-70 text-black p-4 rounded-md shadow-md flex flex-col items-center shadow-xl"
             >
-              <div className="font-bold text-xl mb-2">{member.name}</div>
-              <div className="text-[1vw] md:text-[0.8vw] lg:text-[0.7vw] text-gray-600 whitespace-pre-line">
+              <div className="font-bold text-[18px] mb-2">{member.name}</div>
+              <div className="text-[13px] text-gray-600 whitespace-pre-line">
                 {member.intro}
               </div>
             </div>
