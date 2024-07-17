@@ -81,13 +81,13 @@ export default function InfoCard({
               <>
               {/* 수정 버튼 */}
               <button 
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded w-14 h-8"
+                className="bg-[#6ea2d4] hover:bg-[#1d5091] text-white font-bold py-1 px-2 rounded w-14 h-8"
                 onClick={handleBoardUpdate}>
               수정
               </button>
               {/* 삭제 버튼 */}
               <button 
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded ml-1 w-14 h-8"
+                className="bg-[#f97173] hover:bg-red-700 text-white font-bold py-1 px-2 rounded ml-1 w-14 h-8"
                 onClick={handleBoardDelete}
               >
               삭제

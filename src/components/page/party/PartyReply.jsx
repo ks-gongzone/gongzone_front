@@ -132,7 +132,8 @@ export default function PartyReply({ boardNo, boardReply }) {
                 />
                 <button
                   onClick={() => handleReplyUpdate(reply.replyNo)}
-                  className="ml-2 w-[5em] px-4 py-2 bg-blue-500 text-white rounded"
+                  className="ml-2 w-[5em] px-4 py-2 bg-[#1d5091] text-white rounded
+                  hover:bg-[#6ea2d4]"
                 >
                   수정
                 </button>
@@ -171,7 +172,8 @@ export default function PartyReply({ boardNo, boardReply }) {
         />
         <button
           onClick={handleReplySubmit}
-          className="ml-2 w-[5em] px-4 py-2 bg-blue-500 text-white rounded"
+          className="ml-2 w-[5em] px-4 py-2 bg-[#1d5091] text-white rounded
+          hover:bg-[#6ea2d4]"
         >
           등록
         </button>

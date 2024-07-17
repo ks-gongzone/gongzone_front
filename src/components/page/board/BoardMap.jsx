@@ -88,7 +88,7 @@ export default function BoardMap({ onLocationChange, onPositionChange }) {
           </div>
         </div>
       )}
-      <div className="relative w-full pb-3 z-40">
+      <div className="relative w-full pb-3 z-5">
         <input
           id="addr"
           readOnly
@@ -106,7 +106,7 @@ export default function BoardMap({ onLocationChange, onPositionChange }) {
         />
       </div>
       <div
-        className="w-full z-10 mx-auto rounded-xl bg-gray-400 overflow-hidden"
+        className="w-full z-5 mx-auto rounded-xl bg-gray-400 overflow-hidden"
         style={{ height: "360px" }}
       >
         <Map

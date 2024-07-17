@@ -353,11 +353,20 @@ export default function UpdateForm() {
       <div>
         <label className="block">제품 이미지</label>
         <input
+          id="fileInput"
           type="file"
           name="image"
           accept="image/*"
           onChange={handleChange}
+          style={{ display: 'none' }}
         />
+      <button
+        type="button"
+        onClick={() => document.getElementById('fileInput').click()}
+        className="bg-[#1d5091] text-white px-2 py-2 rounded-md hover:bg-[#6ea2d4]"
+      >
+        파일 선택
+      </button>
 
         {/* 이미지 미리보기 */}
         {formData.image && (
@@ -411,8 +420,8 @@ export default function UpdateForm() {
         </div>
       </div>
 
-      <div>
-        <button type="submit" className="bg-blue-500 text-white p-2">
+      <div className="flex justify-end">
+        <button type="submit" className="bg-[#1d5091] text-white px-10 py-3 rounded-md hover:bg-[#6ea2d4]">
           수정
         </button>
       </div>
