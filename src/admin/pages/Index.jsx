@@ -7,10 +7,11 @@ import AdminAnnounce from "../components/announce/AdminAnnounce";
 import ReportList from "./report/ReportList";
 import QuestionList from "./question/QuestionList";
 import AdminPartyMenu from "../components/party/AdminPartyMenu";
+import Dashboard from "./dashboard/Dashboard";
 
 export default function Admin() {
   const [content, setContent] = useState({
-    component: <div>DASHBOARD</div>,
+    component: <Dashboard />,
     label: "DASHBOARD",
   });
   const [selectedButton, setSelectedButton] = useState("dashboard");
@@ -44,8 +45,8 @@ export default function Admin() {
 
   return (
     <div className="flex">
-      <div className="w-[15%] h-screen bg-[#1e5187] p-6 shadow-md font-bold text-white">
-        <div className="mt-2 flex flex-col space-y-4">
+      <div className="w-[15%] min-h-screen bg-[#1e5187] p-6 shadow-md font-bold text-white">
+        <div className="mt-2 flex flex-col space-y-4 sticky top-0">
           <Link to="/home">
             <img
               alt="logo"
@@ -53,7 +54,7 @@ export default function Admin() {
               className="w-full h-auto max-w-[300px] max-h-[100px] mb-10"
             />
           </Link>
-          {renderButton("dashboard", "DASHBOARD", <div>DASHBOARD</div>)}
+          {renderButton("dashboard", "DASHBOARD", <Dashboard />)}
           {renderButton("member", "회원관리", <AdminMemberMenu />)}
           {renderButton("party", "파티관리", <AdminPartyMenu />)}
           {renderButton("report", "신고관리", <ReportList />)}
@@ -75,9 +76,7 @@ export default function Admin() {
           </div>
         </div>
 
-        <div className="h-screen p-6 bg-gray-100 overflow-auto">
-          {content.component}
-        </div>
+        <div className=" p-6 bg-gray-100">{content.component}</div>
       </div>
     </div>
   );
