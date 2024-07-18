@@ -9,7 +9,7 @@ export default function MypageSidebar() {
         내정보
       </NavLink>
       <NavLink to="myPageBoard" className={({ isActive }) => `w-full p-4 text-left text-lg ${isActive ? "bg-blue-500 text-white" : "bg-white text-black"}`}>
-        작성글
+        찜 목록
       </NavLink>
       <NavLink to="myParty" className={({ isActive }) => `w-full p-4 text-left text-lg ${isActive ? "bg-blue-500 text-white" : "bg-white text-black"}`}>
         내파티

@@ -21,7 +21,7 @@ export default function MyPageBoardCard({
   };
 
   const handleCardClick = () => {
-    navigate(`/party/detail/${memberNo}`);
+    navigate(`/party/detail/${memberNo}/${id}`);
   };
 
   const stripHtmlTags = (str) => {

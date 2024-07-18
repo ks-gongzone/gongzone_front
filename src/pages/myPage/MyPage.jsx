@@ -34,7 +34,8 @@ export default function MyPage() {
       }
       setActiveTab(path);
     }
-    const fetchDefaultData = async () => {
+    }, [location.pathname, isLogin, navigate]);
+    /*const fetchDefaultData = async () => {
       try {
         const response = await GZAPI.post("/api/boards/list", {
           location: "*",
@@ -52,10 +53,10 @@ export default function MyPage() {
         console.error("데이터 가져오기 실패:", error);
       }
     };
-    if (activeTab === "myBoard") {
+    if (activeTab === "myPageBoard") {
       fetchDefaultData();
     }
-  }, [location.pathname, isLogin, navigate, userInfo.memberNo, activeTab]);
+  }, [location.pathname, isLogin, navigate, userInfo.memberNo, activeTab]);*/
 
   const handleNextPage = () => setInfoPage(2);
   const handlePreviousPage = () => setInfoPage(1);
