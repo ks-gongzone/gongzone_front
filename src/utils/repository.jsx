@@ -235,6 +235,15 @@ export const MyBoard = (memberNo) => {
     });
 };
 
+export const MyPageWish = (memberNo) => {
+  return GZAPI.get(`/api/boards/myPage/wishList/${memberNo}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("데이터 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
 export const MyParty = (memberNo) => {
   return GZAPI.get(`/api/members/${memberNo}/party`)
     .then((response) => response.data)

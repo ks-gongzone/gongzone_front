@@ -6,6 +6,7 @@ import { MyInfoDetail, MyInfo, MyParty } from "./Index"
 import { Point } from "../point/Index";
 import GZAPI from "../../utils/api";
 import BoardCardSection from "../boardList/BoardCardSection";
+import MyPageBoard from "./MyPageBoard";
 
 /**
  * 개별 토글 스위치 컴포넌트
@@ -70,8 +71,8 @@ export default function MyPage() {
             onPreviousPage={handlePreviousPage}
           />
         );
-      case "myBoard":
-        return <BoardCardSection data={searchResults} />;
+      case "myPageBoard":
+        return <MyPageBoard />
       case "myParty":
         return <MyParty />;
       case "point":
