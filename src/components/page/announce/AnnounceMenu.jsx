@@ -12,17 +12,12 @@ export default function AnnounceMenu({ memberNo }) {
   ];
 
   const [activeTab, setActiveTab] = useState("all");
-  // 통신 위해서 공지사항 객체 상태로 관리 (한동환 추가)
   const [announcements, setAnnuncements] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [page, setPage] = useState(1);
   const [size] = useState(10);
 
-  /**
-   * @작성일: 2024-07-03
-   * @내용: 페이지와 보여질 데이터 및 타입 통신
-   */
   useEffect(() => {
     const fetchAnnounce = async () => {
       const type = activeTab === "all" ? "" : activeTab;
@@ -48,8 +43,8 @@ export default function AnnounceMenu({ memberNo }) {
   };
 
   return (
-    <div>
-      <div className="w-full mx-auto sticky top-0">
+    <div className="w-[65em] mx-auto mb-10 mt-14">
+      <div className="w-full sticky top-0">
         <BasicTapMenu
           tabItems={tabItems}
           activeTab={activeTab}

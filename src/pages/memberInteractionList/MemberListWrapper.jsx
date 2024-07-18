@@ -37,7 +37,7 @@ export default function MemberListWrapper() {
   }
 
   return (
-    <div className="flex flex-col w-[1150px] justify-between pt-12 pb-5">
+    <div className="flex flex-col w-[65em] justify-between pt-12 pb-5">
       <div className="flex w-full justify-between items-center">
         <div className="flex items-center space-x-4">
           <button

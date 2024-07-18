@@ -43,7 +43,7 @@ export default function FollowList({ memberNo }) {
   const totalPages = Math.ceil(totalMembers / size);
 
   return (
-    <div className="w-[80em] mx-auto mb-10 mt-14">
+    <div className="w-[65em] mx-auto mb-10 mt-14">
       <div className="flex flex-wrap gap-4 justify-center">
         {renderMemberCards(followList)}
       </div>
