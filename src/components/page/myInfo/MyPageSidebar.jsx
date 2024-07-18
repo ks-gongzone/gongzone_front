@@ -8,8 +8,8 @@ export default function MypageSidebar() {
         <NavLink to="myInfo" className={({ isActive }) => `flex-1 p-4 text-center text-lg ${isActive ? "bg-white text-black" : "bg-gray-100 text-black"}`}>
           내정보
         </NavLink>
-        <NavLink to="myBoard" className={({ isActive }) => `flex-1 p-4 text-center text-lg ${isActive ? "bg-white text-black" : "bg-gray-100 text-black"}`}>
-          작성글
+        <NavLink to="myPageBoard" className={({ isActive }) => `flex-1 p-4 text-center text-lg ${isActive ? "bg-white text-black" : "bg-gray-100 text-black"}`}>
+          찜목록
         </NavLink>
         <NavLink to="myParty" className={({ isActive }) => `flex-1 p-4 text-center text-lg ${isActive ? "bg-white text-black" : "bg-gray-100 text-black"}`}>
           내파티

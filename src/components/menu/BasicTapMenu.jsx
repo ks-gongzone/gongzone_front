@@ -4,8 +4,8 @@ export default function BasicTapMenu({ tabItems, activeTab, onTabClick }) {
   const [hoveredTab, setHoveredTab] = useState(null);
 
   return (
-    <div className="w-[65em] mx-auto">
-      <div className="flex pb-10 border-black border-t-2">
+    <div>
+      <div className="w-[490px] sm:w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px] flex pb-10 border-black border-t-2">
         {tabItems.map((tab, index) => (
           <div key={tab.id} className="w-full flex items-center bg-gray-100">
             <button

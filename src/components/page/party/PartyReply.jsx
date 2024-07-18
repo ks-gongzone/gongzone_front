@@ -28,21 +28,25 @@ export default function PartyReply({ boardNo, boardReply }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  
+
   const handleEdit = (index) => {
     setEditingIndex(index);
     setUpdateReply(replies[index].replyBody);
-  }
+  };
 
   const handleReplySubmit = async () => {
     if (reply.trim()) {
       try {
-        const newReply = await Board.BoardReply(boardNo, connectMemberNo, reply);
+        const newReply = await Board.BoardReply(
+          boardNo,
+          connectMemberNo,
+          reply
+        );
         console.log(newReply.data); // 새로운 댓글 확인
         setReplies(newReply.data); // 새로운 댓글을 상태에 추가
         setReply(""); // 댓글 입력 필드 비우기
       } catch (error) {
-        console.error('Error posting reply:', error);
+        console.error("Error posting reply:", error);
       }
     }
   };
@@ -50,13 +54,18 @@ export default function PartyReply({ boardNo, boardReply }) {
   const handleReplyUpdate = async (replyNo) => {
     if (updateReply.trim()) {
       try {
-        const updateReplies = await Board.UpdateBoardReply(replyNo, boardNo, connectMemberNo, updateReply)
+        const updateReplies = await Board.UpdateBoardReply(
+          replyNo,
+          boardNo,
+          connectMemberNo,
+          updateReply
+        );
         console.log(updateReplies.data);
         setReplies(updateReplies.data);
         setUpdateReply("");
         setEditingIndex(-1);
       } catch (error) {
-        console.error('Error updating reply:', error);
+        console.error("Error updating reply:", error);
       }
     }
   };
@@ -64,7 +73,11 @@ export default function PartyReply({ boardNo, boardReply }) {
   const handleDelete = async (index) => {
     const deleteNo = replies[index].replyNo;
     try {
-      const deletedReply = await Board.DeleteBoardReply(deleteNo, boardNo, connectMemberNo);
+      const deletedReply = await Board.DeleteBoardReply(
+        deleteNo,
+        boardNo,
+        connectMemberNo
+      );
       console.log(deletedReply);
       setReplies(deletedReply.data);
     } catch (error) {
@@ -73,7 +86,7 @@ export default function PartyReply({ boardNo, boardReply }) {
   };
 
   return (
-    <div className="w-[65em] mx-auto mb-10 mt-14">
+    <div className="max-w-[65em] mx-auto mb-10 mt-14">
       <div className="w-full mb-6 text-lg font-bold text-[#526688]">댓글</div>
       <div className="mb-4">
         {replies.map((reply, index) => (
@@ -120,7 +133,7 @@ export default function PartyReply({ boardNo, boardReply }) {
                 </div>
               )}
             </div>
-           
+
             {editingIndex === index ? (
               // 수정 중일 때
               // 수정 중인 댓글이면 수정 가능한 입력 칸을 보여줌
@@ -141,24 +154,24 @@ export default function PartyReply({ boardNo, boardReply }) {
             ) : (
               // 수정 중 아닐 때
               <div className="pl-10 flex items-center justify-between">
-              <span>{reply.replyBody}</span>
-              {reply.memberNo === connectMemberNo && (
-                <div className="space-x-2">
-                  <button
-                    className="text-sm text-black-500 hover:underline"
-                    onClick={() => handleEdit(index)}
-                  >
-                    수정
-                  </button>
-                  <button
-                    className="text-sm text-black-500 hover:underline"
-                    onClick={() => handleDelete(index)}
-                  >
-                    삭제
-                  </button>
-                </div>
-              )}
-            </div>
+                <span>{reply.replyBody}</span>
+                {reply.memberNo === connectMemberNo && (
+                  <div className="space-x-2">
+                    <button
+                      className="text-sm text-black-500 hover:underline"
+                      onClick={() => handleEdit(index)}
+                    >
+                      수정
+                    </button>
+                    <button
+                      className="text-sm text-black-500 hover:underline"
+                      onClick={() => handleDelete(index)}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         ))}
