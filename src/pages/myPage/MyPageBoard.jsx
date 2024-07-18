@@ -1,4 +1,4 @@
-import {MyPageWish, Party} from "../../utils/repository";
+import {MyPageWish} from "../../utils/repository";
 import { useEffect, useState } from "react";
 import AuthStore from "../../utils/zustand/AuthStore";
 import { useNavigate, useParams } from "react-router-dom";
@@ -13,18 +13,16 @@ export default function MyPageBoard() {
 
   const fetch = async () => {
     const detailData = await MyPageWish(memberNo);
-    const responseData = Array.isArray(detailData.data)
-      ? detailData.data
-      : [detailData.data]; // 배열로 변환
+    const responseData = Array.isArray(detailData)
+      ? detailData
+      : [detailData]; // 배열로 변환
     setData(responseData);
     console.log("Fetched data:", responseData);
   };
 
   useEffect(() => {
-    if (id) {
       fetch();
-    }
-  }, [id]);
+  }, [memberNo]);
 
   const handleCardClick = (partyNo) => {
     navigate(`/party/detail/${memberNo}/${partyNo}`, {
@@ -79,13 +77,16 @@ export default function MyPageBoard() {
     return parties.map((e) => (
       <div key={e.partyNo} onClick={() => handleCardClick(e.partyNo)}>
         <MyPageBoardCard
-          img={`${baseURL}${e.filePath}`}    // 이미지
-          title={e.boardTitle}          // 보드타이틀
-          desc={e.boardBody}            // 보드바디
-          id={e.partyNo}                // 파티넘버
-          memberNo={memberNo}           // 맴버넘버
-          amount={e.partyAmount}        // 파티수량
-          status={e.statusCode}             // 파티상태
+          img={`${baseURL}${e.filePath}`}
+          title={e.boardTitle}
+          desc={e.boardBody}
+          id={e.partyNo}
+          like={true}
+          wish={true}
+          memberNo={memberNo}
+          boardNo={e.boardNo}
+          amount={e.partyAmount}
+          status={e.statusCode}
         >
           <div className="text-sm px-3 pb-3">
             <div className="flex justify-between mb-3 text-[#888888]"></div>

@@ -35,28 +35,6 @@ export default function MyPage() {
       setActiveTab(path);
     }
     }, [location.pathname, isLogin, navigate]);
-    /*const fetchDefaultData = async () => {
-      try {
-        const response = await GZAPI.post("/api/boards/list", {
-          location: "*",
-          category: "*",
-          content: "",
-          memberNo: userInfo.memberNo, // 현재 로그인 중인 유저의 회원 번호 사용
-        });
-        const usePosts = response.data.filter(
-          (post) => post.memberNo === userInfo.memberNo
-        );
-        setSearchResults(usePosts);
-        console.log(response.data);
-        console.log(response.data.memberNo);
-      } catch (error) {
-        console.error("데이터 가져오기 실패:", error);
-      }
-    };
-    if (activeTab === "myPageBoard") {
-      fetchDefaultData();
-    }
-  }, [location.pathname, isLogin, navigate, userInfo.memberNo, activeTab]);*/
 
   const handleNextPage = () => setInfoPage(2);
   const handlePreviousPage = () => setInfoPage(1);

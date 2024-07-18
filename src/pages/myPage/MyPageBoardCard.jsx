@@ -1,6 +1,7 @@
 import { HeartIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import GZAPI from "../../utils/api";
 
 export default function MyPageBoardCard({
                                         children,
@@ -9,11 +10,13 @@ export default function MyPageBoardCard({
                                         id,
                                         desc,
                                         amount,
+                                        boardNo,
                                         memberNo,
-                                        like = false,
+                                        like = true,
                                         status,
+                                        wish
                                       }) {
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(wish);
   const navigate = useNavigate();
 
   const likeBtn = () => {
@@ -26,6 +29,17 @@ export default function MyPageBoardCard({
 
   const stripHtmlTags = (str) => {
     return str.replace(/<\/?[^>]+(>|$)/g, "");
+  };
+
+  const handleLikeClick = async (e) => {
+    e.stopPropagation();
+    console.log(boardNo, memberNo);
+    try{
+      likeBtn();
+      await GZAPI.post(`/api/boards/wish/${boardNo}/${memberNo}`)
+    } catch (error) {
+      console.error('서버 요청 중 오류 발생:', error);
+    }
   };
 
   return (
@@ -58,10 +72,7 @@ export default function MyPageBoardCard({
         {like && (
           <div
             className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md cursor-pointer"
-            onClick={(e) => {
-              e.stopPropagation();
-              likeBtn();
-            }}
+            onClick={handleLikeClick}
           >
             <HeartIcon
               className={`w-6 ${isLiked ? "text-red-500" : "text-[#e7e7e7]"}`}
