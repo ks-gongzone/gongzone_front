@@ -31,39 +31,39 @@ GZAPI.interceptors.response.use(
 
       const tokenExpired = error.response.headers["token-expired"];
       if (tokenExpired) {
-        console.log("tokenExpired 들어옴", tokenExpired);
         const refreshToken = window.localStorage.getItem("refreshToken");
         if (refreshToken) {
           try {
-            console.log("Attempting to refresh token with refresh token: ", refreshToken);
             const response = await axios.post('http://localhost:8088/api/refresh', {
               refreshToken: refreshToken,
             });
 
             if (response.status === 200) {
               const newAccessToken = response.data.newAccessToken;
-              console.log("리프레시 토큰 요청 성공", newAccessToken);
               window.localStorage.setItem("accessToken", newAccessToken);
               firstRequest.headers["Authorization"] = `Bearer ${ newAccessToken }`;
               return axios(firstRequest);
             } else {
-              console.error("리프레시 토큰 요청 실패", response);
               handleLogout();
             }
           } catch (err) {
-            console.error("리프레시 토큰 요청 실패", err);
             handleLogout();
           }
         } else {
           handleLogout();
         }
+      } else {
+        showLoginAlertModal();
       }
     }
 
     // 404 Not Found 처리
     if (error.response && error.response.status === 404) {
       console.error("404 Not Found", error.response);
-      window.location.href = "/404";
+      alert("페이지를 찾을 수 없습니다.");
+      setTimeout(() => {
+        window.history.back();
+      }, 1000);
     }
 
     return Promise.reject(error);
@@ -73,8 +73,13 @@ GZAPI.interceptors.response.use(
 function handleLogout() {
   window.localStorage.removeItem("accessToken");
   window.localStorage.removeItem("refreshToken");
+  window.location.href = "/home";
   window.localStorage.setItem("redirect", window.location.href);
-  window.location.href = "/login";
+}
+
+function showLoginAlertModal() {
+  const event = new Event('showLoginAlertModal');
+  window.dispatchEvent(event);
 }
 
 export default GZAPI;

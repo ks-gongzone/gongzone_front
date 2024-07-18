@@ -21,6 +21,7 @@ export default function LayoutHeader() {
   const navigate = useNavigate();
   const borderRef = useRef();
 
+
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
@@ -42,6 +43,20 @@ export default function LayoutHeader() {
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handlePartyClick = (e) => {
+    if (!memberNo) {
+      e.preventDefault();
+      showLoginAlertModal();
+    } else {
+      navigate(`/party/detail/${memberNo}`);
+    }
+  };
+
+  const showLoginAlertModal = () => {
+    const event = new Event('showLoginAlertModal');
+    window.dispatchEvent(event);
   };
 
   return (
@@ -66,14 +81,15 @@ export default function LayoutHeader() {
               게시판
             </Link>
             <div className="px-8"></div>
-            <Link
+            <button
+              type="button"
               onMouseEnter={handleTabHover}
               onMouseLeave={handleTabLeave}
               className="hover:text-[#1d5091] px-5"
-              to={`/party/detail/${memberNo}`}
+              onClick={handlePartyClick}
             >
               파티
-            </Link>
+            </button>
             <div className="px-8"></div>
             <Link
               onMouseEnter={handleTabHover}
