@@ -22,30 +22,29 @@ const AuthStore = create(
           },
         })),
 
-  statusLogin: async (data) => {
-    const userAgent = navigator.userAgent; // 브라우저 정보 가져오기
-    const loginData = { ...data, userAgent };
+      statusLogin: async (data) => {
+        const userAgent = navigator.userAgent; // 브라우저 정보 가져오기
+        const loginData = { ...data, userAgent };
 
-    const response = await Auth.Login(loginData);
-    if (response && response.accessToken && response.refreshToken) {
-      set({ isLogin: true });
-      set((state) => ({
-        userInfo: {
-          ...state.userInfo,
-          accessToken: response.accessToken,
-          refreshToken: response.refreshToken,
-          memberNo: response.memberNo,
-          pointNo: response.pointNo,
-        },
-      }));
-      window.localStorage.setItem("accessToken", response.accessToken);
-      window.localStorage.setItem("refreshToken", response.refreshToken);
-      window.location.reload();
-      return response;
-    } else {
-      return response;
-    }
-  },
+        const response = await Auth.Login(loginData);
+        if (response && response.accessToken && response.refreshToken) {
+          set({ isLogin: true });
+          set((state) => ({
+            userInfo: {
+              ...state.userInfo,
+              accessToken: response.accessToken,
+              refreshToken: response.refreshToken,
+              memberNo: response.memberNo,
+              pointNo: response.pointNo,
+            },
+          }));
+          window.localStorage.setItem("accessToken", response.accessToken);
+          window.localStorage.setItem("refreshToken", response.refreshToken);
+          return response;
+        } else {
+          return response;
+        }
+      },
 
       statusLogout: async () => {
         const token = window.localStorage.getItem("accessToken");
@@ -66,7 +65,6 @@ const AuthStore = create(
         });
         sessionStorage.clear();
         localStorage.clear();
-        window.location.reload();
       },
     }),
     {
@@ -76,7 +74,7 @@ const AuthStore = create(
   )
 );
 
-window.addEventListener("beforeunload", function(event) {
+window.addEventListener("beforeunload", function (event) {
   const token = window.localStorage.getItem("accessToken");
 
   if (token) {

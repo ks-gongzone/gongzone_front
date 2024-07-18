@@ -1,14 +1,37 @@
-import BoardContent from "../../components/page/board/BoardContent";
 import React, { useState, useEffect } from "react";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import "@ckeditor/ckeditor5-build-classic/build/translations/ko";
 import Calendar from "../../components/page/board/BoardCalendar";
-import BoardMap from "../../components/page/board/BoardMap";
+import BoardUpdateMap from "../../components/page/board/BoardUpdateMap";
 import AuthStore from "../../utils/zustand/AuthStore";
 import GZAPI from "../../utils/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function InsertForm() {
+export default function UpdateForm() {
   const memberNo = AuthStore((state) => state.userInfo.memberNo);
+  const { boardNo } = useParams();
+  
   const navigate = useNavigate();
+
+  const editorConfiguration = {
+    toolbar: {
+      items: [
+        "heading",
+        "|",
+        "bold",
+        "italic",
+        "link",
+        "|",
+        "imageUpload",
+        "blockQuote",
+        "|",
+        "undo",
+        "redo",
+      ],
+    },
+    language: "ko",
+  };
 
   const [formData, setFormData] = useState({
     memberNo: "",
@@ -37,6 +60,37 @@ export default function InsertForm() {
   const [submitSuccess, setSubmitSuccess] = useState(""); // 제출 성공 메시지 상태
 
   useEffect(() => {
+    const fetchBoardData = async () => {
+      try {
+        const response = await GZAPI.post(`/api/boards/${boardNo}/info`);
+        console.log(response.data);
+
+        setFormData({
+            memberNo: response.data[0].memberNo,
+            title: response.data[0].boardTitle,
+            category: response.data[0].category,
+            URL: response.data[0].productUrl,
+            price: response.data[0].totalPrice,
+            total: response.data[0].remain + response.data[0].amount,
+            amount: response.data[0].amount,
+            content: response.data[0].boardBody,
+            doCity: response.data[0].locationDo,
+            siGun: response.data[0].locationSi,
+            gu: response.data[0].locationGu,
+            dong: response.data[0].locationDong,
+            detailAddress: response.data[0].locationDetail,
+            latitude: response.data[0].locationX,
+            longitude: response.data[0].locationY,
+            endDate: response.data[0].endDate,
+          });
+      } catch (error) {
+        console.error("초기 데이터 요청 중 오류 발생:", error);
+      }
+    };
+    fetchBoardData();
+  }, [boardNo]);
+
+  useEffect(() => {
     if (memberNo) {
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -48,11 +102,11 @@ export default function InsertForm() {
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
 
-    if (type === "file") {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: files[0],
-      }));
+    if (type === "file" && files.length > 0) {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          [name]: files[0],
+        }));
     } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -73,7 +127,7 @@ export default function InsertForm() {
 
   const validateAmount = (total, amount) => {
     if (parseInt(amount) > parseInt(total)) {
-      setNumError("구매 희망 수량은 전체 수량보다 많을 수 없습니다.");
+      setNumError("구매 희망 수량은 남은 수량보다 많을 수 없습니다.");
       setCanSubmit(false);
     } else {
       setNumError("");
@@ -99,10 +153,11 @@ export default function InsertForm() {
     }));
   };
 
-  const handleContentChange = (content) => {
+  const handleEditorChange = (e, editor) => {
+    const data = editor.getData();
     setFormData((prevFormData) => ({
       ...prevFormData,
-      content: content,
+      content: data,
     }));
   };
 
@@ -135,20 +190,6 @@ export default function InsertForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      formData.content === "" ||
-      formData.doCity === "" ||
-      formData.siGun === "" ||
-      formData.gu === "" ||
-      formData.dong === "" ||
-      formData.detailAddress === "" ||
-      formData.latitude === "" ||
-      formData.longitude === "" ||
-      formData.endDate === ""
-    ) {
-      alert("필수 입력 항목을 모두 작성해주세요.");
-      return;
-    }
 
     if (!canSubmit) {
       alert("입력된 데이터에 오류가 있습니다. 확인 후 다시 시도하세요.");
@@ -166,7 +207,7 @@ export default function InsertForm() {
     }
 
     try {
-      const response = await GZAPI.post(`/api/boards/write/${memberNo}`,formDataToSend,{
+      const response = await GZAPI.post(`/api/boards/update/${boardNo}`,formDataToSend,{
         headers: {
           "Content-Type": "multipart/form-data",
 
@@ -179,7 +220,7 @@ export default function InsertForm() {
       });
 
       if (response.status === 200) {
-        setSubmitSuccess("게시글이 성공적으로 등록되었습니다!");
+        setSubmitSuccess("게시글이 성공적으로 수정되었습니다!");
         setSubmitError("");
         setTimeout(() => {
           navigate("/board/list"); // 성공 시 이동할 페이지 경로 설정
@@ -261,7 +302,7 @@ export default function InsertForm() {
           onChange={handleChange}
           className="border p-2 w-full"
           placeholder="제품 URL을 입력해주세요."
-          required
+          readOnly
         />
       </div>
 
@@ -274,13 +315,13 @@ export default function InsertForm() {
           onChange={handleChange}
           className="border p-2 w-full"
           placeholder="제품 총 가격을 (숫자만) 입력해주세요."
-          required
+          readOnly
         />
       </div>
 
       <div className="flex space-x-4">
         <div className="w-1/2">
-          <label className="block">전체 수량</label>
+          <label className="block">남은 수량</label>
           <input
             type="number"
             name="total"
@@ -289,7 +330,7 @@ export default function InsertForm() {
             onBlur={handleBlur}
             className="border p-2 w-full"
             placeholder="제품 전체 수량을 (숫자만) 입력해주세요."
-            required
+            readOnly
           />
         </div>
 
@@ -318,9 +359,7 @@ export default function InsertForm() {
           accept="image/*"
           onChange={handleChange}
           style={{ display: 'none' }}
-          required
         />
-
       <button
         type="button"
         onClick={() => document.getElementById('fileInput').click()}
@@ -342,7 +381,20 @@ export default function InsertForm() {
       <div className="flex space-x-4">
         {/* 게시글 상세 내용 */}
         <div className="w-full">
-          <BoardContent onChange={handleContentChange} />
+            <div>
+                <h2>게시글 상세 내용</h2>
+                <CKEditor
+                    editor={ClassicEditor}
+                    config={editorConfiguration}                    
+                    data={formData.content}
+                    onChange={handleEditorChange}
+                />
+                <style jsx global>{`
+                    .ck-editor__editable {
+                    height: 250px !important;
+                    }
+                `}</style>
+            </div>
         </div>
       </div>
       <div className="flex justify-between gap-10">
@@ -350,9 +402,12 @@ export default function InsertForm() {
         <div className="w-2/3">
           제품 수령 주소
           {/* <MapSearch /> */}
-          <BoardMap
+          <BoardUpdateMap
             onLocationChange={handleLocationChange}
             onPositionChange={handlePositionChange}
+            locationX = {formData.latitude}
+            locationY = {formData.longitude}
+            detailAddr = {formData.detailAddress.split(' ').slice(1).join(' ')}
           />
         </div>
         <div className="w-1/3">
@@ -367,7 +422,7 @@ export default function InsertForm() {
 
       <div className="flex justify-end">
         <button type="submit" className="bg-[#1d5091] text-white px-10 py-3 rounded-md hover:bg-[#6ea2d4]">
-          제출
+          수정
         </button>
       </div>
 

@@ -1,7 +1,14 @@
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import LayoutDefault from "../layouts/Default";
 import Home from "../pages/home/Index";
-import { Point, PointCharge, PointDetail, PointHistory, PointMain, PointWithdraw } from "../pages/point/Index";
+import {
+  Point,
+  PointCharge,
+  PointDetail,
+  PointHistory,
+  PointMain,
+  PointWithdraw,
+} from "../pages/point/Index";
 import BoardList from "../pages/boardList/Index";
 import BoardWrite from "../pages/boardWrite/Index";
 
@@ -17,24 +24,53 @@ import Admin from "../admin/pages/Index";
 import AdminLogin from "../admin/pages/AdminLogin";
 import PartyDetail from "../pages/partyDetail/Index";
 import PartyList from "../pages/partyList/Index";
-import {
-  MyInfo,
-  MyParty,
-} from "../pages/myPage/Index";
+import { MyInfo, MyParty } from "../pages/myPage/Index";
 
 import AdminWriteDetail from "../admin/pages/announceCreate/AdminWriteDetail";
 import AdminUpdateDetail from "../admin/pages/announceUpdate/AdminUpdateDetail";
 import MemberPage from "../pages/memberInteractionList";
+import Intro from "../pages/introduction/Index";
+import UpdateForm from "../pages/boardUpdate/UpdateForm";
+import ErrorBoundary from "../components/error/ErrorBoundary";
+import ErrorPage from "../components/error/ErrorPage";
+import LoginAlertModal from "../components/error/LoginAlertModal";
+import { useEffect, useState } from "react";
+
+const RouterComponent = () => {
+  const [showAlertModal, setShowAlertModal] = useState(false);
+
+  useEffect(() => {
+    const handleShowAlertModal = () => {
+      setShowAlertModal(true);
+    };
+
+    window.addEventListener('showLoginAlertModal', handleShowAlertModal);
+
+    return () => {
+      window.removeEventListener('showLoginAlertModal', handleShowAlertModal);
+    };
+  }, []);
+
+  const handleCloseAlertModal = () => {
+    setShowAlertModal(false);
+  };
+
+  return (
+    <LayoutDefault>
+      <ErrorBoundary>
+        <LoginAlertModal show={showAlertModal} handleClose={handleCloseAlertModal} />
+        <Outlet />
+      </ErrorBoundary>
+    </LayoutDefault>
+  );
+};
 
 export default createBrowserRouter([
   {
-    element: (
-      <LayoutDefault>
-        <Outlet />
-      </LayoutDefault>
-    ),
+    element: <RouterComponent />,
+    errorElement: <ErrorPage />,
     children: [
-      { path: "/", element: <Home /> },
+      { path: "/home", element: <Home /> },
       {
         path: "/myPage",
         element: <MyPage />,
@@ -52,7 +88,7 @@ export default createBrowserRouter([
               { path: "detail", element: <PointDetail /> },
               { path: "charge", element: <PointCharge /> },
               { path: "withdraw", element: <PointWithdraw /> },
-            ]
+            ],
           },
         ],
       },
@@ -63,6 +99,7 @@ export default createBrowserRouter([
       { path: "/party/detail/:id", element: <PartyList /> },
       { path: "/board/list", element: <BoardList /> },
       { path: "/board/write/:memberNo", element: <BoardWrite /> },
+      { path: "/board/update/:boardNo", element: <UpdateForm />},
       { path: "/register", element: <Register /> },
       { path: "/naver/callback", element: <NaverLogin /> },
       { path: "/google/callback", element: <GoogleLogin /> },
@@ -73,6 +110,7 @@ export default createBrowserRouter([
   },
   { path: "/_admin", element: <AdminLogin /> },
   { path: "/_admin/main", element: <Admin /> },
-  { path: "/_admin/announce/write", element: <AdminWriteDetail/> },
-  { path: "/_admin/announce/update", element: <AdminUpdateDetail/> },
+  { path: "/_admin/announce/write", element: <AdminWriteDetail /> },
+  { path: "/_admin/announce/update", element: <AdminUpdateDetail /> },
+  { path: "/", element: <Intro /> },
 ]);

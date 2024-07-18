@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { Map, MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk";
 import { Location } from "../../../utils/repository";
+import AuthStore from "../../../utils/zustand/AuthStore";
+import { useNavigate } from "react-router-dom";
 
 export default function MainMap() {
+  const memberNo = AuthStore((state) => state.userInfo.memberNo);
   const [state, setState] = useState({
     center: {
       lat: 33.450701,
@@ -80,13 +83,17 @@ export default function MainMap() {
         <Map
           center={state.center}
           style={{ width: "1000px", height: "600px" }}
-          level={3} // 지도 확대 레벨
+          level={4}
         >
           {!state.isLoading && (
             <>
               {Array.isArray(state.locations) &&
                 state.locations.map((location, index) => (
-                  <LocationMarker key={index} location={location} />
+                  <LocationMarker
+                    key={index}
+                    location={location}
+                    memberNo={memberNo}
+                  />
                 ))}
               <MapMarker
                 position={state.center}
@@ -121,12 +128,17 @@ export default function MainMap() {
   );
 }
 
-function LocationMarker({ location }) {
+function LocationMarker({ location, memberNo }) {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const markerPosition = {
     lat: parseFloat(location.latitude),
     lng: parseFloat(location.longitude),
+  };
+
+  const handleParty = () => {
+    navigate(`/party/detail/${memberNo}/${location.partyNo}`);
   };
 
   return (
@@ -185,8 +197,8 @@ function LocationMarker({ location }) {
                 </div>
               </div>
               <button
-                onClick={() => window.open(location.link, "_blank")}
-                className="w-full mt-5 bg-red-300 text-white py-1 rounded hover:bg-red-500"
+                onClick={handleParty}
+                className="w-full mt-5 bg-[#6ea2d4] text-white py-1 rounded hover:bg-[#1d5091]"
               >
                 구경하기
               </button>
