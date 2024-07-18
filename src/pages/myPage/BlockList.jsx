@@ -15,7 +15,8 @@ export default function BlockList({ memberNo }) {
         const processedData = data.blockList.map(member => ({
           ...member,
           isPopular: member.popular,
-          isWarning: member.warning
+          isWarning: member.warning,
+          isBlocked: member.blocked
         }));
         setBlockList(processedData);
         setCurrentPage(data.currentPage);

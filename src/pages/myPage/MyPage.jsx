@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import MypageSidebar from "../../components/page/myInfo/MyPageSidebar";
 import AuthStore from "../../utils/zustand/AuthStore";
-import { MyInfoDetail, MyInfo, MyParty, BlockList, FollowList } from "./Index";
+import { MyInfoDetail, MyInfo, MyParty } from "./Index"
 import { Point } from "../point/Index";
 import GZAPI from "../../utils/api";
 import BoardCardSection from "../boardList/BoardCardSection";
