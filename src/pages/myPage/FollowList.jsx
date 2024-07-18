@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import AuthStore from "../../utils/zustand/AuthStore";
 import { MemberListAPI } from "../../utils/repository";
 import MemberListCard from "../../pages/memberInteractionList/MemberListCard";
 
@@ -16,7 +15,8 @@ export default function FollowList({ memberNo }) {
         .map(member => ({
           ...member,
           isPopular: member.popular,
-          isWarning: member.warning
+          isWarning: member.warning,
+          isFollowing: member.following
         }));
       setFollowList(processedData);
       setCurrentPage(data.currentPage);

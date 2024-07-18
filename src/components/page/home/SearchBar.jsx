@@ -1,12 +1,18 @@
 import { useState } from "react";
+import { MemberListAPI } from "../../../utils/repository";
 
-export default function SearchBar() {
+/**
+ * @수정일 2024-07-16
+ * @수정내용: 검색 쿼리 부모에게 전달할 수 있게 onSearch props 추가
+ */
+export default function SearchBar({ onSearch }) {
   const [query, setQuery] = useState();
   const handleInputChange = (e) => {
     setQuery(e.target.value);
   };
   const handleSearch = () => {
-    console.log(query);
+    onSearch(query);
+    console.log("검색어", query);
   };
   return (
     <div className="flex justify-center items-center">
