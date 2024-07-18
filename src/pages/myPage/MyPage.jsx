@@ -6,6 +6,7 @@ import { MyInfoDetail, MyInfo, MyParty } from "./Index"
 import { Point } from "../point/Index";
 import GZAPI from "../../utils/api";
 import BoardCardSection from "../boardList/BoardCardSection";
+import MyPageBoard from "./MyPageBoard";
 
 /**
  * 개별 토글 스위치 컴포넌트
@@ -33,28 +34,7 @@ export default function MyPage() {
       }
       setActiveTab(path);
     }
-    const fetchDefaultData = async () => {
-      try {
-        const response = await GZAPI.post("/api/boards/list", {
-          location: "*",
-          category: "*",
-          content: "",
-          memberNo: userInfo.memberNo, // 현재 로그인 중인 유저의 회원 번호 사용
-        });
-        const usePosts = response.data.filter(
-          (post) => post.memberNo === userInfo.memberNo
-        );
-        setSearchResults(usePosts);
-        console.log(response.data);
-        console.log(response.data.memberNo);
-      } catch (error) {
-        console.error("데이터 가져오기 실패:", error);
-      }
-    };
-    if (activeTab === "myBoard") {
-      fetchDefaultData();
-    }
-  }, [location.pathname, isLogin, navigate, userInfo.memberNo, activeTab]);
+    }, [location.pathname, isLogin, navigate]);
 
   const handleNextPage = () => setInfoPage(2);
   const handlePreviousPage = () => setInfoPage(1);
@@ -70,8 +50,8 @@ export default function MyPage() {
             onPreviousPage={handlePreviousPage}
           />
         );
-      case "myBoard":
-        return <BoardCardSection data={searchResults} />;
+      case "myPageBoard":
+        return <MyPageBoard />
       case "myParty":
         return <MyParty />;
       case "point":

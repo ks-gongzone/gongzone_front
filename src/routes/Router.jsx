@@ -35,6 +35,8 @@ import ErrorBoundary from "../components/error/ErrorBoundary";
 import ErrorPage from "../components/error/ErrorPage";
 import LoginAlertModal from "../components/error/LoginAlertModal";
 import { useEffect, useState } from "react";
+import MyPageBoardCard from "../pages/myPage/MyPageBoardCard";
+import MyPageBoard from "../pages/myPage/MyPageBoard";
 
 const RouterComponent = () => {
   const [showAlertModal, setShowAlertModal] = useState(false);
@@ -77,6 +79,7 @@ export default createBrowserRouter([
         children: [
           { path: "myInfo", element: <MyInfo /> },
           { path: "myParty", element: <MyParty /> },
+          { path: "myPageBoard", element: <MyPageBoard /> },
 
           // point
           {
