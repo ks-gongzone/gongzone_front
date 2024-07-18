@@ -79,10 +79,10 @@ export default function MainMap() {
       <div className="w-[1000px] mx-auto mb-6 text-lg font-bold text-[#526688] mt-14">
         내 주변 모임
       </div>
-      <div className="mx-auto rounded-md bg-gray-400">
+      <div className="w-[480px] sm:w-[640px] md:w-[1000px] mx-auto rounded-md bg-gray-400">
         <Map
           center={state.center}
-          style={{ width: "1000px", height: "600px" }}
+          style={{ width: "100%", height: "600px" }}
           level={4}
         >
           {!state.isLoading && (

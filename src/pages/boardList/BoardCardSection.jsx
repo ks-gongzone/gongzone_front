@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css"; // Skeleton 스타일 추가
 import BoardListCard from "../../components/page/board/BoardListCard";
 import AuthStore from "../../utils/zustand/AuthStore";
 import GZAPI from "../../utils/api";
@@ -33,8 +35,14 @@ export default function BoardCardSection({ data }) {
   const memberNo = AuthStore((state) => state.userInfo.memberNo);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(9); // 페이지당 항목 수 설정
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
-  useEffect(() => {}, [currentPage]);
+  useEffect(() => {
+    // 1초 후에 로딩 상태를 false로 변경
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
 
   // 현재 페이지의 데이터 계산
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -45,36 +53,36 @@ export default function BoardCardSection({ data }) {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="w-[65em] mx-auto mb-10 mt-14">
+    <div className="max-w-6xl mx-auto mb-10 mt-14 px-4 sm:px-6 lg:px-8">
       <div className="w-full mb-6 text-lg font-bold text-[#526688]">
         모집중인 파티
       </div>
-      <div className="grid grid-cols-3 gap-4">
-        {currentItems.length > 0 ? (
-          currentItems.map((e) => (
-            <div key={e.boardNo}>
-              <BoardListCard
-                img={`${baseURL}${e.files[0].filePath}`}
-                cate={getCategoryValue(e.category)}
-                title={e.boardTitle}
-                id={e.partyNo}
-                memberNo={memberNo}
-                boardNo={e.boardNo}
-                partyNo={e.partyNo}
-                note={e.partyCateCode}
-                like={true}
-                wish={e.wish}
-                amount={e.remain}
-              >
-                <div className="text-sm px-3 pb-3">
-                  <div className="flex justify-between mb-3 text-[#888888]"></div>
-                </div>
-              </BoardListCard>
-            </div>
-          ))
-        ) : (
-          <div className="text-center py-4 text-gray-500">Loading...</div>
-        )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {loading
+          ? Array.from({ length: itemsPerPage }).map((_, index) => (
+              <SkeletonCard key={index} />
+            ))
+          : currentItems.map((e) => (
+              <div key={e.boardNo}>
+                <BoardListCard
+                  img={`${baseURL}${e.files[0].filePath}`}
+                  cate={getCategoryValue(e.category)}
+                  title={e.boardTitle}
+                  id={e.partyNo}
+                  memberNo={memberNo}
+                  boardNo={e.boardNo}
+                  partyNo={e.partyNo}
+                  note={e.partyCateCode}
+                  like={true}
+                  wish={e.wish}
+                  amount={e.remain}
+                >
+                  <div className="text-sm px-3 pb-3">
+                    <div className="flex justify-between mb-3 text-[#888888]"></div>
+                  </div>
+                </BoardListCard>
+              </div>
+            ))}
       </div>
       {/* 페이지네이션 컴포넌트 추가 */}
       <div className="flex justify-center mt-4">
@@ -88,6 +96,16 @@ export default function BoardCardSection({ data }) {
     </div>
   );
 }
+
+// SkeletonCard 컴포넌트
+const SkeletonCard = () => (
+  <div className="bg-white rounded-lg shadow-md p-4">
+    <Skeleton height={200} />
+    <Skeleton height={20} width="80%" className="mt-4" />
+    <Skeleton height={20} width="60%" className="mt-2" />
+    <Skeleton height={30} width="40%" className="mt-4" />
+  </div>
+);
 
 // 페이지네이션 컴포넌트
 const Pagination = ({ itemsPerPage, totalItems, currentPage, paginate }) => {

@@ -43,9 +43,9 @@ export default function Dashboard() {
       }));
 
       setMemberData([
-        { id: "total", color: "hsl(147, 70%, 50%)", data: totalData },
-        { id: "direct", color: "hsl(200, 70%, 50%)", data: directData },
-        { id: "social", color: "hsl(300, 70%, 50%)", data: socialData },
+        { id: "total", data: totalData },
+        { id: "direct", data: directData },
+        { id: "social", data: socialData },
       ]);
     }
   };
@@ -98,7 +98,7 @@ export default function Dashboard() {
   const bulletData = partyData.map((party) => ({
     id: party.partyNo,
     ranges: [1, 60],
-    measures: [statusMap[party.partyStatus]],
+    measures: [statusMap[party.partyStatus] || 0],
     markers: [],
     title: party.partyNo,
   }));

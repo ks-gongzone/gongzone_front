@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import BasicTapMenu from "../../menu/BasicTapMenu";
 import AnnounceItems from "./AnnounceItems";
-import { AnnounceAPI } from "../../../utils/repository"
+import { AnnounceAPI } from "../../../utils/repository";
 
 export default function AnnounceMenu({ memberNo }) {
   const tabItems = [

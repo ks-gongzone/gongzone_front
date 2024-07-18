@@ -17,7 +17,7 @@ export default function Home() {
       <MainSlider />
       <MainMap />
       <SubSlider />
-      <BoardSearch onSearch={handleSearch} />
+      <BoardSearch onSearch={handleSearch} hidden={true} />
       <BoardCardSection data={searchResults} />
     </div>
   );
