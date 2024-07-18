@@ -18,7 +18,6 @@ export default function AnnounceItems({ items, totalPages, currentPage, onPageCh
   }
 
   const handleItemClick = (announceNo) => {
-    console.log("클릭 annonuceNo: ", announceNo);
     AnnounceAPI.incrementAnnounceViews(announceNo, navigate)
       .catch((error) => {
         console.log("조회수 증가 실패", error);
