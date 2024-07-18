@@ -1,5 +1,6 @@
 import { useState } from "react";
 import AuthStore from "../../utils/zustand/AuthStore";
+import naverLogo from "../../assets/images/naverLoginButton.png";
 
 export default function ModalLogin({ isOpen, onClose }) {
   const [loginId, setloginId] = useState("");
@@ -99,24 +100,34 @@ export default function ModalLogin({ isOpen, onClose }) {
             </div>
           </div>
         </form>
+
         <div className="space-y-2 mt-4">
           <button
-            className="w-full bg-gray-200 text-black py-2 rounded-lg flex items-center justify-center"
+            className="w-full bg-[#f97173] text-white py-2 rounded-lg flex items-center justify-center"
             onClick={handleGoogleLogin}
           >
-            <span className="mr-2">+</span> GOOGLE
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 488 512" fill="#ffffff">
+              <path
+                d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path>
+            </svg>
+            <span className="mr-2"></span> GOOGLE
           </button>
           <button
             className="w-full bg-green-500 text-white py-2 rounded-lg flex items-center justify-center"
             onClick={handleNaverLogin}
           >
-            <span className="mr-2">+</span> NAVER
+            <img src={naverLogo} alt="Kakao Logo" className="h-full"/>
+            <span className="mr-2"></span> NAVER
           </button>
           <button
             className="w-full bg-yellow-300 text-black py-2 rounded-lg flex items-center justify-center"
             onClick={handleKakaoLogin}
           >
-            <span className="mr-2">+</span> KAKAO
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20" fill="#191919">
+              <path
+                d="M512 240c0 114.9-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6C73.6 471.1 44.7 480 16 480c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4l0 0 0 0 0 0 0 0 .3-.3c.3-.3 .7-.7 1.3-1.4c1.1-1.2 2.8-3.1 4.9-5.7c4.1-5 9.6-12.4 15.2-21.6c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208z"></path>
+            </svg>
+            <span className="mr-2"></span> KAKAO
           </button>
         </div>
       </div>

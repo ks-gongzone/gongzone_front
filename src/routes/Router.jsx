@@ -31,14 +31,44 @@ import AdminUpdateDetail from "../admin/pages/announceUpdate/AdminUpdateDetail";
 import MemberPage from "../pages/memberInteractionList";
 import Intro from "../pages/introduction/Index";
 import UpdateForm from "../pages/boardUpdate/UpdateForm";
+import ErrorBoundary from "../components/error/ErrorBoundary";
+import ErrorPage from "../components/error/ErrorPage";
+import LoginAlertModal from "../components/error/LoginAlertModal";
+import { useEffect, useState } from "react";
+
+const RouterComponent = () => {
+  const [showAlertModal, setShowAlertModal] = useState(false);
+
+  useEffect(() => {
+    const handleShowAlertModal = () => {
+      setShowAlertModal(true);
+    };
+
+    window.addEventListener('showLoginAlertModal', handleShowAlertModal);
+
+    return () => {
+      window.removeEventListener('showLoginAlertModal', handleShowAlertModal);
+    };
+  }, []);
+
+  const handleCloseAlertModal = () => {
+    setShowAlertModal(false);
+  };
+
+  return (
+    <LayoutDefault>
+      <ErrorBoundary>
+        <LoginAlertModal show={showAlertModal} handleClose={handleCloseAlertModal} />
+        <Outlet />
+      </ErrorBoundary>
+    </LayoutDefault>
+  );
+};
 
 export default createBrowserRouter([
   {
-    element: (
-      <LayoutDefault>
-        <Outlet />
-      </LayoutDefault>
-    ),
+    element: <RouterComponent />,
+    errorElement: <ErrorPage />,
     children: [
       { path: "/home", element: <Home /> },
       {

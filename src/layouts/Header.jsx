@@ -19,8 +19,8 @@ export default function LayoutHeader() {
     setIsRegisterModalOpen,
   } = ModalStore();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState(null);
   const borderRef = useRef();
+
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -45,8 +45,22 @@ export default function LayoutHeader() {
     setIsOpen(!isOpen);
   };
 
+  const handlePartyClick = (e) => {
+    if (!memberNo) {
+      e.preventDefault();
+      showLoginAlertModal();
+    } else {
+      navigate(`/party/detail/${memberNo}`);
+    }
+  };
+
+  const showLoginAlertModal = () => {
+    const event = new Event('showLoginAlertModal');
+    window.dispatchEvent(event);
+  };
+
   return (
-    <div className="shadow-md z-10 sticky top-0 bg-white">
+    <div className="shadow-md z-50 sticky top-0 bg-white">
       <div className="flex items-center h-16 relative">
         <div className="flex items-center max-w-5xl mx-auto gap-4 justify-between flex-wrap w-full">
           <Link className="text-2xl whitespace-nowrap" to="/home">
@@ -67,14 +81,15 @@ export default function LayoutHeader() {
               게시판
             </Link>
             <div className="px-8"></div>
-            <Link
+            <button
+              type="button"
               onMouseEnter={handleTabHover}
               onMouseLeave={handleTabLeave}
               className="hover:text-[#1d5091] px-5"
-              to={`/party/detail/${memberNo}`}
+              onClick={handlePartyClick}
             >
               파티
-            </Link>
+            </button>
             <div className="px-8"></div>
             <Link
               onMouseEnter={handleTabHover}
@@ -87,8 +102,14 @@ export default function LayoutHeader() {
           </div>
           <button
             type="button"
-            onClick={() => navigate("/board/list")}
-            className="flex items-center bg-[#6ea2d4] text-white px-4 py-2 rounded-md hover:bg-[#14396a] whitespace-nowrap"
+            onClick={() => {
+              navigate("/board/list");
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+              });
+            }}
+            className="flex items-center bg-[#b93d40] text-white px-4 py-2 rounded-md hover:bg-[#14396a] whitespace-nowrap"
           >
             <MagnifyingGlassIcon className="w-5 h-5" />
             검색
@@ -99,7 +120,13 @@ export default function LayoutHeader() {
               <div className="flex items-center whitespace-nowrap">
                 <button
                   type="button"
-                  onClick={() => navigate("/board/write/:memberNo")}
+                  onClick={() => {
+                    navigate(`/board/write/${memberNo}`);
+                    window.scrollTo({
+                      top: 0,
+                      behavior: "smooth"
+                    });
+                  }}
                   className="flex items-center bg-[#1d5091] text-white px-4 py-2 rounded-md hover:bg-[#0d2544] whitespace-nowrap"
                 >
                   <PencilIcon className="w-5 h-5 mr-2" />
