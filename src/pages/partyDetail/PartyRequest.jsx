@@ -18,11 +18,11 @@ export default function PartyRequest({
   }
 
   return (
-    <div className="w-[65em] mx-auto mb-10 mt-14">
+    <div className="max-w-6xl mx-auto mb-10 mt-14 px-4 sm:px-6 lg:px-8">
       <div className="w-full mb-6 text-lg font-bold text-[#526688]">
         요청 멤버
       </div>
-      <TransitionGroup className="grid grid-cols-3 gap-4">
+      <TransitionGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {requestMembers.map((requestMember, index) => (
           <CSSTransition
             key={requestMember.memberNo}

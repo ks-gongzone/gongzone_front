@@ -21,7 +21,6 @@ export default function LayoutHeader() {
   const navigate = useNavigate();
   const borderRef = useRef();
 
-
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
@@ -55,16 +54,16 @@ export default function LayoutHeader() {
   };
 
   const showLoginAlertModal = () => {
-    const event = new Event('showLoginAlertModal');
+    const event = new Event("showLoginAlertModal");
     window.dispatchEvent(event);
   };
 
   return (
     <div className="shadow-md z-50 sticky top-0 bg-white">
-      <div className="flex items-center h-16 relative">
-        <div className="flex items-center max-w-5xl mx-auto gap-4 justify-between flex-wrap w-full">
+      <div className="flex flex-wrap items-center h-auto relative">
+        <div className="flex items-center max-w-5xl mx-auto gap-4 justify-between flex-wrap w-full p-4 md:p-0">
           <Link className="text-2xl whitespace-nowrap" to="/home">
-            <img alt="logo" src={logo} className="h-12 pr-20" />
+            <img alt="logo" src={logo} className="h-12" />
           </Link>
           <div className="flex flex-grow justify-start text-[15px] whitespace-nowrap font-semibold relative py-2">
             <div
@@ -75,105 +74,107 @@ export default function LayoutHeader() {
             <Link
               onMouseEnter={handleTabHover}
               onMouseLeave={handleTabLeave}
-              className="hover:text-[#1d5091] px-5"
+              className="hover:text-[#1d5091] px-3 md:px-5"
               to="/board/list"
             >
               게시판
             </Link>
-            <div className="px-8"></div>
+            <div className="px-4 md:px-8"></div>
             <button
               type="button"
               onMouseEnter={handleTabHover}
               onMouseLeave={handleTabLeave}
-              className="hover:text-[#1d5091] px-5"
+              className="hover:text-[#1d5091] px-3 md:px-5"
               onClick={handlePartyClick}
             >
               파티
             </button>
-            <div className="px-8"></div>
+            <div className="px-4 md:px-8"></div>
             <Link
               onMouseEnter={handleTabHover}
               onMouseLeave={handleTabLeave}
-              className="hover:text-[#1d5091] px-5"
+              className="hover:text-[#1d5091] px-3 md:px-5"
               to="/announce"
             >
               공지사항
             </Link>
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              navigate("/board/list");
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-              });
-            }}
-            className="flex items-center bg-[#b93d40] text-white px-4 py-2 rounded-md hover:bg-[#14396a] whitespace-nowrap"
-          >
-            <MagnifyingGlassIcon className="w-5 h-5" />
-            검색
-          </button>
+          <div className="flex justify-between items-center">
+            <button
+              type="button"
+              onClick={() => {
+                navigate("/board/list");
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
+              className="flex items-center bg-[#b93d40] text-white px-4 py-2 mr-2 rounded-md hover:bg-[#14396a] whitespace-nowrap"
+            >
+              <MagnifyingGlassIcon className="w-5 h-5" />
+              검색
+            </button>
 
-          <div className="flex items-center">
-            {isLogin ? (
-              <div className="flex items-center whitespace-nowrap">
-                <button
-                  type="button"
-                  onClick={() => {
-                    navigate(`/board/write/${memberNo}`);
-                    window.scrollTo({
-                      top: 0,
-                      behavior: "smooth"
-                    });
-                  }}
-                  className="flex items-center bg-[#1d5091] text-white px-4 py-2 rounded-md hover:bg-[#0d2544] whitespace-nowrap"
-                >
-                  <PencilIcon className="w-5 h-5 mr-2" />
-                  글쓰기
-                </button>
-                <div className="relative inline-block">
+            <div className="flex items-center">
+              {isLogin ? (
+                <div className="flex items-center whitespace-nowrap">
                   <button
-                    onClick={toggleDropdown}
-                    className="p-2 text-black rounded"
                     type="button"
+                    onClick={() => {
+                      navigate(`/board/write/${memberNo}`);
+                      window.scrollTo({
+                        top: 0,
+                        behavior: "smooth",
+                      });
+                    }}
+                    className="flex items-center bg-[#1d5091] text-white px-4 py-2 rounded-md hover:bg-[#0d2544] whitespace-nowrap"
                   >
-                    <UserCircleIcon className="w-10 h-10 text-[#1d5091]" />
+                    <PencilIcon className="w-5 h-5 mr-2" />
+                    글쓰기
                   </button>
-                  <MyDropdownMenu
-                    isOpen={isOpen}
-                    onClose={() => setIsOpen(false)}
-                  />
+                  <div className="relative inline-block">
+                    <button
+                      onClick={toggleDropdown}
+                      className="p-2 text-black rounded"
+                      type="button"
+                    >
+                      <UserCircleIcon className="w-10 h-10 text-[#1d5091]" />
+                    </button>
+                    <MyDropdownMenu
+                      isOpen={isOpen}
+                      onClose={() => setIsOpen(false)}
+                    />
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div className="flex items-center whitespace-nowrap">
-                <button
-                  type="button"
-                  onClick={() => setIsModalOpen(true)}
-                  className="text-[14px] bg-white text-gray-500 px-2 py-1 rounded-lg hover:bg-gray-200"
-                >
-                  로그인
-                </button>
-                <span className="text-[10px] text-blue-500 px-1">/</span>
-                <button
-                  type="button"
-                  onClick={() => setIsRegisterModalOpen(true)}
-                  className="text-[14px] bg-white text-gray-500 px-2 py-1 rounded-lg hover:bg-gray-200"
-                >
-                  가입
-                </button>
-              </div>
-            )}
-            <ModalLogin
-              isOpen={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              onLogin={statusLogin}
-            />
-            <ModalSignup
-              isOpen={isRegisterModalOpen}
-              onClose={() => setIsRegisterModalOpen(false)}
-            />
+              ) : (
+                <div className="flex items-center whitespace-nowrap">
+                  <button
+                    type="button"
+                    onClick={() => setIsModalOpen(true)}
+                    className="text-[14px] bg-white text-gray-500 px-2 py-1 rounded-lg hover:bg-gray-200"
+                  >
+                    로그인
+                  </button>
+                  <span className="text-[10px] text-blue-500 px-1">/</span>
+                  <button
+                    type="button"
+                    onClick={() => setIsRegisterModalOpen(true)}
+                    className="text-[14px] bg-white text-gray-500 px-2 py-1 rounded-lg hover:bg-gray-200"
+                  >
+                    가입
+                  </button>
+                </div>
+              )}
+              <ModalLogin
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onLogin={statusLogin}
+              />
+              <ModalSignup
+                isOpen={isRegisterModalOpen}
+                onClose={() => setIsRegisterModalOpen(false)}
+              />
+            </div>
           </div>
         </div>
       </div>

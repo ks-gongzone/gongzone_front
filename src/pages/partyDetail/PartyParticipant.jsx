@@ -22,11 +22,11 @@ export default function PartyParticipant({
   });
 
   return (
-    <div className="w-[65em] mx-auto mb-10 mt-14">
+    <div className="max-w-6xl mx-auto mb-10 mt-14 px-4 sm:px-6 lg:px-8">
       <div className="w-full mb-6 text-lg font-bold text-[#526688]">
         파티 참가자
       </div>
-      <TransitionGroup className="grid grid-cols-3 gap-4">
+      <TransitionGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {sortedParticipants.map((participant) => (
           <CSSTransition
             key={participant.memberNo}
