@@ -39,11 +39,11 @@ export default function Intro() {
   }, []);
 
   const handleMainPage = () => {
-    navigate("/home");
+    window.open("/home", "_blank");
   };
 
   const handleAdminPage = () => {
-    navigate("/_admin");
+    window.open("/_admin", "_blank");
   };
 
   const handleUserLogin = async () => {
@@ -51,7 +51,7 @@ export default function Intro() {
     const response = await AuthStore.getState().statusLogin(loginRequest);
 
     if (response && !response.error) {
-      navigate("/home");
+      window.open("/home", "_blank");
     }
   };
 
@@ -60,7 +60,7 @@ export default function Intro() {
     const response = await AuthStore.getState().statusLogin(loginRequest);
 
     if (response && !response.error) {
-      navigate("/_admin/main");
+      window.open("/_admin/main", "_blank");
     }
   };
 
@@ -121,18 +121,24 @@ export default function Intro() {
           {[
             {
               name: "고 윤 영",
-              intro: `프론트엔드
+              intro: `기획, 설계
+              - PM 경험을 활용하여 회의 진행 주도
+              - PPT 형태 기획 발표 자료 작성
+              프론트엔드
               - react-dom-route를 활용한 React 폴더트리 및 아키텍처 설계
               - 홈페이지 전반 레이아웃 구성 및 재사용할 수 있는 basic 컴포넌트 작성
               - Axios 및 Zustand를 활용한 Rest API 통신환경 구축
-              
               위치 기반 기능
               - 카카오 지도 API를 활용하여 사용자 반경 1km에 있는 파티 조회 기능 구현
               - 게시글 작성 시 주소 입력 및 클릭 이벤트로 해당 위치의 주소를 자동으로 입력하는 기능 구현
-              
               파티 관리 기능
               - 게시글 작성에 따른 공동구매 희망자 파티 생성
-              - 스프링부트를 활용하여 파티 신청 및 수락, 거절, 강퇴 등 파티 진행 프로세스 기능 구현`,
+              - 스프링부트를 활용하여 파티 신청 및 수락, 거절, 강퇴 등 파티 진행 프로세스 기능 구현
+              관리자 페이지 기능
+              - 비정상 유저를 파악을 위한 게시글 작성 횟수가 많은 회원 조회 기능 구현
+              - 파티 별 현재 프로세스 진행 현황 조회 기능 구현
+              - 현재 처리되지 않은 고객 컴플레인 조회 기능 구현
+              - 로그인 로그 조회 기능 구현`,
             },
             {
               name: "오 민 호",
@@ -156,7 +162,29 @@ export default function Intro() {
               - SSE 방식을 활용한 실시간 알림 기능 구현
               - webflux 방식으로 쪽지 기능 구현`,
             },
-            { name: "이 희 상", intro: "팀원 이희상의 소개" },
+            {
+              name: "이 희 상",
+              intro: `게시글 작성 기능 구현
+              - 프로젝트 메인 프로세스의 시작
+              - 이미지 미리보기 및 업로드 기능 구현
+              - 카카오 지도 API와 DAUM 주소 API를 활용하여 지도 기능 구현
+                ㄴ 검색한 지번 주소를 도로명 주소로 자동 변환
+                ㄴ 검색한 주소 카카오 지도와 연동하여 지도에 표시
+                ㄴ 지도 클릭 시 해당 위치의 주소를 도로명 주소로 표시
+              - CKEditor 라이브러리를 활용하여 본문 내용 작성 기능 구현
+              - React-Datepicker 라이브러리를 활용하여 달력 클릭 시 날짜 입력 기능 구현
+              게시글 관리 기능 구현
+              - 조건에 맞는 게시글 검색 기능 구현
+              - 게시글 수정 및 삭제 기능 구현
+              - 사용자 게시글 찜 기능 구현
+              - 게시글 조회 수 기능 구현
+              게시글 댓글 기능 구현
+              - 사용자 댓글 실시간 반영
+              - 댓글 수정 및 삭제 기능 구현
+              관리자 기능
+              - 게시글 작성 횟수 Top 5 회원 조회 기능 구현
+              - 파티 별 진행 현황 조회 기능 구현`,
+            },
             { name: "전 우 석", intro: "팀원 전우석의 소개" },
             { name: "한 동 환", intro: "팀원 한동환의 소개" },
           ].map((member, index) => (

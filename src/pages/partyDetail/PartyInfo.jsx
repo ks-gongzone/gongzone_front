@@ -11,6 +11,8 @@ import ConfirmModal from "../../components/page/party/ConfirmModal";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import AuthStore from "../../utils/zustand/AuthStore";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const MySwal = withReactContent(Swal);
 
@@ -30,8 +32,6 @@ export default function PartyDetail() {
   const loginMember = AuthStore((state) => state.userInfo.memberNo);
 
   const connectNo = AuthStore((state) => state.userInfo.memberNo);
-
-  console.log(partyNo);
 
   const fetch = async () => {
     try {
@@ -61,9 +61,6 @@ export default function PartyDetail() {
       });
     }
   }, [detail, loginMember, memberNo, navigate]);
-
-  console.log(data);
-  console.log(detail);
 
   const formatDate = (datetime) => {
     const date = new Date(datetime);
@@ -117,7 +114,6 @@ export default function PartyDetail() {
     try {
       const response = await Party.PurchaseInfo(memberNo, partyNo);
       const { purchaseNo, purchasePrice, memberPoint } = response.data;
-      console.log("🚀 ~ handlePurchase ~  response.data:", response.data);
 
       await MySwal.fire({
         title: "포인트 결제하기",
@@ -159,7 +155,6 @@ export default function PartyDetail() {
               "결제가 성공적으로 완료되었습니다.",
               "success"
             );
-            console.log(pointChange);
             fetch();
           } catch (error) {
             MySwal.fire("오류", "결제 중 오류가 발생했습니다.", "error");
@@ -258,12 +253,30 @@ export default function PartyDetail() {
     fetch();
   };
 
+  const CustomSkeleton = ({ width, height }) => (
+    <Skeleton width={width} height={height} className="custom-skeleton" />
+  );
+
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="w-full max-w-6xl mx-auto mb-10 mt-14">
+        <div className="w-full mb-6 text-lg font-bold text-[#526688]">
+          파티 정보
+        </div>
+        <div className="bg-white rounded-lg shadow-md p-4">
+          <CustomSkeleton width="100%" height={300} />
+          <CustomSkeleton width="80%" height={24} className="mt-4" />
+          <CustomSkeleton width="60%" height={20} className="mt-2" />
+          <CustomSkeleton width="40%" height={20} className="mt-2" />
+          <CustomSkeleton width="100%" height={150} className="mt-4" />
+          <CustomSkeleton width="100%" height={50} className="mt-4" />
+        </div>
+      </div>
+    );
   }
 
   if (!detail) {
-    return <div>Party not found</div>; // detail 값이 없을 때 표시합니다.
+    return <div>Party not found</div>;
   }
 
   const participants = detail.participants || [];
@@ -294,10 +307,8 @@ export default function PartyDetail() {
     await fetch();
   };
 
-  console.log("🚀 ~ PartyDetail ~ detail.remainAmount:", detail.remainAmount);
-
   return (
-    <div className="w-[65em] mx-auto mb-10 mt-14">
+    <div className="w-full max-w-6xl mx-auto mb-10 mt-14 px-4 sm:px-6 lg:px-8">
       <div className="w-full mb-6 text-lg font-bold text-[#526688]">
         파티 정보
       </div>
@@ -323,8 +334,7 @@ export default function PartyDetail() {
           connectNo={connectNo}
           boardNo={detail.boardNo}
           partyNo={detail.partyNo}
-
-      >
+        >
           <div className="text-sm px-3 pb-3">
             <div className="flex justify-between mb-3 text-[#888888]"></div>
             <hr className="w-full" />
