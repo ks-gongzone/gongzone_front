@@ -379,9 +379,9 @@ export const DropDownAPI = {
 }
   // 유저 리스트 업 후 팔로우 차단 API
  export const MemberListAPI = {
-  getMemberList: async (page = 1, size = 8) => {
-    console.log("getMemberList실행: ");
-    const params = new URLSearchParams({ page, size });
+  getMemberList: async (page, size, query) => {
+    console.log("getMemberList실행: page:", page, " size:", size, " query:", query);
+    const params = new URLSearchParams({ page, size, memberName: query });
       return GZAPI.get(`/api/members/interaction?${params.toString()}`)
         .then((response) => response.data)
         .catch((error) => {
@@ -390,10 +390,13 @@ export const DropDownAPI = {
         });
   },
 
-  searchMemberList: async (page = 1, size = 8, memberName = "") => {
-    const params = new URLSearchParams({ page, size, memberName });
-    return GZAPI.get(`/api/members/interaction?${params.toString()}`)
-      .then(response => response.data)
+  sendSearchQuery: async({query, page, size}) => {
+    console.log("sendSearchQuery 호출: query:", query);
+    const params = new URLSearchParams({ page, size, query });
+    return GZAPI.post(`/api/members/interaction/search${params.toString()}`)
+      .then(response => {
+        console.log("send 데이터: ", response.data.query );
+        return response.data.query})
       .catch(error => {
         console.error("유저 검색 중 에러 발생", error);
         throw error;

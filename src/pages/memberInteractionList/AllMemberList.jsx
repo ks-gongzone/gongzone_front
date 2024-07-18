@@ -4,64 +4,63 @@ import { MemberListAPI } from "../../utils/repository";
 import MemberListCard from "./MemberListCard";
 import { useNavigate } from "react-router-dom";
 
-/**
- * @수정일: 2024-07-11
- * @내용: 유저 리스트에서 검색 및 팔로우 및 차단기능
- */
-export default function MemberList({ searchQuery }) {
+export default function AllMemberList({
+  searchQuery,
+  memberList,
+  currentPage,
+  totalMembers,
+  setSearchQuery,
+  setMemberList,
+  setCurrentPage,
+  setTotalMembers,
+}) {
   const { userInfo } = AuthStore();
   const currentUserNo = userInfo?.memberNo;
-  const [memberList, setMemberList] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [size] = useState(8);
-  const [totalMembers, setTotalMembers] = useState(0);
   const navigate = useNavigate();
 
-  useEffect (() => {
+  useEffect(() => {
     if (!currentUserNo) {
-      // alert("로그인이 필요한 서비스입니다.");
       navigate("/");
     }
   }, [currentUserNo, navigate]);
 
-  // 페이지 처리
-  const changeMembersList = async (page, size) => {
-    try {
-      const data = await MemberListAPI.getMemberList(page, size);
-      const processedData = data.memberList.map(member => ({
-        ...member,
-        isPopular: member.popular,
-        isWarning: member.warning,
-        isFollowing: member.following,
-        isBlocked: member.blocked
-      }));
-      console.log("Allmember 컴포넌트:", processedData); // 데이터 확인용 로그
-      setMemberList(processedData);
-      setCurrentPage(data.currentPage);
-      setTotalMembers(data.totalCount);
-    } catch (error) {
-      console.error("[페이지] 유저 데이터 로드 중 오류", error);
-    }
-  };
-
   useEffect(() => {
-    changeMembersList(currentPage, size);
-  }, [currentPage, size]);
-
-  const filteredMembers = Array.isArray(memberList) ? memberList.filter((member) => {
-    if (searchQuery && !member.memberName.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false;
-    }
-    return true;
-  }) : [];
+    const changeMembersList = async () => {
+      console.log("[changeMembersList] - page:", currentPage, " size:", size, " query:", searchQuery);
+      MemberListAPI.getMemberList(currentPage, size, searchQuery)
+        .then((data) => {
+          if (!data.memberList || data.memberList.length === 0) {
+            setMemberList([]);
+            setTotalMembers(0);
+            setCurrentPage(1);
+            alert("검색 결과가 없습니다.");
+            navigate("/member/list");
+          } else {
+            const processedData = data.memberList.map(member => ({
+              ...member,
+              isPopular: member.popular,
+              isWarning: member.warning,
+              isFollowing: member.following,
+              isBlocked: member.blocked
+            }));
+            setMemberList(processedData);
+            setCurrentPage(data.currentPage);
+            setTotalMembers(data.totalCount);
+            navigate(`/member/list?query=${searchQuery}&page=${currentPage}`);
+          }
+        })
+        .catch((error) => {
+          console.error("[페이지] 유저 데이터 로드 중 오류", error);
+        });
+    };
+    changeMembersList();
+  }, [currentPage, searchQuery, setMemberList, setCurrentPage, setTotalMembers, size, navigate]);
 
   const renderMemberCards = (members) => {
     return members.map((member) => (
       <div key={member.memberNo} className="w-full md:w-1/2 lg:w-1/3 p-4">
-        <MemberListCard
-          currentUserNo={currentUserNo}
-          member={member}
-        />
+        <MemberListCard currentUserNo={currentUserNo} member={member} />
       </div>
     ));
   };
@@ -71,7 +70,7 @@ export default function MemberList({ searchQuery }) {
   return (
     <div className="w-[80em] mx-auto mb-10 mt-14">
       <div className="flex flex-wrap gap-4 justify-center">
-        {renderMemberCards(filteredMembers)}
+        {renderMemberCards(memberList)}
       </div>
       <div className="flex justify-between mt-4">
         <button
