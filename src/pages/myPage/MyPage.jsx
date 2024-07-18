@@ -82,9 +82,9 @@ export default function MyPage() {
   };
 
   return (
-    <div className="flex">
-      <MypageSidebar />
-      <div className="flex-1 p-8">{renderContent()}</div>
+    <div className="w-[65em] mx-auto mb-10 mt-14">
+        <MypageSidebar />
+        <div>{renderContent()}</div>
     </div>
   );
 }
