@@ -18,16 +18,16 @@ export default function AnnounceItems({
 }) {
   // 관리자 계정 확인 작업
   const { userInfo } = AuthStore((state) => ({ userInfo: state.userInfo }));
-  const isAdmin = userInfo.memberNo === "M000001";
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
   useEffect(() => {
-    // 데이터 로딩 완료 후 로딩 상태 변경
-    setTimeout(() => {
+    if (userInfo && userInfo.memberNo) {
+      setIsAdmin(userInfo.memberNo === "M000001");
       setLoading(false);
-    }, 1000); // 1초 후에 로딩 상태를 false로 변경
-  }, []);
+    }
+  }, [userInfo]);
 
   if (loading) {
     return (
@@ -57,7 +57,21 @@ export default function AnnounceItems({
   }
 
   if (!Array.isArray(items) || items.length === 0) {
-    return <div>공지사항이 존재하지 않습니다.</div>;
+    return (
+      <div>
+        공지사항이 존재하지 않습니다.{" "}
+        {isAdmin && (
+          <div className="flex items-center justify-center">
+            <Link
+              to="/_admin/announce/write"
+              className="bg-[#1d5091] text-white px-4 py-2 rounded mx-1"
+            >
+              글쓰기
+            </Link>
+          </div>
+        )}
+      </div>
+    );
   }
 
   const handleItemClick = (announceNo) => {
@@ -69,7 +83,7 @@ export default function AnnounceItems({
 
   return (
     <div className="flex flex-col items-center box-border p-4">
-      <div className="w-full max-w-md sm:max-w-xl lg:max-w-2xl xl:max-w-6xl">
+      <div className="w-full w-[20em] sm:w-md md:w-[60em] lg:w-[60em] xl:w-[60em]">
         <div className="bg-white shadow rounded-lg">
           <ul>
             {items.map((item, index) => (
@@ -115,26 +129,26 @@ export default function AnnounceItems({
                   onClick={() => onPageChange(index + 1)}
                   className={`mx-1 px-3 py-1 rounded ${
                     index + 1 === currentPage
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200"
+                      ? "bg-[#6ea2d4] text-white"
+                      : "bg-gray-100"
                   }`}
                 >
                   {index + 1}
                 </button>
               ))}
             </div>
-            {isAdmin && (
-              <div className="flex justify-end flex-1">
-                <Link
-                  to="/_admin/announce/write"
-                  className="bg-blue-500 text-white px-4 py-2 rounded mx-1"
-                >
-                  글쓰기
-                </Link>
-              </div>
-            )}
           </div>
         </div>
+        {isAdmin && (
+          <div className="flex justify-end flex-1">
+            <Link
+              to="/_admin/announce/write"
+              className="bg-blue-500 text-white px-4 py-2 rounded mx-1 mt-10"
+            >
+              글쓰기
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

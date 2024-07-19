@@ -162,6 +162,7 @@ export default function PartyCard({
           <button
             type="button"
             className="w-full h-6 rounded-md bg-gray-300 hover:bg-gray-500 text-xs font-bold text-[white]"
+            onClick={handleNote}
           >
             쪽지 보내기
           </button>

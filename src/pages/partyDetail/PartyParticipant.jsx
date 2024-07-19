@@ -57,29 +57,29 @@ export default function PartyParticipant({
                 ) : (
                   <div className="flex text-xs pt-2">
                     {status === "S060103" ? (
-                      <div className="w-full mx-1 h-6 rounded-md bg-red-200 text-xs font-bold text-[white] text-center flex items-center justify-center">
+                      <div className="w-full mx-1 h-6 rounded-md bg-[#f97173] text-xs font-bold text-[white] text-center flex items-center justify-center">
                         결제 대기 중
                       </div>
                     ) : status === "S060104" ? (
-                      <div className="w-full mx-1 h-6 rounded-md bg-yellow-200 text-xs font-bold text-[white] text-center flex items-center justify-center">
+                      <div className="w-full mx-1 h-6 rounded-md bg-[#ffa750] text-xs font-bold text-[white] text-center flex items-center justify-center">
                         구매 대기중
                       </div>
                     ) : status === "S060105" ? (
-                      <div className="w-full mx-1 h-6 rounded-md bg-green-300 text-xs font-bold text-[white] text-center flex items-center justify-center">
+                      <div className="w-full mx-1 h-6 rounded-md bg-[#ffa750] text-xs font-bold text-[white] text-center flex items-center justify-center">
                         배송 대기중
                       </div>
                     ) : status === "S060106" ? (
-                      <div className="w-full mx-1 h-6 rounded-md bg-green-300 text-xs font-bold text-[white] text-center flex items-center justify-center">
+                      <div className="w-full mx-1 h-6 rounded-md bg-[#ffa750] text-xs font-bold text-[white] text-center flex items-center justify-center">
                         수취 대기중
                       </div>
                     ) : status === "S060107" || status === "S060108" ? (
-                      <div className="w-full mx-1 h-6 rounded-md bg-green-300 text-xs font-bold text-[white] text-center flex items-center justify-center">
+                      <div className="w-full mx-1 h-6 rounded-md bg-[#6ea2d4] text-xs font-bold text-[white] text-center flex items-center justify-center">
                         제품 수령 완료
                       </div>
                     ) : participant.memberNo === currentUser ? (
                       <button
                         type="button"
-                        className="w-full mx-1 h-6 rounded-md bg-red-300 hover:bg-red-500 text-xs font-bold text-[white]"
+                        className="w-full mx-1 h-6 rounded-md bg-[#f97173] hover:bg-red-500 text-xs font-bold text-[white]"
                         onClick={() =>
                           onLeave(participant.memberNo, participant.partyNo)
                         }
@@ -89,7 +89,7 @@ export default function PartyParticipant({
                     ) : (
                       <button
                         type="button"
-                        className="w-full mx-1 h-6 rounded-md bg-blue-300 hover:bg-blue-500 text-xs font-bold text-[white]"
+                        className="w-full mx-1 h-6 rounded-md bg-[#f97173] hover:bg-blue-500 text-xs font-bold text-[white]"
                         onClick={() =>
                           onKick(participant.memberNo, participant.partyNo)
                         }
