@@ -37,11 +37,10 @@ export default function BoardCardSection({ data }) {
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
   useEffect(() => {
-    // 1초 후에 로딩 상태를 false로 변경
-    setTimeout(() => {
+    if (data.length > 0) {
       setLoading(false);
-    }, 1000);
-  }, []);
+    }
+  }, [data]);
 
   // 현재 페이지의 데이터 계산
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -52,44 +51,42 @@ export default function BoardCardSection({ data }) {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="max-w-6xl mx-auto mb-10 mt-14 px-4 sm:px-6 lg:px-8">
-      <div className="w-full mb-6 text-lg font-bold text-[#526688]">
-        모집중인 파티
-      </div>
+    <div className="w-[24em] sm:w-[50em] lg:w-[68em] lg: mx-auto mb-10 mt-14 px-4">
+      <div className="mb-6 text-lg font-bold text-[#526688]">모집중인 파티</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        { loading
+        {loading
           ? Array.from({ length: itemsPerPage }).map((_, index) => (
-            <SkeletonCard key={ index } />
-          ))
+              <SkeletonCard key={index} />
+            ))
           : currentItems.map((e) => (
-            <div key={ e.boardNo }>
-              <BoardListCard
-                img={ `${ baseURL }${ e.files[0].filePath }` }
-                cate={ getCategoryValue(e.category) }
-                title={ e.boardTitle }
-                id={ e.partyNo }
-                memberNo={ memberNo }
-                boardNo={ e.boardNo }
-                partyNo={ e.partyNo }
-                note={ e.partyCateCode }
-                like={ true }
-                wish={ e.wish }
-                amount={ e.remain }
-              >
-                <div className="text-sm px-3 pb-3">
-                  <div className="flex justify-between mb-3 text-[#888888]"></div>
-                </div>
-              </BoardListCard>
-            </div>
-          )) }
+              <div key={e.boardNo}>
+                <BoardListCard
+                  img={`${baseURL}${e.files[0].filePath}`}
+                  cate={getCategoryValue(e.category)}
+                  title={e.boardTitle}
+                  id={e.partyNo}
+                  memberNo={memberNo}
+                  boardNo={e.boardNo}
+                  partyNo={e.partyNo}
+                  note={e.partyCateCode}
+                  like={true}
+                  wish={e.wish}
+                  amount={e.remain}
+                >
+                  <div className="text-sm px-3 pb-3">
+                    <div className="flex justify-between mb-3 text-[#888888]"></div>
+                  </div>
+                </BoardListCard>
+              </div>
+            ))}
       </div>
-      {/* 페이지네이션 컴포넌트 추가 */ }
+      {/* 페이지네이션 컴포넌트 추가 */}
       <div className="flex justify-center mt-4">
         <Pagination
-          itemsPerPage={ itemsPerPage }
-          totalItems={ data.length }
-          paginate={ paginate }
-          currentPage={ currentPage }
+          itemsPerPage={itemsPerPage}
+          totalItems={data.length}
+          paginate={paginate}
+          currentPage={currentPage}
         />
       </div>
     </div>
@@ -98,11 +95,12 @@ export default function BoardCardSection({ data }) {
 
 // SkeletonCard 컴포넌트
 const SkeletonCard = () => (
-  <div className="bg-white rounded-lg shadow-md p-4">
-    <Skeleton height={ 200 } />
-    <Skeleton height={ 20 } width="80%" className="mt-4" />
-    <Skeleton height={ 20 } width="60%" className="mt-2" />
-    <Skeleton height={ 30 } width="40%" className="mt-4" />
+  <div className="bg-white rounded-lg shadow-md p-4 min-h-[350px]">
+    {" "}
+    <Skeleton height={200} width={300} />
+    <Skeleton height={20} width="80%" className="mt-4" />
+    <Skeleton height={20} width="60%" className="mt-2" />
+    <Skeleton height={30} width="40%" className="mt-4" />
   </div>
 );
 
@@ -117,20 +115,20 @@ const Pagination = ({ itemsPerPage, totalItems, currentPage, paginate }) => {
   return (
     <nav>
       <ul className="flex justify-center space-x-2">
-        { pageNumbers.map((number) => (
-          <li key={ number }>
+        {pageNumbers.map((number) => (
+          <li key={number}>
             <button
-              onClick={ () => paginate(number) }
-              className={ `px-4 py-2 rounded-md border border-gray-300 focus:outline-none ${
+              onClick={() => paginate(number)}
+              className={`px-4 py-2 rounded-md border border-gray-300 focus:outline-none ${
                 currentPage === number
                   ? "bg-blue-500 text-white"
                   : "bg-gray-200 text-gray-700"
-              }` }
+              }`}
             >
-              { number }
+              {number}
             </button>
           </li>
-        )) }
+        ))}
       </ul>
     </nav>
   );

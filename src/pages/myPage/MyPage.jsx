@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import MypageSidebar from "../../components/page/myInfo/MyPageSidebar";
 import AuthStore from "../../utils/zustand/AuthStore";
-import { MyInfoDetail, MyInfo, MyParty } from "./Index"
+import { MyInfoDetail, MyInfo, MyParty } from "./Index";
 import { Point } from "../point/Index";
-import GZAPI from "../../utils/api";
-import BoardCardSection from "../boardList/BoardCardSection";
 import MyPageBoard from "./MyPageBoard";
+import BasicTapMenu from "../../components/menu/BasicTapMenu";
 
 /**
  * 개별 토글 스위치 컴포넌트
@@ -19,7 +17,6 @@ export default function MyPage() {
   const { userInfo, isLogin } = AuthStore();
   const navigate = useNavigate();
   const location = useLocation(); // URL 정보 전달위해 사용
-  const [searchResults, setSearchResults] = useState([]); // my게시글 조회를 위해 추가
   const [infoPage, setInfoPage] = useState(1); // 페이지 상태 추가
 
   useEffect(() => {
@@ -34,7 +31,7 @@ export default function MyPage() {
       }
       setActiveTab(path);
     }
-    }, [location.pathname, isLogin, navigate]);
+  }, [location.pathname, isLogin, navigate]);
 
   const handleNextPage = () => setInfoPage(2);
   const handlePreviousPage = () => setInfoPage(1);
@@ -51,7 +48,7 @@ export default function MyPage() {
           />
         );
       case "myPageBoard":
-        return <MyPageBoard />
+        return <MyPageBoard />;
       case "myParty":
         return <MyParty />;
       case "point":
@@ -61,10 +58,25 @@ export default function MyPage() {
     }
   };
 
+  const tabItems = [
+    { id: "myInfo", label: "내정보" },
+    { id: "myPageBoard", label: "찜목록" },
+    { id: "myParty", label: "내파티" },
+    { id: "point", label: "포인트" },
+  ];
+
   return (
-    <div className="w-[65em] mx-auto mb-10 mt-14">
-        <MypageSidebar />
-        <div>{renderContent()}</div>
+    <div className="w-[65em] mx-auto mb-10">
+      <BasicTapMenu
+        tabItems={tabItems}
+        activeTab={activeTab}
+        onTabClick={(id) => {
+          navigate(`/myPage/${id}`);
+          setActiveTab(id);
+        }}
+        className="sticky top-14 z-50"
+      />
+      <div>{renderContent()}</div>
     </div>
   );
 }

@@ -9,6 +9,7 @@ import {
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import { Link, useNavigate } from "react-router-dom";
 import GZAPI from "../../../utils/api";
+import AuthStore from "../../../utils/zustand/AuthStore";
 
 export default function InfoCard({
   children,
@@ -28,13 +29,15 @@ export default function InfoCard({
 }) {
   const [isCopied, setIsCopied] = useState(false);
   const navigate = useNavigate();
+  const memberNo = AuthStore((state) => state.userInfo.memberNo);
 
   const handleShareClick = () => {
-    navigator.clipboard.writeText(window.location.href).then(() => {
+    const url = `${window.location.origin}/party/detail/${memberNo}/${partyNo}`;
+    navigator.clipboard.writeText(url).then(() => {
       setIsCopied(true);
       setTimeout(() => {
         setIsCopied(false);
-      }, 1000); // 2초 후에 안내 메시지 숨기기
+      }, 1000);
     });
   };
 

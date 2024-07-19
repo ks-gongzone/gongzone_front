@@ -2,7 +2,8 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import sampleBanner from "../../../assets/images/sampleBanner.PNG";
+import promotionBanner1 from "../../../assets/images/Banner1.png";
+import promotionBanner2 from "../../../assets/images/Banner2.png";
 
 export default function MainSlider() {
   const settings = {
@@ -20,16 +21,16 @@ export default function MainSlider() {
   return (
     <div className="w-full">
       <Slider {...settings}>
-        <div className="h-[450px] bg-gray-200">
+        <div className="h-[200px] sm:h-[300px] md:h-[450px] bg-gray-200">
           <img
-            src={sampleBanner}
+            src={promotionBanner1}
             alt="Sample Banner"
             className="h-full w-full object-cover"
           />
         </div>
-        <div className="h-[450px] bg-gray-200">
+        <div className="h-[200px] sm:h-[300px] md:h-[450px]  bg-gray-200">
           <img
-            src={sampleBanner}
+            src={promotionBanner2}
             alt="Sample Banner"
             className="h-full w-full object-cover"
           />

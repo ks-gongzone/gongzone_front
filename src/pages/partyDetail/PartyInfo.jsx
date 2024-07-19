@@ -54,7 +54,7 @@ export default function PartyDetail() {
     if (detail && loginMember !== memberNo) {
       MySwal.fire({
         title: "접근 불가",
-        text: "다른 사용자의 파티 상세 페이지에 접근할 수 없습니다.",
+        text: "다른 사용자의 파티 페이지에 접근할 수 없습니다.",
         icon: "error",
       }).then(() => {
         navigate("/home"); // 접근 불가 시 홈 페이지로 리다이렉트

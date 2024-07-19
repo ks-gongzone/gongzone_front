@@ -2,8 +2,6 @@ import { HeartIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GZAPI from "../../../utils/api";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 
 export default function BoardListCard({
   children,
@@ -17,7 +15,6 @@ export default function BoardListCard({
   partyNo,
   wish,
   like = false,
-  loading = false, // 추가: 로딩 상태를 나타내는 prop
 }) {
   const [isLiked, setIsLiked] = useState(wish);
   const navigate = useNavigate();
@@ -47,30 +44,6 @@ export default function BoardListCard({
       console.error("서버 요청 중 오류 발생:", error);
     }
   };
-
-  if (loading) {
-    // 로딩 상태일 때 스켈레톤 UI 표시
-    return (
-      <div className="w-full h-full text-left rounded-xl overflow-hidden shadow-lg bg-white border">
-        <div className="relative">
-          <Skeleton height={192} className="w-full p-2 rounded-2xl" />
-        </div>
-        <div className="px-6 py-3">
-          <Skeleton width={200} height={24} className="mb-2" />
-          <Skeleton
-            width={100}
-            height={16}
-            className="text-right text-gray-700 text-xs"
-          />
-          <Skeleton
-            width={100}
-            height={28}
-            className="text-right font-bold text-gray-500 text-xl mt-2 mb-3"
-          />
-        </div>
-      </div>
-    );
-  }
 
   return (
     <button
