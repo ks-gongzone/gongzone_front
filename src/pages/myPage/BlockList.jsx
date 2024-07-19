@@ -16,6 +16,7 @@ export default function BlockList({ memberNo }) {
           ...member,
           isPopular: member.popular,
           isWarning: member.warning,
+          isFollowing: member.following,
           isBlocked: member.blocked
         }));
         setBlockList(processedData);

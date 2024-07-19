@@ -16,7 +16,8 @@ export default function FollowList({ memberNo }) {
           ...member,
           isPopular: member.popular,
           isWarning: member.warning,
-          isFollowing: member.following
+          isFollowing: member.following,
+          isBlocked: member.blocked
         }));
       setFollowList(processedData);
       setCurrentPage(data.currentPage);

@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css"; // Skeleton 스타일 추가
 import BoardListCard from "../../components/page/board/BoardListCard";
 import AuthStore from "../../utils/zustand/AuthStore";
-import GZAPI from "../../utils/api";
 
 const cate = [
   { key: "CF0101", value: "식품-신선식품-채소" },
@@ -24,7 +23,7 @@ const cate = [
   { key: "CF9901", value: "식품-기타-건강식품" },
 ];
 
-const baseURL = "http://localhost:8088";
+const baseURL = "https://gongzone.duckdns.org";
 
 function getCategoryValue(category) {
   const value = cate.find((item) => item.key === category);
@@ -58,39 +57,39 @@ export default function BoardCardSection({ data }) {
         모집중인 파티
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {loading
+        { loading
           ? Array.from({ length: itemsPerPage }).map((_, index) => (
-              <SkeletonCard key={index} />
-            ))
+            <SkeletonCard key={ index } />
+          ))
           : currentItems.map((e) => (
-              <div key={e.boardNo}>
-                <BoardListCard
-                  img={`${baseURL}${e.files[0].filePath}`}
-                  cate={getCategoryValue(e.category)}
-                  title={e.boardTitle}
-                  id={e.partyNo}
-                  memberNo={memberNo}
-                  boardNo={e.boardNo}
-                  partyNo={e.partyNo}
-                  note={e.partyCateCode}
-                  like={true}
-                  wish={e.wish}
-                  amount={e.remain}
-                >
-                  <div className="text-sm px-3 pb-3">
-                    <div className="flex justify-between mb-3 text-[#888888]"></div>
-                  </div>
-                </BoardListCard>
-              </div>
-            ))}
+            <div key={ e.boardNo }>
+              <BoardListCard
+                img={ `${ baseURL }${ e.files[0].filePath }` }
+                cate={ getCategoryValue(e.category) }
+                title={ e.boardTitle }
+                id={ e.partyNo }
+                memberNo={ memberNo }
+                boardNo={ e.boardNo }
+                partyNo={ e.partyNo }
+                note={ e.partyCateCode }
+                like={ true }
+                wish={ e.wish }
+                amount={ e.remain }
+              >
+                <div className="text-sm px-3 pb-3">
+                  <div className="flex justify-between mb-3 text-[#888888]"></div>
+                </div>
+              </BoardListCard>
+            </div>
+          )) }
       </div>
-      {/* 페이지네이션 컴포넌트 추가 */}
+      {/* 페이지네이션 컴포넌트 추가 */ }
       <div className="flex justify-center mt-4">
         <Pagination
-          itemsPerPage={itemsPerPage}
-          totalItems={data.length}
-          paginate={paginate}
-          currentPage={currentPage}
+          itemsPerPage={ itemsPerPage }
+          totalItems={ data.length }
+          paginate={ paginate }
+          currentPage={ currentPage }
         />
       </div>
     </div>
@@ -100,10 +99,10 @@ export default function BoardCardSection({ data }) {
 // SkeletonCard 컴포넌트
 const SkeletonCard = () => (
   <div className="bg-white rounded-lg shadow-md p-4">
-    <Skeleton height={200} />
-    <Skeleton height={20} width="80%" className="mt-4" />
-    <Skeleton height={20} width="60%" className="mt-2" />
-    <Skeleton height={30} width="40%" className="mt-4" />
+    <Skeleton height={ 200 } />
+    <Skeleton height={ 20 } width="80%" className="mt-4" />
+    <Skeleton height={ 20 } width="60%" className="mt-2" />
+    <Skeleton height={ 30 } width="40%" className="mt-4" />
   </div>
 );
 
@@ -118,20 +117,20 @@ const Pagination = ({ itemsPerPage, totalItems, currentPage, paginate }) => {
   return (
     <nav>
       <ul className="flex justify-center space-x-2">
-        {pageNumbers.map((number) => (
-          <li key={number}>
+        { pageNumbers.map((number) => (
+          <li key={ number }>
             <button
-              onClick={() => paginate(number)}
-              className={`px-4 py-2 rounded-md border border-gray-300 focus:outline-none ${
+              onClick={ () => paginate(number) }
+              className={ `px-4 py-2 rounded-md border border-gray-300 focus:outline-none ${
                 currentPage === number
                   ? "bg-blue-500 text-white"
                   : "bg-gray-200 text-gray-700"
-              }`}
+              }` }
             >
-              {number}
+              { number }
             </button>
           </li>
-        ))}
+        )) }
       </ul>
     </nav>
   );
