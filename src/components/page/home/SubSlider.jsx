@@ -2,6 +2,8 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import subBanner1 from "../../../assets/images/subBanner1.png";
+import subBanner2 from "../../../assets/images/subBanner2.png";
 
 export default function SubSlider() {
   const settings = {
@@ -19,26 +21,22 @@ export default function SubSlider() {
   return (
     <div className="w-full">
       <div className="w-[1000px] mx-auto mt-10 mb-6 text-lg font-bold text-[#526688]">
-        마감임박 모임
+        다양한 소식
       </div>
       <Slider {...settings}>
-        <div className="h-[200px] bg-gray-200">
-          <h3>1</h3>
+        <div className="h-[80px] sm:h-[130px] md:h-[200px] bg-gray-200">
+          <img
+            src={subBanner1}
+            alt="Sample Banner"
+            className="h-full w-full object-cover"
+          />
         </div>
-        <div className="h-[200px] bg-gray-200">
-          <h3>2</h3>
-        </div>
-        <div className="h-[200px] bg-gray-200">
-          <h3>3</h3>
-        </div>
-        <div className="h-[200px] bg-gray-200">
-          <h3>4</h3>
-        </div>
-        <div className="h-[200px] bg-gray-200">
-          <h3>5</h3>
-        </div>
-        <div className="h-[200px] bg-gray-200">
-          <h3>6</h3>
+        <div className="h-[80px] sm:h-[130px] md:h-[200px] bg-gray-200">
+          <img
+            src={subBanner2}
+            alt="Sample Banner"
+            className="h-full w-full object-cover"
+          />
         </div>
       </Slider>
     </div>

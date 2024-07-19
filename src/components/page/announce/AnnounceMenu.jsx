@@ -43,7 +43,7 @@ export default function AnnounceMenu({ memberNo }) {
   };
 
   return (
-    <div className="w-[65em] mx-auto mb-10 mt-14">
+    <div className="w-[60em] flex flex-col items-center mx-auto mb-10 mt-14">
       <div className="w-full sticky top-0">
         <BasicTapMenu
           tabItems={tabItems}

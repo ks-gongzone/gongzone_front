@@ -46,10 +46,10 @@ const RouterComponent = () => {
       setShowAlertModal(true);
     };
 
-    window.addEventListener('showLoginAlertModal', handleShowAlertModal);
+    window.addEventListener("showLoginAlertModal", handleShowAlertModal);
 
     return () => {
-      window.removeEventListener('showLoginAlertModal', handleShowAlertModal);
+      window.removeEventListener("showLoginAlertModal", handleShowAlertModal);
     };
   }, []);
 
@@ -58,12 +58,15 @@ const RouterComponent = () => {
   };
 
   return (
-    <LayoutDefault>
-      <ErrorBoundary>
-        <LoginAlertModal show={showAlertModal} handleClose={handleCloseAlertModal} />
+    <ErrorBoundary>
+      <LayoutDefault>
+        <LoginAlertModal
+          show={showAlertModal}
+          handleClose={handleCloseAlertModal}
+        />
         <Outlet />
-      </ErrorBoundary>
-    </LayoutDefault>
+      </LayoutDefault>
+    </ErrorBoundary>
   );
 };
 
@@ -102,7 +105,7 @@ export default createBrowserRouter([
       { path: "/party/detail/:id", element: <PartyList /> },
       { path: "/board/list", element: <BoardList /> },
       { path: "/board/write/:memberNo", element: <BoardWrite /> },
-      { path: "/board/update/:boardNo", element: <UpdateForm />},
+      { path: "/board/update/:boardNo", element: <UpdateForm /> },
       { path: "/register", element: <Register /> },
       { path: "/naver/callback", element: <NaverLogin /> },
       { path: "/google/callback", element: <GoogleLogin /> },

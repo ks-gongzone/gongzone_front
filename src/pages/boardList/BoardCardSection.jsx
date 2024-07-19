@@ -38,11 +38,10 @@ export default function BoardCardSection({ data }) {
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
   useEffect(() => {
-    // 1초 후에 로딩 상태를 false로 변경
-    setTimeout(() => {
+    if (data.length > 0) {
       setLoading(false);
-    }, 1000);
-  }, []);
+    }
+  }, [data]);
 
   // 현재 페이지의 데이터 계산
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -53,10 +52,8 @@ export default function BoardCardSection({ data }) {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="max-w-6xl mx-auto mb-10 mt-14 px-4 sm:px-6 lg:px-8">
-      <div className="w-full mb-6 text-lg font-bold text-[#526688]">
-        모집중인 파티
-      </div>
+    <div className="w-[24em] sm:w-[50em] lg:w-[68em] lg: mx-auto mb-10 mt-14 px-4">
+      <div className="mb-6 text-lg font-bold text-[#526688]">모집중인 파티</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {loading
           ? Array.from({ length: itemsPerPage }).map((_, index) => (
@@ -99,8 +96,9 @@ export default function BoardCardSection({ data }) {
 
 // SkeletonCard 컴포넌트
 const SkeletonCard = () => (
-  <div className="bg-white rounded-lg shadow-md p-4">
-    <Skeleton height={200} />
+  <div className="bg-white rounded-lg shadow-md p-4 min-h-[350px]">
+    {" "}
+    <Skeleton height={200} width={300} />
     <Skeleton height={20} width="80%" className="mt-4" />
     <Skeleton height={20} width="60%" className="mt-2" />
     <Skeleton height={30} width="40%" className="mt-4" />
