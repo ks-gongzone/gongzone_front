@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css"; // Skeleton 스타일 추가
 import BoardListCard from "../../components/page/board/BoardListCard";
 import AuthStore from "../../utils/zustand/AuthStore";
-import GZAPI from "../../utils/api";
 
 const cate = [
   { key: "CF0101", value: "식품-신선식품-채소" },
@@ -24,7 +23,7 @@ const cate = [
   { key: "CF9901", value: "식품-기타-건강식품" },
 ];
 
-const baseURL = "http://localhost:8088";
+const baseURL = "https://gongzone.duckdns.org";
 
 function getCategoryValue(category) {
   const value = cate.find((item) => item.key === category);

@@ -22,7 +22,6 @@ export default function MemberListCard({
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const { userInfo } = AuthStore((state) => ({ userInfo: state.userInfo }));
   const currentUserNo = userInfo.memberNo;
-  const isAdmin = userInfo.memberNo === "M000001";
 
   const likeBtn = () => {
     setIsLiked(!isLiked);

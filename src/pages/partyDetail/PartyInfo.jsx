@@ -1,5 +1,5 @@
 import InfoCard from "../../components/page/party/InfoCard";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Party } from "../../utils/repository";
 import PartyParticipant from "./PartyParticipant";
@@ -20,7 +20,7 @@ export default function PartyDetail() {
   const { id: memberNo, no: partyNoParam } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const baseURL = "http://localhost:8088";
+  const baseURL = "https://gongzone.duckdns.org";
   const [partyNo, setPartyNo] = useState(
     partyNoParam || location.state?.partyNo
   );
@@ -67,7 +67,7 @@ export default function PartyDetail() {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
-    return `${year}년 ${month}월 ${day}일`;
+    return `${ year }년 ${ month }월 ${ day }일`;
   };
 
   const stripHtmlTags = (str) => {
@@ -119,8 +119,8 @@ export default function PartyDetail() {
         title: "포인트 결제하기",
         html: `
           <div style="text-align: left;">
-            <p><strong>결제 예정 포인트:</strong> ${purchasePrice}</p>
-            <p><strong>보유 포인트:</strong> ${memberPoint}</p>
+            <p><strong>결제 예정 포인트:</strong> ${ purchasePrice }</p>
+            <p><strong>보유 포인트:</strong> ${ memberPoint }</p>
           </div>
         `,
         showCancelButton: true,
@@ -254,7 +254,7 @@ export default function PartyDetail() {
   };
 
   const CustomSkeleton = ({ width, height }) => (
-    <Skeleton width={width} height={height} className="custom-skeleton" />
+    <Skeleton width={ width } height={ height } className="custom-skeleton" />
   );
 
   if (loading) {
@@ -264,12 +264,12 @@ export default function PartyDetail() {
           파티 정보
         </div>
         <div className="bg-white rounded-lg shadow-md p-4">
-          <CustomSkeleton width="100%" height={300} />
-          <CustomSkeleton width="80%" height={24} className="mt-4" />
-          <CustomSkeleton width="60%" height={20} className="mt-2" />
-          <CustomSkeleton width="40%" height={20} className="mt-2" />
-          <CustomSkeleton width="100%" height={150} className="mt-4" />
-          <CustomSkeleton width="100%" height={50} className="mt-4" />
+          <CustomSkeleton width="100%" height={ 300 } />
+          <CustomSkeleton width="80%" height={ 24 } className="mt-4" />
+          <CustomSkeleton width="60%" height={ 20 } className="mt-2" />
+          <CustomSkeleton width="40%" height={ 20 } className="mt-2" />
+          <CustomSkeleton width="100%" height={ 150 } className="mt-4" />
+          <CustomSkeleton width="100%" height={ 50 } className="mt-4" />
         </div>
       </div>
     );
@@ -313,47 +313,47 @@ export default function PartyDetail() {
         파티 정보
       </div>
 
-      {detail && (
+      { detail && (
         <InfoCard
-          key={detail.partyNo}
-          title={detail.partyCateCode}
-          desc={stripHtmlTags(detail.boardBody)}
-          link={detail.productUrl}
+          key={ detail.partyNo }
+          title={ detail.partyCateCode }
+          desc={ stripHtmlTags(detail.boardBody) }
+          link={ detail.productUrl }
           price={
             Math.ceil(
               Number(detail.partyPrice) / Number(detail.partyAmount) / 10
             ) * 10
           }
-          address={detail.address}
-          period={formatDate(detail.endDate)}
-          targetAmt={detail.partyAmount}
-          remainAmt={detail.remainAmount}
-          img={`${baseURL}${detail.img}`} // 이미지 부분 테이블과 백단 추가 수정 필요
-          memberTargetNo={detail.requestMember.memberNo}
-          writeNo={detail.partyLeader}
-          connectNo={connectNo}
-          boardNo={detail.boardNo}
-          partyNo={detail.partyNo}
+          address={ detail.address }
+          period={ formatDate(detail.endDate) }
+          targetAmt={ detail.partyAmount }
+          remainAmt={ detail.remainAmount }
+          img={ `${ baseURL }${ detail.img }` } // 이미지 부분 테이블과 백단 추가 수정 필요
+          memberTargetNo={ detail.requestMember.memberNo }
+          writeNo={ detail.partyLeader }
+          connectNo={ connectNo }
+          boardNo={ detail.boardNo }
+          partyNo={ detail.partyNo }
         >
           <div className="text-sm px-3 pb-3">
             <div className="flex justify-between mb-3 text-[#888888]"></div>
             <hr className="w-full" />
           </div>
         </InfoCard>
-      )}
+      ) }
 
-      {!isMember && (
+      { !isMember && (
         <button
-          onClick={handleRequestJoin}
+          onClick={ handleRequestJoin }
           className="w-full h-10 mt-4 rounded-md bg-blue-500 text-white font-bold"
         >
           파티 신청하기
         </button>
-      )}
+      ) }
 
-      {memberNo === detail.partyLeader ? (
+      { memberNo === detail.partyLeader ? (
         <>
-          {detail.status === "S060103" ? (
+          { detail.status === "S060103" ? (
             <button
               className="w-full h-10 mt-4 rounded-md bg-blue-500 text-white font-bold"
               disabled
@@ -362,14 +362,14 @@ export default function PartyDetail() {
             </button>
           ) : detail.status === "S060104" ? (
             <button
-              onClick={handleRegisterShipping}
+              onClick={ handleRegisterShipping }
               className="w-full h-10 mt-4 rounded-md bg-green-500 text-white font-bold"
             >
               제품 운송장 등록하기
             </button>
           ) : detail.status === "S060105" ? (
             <button
-              onClick={handleShippingComplete}
+              onClick={ handleShippingComplete }
               className="w-full h-10 mt-4 rounded-md bg-green-500 text-white font-bold"
             >
               제품 도착 알림 보내기
@@ -400,69 +400,69 @@ export default function PartyDetail() {
           ) : (
             Number(detail.remainAmount) === 0 && (
               <button
-                onClick={handleConfirm}
+                onClick={ handleConfirm }
                 className="w-full h-10 mt-4 rounded-md bg-gray-400 text-white font-bold"
               >
                 모집 완료하기
               </button>
             )
-          )}
+          ) }
         </>
       ) : detail.status === "S060106" &&
-        participants.some(
-          (participant) => participant.memberNo === memberNo
-        ) ? (
+      participants.some(
+        (participant) => participant.memberNo === memberNo
+      ) ? (
         <button
           className="w-full h-10 mt-4 rounded-md bg-blue-500 text-white font-bold"
-          onClick={handleConfirmReceipt}
+          onClick={ handleConfirmReceipt }
         >
           수취 확인하기
         </button>
       ) : detail.status === "S060103" ? (
         <button
           className="w-full h-10 mt-4 rounded-md bg-green-500 text-white font-bold"
-          onClick={() => handlePurchase(memberNo, partyNo)}
+          onClick={ () => handlePurchase(memberNo, partyNo) }
         >
           내꺼 결제하기
         </button>
-      ) : null}
+      ) : null }
 
       <PartyParticipant
-        participants={participants}
-        partyLeader={detail.partyLeader}
-        onKick={handleKick}
-        onLeave={handleKick}
-        currentUser={memberNo}
-        status={detail.status}
+        participants={ participants }
+        partyLeader={ detail.partyLeader }
+        onKick={ handleKick }
+        onLeave={ handleKick }
+        currentUser={ memberNo }
+        status={ detail.status }
       />
 
-      {Number(detail.remainAmount) !== 0 && (
+      { Number(detail.remainAmount) !== 0 && (
         <PartyRequest
-          requestMembers={requestMembers}
-          onAccept={handleAccept}
-          onRefuse={handleRefuse}
-          onLeave={handleLeave}
-          partyLeader={detail.partyLeader}
-          currentUser={memberNo}
+          requestMembers={ requestMembers }
+          onAccept={ handleAccept }
+          onRefuse={ handleRefuse }
+          onLeave={ handleLeave }
+          partyLeader={ detail.partyLeader }
+          currentUser={ memberNo }
         />
-      )}
+      ) }
 
       <RequestModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        memberNo={memberNo}
-        leaderNo={detail.partyLeader}
-        partyNo={partyNo}
-        remainAmount={detail.remainAmount}
+        isOpen={ isModalOpen }
+        onClose={ closeModal }
+        memberNo={ memberNo }
+        leaderNo={ detail.partyLeader }
+        partyNo={ partyNo }
+        remainAmount={ detail.remainAmount }
       />
 
       <ConfirmModal
-        isConfirmModalOpen={isConfirmModalOpen}
-        onClose={() => setIsConfirmModalOpen(false)}
-        onConfirm={handleComplete}
-        partyNo={partyNo}
+        isConfirmModalOpen={ isConfirmModalOpen }
+        onClose={ () => setIsConfirmModalOpen(false) }
+        onConfirm={ handleComplete }
+        partyNo={ partyNo }
       />
-      <PartyReply boardNo={detail.boardNo} boardReply={detail.boardReply} />
+      <PartyReply boardNo={ detail.boardNo } boardReply={ detail.boardReply } />
     </div>
   );
 }
