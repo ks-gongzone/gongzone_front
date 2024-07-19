@@ -15,7 +15,6 @@ export default function MemberListCard({ member }) {
 
   const { userInfo } = AuthStore((state) => ({ userInfo: state.userInfo }));
   const currentUserNo = userInfo.memberNo;
-  const isAdmin = userInfo.memberNo === "M000001";
 
   const handleNote = async () => {
     const { value: noteBody } = await MySwal.fire({
