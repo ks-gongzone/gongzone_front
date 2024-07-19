@@ -14,21 +14,21 @@ export default function ModalRegisterLogin({ isOpen, onClose }) {
   const handleGoogleLogin = () => {
     const clientId =
       "901670599809-s8vu30qhb5hba1r856uvj4bulra76d0s.apps.googleusercontent.com";
-    const redirectUri = encodeURI("http://localhost:3000/google/callback");
+    const redirectUri = encodeURI("https://www.gongzone.shop/google/callback");
     const state = Math.random().toString(36).substr(2, 11);
     window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=profile email&state=${state}`;
   };
 
   const handleNaverLogin = () => {
     const clientId = "ViZy5l34ZQtLQtRQEPmO";
-    const redirectUri = encodeURI("http://localhost:3000/naver/callback");
+    const redirectUri = encodeURI("https://www.gongzone.shop/naver/callback");
     const state = Math.random().toString(36).substr(2, 11);
     window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}`;
   };
 
   const handleKakaoLogin = () => {
     const clientId = "526e8f945f81281052ccfce1af49781c";
-    const redirectUri = encodeURI("http://localhost:3000/kakao/callback");
+    const redirectUri = encodeURI("https://www.gongzone.shop/kakao/callback");
     const state = Math.random().toString(36).substr(2, 11);
     window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=profile_nickname,account_email&state=${state}`;
   };
