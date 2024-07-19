@@ -37,15 +37,17 @@ export default function MemberListWrapper() {
   }
 
   return (
-    <div className="flex flex-col w-[1150px] justify-between pt-12 pb-5">
-      <div className="flex w-[1150px] justify-between pt-12 pb-5">
-      <button
-          onClick={goToPreviousPage}
-          className="text-[2vw] bg-gray-200 rounded px-4 py-2"
-        >
-          &lt;
-        </button>
-        <div className="text-[2vw]">유저 리스트</div>
+    <div className="flex flex-col w-[65em] justify-between pt-12 pb-5">
+      <div className="flex w-full justify-between items-center">
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={goToPreviousPage}
+            className="mb-6 text-lg font-bold text-[#526688] mt-10"
+          >
+            &lt;
+          </button>
+          <div className="mb-6 text-lg font-bold text-[#526688] mt-10">유저 리스트</div>
+        </div>
         <SearchBar onSearch={handleSearch} />
       </div>
       <AllMemberList
