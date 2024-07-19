@@ -235,6 +235,15 @@ export const MyBoard = (memberNo) => {
     });
 };
 
+export const MyPageWish = (memberNo) => {
+  return GZAPI.get(`/api/boards/myPage/wishList/${memberNo}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("데이터 로드 중 에러 발생", error);
+      throw error;
+    });
+};
+
 export const MyParty = (memberNo) => {
   return GZAPI.get(`/api/members/${memberNo}/party`)
     .then((response) => response.data)
@@ -372,7 +381,6 @@ export const GetPhone = (memberNo) => {
 // 드롭다운 데이터 받기
 export const DropDownAPI = {
   getDropDownData: async (memberNo) => {
-    console.log("memberNo: ", memberNo);
     if (!memberNo) {
       throw new Error("회원 번호 또는 포인트 번호가 없습니다.");
     }
@@ -387,7 +395,6 @@ export const DropDownAPI = {
   // 유저 리스트 업 후 팔로우 차단 API
  export const MemberListAPI = {
   getMemberList: async (page, size, query) => {
-    console.log("getMemberList실행: page:", page, " size:", size, " query:", query);
     const params = new URLSearchParams({ page, size, memberName: query });
       return GZAPI.get(`/api/members/interaction?${params.toString()}`)
         .then((response) => response.data)
@@ -398,11 +405,9 @@ export const DropDownAPI = {
   },
 
   sendSearchQuery: async({query, page, size}) => {
-    console.log("sendSearchQuery 호출: query:", query);
     const params = new URLSearchParams({ page, size, query });
     return GZAPI.post(`/api/members/interaction/search${params.toString()}`)
       .then(response => {
-        console.log("send 데이터: ", response.data.query );
         return response.data.query})
       .catch(error => {
         console.error("유저 검색 중 에러 발생", error);
@@ -411,8 +416,6 @@ export const DropDownAPI = {
   },
 
   followMember: (currentUserNo, targetMemberNo) => {
-    console.log("타겟멤버", targetMemberNo);
-    console.log("현재유저", currentUserNo);
     return GZAPI.post(`/api/members/interaction/follow`, {
       currentUserNo,
       targetMemberNo,
@@ -425,13 +428,10 @@ export const DropDownAPI = {
   },
 
   unFollowMember: (currentUserNo, targetMemberNo) => {
-    console.log("언팔로우 타겟멤버", targetMemberNo);
-    console.log("언팔로우 현재유저", currentUserNo);
     return GZAPI.delete(`/api/members/interaction/follow`, {
       data: { currentUserNo, targetMemberNo },
     })
       .then((response) => {
-        console.log("언팔 성공", response.data);
         return response.data;
       })
       .catch((error) => {
@@ -441,8 +441,6 @@ export const DropDownAPI = {
   },
 
   blockMember: (currentUserNo, targetMemberNo) => {
-    console.log("차단 타겟멤버", targetMemberNo);
-    console.log("차단시도 유저", currentUserNo);
     return GZAPI.post(`/api/members/interaction/block`, {
       currentUserNo,
       targetMemberNo,
@@ -455,8 +453,6 @@ export const DropDownAPI = {
   },
 
   unBlockMember: (currentUserNo, targetMemberNo) => {
-    console.log("차단해제 타겟멤버", targetMemberNo);
-    console.log("차단해제시도 유저", currentUserNo);
     return GZAPI.delete(`/api/members/interaction/block`, {
       data: { currentUserNo, targetMemberNo },
     })

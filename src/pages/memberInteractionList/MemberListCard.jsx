@@ -70,7 +70,6 @@ export default function MemberListCard({ member }) {
               )}
             </div>
             <div className="text-gray-600">성별: {member.gender === 'M' ? '남성' : '여성'}</div>
-            {isAdmin && (
               <div className="mt-2">
                 {member.isPopular && (
                   <div className="text-blue-500">인기유저</div>
@@ -79,7 +78,6 @@ export default function MemberListCard({ member }) {
                   <div className="text-red-500">블랙리스트유저</div>
                 )}
               </div>
-            )}
           </div>
         </div>
       </div>
