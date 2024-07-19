@@ -47,7 +47,7 @@ export default function Intro() {
   };
 
   const handleUserLogin = async () => {
-    const loginRequest = { loginId: "user2", loginPw: "password2" };
+    const loginRequest = { loginId: "user2", loginPw: "user2" };
     const response = await AuthStore.getState().statusLogin(loginRequest);
 
     if (response && !response.error) {
@@ -77,7 +77,7 @@ export default function Intro() {
         ))}
       </div>
       <section className="snap-section snap-start bg-[#6ea2d4] min-h-screen flex flex-col items-center justify-center px-4 md:px-8 lg:px-16">
-        <div className="font-bold text-[5vw] md:text-[3vw] lg:text-[1.2vw] mt-12">
+        <div className="font-bold text-[5vw] md:text-[3vw] lg:text-[1.2vw] mt-2">
           1인 가구 공동구매 플랫폼
         </div>
         <Link
@@ -86,10 +86,10 @@ export default function Intro() {
         >
           <img alt="logo" src={logo} className="w-[5em]" />
         </Link>
-        <div className="text-[3vw] md:text-[2vw] lg:text-[1vw] font-GGothicssi20g mb-4">
+        <div className="text-[3vw] md:text-[2vw] lg:text-[1vw] font-GGothicssi20g">
           로고 클릭 시 메인페이지로 이동합니다.
         </div>
-        <div className="text-gray-700 h-auto w-full p-6 rounded-md text-left bg-blue-100 bg-opacity-70 mb-4 shadow-xl">
+        <div className="text-gray-700 h-auto w-full p-6 rounded-md text-left bg-blue-100 bg-opacity-70 mb-1 shadow-xl">
           <div className="flex flex-col lg:flex-row gap-12 justify-center">
             <div className="text-ms">
               <div>
@@ -142,25 +142,26 @@ export default function Intro() {
             },
             {
               name: "오 민 호",
-              intro: `JWT토큰 방식을 활용한 로그인 및 회원가입 구현
-              - 세션을 사용하지 않고 JWT 토큰을 활용하여 사용자 인증을 처리
-              - 토큰 발급 및 클레임 설정
-              - 리프레시 토큰 사용
-              - 소셜 로그인 통합(소셜 로그인 성공 시, 사용자 정보를 기반으로 JWT 토큰을 발급)
-              - 보안강화
-              - 로그인 로그
-              
-              파티기능
+              intro: `회원 기능
+              JWT토큰 방식을 활용한 로그인 및 회원가입 구현
+              - 세션을 사용하지 않고 토큰을 활용하여 사용자 인증을 처리
+              - 스프링 시큐리티를 활용하여, 토큰을 소지하지 않은 사용자에 대한 접근을 제한
+              - 인증이 필요한 엔드포인트에 대해 시큐리티 설정을 통해 보호
+              - 주스탠드를 사용하여 경량화 및 상태 관리
+              리프레시 토큰 사용
+              - 소셜 로그인 통합 
+              - 카카오, 네이버, 구글 소셜 로그인 API를 연동하여, 사용자가 소셜 계정으로 로그인 및 회원가입 할 수 있도록 구현
+              - 소셜 로그인 성공 시, 소셜 사용자 정보를 기반으로 토큰을 발급
+              로그인 로그
+              파티 기능
               - 파티 정보 조회 및 관련된 정보 조회 기능
               - 파티 수락 거절 강퇴 구현
-              
-              관리자 기능
-              - 회원 탈퇴, 휴면, 제재 관리 기능
-              - 문의 내역 관리 기능
-              
-              알림기능
+              쪽지 및 알람 기능
+              - webflux 방식으로 쪽지 기능 구현
               - SSE 방식을 활용한 실시간 알림 기능 구현
-              - webflux 방식으로 쪽지 기능 구현`,
+              관리자 기능
+              - 회원 탈퇴, 휴면, 제재 관리 기능, 문의 내역 관리 기능
+              에러 처리 시스템 구현, ERD 작성`,
             },
             {
               name: "이 희 상",
