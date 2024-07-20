@@ -26,14 +26,16 @@ export default function GoogleLogin() {
               if (response.redirectUrl.includes('register')) {
                 navigate(response.redirectUrl);
               } else {
-                window.localStorage.setItem('accessToken', response.token);
+                window.localStorage.setItem("accessToken", response.accessToken);
+                window.localStorage.setItem("refreshToken", response.refreshToken);
                 setIsLogin(true);
                 setUserInfo({
-                  token: response.token,
+                  accessToken: response.accessToken,
+                  refreshToken: response.refreshToken,
                   memberNo: response.memberNo,
                   pointNo: response.pointNo,
                 });
-                navigate('/');
+                navigate('/home');
               }
             } else {
               console.error('로그인 실패:', response);

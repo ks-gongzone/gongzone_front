@@ -45,9 +45,10 @@ export const Auth = {
         state
       );
       const response = await GZAPI.post("/api/naver/token", { code, state });
-      console.log("response  : ", response);
-      console.log("response.data  : ", response.data);
-      return response.data;
+      const { token, refreshToken, tokenExpiresIn } = response.data;
+      window.localStorage.setItem("accessToken", token);
+      window.localStorage.setItem("refreshToken", refreshToken);
+      window.localStorage.setItem("tokenExpiresIn", tokenExpiresIn);
     } catch (error) {
       if (error.response.status === 403) {
         return { error: "제재 되었거나 탈퇴된 계정입니다." };
@@ -69,8 +70,10 @@ export const Auth = {
         state
       );
       const response = await GZAPI.post("/api/google/token", { code, state });
-      console.log("response  : ", response);
-      console.log("response.data  : ", response.data);
+      const { token, refreshToken, tokenExpiresIn } = response.data;
+      window.localStorage.setItem("accessToken", token);
+      window.localStorage.setItem("refreshToken", refreshToken);
+      window.localStorage.setItem("tokenExpiresIn", tokenExpiresIn);
       return response.data;
     } catch (error) {
       if (error.response.status === 403) {
@@ -93,8 +96,10 @@ export const Auth = {
         state
       );
       const response = await GZAPI.post("/api/kakao/token", { code, state });
-      console.log("response  : ", response);
-      console.log("response.data  : ", response.data);
+      const { token, refreshToken, tokenExpiresIn } = response.data;
+      window.localStorage.setItem("accessToken", token);
+      window.localStorage.setItem("refreshToken", refreshToken);
+      window.localStorage.setItem("tokenExpiresIn", tokenExpiresIn);
       return response.data;
     } catch (error) {
       if (error.response.status === 403) {
@@ -108,8 +113,8 @@ export const Auth = {
       return { error: errorMessage };
     }
   },
-  Logout: async () => {
-    return GZAPI.post("/api/logout")
+  Logout: async (data) => {
+    return GZAPI.post("/api/logout", data)
       .then((res) => res)
       .catch((err) => err);
   },
