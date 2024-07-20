@@ -5,6 +5,8 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Note } from "../../../utils/repository";
 import AuthStore from "../../../utils/zustand/AuthStore";
+import FollowButton from "../../button/FollowButton";
+import BlockButton from "../../button/BlockButton";
 
 const MySwal = withReactContent(Swal);
 
@@ -97,7 +99,9 @@ export default function PartyCard({
         <div className="w-full mt-2 ml-4 font-bold text-gray-500 flex flex-col relative">
           {like && (
             <button type="button" className="self-end mr-4" onClick={likeBtn}>
-              <HeartIcon
+              <FollowButton
+                targetMemberNo={memberNo}
+                targetMemberName={memberTargetNo}
                 className={`w-6 transition-transform duration-200 ${
                   isLiked
                     ? "text-red-500 scale-125"
@@ -131,13 +135,10 @@ export default function PartyCard({
                   >
                     쪽지 보내기
                   </button>
-                  <button
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                    role="menuitem"
-                    type="button"
-                  >
-                    차단하기
-                  </button>
+                  <BlockButton
+                    targetMemberNo={memberNo}
+                    targetMemberName={memberTargetNo}
+                  />
                   <button
                     className="block px-4 py-2 text-sm text-red-700 hover:bg-gray-100 w-full text-left"
                     role="menuitem"

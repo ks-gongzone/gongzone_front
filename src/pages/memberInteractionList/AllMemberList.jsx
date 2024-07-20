@@ -21,13 +21,20 @@ export default function AllMemberList({
 
   useEffect(() => {
     if (!currentUserNo) {
-      navigate("/");
+      navigate("/home");
     }
   }, [currentUserNo, navigate]);
 
   useEffect(() => {
     const changeMembersList = async () => {
-      console.log("[changeMembersList] - page:", currentPage, " size:", size, " query:", searchQuery);
+      console.log(
+        "[changeMembersList] - page:",
+        currentPage,
+        " size:",
+        size,
+        " query:",
+        searchQuery
+      );
       MemberListAPI.getMemberList(currentPage, size, searchQuery)
         .then((data) => {
           if (!data.memberList || data.memberList.length === 0) {
@@ -37,12 +44,12 @@ export default function AllMemberList({
             alert("검색 결과가 없습니다.");
             navigate("/member/list");
           } else {
-            const processedData = data.memberList.map(member => ({
+            const processedData = data.memberList.map((member) => ({
               ...member,
               isPopular: member.popular,
               isWarning: member.warning,
               isFollowing: member.following,
-              isBlocked: member.blocked
+              isBlocked: member.blocked,
             }));
             setMemberList(processedData);
             setCurrentPage(data.currentPage);
@@ -55,12 +62,25 @@ export default function AllMemberList({
         });
     };
     changeMembersList();
-  }, [currentPage, searchQuery, setMemberList, setCurrentPage, setTotalMembers, size, navigate]);
+  }, [
+    currentPage,
+    searchQuery,
+    setMemberList,
+    setCurrentPage,
+    setTotalMembers,
+    size,
+    navigate,
+  ]);
 
   const renderMemberCards = (members) => {
     return members.map((member) => (
-      <div key={member.memberNo} className="w-full md:w-1/2 lg:w-1/3 p-4">
-        <MemberListCard currentUserNo={currentUserNo} member={member} />
+      <div key={member.memberNo}>
+        <MemberListCard
+          currentUserNo={currentUserNo}
+          member={member}
+          note={true}
+          like={true}
+        />
       </div>
     ));
   };
@@ -68,8 +88,15 @@ export default function AllMemberList({
   const totalPages = Math.ceil(totalMembers / size);
 
   return (
-    <div className="w-[80em] mx-auto mb-10 mt-14">
-      <div className="flex flex-wrap gap-4 justify-center">
+    <div className="w-full mx-auto mb-10 mt-14 px-4 sm:px-6 lg:px-8">
+      <div
+        className="
+        grid
+        grid-cols-1
+        sm:grid-cols-2
+        lg:grid-cols-3
+        gap-4"
+      >
         {renderMemberCards(memberList)}
       </div>
       <div className="flex justify-between mt-4">
@@ -80,7 +107,9 @@ export default function AllMemberList({
         >
           이전
         </button>
-        <span>페이지 {currentPage} / {totalPages}</span>
+        <span>
+          페이지 {currentPage} / {totalPages}
+        </span>
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={currentPage === totalPages}

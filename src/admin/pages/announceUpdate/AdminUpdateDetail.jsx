@@ -21,7 +21,6 @@ export default function AdminUpdateDetail() {
   useEffect(() => {
     // 1. 작성글의 정보를 로드
     if (location.state) {
-      console.log("announce: ", location.state);
       const { announce, announceNo } = location.state;
       if (announce) {
         setAnnounceNo(announceNo);
@@ -38,7 +37,6 @@ export default function AdminUpdateDetail() {
 
     const handleUpdate = () => {
     // 2. updateAnnouncement API를 사용해서 값을 변경
-    console.log("announceNo: ", announceNo);
     AnnounceAPI.updateAnnouncement(announceNo, {
       announceTitle,
       announceBody,

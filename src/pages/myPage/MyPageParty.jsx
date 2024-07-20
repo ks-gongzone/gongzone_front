@@ -2,13 +2,13 @@ import PartyListCard from "../../components/page/party/PartyListCard";
 import { Party } from "../../utils/repository";
 import { useEffect, useState } from "react";
 import AuthStore from "../../utils/zustand/AuthStore";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function MyPageParty() {
   const [data, setData] = useState([]);
   const memberNo = AuthStore((state) => state.userInfo.memberNo);
   const navigate = useNavigate();
-  const baseURL = "http://localhost:8088";
+  const baseURL = "https://gongzone.duckdns.org";
 
   const fetch = async () => {
     const detailData = await Party.PartyAccept(memberNo);
@@ -26,7 +26,7 @@ export default function MyPageParty() {
   }, [memberNo]);
 
   const handleCardClick = (partyNo) => {
-    navigate(`/party/detail/${memberNo}/${partyNo}`, {
+    navigate(`/party/detail/${ memberNo }/${ partyNo }`, {
       state: { partyNo, data },
     });
   };
@@ -76,17 +76,17 @@ export default function MyPageParty() {
 
   const renderPartyCards = (parties) => {
     return parties.map((e) => (
-      <div key={e.partyNo} onClick={() => handleCardClick(e.partyNo)}>
+      <div key={ e.partyNo } onClick={ () => handleCardClick(e.partyNo) }>
         <PartyListCard
-          img={`${baseURL}${e.img}`}
-          desc={e.boardBody}
-          title={e.boardTitle}
-          id={e.partyNo}
-          memberNo={memberNo}
-          note={e.partyCateCode}
-          like={e.like}
-          amount={e.partyAmount}
-          status={e.status}
+          img={ `${ baseURL }${ e.img }` }
+          desc={ e.boardBody }
+          title={ e.boardTitle }
+          id={ e.partyNo }
+          memberNo={ memberNo }
+          note={ e.partyCateCode }
+          like={ e.like }
+          amount={ e.partyAmount }
+          status={ e.status }
         >
           <div className="text-sm px-3 pb-3">
             <div className="flex justify-between mb-3 text-[#888888]"></div>
@@ -98,71 +98,71 @@ export default function MyPageParty() {
 
   return (
     <div className="w-[65em] mx-auto mb-10 mt-14">
-      {waitingForPurchaseParties.length > 0 && (
+      { waitingForPurchaseParties.length > 0 && (
         <>
           <div className="w-full mb-6 text-lg font-bold text-[#526688] mt-10">
             제품 구매 대기중인 파티
           </div>
           <div className="grid grid-cols-3 gap-4">
-            {renderPartyCards(waitingForPurchaseParties)}
+            { renderPartyCards(waitingForPurchaseParties) }
           </div>
         </>
-      )}
+      ) }
 
-      {closedParties.length > 0 && (
+      { closedParties.length > 0 && (
         <>
           <div className="w-full mb-6 text-lg font-bold text-[#526688] mt-10">
             모집 완료된 파티
           </div>
           <div className="grid grid-cols-3 gap-4">
-            {renderPartyCards(closedParties)}
+            { renderPartyCards(closedParties) }
           </div>
         </>
-      )}
+      ) }
 
-      {requestedParties.length > 0 && (
+      { requestedParties.length > 0 && (
         <>
           <div className="w-full mb-6 text-lg font-bold text-[#526688] mt-10">
             참여 신청한 파티
           </div>
           <div className="grid grid-cols-3 gap-4">
-            {renderPartyCards(requestedParties)}
+            { renderPartyCards(requestedParties) }
           </div>
         </>
-      )}
+      ) }
 
-      {registeredParties.length > 0 && (
+      { registeredParties.length > 0 && (
         <>
           <div className="w-full mb-6 text-lg font-bold text-[#526688] mt-10">
             내가 등록한 파티
           </div>
           <div className="grid grid-cols-3 gap-4">
-            {renderPartyCards(registeredParties)}
+            { renderPartyCards(registeredParties) }
           </div>
         </>
-      )}
+      ) }
 
-      {recruitingParties.length > 0 && (
+      { recruitingParties.length > 0 && (
         <>
           <div className="w-full mb-6 text-lg font-bold text-[#526688] mt-10">
             참여 중인 파티
           </div>
           <div className="grid grid-cols-3 gap-4">
-            {renderPartyCards(recruitingParties)}
+            { renderPartyCards(recruitingParties) }
           </div>
         </>
-      )}
+      ) }
 
-      {completedParties.length > 0 && (
+      { completedParties.length > 0 && (
         <>
           <div className="w-full mb-6 text-lg font-bold text-[#526688] mt-10">
             종료된 파티
           </div>
           <div className="grid grid-cols-3 gap-4">
-            {renderPartyCards(completedParties)}
+            { renderPartyCards(completedParties) }
           </div>
         </>
-      )}
+      ) }
     </div>
   );
 }

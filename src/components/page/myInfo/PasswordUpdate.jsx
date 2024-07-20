@@ -19,8 +19,8 @@ export function useDataSet(initialValue = "") {
 /**
  * 비밀번호 일치 유효성 검증 컴포넌트
  * @date: 2024-06-12
- * @last: 2024-06-21
- * @desc: 현재 비밀번호와 수정 비밀번호가 같은지, 수정 비밀번호 확인시 동일한지 검증
+ * @last: 2024-07-18
+ * @desc: 비밀번호 수정 시 8~16자 제한 특수 문자 포함 비밀번호
  * @마지막수정내용: id, pw가 없는 유저에 대한 유효성 검증 추가
  */
 export default function ChangePassword({ memberNo }) {
@@ -29,9 +29,10 @@ export default function ChangePassword({ memberNo }) {
     useDataSet("");
   // 소셜 로그인 사용자 비밀번호 수정 여부
   const [isSocialLogin, setIsSocialLogin] = useState(true);
-  // 세션이 없는 값은 0, 세션이 있는 값은 1
-  const [sessionStatus, setSessionStatus] = useState("0");
   const [memberInfo, setMemberInfo] = useState(null);
+
+  // 수정 가능 여부
+  const [validationMessage, setValidationMessage] = useState("");
 
   useEffect(() => {
     GetMemberInfo(memberNo)
@@ -51,9 +52,20 @@ export default function ChangePassword({ memberNo }) {
   const isMatched = password && confirmPassword && password === confirmPassword;
   const matchMessage = password && confirmPassword;
 
+  // 비밀번호 유효성 검사 (숫자, 특수 문자 포함 8~16글자)
+  const isAblePassword = (password) => {
+    const filtering =  /^(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/;
+    return filtering.test(password);
+  }
+
   const handleChangePassword = () => {
     if (!isMatched) {
-      alert("비밀번호가 일치하지 않습니다.");
+      setValidationMessage("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
+    if(!isAblePassword(password)) {
+      setValidationMessage("비밀번호는 8자 이상 16자 이하의 숫자와 특수 문자를 포함해야 합니다.");
       return;
     }
 
@@ -61,11 +73,11 @@ export default function ChangePassword({ memberNo }) {
     UpdatePassword(memberNo, payload)
       .then((response) => {
         console.log(response);
-        alert(response);
+        setValidationMessage("비밀번호 성공적으로 변경되었습니다.");
       })
       .catch((error) => {
         console.error("비밀번호 변경 에러입니다.", error);
-        alert("비밀번호 변경 에러입니다.");
+        setValidationMessage("기존 비밀번호와 일치합니다.");
       });
   };
 
@@ -78,11 +90,19 @@ export default function ChangePassword({ memberNo }) {
         <input
           type="password"
           value={password}
-          onChange={(e) => changeInputPassword(e.target.value)}
+          onChange={(e) => {
+            changeInputPassword(e.target.value);
+            setValidationMessage("");
+          }}
           className="w-full p-2 border border-gray-300 rounded mt-2"
           placeholder="비밀번호를 입력해 주세요."
           disabled={!isSocialLogin}
         />
+        {!isAblePassword(password) && password.length > 0 && (
+          <div className="text-red-500 text-sm mt-1">
+            비밀번호는 8자 이상 16자 이하의 숫자와 특수 문자를 포함해야 합니다.
+          </div>
+        )}
       </div>
       <div className="mb-6">
         <div className="text-blue-500 font-bold text-lg mb-2">
@@ -96,14 +116,15 @@ export default function ChangePassword({ memberNo }) {
           placeholder="비밀번호를 다시 입력해 주세요."
           disabled={!isSocialLogin}
         />
+        {matchMessage && (
+          <div className={`mt-2 text-lg font-bold ${isMatched ? "text-blue-500" : "text-red-500"}`}>
+            {isMatched ? "비밀번호가 일치합니다." : "비밀번호가 불일치합니다."}
+          </div>
+        )}
       </div>
-      {matchMessage && (
-        <div
-          className={`mt-2 text-lg font-bold ${
-            isMatched ? "text-blue-500" : "text-red-500"
-          }`}
-        >
-          {isMatched ? "비밀번호가 일치합니다." : "비밀번호가 불일치합니다."}
+      {validationMessage && (
+        <div className="text-red-500 text-sm mt-1">
+          {validationMessage}
         </div>
       )}
       <div className="flex justify-end">

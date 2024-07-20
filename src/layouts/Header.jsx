@@ -61,7 +61,7 @@ export default function LayoutHeader() {
   return (
     <div className="shadow-md z-50 sticky top-0 bg-white">
       <div className="flex flex-wrap items-center h-auto relative">
-        <div className="flex items-center max-w-5xl mx-auto gap-4 justify-between flex-wrap w-full p-4 md:p-0">
+        <div className="flex items-center max-w-5xl mx-auto gap-4 justify-between flex-wrap md: xl:flex-wrap w-full p-4 md:p-0">
           <Link className="text-2xl whitespace-nowrap" to="/home">
             <img alt="logo" src={logo} className="h-12" />
           </Link>

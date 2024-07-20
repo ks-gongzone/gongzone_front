@@ -16,6 +16,7 @@ export default function BlockList({ memberNo }) {
           ...member,
           isPopular: member.popular,
           isWarning: member.warning,
+          isFollowing: member.following,
           isBlocked: member.blocked
         }));
         setBlockList(processedData);
@@ -42,7 +43,7 @@ export default function BlockList({ memberNo }) {
   const totalPages = Math.ceil(totalMembers / size);
 
   return (
-    <div className="w-[80em] mx-auto mb-10 mt-14">
+    <div className="w-[65em] mx-auto mb-10 mt-14">
       <div className="flex flex-wrap gap-4 justify-center">
         {renderMemberCards(blockList)}
       </div>
