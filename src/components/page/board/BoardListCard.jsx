@@ -3,11 +3,34 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GZAPI from "../../../utils/api";
 
+function Label({ label }) {
+  if (label === "추천") {
+    return (
+      <span className="font-semibold text-[#2DC43B] bg-[#EFFAF0] text-[10px] px-2 py-1 rounded-lg">
+        {label}
+      </span>
+    );
+  } else if (label === "인기") {
+    return (
+      <span className="font-semibold text-[#6C6AFF] bg-[#F4F4FF] text-[10px] px-2 py-1 rounded-lg">
+        {label}
+      </span>
+    );
+  } else if (label === "핫") {
+    return (
+      <span className="font-semibold text-[#FE4D4C] bg-[#FFF2F2] text-[10px] px-2 py-1 rounded-lg">
+        {label}
+      </span>
+    );
+  }
+}
+
 export default function BoardListCard({
   children,
   img,
   title,
   id,
+  labels,
   cate,
   amount,
   memberNo,
@@ -48,7 +71,7 @@ export default function BoardListCard({
   return (
     <button
       type="button"
-      className="w-full h-full text-left rounded-xl overflow-hidden shadow-lg bg-white border hover:border-red-200"
+      className="transition-all w-full h-full text-left rounded-xl overflow-hidden bg-white border-[#EBEBEB] border hover:border-red-200 hover:scale-105"
       onClick={handleCardClick}
     >
       <div className="relative">
@@ -59,7 +82,7 @@ export default function BoardListCard({
         />
         {like && (
           <div
-            className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md cursor-pointer"
+            className="absolute top-4 right-4 bg-white p-2 rounded-full cursor-pointer"
             onClick={handleLikeClick}
           >
             <HeartIcon
@@ -68,12 +91,18 @@ export default function BoardListCard({
           </div>
         )}
       </div>
-      <div className="px-6 py-3">
-        <div className="font-bold text-ml mb-2">{title}</div>
-        <div className="text-right text-gray-700 text-xs">{cate}</div>
-        <div className="text-right font-bold text-gray-500 text-xl mt-2 mb-3">
+      <div className="px-6 py-2">
+        <div className={["flex gap-2", labels?.length > 0 && 'mb-2'].join(' ')}>
+          {(labels ?? []).map(label => <Label key={label} label={label} />)}
+        </div>
+        <div className="text-sm text-gray-900 text-ml">{title}</div>
+        <div className="flex justify-between">
+        <div className="text-gray-400 text-xs mt-1">{cate}</div>
+        <div className="text-xs font-bold mt-2 mb-1 text-blue-500">
           남은수량 : {amount}
         </div>
+        </div>
+        
       </div>
     </button>
   );
