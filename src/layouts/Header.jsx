@@ -59,11 +59,16 @@ export default function LayoutHeader() {
   };
 
   return (
+<<<<<<< Updated upstream
     <div className="shadow-md z-50 sticky top-0 bg-white">
       <div className="flex flex-wrap items-center h-auto min-h-[5em] relative">
+=======
+    <div className="shadow-md z-50 sticky top-0 bg-white h-20">
+      <div className="flex flex-wrap items-center relative h-full">
+>>>>>>> Stashed changes
         <div className="flex items-center max-w-5xl mx-auto gap-4 justify-between flex-wrap md: xl:flex-wrap w-full p-4 md:p-0">
           <Link className="text-2xl whitespace-nowrap" to="/home">
-            <img alt="logo" src={logo} className="h-12" />
+            <img alt="logo" src={logo} className="h-10" />
           </Link>
           <div className="flex flex-grow justify-start text-[15px] whitespace-nowrap font-semibold relative py-2">
             <div
@@ -109,10 +114,10 @@ export default function LayoutHeader() {
                   behavior: "smooth",
                 });
               }}
-              className="flex items-center bg-[#b93d40] text-white px-4 py-2 mr-2 rounded-md hover:bg-[#14396a] whitespace-nowrap"
+              className="flex items-center bg-[#1d5091] text-white px-4 py-2 mr-2 rounded-md hover:bg-[#14396a] whitespace-nowrap text-xs gap-2"
             >
-              <MagnifyingGlassIcon className="w-5 h-5" />
               검색
+              <MagnifyingGlassIcon className="w-5 h-5" />
             </button>
 
             <div className="flex items-center">
@@ -147,7 +152,7 @@ export default function LayoutHeader() {
                   </div>
                 </div>
               ) : (
-                <div className="flex items-center whitespace-nowrap">
+                <div className="flex items-center whitespace-nowrap ">
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(true)}
