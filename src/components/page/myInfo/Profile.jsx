@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import GZAPI from "../../../utils/api";
+import PictureModal from "./PictureModal";
 
-const baseURL = "https://gongzone.duckdns.org";
+// const baseURL = 'https://gongzone.duckdns.org';
+const baseURL = 'http://localhost:8088';
 
 export default function Profile({ memberNo }) {
   const [profileImage, setProfileImage] = useState(null);
@@ -15,70 +17,56 @@ export default function Profile({ memberNo }) {
     boardCount: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    // 백엔드에서 프로필 데이터를 가져옵니다.
-    getProfile(memberNo)
-      .then((data) => {
-        console.log("Fetched Profile Data from Backend:", data); // 콘솔 로그 추가
-        setProfileData({
-          memberName: data.memberName,
-          gender: data.gender,
-          follower: data.follower,
-          following: data.following,
-          boardCount: data.boardCount,
+    if (memberNo) {
+      console.log("회원번호", memberNo);
+      getProfile(memberNo)
+        .then((data) => {
+          console.log("받은 데이터", data);
+          const profile = data.profile;
+          setProfileData({
+            memberName: profile.memberName,
+            gender: profile.gender,
+            follower: profile.follower,
+            following: profile.following,
+            boardCount: profile.boardCount,
+          });
+          if (data.file) {
+            console.log("프로필 이미지 경로:", `${baseURL}${data.file.filePath}`);
+            setProfileImage(`${baseURL}${data.file.filePath}`);
+          }
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("프로필 등록 실패:", error);
+          setLoading(false);
         });
-        if (data.files && data.files.length > 0) {
-          setProfileImage(`${baseURL}${data.files[0].filePath}`);
-        }
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Failed to fetch profile data:", error);
-        setLoading(false);
-      });
+    } else {
+      console.error("memberNo가 전달되지 않았습니다.");
+      setLoading(false);
+    }
   }, [memberNo]);
 
-  const handleImageChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      try {
-        await addProfilePicture(file);
-        setProfileImage(URL.createObjectURL(file));
-        alert("Profile picture uploaded successfully!");
-      } catch (error) {
-        console.error("Failed to upload profile picture:", error);
-        alert("Failed to upload profile picture.");
-      }
-    }
+  const handleImageSave = (imagePath) => {
+    console.log("이미지 저장 경로:", imagePath);
+    setProfileImage(`${baseURL}${imagePath}`);
   };
 
   const handleImageClick = () => {
-    document.getElementById("fileInput").click();
-  };
-
-  // API 함수들
-  const addProfilePicture = async (file) => {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    return GZAPI.post("/api/members/addProfilePicture", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-      .then((response) => response.data)
-      .catch((error) => {
-        console.error("Error adding profile picture:", error);
-        throw error;
-      });
+    setIsModalOpen(true);
   };
 
   const getProfile = async (memberNo) => {
+    console.log("프로필 조회 요청:", memberNo);
     return GZAPI.get(`/api/members/getProfile/${memberNo}`)
-      .then((response) => response.data)
+      .then((response) => {
+        console.log("프로필 조회 응답:", response.data);
+        return response.data;
+      })
       .catch((error) => {
-        console.error("Error fetching profile:", error);
+        console.error("프로필 조회 실패:", error);
         throw error;
       });
   };
@@ -105,13 +93,6 @@ export default function Profile({ memberNo }) {
             <span>프로필</span>
           )}
         </div>
-        <input
-          id="fileInput"
-          type="file"
-          accept="image/*"
-          style={{ display: "none" }}
-          onChange={handleImageChange}
-        />
       </div>
       <div className="ml-12 w-[10em] gap-12 flex flex-col flex-shrink-0">
         <div className="text-gray-700 font-bold text-xl mb-2 ">
@@ -123,6 +104,13 @@ export default function Profile({ memberNo }) {
         </div>
         <div className="text-gray-500">작성 글 수 : {profileData.boardCount}</div>
       </div>
+      <PictureModal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        onImageSave={handleImageSave}
+        profileImage={profileImage}
+        memberNo={memberNo}
+      />
     </div>
   );
 }
