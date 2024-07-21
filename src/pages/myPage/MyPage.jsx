@@ -74,7 +74,7 @@ export default function MyPage() {
           navigate(`/myPage/${id}`);
           setActiveTab(id);
         }}
-        className="sticky top-14 z-50"
+        className="sticky top-20 z-20"
       />
       <div>{renderContent()}</div>
     </div>
