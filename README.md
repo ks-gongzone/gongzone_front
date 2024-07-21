@@ -1,70 +1,44 @@
-# Getting Started with Create React App
+# ✨[GONG ZONE](https://gongzone.shop).
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- 1인 가구 공동 구매 매칭 플랫폼
 
-## Available Scripts
+## ✨ 서비스 소개
 
-In the project directory, you can run:
+- 이 프로젝트는 사용자 인증, 파티 매칭, 회원 목록 관리 등 다양한 기능을 제공합니다.
+- 주요한 기능으로는 사용자 로그인 및 회원가입, 위치 기반 조회 서비스, 정산 프로세스 등이 있습니다.
 
-### `npm start`
+## 🛠 기술 스택
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+<img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> 
+<img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">
+<br>
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">
+<img src="https://img.shields.io/badge/Spring boot-6DB33F?style=for-the-badge&logo=react&logoColor=white">
+<br>
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=react&logoColor=white">
+<br>
+<img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=react&logoColor=white">
+<img src="https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=react&logoColor=white">
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📃 [회의록](https://docs.google.com/spreadsheets/d/1DfoGwbjeJ9tgpMLF9nTVkZpnNYQI3FRkyJkOwqtYie0/edit?usp=sharing) 및 [WIKI](https://nutritious-torta-392.notion.site/5eab88ee66c340e18491eeef752f04fb?pvs=4)
 
-### `npm test`
+## ✨ [주요기능](https://gongzone.shop)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## ⚙ 설치 및 실행(front)
 
-### `npm run build`
+1. 저장소 클론
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1) 프론트엔드
+   git clone https://github.com/ks-gongzone/gongzone_front.git
+2) 백엔드
+   git clone https://github.com/ks-gongzone/gongzone.git
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. 의존성 설치
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- cd gongzone_front
+- npm install
 
-### `npm run eject`
+3. 애플리케이션 실행
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- npm start
