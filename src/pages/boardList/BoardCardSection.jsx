@@ -66,6 +66,7 @@ export default function BoardCardSection({ data }) {
                   title={e.boardTitle}
                   id={e.partyNo}
                   memberNo={memberNo}
+                  labels={['인기', '핫']}
                   boardNo={e.boardNo}
                   partyNo={e.partyNo}
                   note={e.partyCateCode}
@@ -81,7 +82,7 @@ export default function BoardCardSection({ data }) {
             ))}
       </div>
       {/* 페이지네이션 컴포넌트 추가 */}
-      <div className="flex justify-center mt-4">
+      <div className="flex justify-center mt-8">
         <Pagination
           itemsPerPage={itemsPerPage}
           totalItems={data.length}
@@ -119,7 +120,7 @@ const Pagination = ({ itemsPerPage, totalItems, currentPage, paginate }) => {
           <li key={number}>
             <button
               onClick={() => paginate(number)}
-              className={`px-4 py-2 rounded-md border border-gray-300 focus:outline-none ${
+              className={`px-3 py-2  text-sm rounded-md border border-gray-300 focus:outline-none ${
                 currentPage === number
                   ? "bg-[#6ea2d4] text-white"
                   : "bg-gray-100 text-gray-700"

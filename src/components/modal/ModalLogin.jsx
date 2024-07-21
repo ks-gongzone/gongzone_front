@@ -2,6 +2,10 @@ import { useState } from "react";
 import AuthStore from "../../utils/zustand/AuthStore";
 import naverLogo from "../../assets/images/naverLoginButton.png";
 
+import Naver from "../../assets/logo/ic-sns-naver.png";
+import Kk from "../../assets/logo/ic-sns-kk.png";
+import Google from "../../assets/logo/ic-sns-google.png";
+
 export default function ModalLogin({ isOpen, onClose }) {
   const [loginId, setloginId] = useState("");
   const [loginPw, setloginPw] = useState("");
@@ -60,32 +64,34 @@ export default function ModalLogin({ isOpen, onClose }) {
           <div>
             <label
               htmlFor="loginId"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-xs font-medium text-gray-700"
             >
               아이디
             </label>
             <input
               type="text"
               id="loginId"
+              placeholder="아이디를 입력해주세요"
               value={loginId}
               onChange={(e) => setloginId(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block text-sm w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               required
             />
           </div>
           <div>
             <label
               htmlFor="loginPw"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-xs font-medium text-gray-700"
             >
               비밀번호
             </label>
             <input
               type="password"
               id="loginPw"
+              placeholder="비밀번호를 입력해주세요"
               value={loginPw}
               onChange={(e) => setloginPw(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 text-sm block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               required
             />
           </div>
@@ -93,41 +99,36 @@ export default function ModalLogin({ isOpen, onClose }) {
             <div className="text-red-500 text-sm mt-2">{errorMessage}</div>
           )}
           <div className="flex justify-between mt-4">
-            <div className="ml-auto">
-              <button type="submit" className="text-right text-blue-500">
-                CONTINUE
-              </button>
-            </div>
+            <button type="submit" className="bg-[#1D5091] w-full rounded-lg text-white hover:bg-opacity-90 text-xs py-3">
+              로그인
+            </button>
           </div>
-        </form>
 
+          
+        </form>
+        
         <div className="space-y-2 mt-4">
+          <div className="bg-gray-300 w-full h-[1px] mb-4"></div>
           <button
-            className="w-full bg-[#f97173] text-white py-2 rounded-lg flex items-center justify-center"
+            className="h-[42px] w-full text-black py-2 gap-2 rounded-md flex items-center justify-center text-xs shadow-[inset_0_0_0_0.5px_black] hover:bg-opacity-90"
             onClick={handleGoogleLogin}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 488 512" fill="#ffffff">
-              <path
-                d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path>
-            </svg>
-            <span className="mr-2"></span> GOOGLE
+            <img src={Google} alt="Google Logo" className="w-6"/>
+            구글 계정으로 로그인
           </button>
           <button
-            className="w-full bg-green-500 text-white py-2 rounded-lg flex items-center justify-center"
+            className="h-[42px] w-full text-white bg-[#1DB400] py-2 gap-2 rounded-md flex items-center justify-center text-xs hover:bg-opacity-90"
             onClick={handleNaverLogin}
           >
-            <img src={naverLogo} alt="Kakao Logo" className="h-full"/>
-            <span className="mr-2"></span> NAVER
+            <img src={Naver} alt="Naver Logo" className="w-3"/>
+            네이버 아이디로 로그인
           </button>
           <button
-            className="w-full bg-yellow-300 text-black py-2 rounded-lg flex items-center justify-center"
-            onClick={handleKakaoLogin}
+            className="h-[42px] w-full text-black bg-[#F7E318] py-2 gap-2 rounded-md flex items-center justify-center text-xs hover:bg-opacity-90"
+            onClick={handleNaverLogin}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20" fill="#191919">
-              <path
-                d="M512 240c0 114.9-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6C73.6 471.1 44.7 480 16 480c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4l0 0 0 0 0 0 0 0 .3-.3c.3-.3 .7-.7 1.3-1.4c1.1-1.2 2.8-3.1 4.9-5.7c4.1-5 9.6-12.4 15.2-21.6c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208z"></path>
-            </svg>
-            <span className="mr-2"></span> KAKAO
+            <img src={Kk} alt="Kakao Logo" className="w-4"/>
+            카카오 계정으로 로그인
           </button>
         </div>
       </div>

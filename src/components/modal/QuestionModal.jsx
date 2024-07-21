@@ -47,7 +47,7 @@ export default function QuestionModal() {
 
   return (
     <div>
-      <button onClick={openModal}>
+      <button onClick={openModal} className="text-xs text-gray-500 hover:underline">
         1:1 문의
       </button>
       {isModalOpen && (

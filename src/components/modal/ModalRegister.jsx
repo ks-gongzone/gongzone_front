@@ -1,4 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import Naver from "../../assets/logo/ic-sns-naver.png";
+import Kk from "../../assets/logo/ic-sns-kk.png";
+import Google from "../../assets/logo/ic-sns-google.png";
 
 export default function ModalRegisterLogin({ isOpen, onClose }) {
   const navigate = useNavigate();
@@ -42,34 +45,41 @@ export default function ModalRegisterLogin({ isOpen, onClose }) {
             &times;
           </button>
         </div>
-        <div className="space-y-2 mb-4">
-          <button
-            className="w-full bg-sky-500 text-white py-2 rounded-lg flex items-center justify-center"
+        <div className="space-y-2 mb-4 mt-8">
+        <div className="space-y-2 mt-4">
+        <button
+            className="h-[42px] w-full text-white bg-[#1D5091] py-2 gap-2 rounded-md flex items-center justify-center text-xs hover:bg-opacity-90"
             onClick={handleContinue}
           >
-            <span className="mr-2">+</span> GONGZONE
+            공존 계정으로 회원가입
           </button>
+
+
           <button
-            className="w-full bg-gray-200 text-black py-2 rounded-lg flex items-center justify-center"
+            className="h-[42px] w-full text-black py-2 gap-2 rounded-md flex items-center justify-center text-xs shadow-[inset_0_0_0_0.5px_black] hover:bg-opacity-90"
             onClick={handleGoogleLogin}
           >
-            <span className="mr-2">+</span> GOOGLE
+            <img src={Google} alt="Google Logo" className="w-6"/>
+            구글 계정으로 회원가입
           </button>
           <button
-            className="w-full bg-green-500 text-white py-2 rounded-lg flex items-center justify-center"
+            className="h-[42px] w-full text-white bg-[#1DB400] py-2 gap-2 rounded-md flex items-center justify-center text-xs hover:bg-opacity-90"
             onClick={handleNaverLogin}
           >
-            <span className="mr-2">+</span> NAVER
+            <img src={Naver} alt="Naver Logo" className="w-3"/>
+            네이버 아이디로 회원가입
           </button>
           <button
-            className="w-full bg-yellow-300 text-black py-2 rounded-lg flex items-center justify-center"
-            onClick={handleKakaoLogin}
+            className="h-[42px] w-full text-black bg-[#F7E318] py-2 gap-2 rounded-md flex items-center justify-center text-xs hover:bg-opacity-90"
+            onClick={handleNaverLogin}
           >
-            <span className="mr-2">+</span> KAKAO
+            <img src={Kk} alt="Kakao Logo" className="w-4"/>
+            카카오 계정으로 회원가입
           </button>
         </div>
-        <div className="flex justify-between items-center mt-4">
-          <button className="text-sm text-gray-500">ID/PW 찾기</button>
+        </div>
+        <div className="flex justify-between items-center mt-8">
+          <button className=" text-gray-400 text-center w-full text-xs">ID/PW 찾기</button>
         </div>
       </div>
     </div>

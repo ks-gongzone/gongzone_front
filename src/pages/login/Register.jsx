@@ -210,9 +210,10 @@ export default function Register() {
 
   return (
     <div>
-      <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">회원가입</h2>
-        <form onSubmit={statusRegister} className="space-y-4">
+      <div className="max-w-screen-lg mx-auto mt-10 p-6 bg-white rounded-lg">
+        <h2 className="text-2xl font-bold mb-2">회원가입</h2>
+        <h3 className="text-gray-500 mb-4">내용만 입력하면 회원가입이 바로 완료됩니다</h3>
+        <form onSubmit={statusRegister} className="space-y-4 mt-8">
           {!isSocialLogin && (
             <>
               <div>
@@ -224,10 +225,10 @@ export default function Register() {
                   value={formValues.memberId}
                   onChange={handleCheck}
                   onBlur={onBlur}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   required
                 />
-                {errors.memberId && <p style={{ color: 'red' }}>{errors.memberId}</p>}
+                {errors.memberId && <p style={{ color: 'red', fontSize: '12px', marginTop: '8px' }}>{errors.memberId}</p>}
               </div>
               <div>
                 <label htmlFor="memberPw" className="block text-sm font-medium text-gray-700">비밀번호</label>
@@ -238,10 +239,10 @@ export default function Register() {
                   value={formValues.memberPw}
                   onChange={handleCheck}
                   onBlur={onBlur}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   required
                 />
-                {errors.memberPw && <p style={{ color: 'red' }}>{errors.memberPw}</p>}
+                {errors.memberPw && <p style={{ color: 'red', fontSize: '12px', marginTop: '8px' }}>{errors.memberPw}</p>}
               </div>
             </>
           )}
@@ -254,10 +255,10 @@ export default function Register() {
               value={formValues.memberName}
               onChange={handleCheck}
               onBlur={onBlur}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               required
             />
-            {errors.memberName && <p style={{ color: 'red' }}>{errors.memberName}</p>}
+            {errors.memberName && <p style={{ color: 'red', fontSize: '12px', marginTop: '8px' }}>{errors.memberName}</p>}
           </div>
           <div>
             <label htmlFor="memberEmail" className="block text-sm font-medium text-gray-700">이메일</label>
@@ -268,11 +269,11 @@ export default function Register() {
               value={formValues.memberEmail}
               onChange={handleCheck}
               onBlur={onBlur}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               required
             />
           </div>
-          {errors.memberEmail && <p style={{ color: 'red' }}>{errors.memberEmail}</p>}
+          {errors.memberEmail && <p style={{ color: 'red', fontSize: '12px', marginTop: '8px' }}>{errors.memberEmail}</p>}
           <div>
             <label htmlFor="memberPhone" className="block text-sm font-medium text-gray-700">전화번호</label>
             <input
@@ -282,10 +283,10 @@ export default function Register() {
               value={formValues.memberPhone}
               onChange={handlePhoneChange}
               onBlur={onBlur}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               required
             />
-            {errors.memberPhone && <p style={{ color: 'red' }}>{errors.memberPhone}</p>}
+            {errors.memberPhone && <p style={{ color: 'red', fontSize: '12px', marginTop: '8px' }}>{errors.memberPhone}</p>}
           </div>
           <div>
             <label htmlFor="memberGender" className="block text-sm font-medium text-gray-700">성별</label>
@@ -325,7 +326,7 @@ export default function Register() {
               value={formValues.memberAddress}
               onChange={handleCheck}
               onBlur={onBlur}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
           <div>
@@ -337,7 +338,7 @@ export default function Register() {
               value={formValues.memberBirthday}
               onChange={handleCheck}
               onBlur={onBlur}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
           <div>
@@ -349,10 +350,13 @@ export default function Register() {
               value={formValues.memberNick}
               onChange={handleCheck}
               onBlur={onBlur}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
-          <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg">회원가입</button>
+          <div className='mt-8 flex-none'>
+          <button type="submit" className="w-full bg-blue-500 text-white py-4 rounded-lg">회원가입</button>
+          </div>
+          
         </form>
         {message && <p>{message}</p>}
       </div>
