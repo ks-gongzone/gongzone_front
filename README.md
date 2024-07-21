@@ -1,11 +1,14 @@
 # ✨[GONG ZONE](https://gongzone.shop).
 
 - 1인 가구 공동 구매 매칭 플랫폼
+<br>
 
 ## ✨ 서비스 소개
 
 - 이 프로젝트는 사용자 인증, 파티 매칭, 회원 목록 관리 등 다양한 기능을 제공합니다.
 - 주요한 기능으로는 사용자 로그인 및 회원가입, 위치 기반 조회 서비스, 정산 프로세스 등이 있습니다.
+
+<br>
 
 ## 🛠 기술 스택
 
@@ -23,9 +26,15 @@
 <img src="https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=react&logoColor=white">
 </div>
 
+<br>
+
 ## 📃 [회의록](https://docs.google.com/spreadsheets/d/1DfoGwbjeJ9tgpMLF9nTVkZpnNYQI3FRkyJkOwqtYie0/edit?usp=sharing) 및 [WIKI](https://nutritious-torta-392.notion.site/5eab88ee66c340e18491eeef752f04fb?pvs=4)
 
+<br>
+
 ## ✨ [주요기능](https://gongzone.shop)
+
+<br>
 
 ## ⚙ 설치 및 실행(front)
 
