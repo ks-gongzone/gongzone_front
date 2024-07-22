@@ -166,17 +166,20 @@ export default function InsertForm() {
     }
 
     try {
-      const response = await GZAPI.post(`/api/boards/write/${memberNo}`,formDataToSend,{
-        headers: {
-          "Content-Type": "multipart/form-data",
-
-        },
-        transformRequest: [
-          function () {
-            return formDataToSend;
+      const response = await GZAPI.post(
+        `/api/boards/write/${memberNo}`,
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
           },
-        ],
-      });
+          transformRequest: [
+            function () {
+              return formDataToSend;
+            },
+          ],
+        }
+      );
 
       if (response.status === 200) {
         setSubmitSuccess("게시글이 성공적으로 등록되었습니다!");
@@ -192,7 +195,9 @@ export default function InsertForm() {
       // 에러 처리
       console.error("폼 데이터 전송 중 오류가 발생했습니다.", error);
       setSubmitSuccess("");
-      setSubmitError("게시글 등록 중 오류가 발생했습니다. 나중에 다시 시도하세요.");
+      setSubmitError(
+        "게시글 등록 중 오류가 발생했습니다. 나중에 다시 시도하세요."
+      );
     }
   };
 
@@ -317,17 +322,17 @@ export default function InsertForm() {
           name="image"
           accept="image/*"
           onChange={handleChange}
-          style={{ display: 'none' }}
+          style={{ display: "none" }}
           required
         />
 
-      <button
-        type="button"
-        onClick={() => document.getElementById('fileInput').click()}
-        className="bg-[#1d5091] text-white px-2 py-2 rounded-md hover:bg-[#6ea2d4]"
-      >
-        파일 선택
-      </button>
+        <button
+          type="button"
+          onClick={() => document.getElementById("fileInput").click()}
+          className="bg-[#1d5091] text-white px-2 py-2 rounded-md hover:bg-[#6ea2d4]"
+        >
+          파일 선택
+        </button>
 
         {/* 이미지 미리보기 */}
         {formData.image && (
@@ -347,7 +352,7 @@ export default function InsertForm() {
       </div>
       <div className="flex justify-between gap-10">
         {/* 지도 */}
-        <div className="w-2/3">
+        <div className="w-1/2">
           제품 수령 주소
           {/* <MapSearch /> */}
           <BoardMap
@@ -355,7 +360,7 @@ export default function InsertForm() {
             onPositionChange={handlePositionChange}
           />
         </div>
-        <div className="w-1/3">
+        <div className="w-1/2">
           <label className="block mt-5">게시글 마감일</label>
           <Calendar
             selected={formData.endDate}
@@ -366,7 +371,10 @@ export default function InsertForm() {
       </div>
 
       <div className="flex justify-end">
-        <button type="submit" className="bg-[#1d5091] text-white px-10 py-3 rounded-md hover:bg-[#6ea2d4]">
+        <button
+          type="submit"
+          className="bg-[#1d5091] text-white px-10 py-3 rounded-md hover:bg-[#6ea2d4]"
+        >
           제출
         </button>
       </div>

@@ -59,7 +59,28 @@ export default function AnnounceItems({
   if (!Array.isArray(items) || items.length === 0) {
     return (
       <div>
-        공지사항이 존재하지 않습니다.{" "}
+        <div className="flex flex-col items-center box-border p-4">
+          <div className="w-full max-w-6xl">
+            <div className="bg-white shadow rounded-lg">
+              <ul>
+                {Array.from({ length: 10 }).map((_, index) => (
+                  <li key={index} className="flex justify-between p-4 border-b">
+                    <div className="xl:w-[54em] w-[30em] md:w-[40em] lg:w-[54em] flex items-center">
+                      <Skeleton width={100} height={20} />
+                      <div className="text-left px-2 py-1 rounded mr-2">
+                        <Skeleton width={200} height={20} />
+                      </div>
+                    </div>
+                    <div className="flex items-center">
+                      <Skeleton width={100} height={20} className="mr-4" />
+                      <Skeleton width={40} height={20} />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
         {isAdmin && (
           <div className="flex items-center justify-center">
             <Link
@@ -83,7 +104,7 @@ export default function AnnounceItems({
 
   return (
     <div className="flex flex-col items-center box-border p-4">
-      <div className="w-full w-[20em] sm:w-md md:w-[60em] lg:w-[60em] xl:w-[60em]">
+      <div className="xl:w-[65em] w-[30em] md:w-[50em] lg:w-[58em]">
         <div className="bg-white shadow rounded-lg">
           <ul>
             {items.map((item, index) => (
@@ -95,10 +116,10 @@ export default function AnnounceItems({
                   <div
                     className={`w-[5em] text-center px-2 py-1 rounded mr-2 ${
                       item.type === "공지"
-                        ? "bg-blue-200"
+                        ? "bg-[#6ea2d4]"
                         : item.type === "FAQ"
-                        ? "bg-yellow-200"
-                        : "bg-green-200"
+                        ? "bg-[#ffa750]"
+                        : "bg-[#62c8b3]"
                     }`}
                   >
                     {item.type}

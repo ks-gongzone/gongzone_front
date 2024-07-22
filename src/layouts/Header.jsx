@@ -59,7 +59,7 @@ export default function LayoutHeader() {
   };
 
   return (
-    <div className="shadow-md z-50 sticky top-0 bg-white h-20">
+    <div className="shadow-md z-50 sticky top-0 bg-white xl:h-20 lg:h-20 h-auto">
       <div className="flex flex-wrap items-center relative h-full">
         <div className="flex items-center max-w-5xl mx-auto gap-4 justify-between flex-wrap md: xl:flex-wrap w-full p-4 md:p-0">
           <Link className="text-2xl whitespace-nowrap" to="/home">
@@ -109,7 +109,7 @@ export default function LayoutHeader() {
                   behavior: "smooth",
                 });
               }}
-              className="flex items-center bg-[#1d5091] text-white px-4 py-2 mr-2 rounded-md hover:bg-[#14396a] whitespace-nowrap text-xs gap-2"
+              className="flex items-center bg-[#6ea2d4] text-white px-4 py-2 mr-2 rounded-md hover:bg-[#14396a] whitespace-nowrap text-xs gap-2"
             >
               검색
               <MagnifyingGlassIcon className="w-5 h-5" />
@@ -127,10 +127,10 @@ export default function LayoutHeader() {
                         behavior: "smooth",
                       });
                     }}
-                    className="flex items-center bg-[#1d5091] text-white px-4 py-2 rounded-md hover:bg-[#0d2544] whitespace-nowrap"
+                    className="flex items-center bg-[#1d5091] text-white px-4 py-2 rounded-md hover:bg-[#0d2544] whitespace-nowrap gap-2 text-xs"
                   >
-                    <PencilIcon className="w-5 h-5 mr-2" />
                     글쓰기
+                    <PencilIcon className="w-5 h-5" />
                   </button>
                   <div className="relative inline-block">
                     <button
