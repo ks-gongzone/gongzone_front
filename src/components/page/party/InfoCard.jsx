@@ -59,7 +59,6 @@ export default function InfoCard({
         alert(errorData || "게시글 삭제에 실패했습니다.");
       }
     } catch (error) {
-      console.error("Error deleting board:", error);
       alert("파티원이 있는 게시글은 삭제할 수 없습니다.");
     }
   };

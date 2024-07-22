@@ -21,7 +21,7 @@ export default function PartyList() {
   const PartyListSkeleton = () => (
     <div className="mt-20">
       <div className="border rounded-lg p-4 shadow-md">
-        <CustomSkeleton width={300} height={150} />
+        <CustomSkeleton width={270} height={200} />
         <div className="mt-4">
           <CustomSkeleton width="60%" height={20} />
         </div>

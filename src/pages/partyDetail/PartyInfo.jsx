@@ -34,16 +34,11 @@ export default function PartyDetail() {
   const connectNo = AuthStore((state) => state.userInfo.memberNo);
 
   const fetch = async () => {
-    try {
-      const detailData = await Party.PartyDetail(partyNo);
-      const responseData = detailData.data ? detailData.data : detailData;
-      setData(responseData);
-      setDetail(responseData);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
-    }
+    const detailData = await Party.PartyDetail(partyNo);
+    const responseData = detailData.data ? detailData.data : detailData;
+    setData(responseData);
+    setDetail(responseData);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -75,39 +70,23 @@ export default function PartyDetail() {
   };
 
   const handleAccept = async (memberNo, partyNo) => {
-    try {
-      await Party.HandleMember(memberNo, partyNo, "S060202");
-      await fetch();
-    } catch (error) {
-      console.error("Accept error:", error);
-    }
+    await Party.HandleMember(memberNo, partyNo, "S060202");
+    await fetch();
   };
 
   const handleRefuse = async (memberNo, partyNo) => {
-    try {
-      await Party.HandleMember(memberNo, partyNo, "S060203");
-      await fetch();
-    } catch (error) {
-      console.error("Refuse error:", error);
-    }
+    await Party.HandleMember(memberNo, partyNo, "S060203");
+    await fetch();
   };
 
   const handleKick = async (memberNo, partyNo) => {
-    try {
-      await Party.HandleMember(memberNo, partyNo, "S060205");
-      await fetch();
-    } catch (error) {
-      console.error("Kick error:", error);
-    }
+    await Party.HandleMember(memberNo, partyNo, "S060205");
+    await fetch();
   };
 
   const handleLeave = async (memberNo, partyNo) => {
-    try {
-      await Party.HandleMember(memberNo, partyNo, "S060204");
-      await fetch();
-    } catch (error) {
-      console.error("Leave error:", error);
-    }
+    await Party.HandleMember(memberNo, partyNo, "S060204");
+    await fetch();
   };
 
   const handlePurchase = async (memberNo, partyNo) => {

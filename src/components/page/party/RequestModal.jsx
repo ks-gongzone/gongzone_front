@@ -70,12 +70,8 @@ export default function RequestModal({
   }, [isOpen, remainAmount]);
 
   const handleSubmit = async (amount) => {
-    try {
-      await Party.RequestJoin(memberNo, partyNo, "S060201", amount);
-      onClose();
-    } catch (error) {
-      console.error("Request join error:", error);
-    }
+    await Party.RequestJoin(memberNo, partyNo, "S060201", amount);
+    onClose();
   };
 
   return null;
