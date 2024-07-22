@@ -82,7 +82,7 @@ export default function QuestionModal() {
               </button>
               <button
                 type="button"
-                className="p-2 bg-blue-500 text-white rounded"
+                className="p-2 bg-[#1d5091] text-white rounded"
                 onClick={handleButton}
               >
                 저장
