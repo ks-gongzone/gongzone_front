@@ -11,14 +11,13 @@ export default function FollowList({ memberNo }) {
   const fetchFollowList = async (page, size) => {
     try {
       const data = await MemberListAPI.getFollowList(memberNo, page, size);
-      const processedData = data.followList
-        .map(member => ({
-          ...member,
-          isPopular: member.popular,
-          isWarning: member.warning,
-          isFollowing: member.following,
-          isBlocked: member.blocked
-        }));
+      const processedData = data.followList.map((member) => ({
+        ...member,
+        isPopular: member.popular,
+        isWarning: member.warning,
+        isFollowing: member.following,
+        isBlocked: member.blocked,
+      }));
       setFollowList(processedData);
       setCurrentPage(data.currentPage);
       setTotalMembers(data.totalCount);
@@ -33,10 +32,8 @@ export default function FollowList({ memberNo }) {
 
   const renderMemberCards = (members) => {
     return members.map((member) => (
-      <div key={member.memberNo} className="w-full md:w-1/2 lg:w-1/3 p-4">
-        <MemberListCard
-          member={member}
-        />
+      <div key={member.memberNo} className="w-full lg:w-1/3 p-4">
+        <MemberListCard member={member} note={true} like={true} />
       </div>
     ));
   };
@@ -44,7 +41,7 @@ export default function FollowList({ memberNo }) {
   const totalPages = Math.ceil(totalMembers / size);
 
   return (
-    <div className="w-[65em] mx-auto mb-10 mt-14">
+    <div className="w-full relative mx-auto mb-10 mt-14">
       <div className="flex flex-wrap gap-4 justify-center">
         {renderMemberCards(followList)}
       </div>
@@ -56,7 +53,9 @@ export default function FollowList({ memberNo }) {
         >
           이전
         </button>
-        <span>페이지 {currentPage} / {totalPages}</span>
+        <span>
+          페이지 {currentPage} / {totalPages}
+        </span>
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={currentPage === totalPages}

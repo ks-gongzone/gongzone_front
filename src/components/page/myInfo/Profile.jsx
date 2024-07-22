@@ -3,9 +3,10 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import GZAPI from "../../../utils/api";
 import PictureModal from "./PictureModal";
+import { CameraIcon } from "@heroicons/react/24/outline";
 
 // const baseURL = 'https://gongzone.duckdns.org';
-const baseURL = 'http://localhost:8088';
+const baseURL = "http://localhost:8088";
 
 export default function Profile({ memberNo }) {
   const [profileImage, setProfileImage] = useState(null);
@@ -34,7 +35,10 @@ export default function Profile({ memberNo }) {
             boardCount: profile.boardCount,
           });
           if (data.file) {
-            console.log("프로필 이미지 경로:", `${baseURL}${data.file.filePath}`);
+            console.log(
+              "프로필 이미지 경로:",
+              `${baseURL}${data.file.filePath}`
+            );
             setProfileImage(`${baseURL}${data.file.filePath}`);
           }
           setLoading(false);
@@ -72,17 +76,29 @@ export default function Profile({ memberNo }) {
   };
 
   if (loading) {
-    return <Skeleton />;
+    return (
+      <div className="flex flex-col items-center mt-12">
+        <Skeleton circle={true} height={150} width={150} />
+        <Skeleton height={30} width={200} className="mt-4" />
+        <Skeleton height={20} width={300} className="mt-2" />
+        <Skeleton height={20} width={300} className="mt-2" />
+        <Skeleton height={20} width={300} className="mt-2" />
+      </div>
+    );
   }
 
-  const genderLabel = profileData.gender === "M" ? "남성" : profileData.gender === "F" ? "여성" : profileData.gender;
+  const genderLabel =
+    profileData.gender === "M"
+      ? "남성"
+      : profileData.gender === "F"
+      ? "여성"
+      : profileData.gender;
 
   return (
-    <div className="w-full flex items-center justify-between">
-      <div className="mb-4">
-        <div className="text-gray-700 font-bold text-xl mb-2">프로필</div>
+    <div className="w-full flex flex-col items-center justify-between">
+      <div className="mb-12 border-gray-400 rounded-lg">
         <div
-          className="w-[10em] h-[10em] mb-2 rounded-full bg-gray-400 flex items-center justify-center text-white text-2xl cursor-pointer relative"
+          className="w-[8em] h-[8em] mb-2 rounded-full bg-gray-400 flex items-center justify-center text-white text-2xl cursor-pointer relative"
           onClick={handleImageClick}
         >
           {profileImage ? (
@@ -94,23 +110,23 @@ export default function Profile({ memberNo }) {
           ) : (
             <span>프로필</span>
           )}
-        <div className="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-white border border-black flex items-center justify-center">
-          <span className="text-black">📷</span>
+          <div className="absolute bottom-3 right-3 w-10 h-10 rounded-full bg-white border border-gray-400 flex items-center justify-center">
+            <CameraIcon className="w-7 h-7 text-gray-600" />
           </div>
         </div>
-      </div>
-      <div className="ml-8 w-[10em] flex flex-col flex-shrink-0">
-        <div className="text-gray-700 font-bold text-xl mb-2">
+        <div className="text-gray-700 font-bold text-xl text-center mb-2">
           {profileData.memberName}
         </div>
-        <div className="flex flex-col mb-1">
-          <div className="flex justify-between">
-            <div className="text-gray-500 font-bold">성별:</div>
-            <div className="block text-xl font-bold">{genderLabel}</div>
-          </div>
-          <div className="flex justify-between mt-1">
-            <div className="text-gray-500 font-bold">작성 글 수:</div>
-            <div className="block text-xl font-bold">{profileData.boardCount} 개</div>
+      </div>
+      <div className="w-[20em] flex flex-col flex-shrink-0 gap-5">
+        <div className="flex justify-between">
+          <div className="text-gray-500 font-bold">성별</div>
+          <div className="block text-xl font-bold">{genderLabel}</div>
+        </div>
+        <div className="flex justify-between mt-1">
+          <div className="text-gray-500 font-bold">작성 글 수</div>
+          <div className="block text-xl font-bold">
+            {profileData.boardCount} 개
           </div>
         </div>
         <div className="flex justify-between mt-1">

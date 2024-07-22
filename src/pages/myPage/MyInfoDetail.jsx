@@ -51,9 +51,10 @@ export default function MyInfoDetail({ memberNo, onPreviousPage }) {
       <div className="p-12 bg-white shadow-md rounded-lg w-[800px] mx-auto">
         <button
           onClick={onPreviousPage}
-          className="text-blue-500 text-2xl mb-4">
-            &lt;
-          </button>
+          className="text-blue-500 text-2xl mb-4"
+        >
+          &lt;
+        </button>
         <ChangePassword memberNo={memberNo} />
         <SetNickname memberNo={memberNo} />
         <div className="mb-6">
