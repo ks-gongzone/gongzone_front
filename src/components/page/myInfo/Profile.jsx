@@ -5,8 +5,7 @@ import GZAPI from "../../../utils/api";
 import PictureModal from "./PictureModal";
 import { CameraIcon } from "@heroicons/react/24/outline";
 
-// const baseURL = 'https://gongzone.duckdns.org';
-const baseURL = "http://localhost:8088";
+const baseURL = 'https://gongzone.duckdns.org';
 
 export default function Profile({ memberNo }) {
   const [profileImage, setProfileImage] = useState(null);

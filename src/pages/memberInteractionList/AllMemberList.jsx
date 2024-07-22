@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import AuthStore from "../../utils/zustand/AuthStore";
-import { MemberListAPI } from "../../utils/repository";
+import { MemberListAPI, ProfileAPI } from "../../utils/repository";
 import MemberListCard from "./MemberListCard";
 import { useNavigate } from "react-router-dom";
+import sample1 from "../../assets/images/sample1.PNG";
+
+const baseURL = 'https://gongzone.duckdns.org';
 
 export default function AllMemberList({
   searchQuery,
@@ -35,32 +38,46 @@ export default function AllMemberList({
         " query:",
         searchQuery
       );
-      MemberListAPI.getMemberList(currentPage, size, searchQuery)
-        .then((data) => {
-          if (!data.memberList || data.memberList.length === 0) {
-            setMemberList([]);
-            setTotalMembers(0);
-            setCurrentPage(1);
-            alert("검색 결과가 없습니다.");
-            navigate("/member/list");
-          } else {
-            const processedData = data.memberList.map((member) => ({
-              ...member,
-              isPopular: member.popular,
-              isWarning: member.warning,
-              isFollowing: member.following,
-              isBlocked: member.blocked,
-            }));
-            setMemberList(processedData);
-            setCurrentPage(data.currentPage);
-            setTotalMembers(data.totalCount);
-            navigate(`/member/list?query=${searchQuery}&page=${currentPage}`);
-          }
-        })
-        .catch((error) => {
-          console.error("[페이지] 유저 데이터 로드 중 오류", error);
-        });
+
+      try {
+        const [membersData, profilesData] = await Promise.all([
+          MemberListAPI.getMemberList(currentPage, size, searchQuery),
+          ProfileAPI.getAllProfiles()
+        ]);
+
+        const profiles = profilesData || [];
+
+        if (!membersData.memberList || membersData.memberList.length === 0) {
+          setMemberList([]);
+          setTotalMembers(0);
+          setCurrentPage(1);
+          alert("검색 결과가 없습니다.");
+          navigate("/member/list");
+        } else {
+          const profilesMap = profiles.reduce((acc, profile) => {
+            acc[profile.memberNo] = profile.files.length > 0 ? `${baseURL}${profile.files[0].filePath}` : sample1;
+            return acc;
+          }, {});
+
+          const processedData = membersData.memberList.map((member) => ({
+            ...member,
+            isPopular: member.popular,
+            isWarning: member.warning,
+            isFollowing: member.following,
+            isBlocked: member.blocked,
+            profileImage: profilesMap[member.memberNo] || sample1 
+          }));
+
+          setMemberList(processedData);
+          setCurrentPage(membersData.currentPage);
+          setTotalMembers(membersData.totalCount);
+          navigate(`/member/list?query=${searchQuery}&page=${currentPage}`);
+        }
+      } catch (error) {
+        console.error("[페이지] 유저 데이터 로드 중 오류", error);
+      }
     };
+
     changeMembersList();
   }, [
     currentPage,
@@ -80,6 +97,7 @@ export default function AllMemberList({
           member={member}
           note={true}
           like={true}
+          profileImage={member.profileImage} // profileImage prop으로 전달
         />
       </div>
     ));

@@ -6,7 +6,7 @@ import ReportModal from "../../components/modal/ReportModal";
 import FollowButton from "../../components/button/FollowButton";
 import BlockButton from "../../components/button/BlockButton";
 import AuthStore from "../../utils/zustand/AuthStore";
-import { DropDownAPI, Note } from "../../utils/repository";
+import { Note } from "../../utils/repository";
 import sample1 from "../../assets/images/sample1.PNG";
 
 const MySwal = withReactContent(Swal);
@@ -16,10 +16,10 @@ export default function MemberListCard({
   like = false,
   note = false,
   children,
+  profileImage,
 }) {
   const [isLiked, setIsLiked] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [profileImage, setProfileImage] = useState(null);
   const dropdownRef = useRef(null);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const { userInfo } = AuthStore((state) => ({ userInfo: state.userInfo }));
@@ -85,26 +85,13 @@ export default function MemberListCard({
     };
   }, []);
 
-  useEffect(() => {
-    // 프로필 이미지 로드
-    DropDownAPI.getProfile(member.memberNo)
-      .then((data) => {
-        if (data.file) {
-          setProfileImage(`${data.file.filePath}`);
-        }
-      })
-      .catch((error) => {
-        console.error("프로필 이미지 로드 중 에러 발생", error);
-      });
-  }, [member.memberNo]);
-
   return (
     <div className="border rounded-lg hover:border-[#ea6560] transition-colors overflow-hidden min-h-[210px] flex flex-col">
       <div className="flex flex-grow">
         <div className="ml-4 mt-6 w-16 h-16 rounded-full bg-slate-400 flex-shrink-0">
           <img
             className="w-16 h-16 rounded-full object-cover"
-            src={profileImage || sample1}
+            src={profileImage || sample1} // profileImage prop 사용
             alt=""
           />
         </div>

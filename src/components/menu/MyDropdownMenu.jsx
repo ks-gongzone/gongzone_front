@@ -4,7 +4,7 @@ import AuthStore from "../../utils/zustand/AuthStore";
 import sample1 from "../../assets/images/sample1.PNG";
 import { Alert, DropDownAPI } from "../../utils/repository";
 
-const baseURL ="http://localhost:8088";
+const baseURL = 'https://gongzone.duckdns.org';
 
 /**
  * @수정일: 2024-07-10

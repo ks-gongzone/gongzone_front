@@ -372,7 +372,6 @@ export const DropDownAPI = {
       });
   },
   getProfile: async (memberNo) => {
-    console.log("프로필 조회 요청:", memberNo);
     return GZAPI.get(`/api/members/getProfile/${memberNo}`)
       .then((response) => {
         console.log("프로필 조회 응답:", response.data);
@@ -383,9 +382,22 @@ export const DropDownAPI = {
         throw error;
       });
   },
-  
+};
 
-}
+export const ProfileAPI = {
+  getAllProfiles: async () => {
+    return GZAPI.get(`/api/members/allProfiles`)
+      .then((response) => {
+        console.log("전체 프로필 조회 응답:", response.data);
+        return response.data;
+      })
+      .catch((error) => {
+        console.error("전체 프로필 조회 실패:", error);
+        throw error;
+      });
+  },
+};
+
   // 유저 리스트 업 후 팔로우 차단 API
  export const MemberListAPI = {
   getMemberList: async (page, size, query) => {
