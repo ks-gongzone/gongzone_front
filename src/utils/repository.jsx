@@ -12,16 +12,11 @@ export const Auth = {
     try {
       const response = await GZAPI.post("/api/login", data);
       const { token, refreshToken, tokenExpiresIn } = response.data;
-      console.log("Login response data: ", response.data);
-      console.log(
-        "Login successful. Access token expires at: ",
-        new Date(tokenExpiresIn)
-      );
 
       window.localStorage.setItem("accessToken", token);
       window.localStorage.setItem("refreshToken", refreshToken);
       window.localStorage.setItem("tokenExpiresIn", tokenExpiresIn);
-      return response.data; // response.data 반환
+      return response.data;
     } catch (err) {
       if (err.response.status === 403) {
         return { error: "제재 되었거나 탈퇴된 계정입니다." };
@@ -38,24 +33,18 @@ export const Auth = {
   },
   Naver: async (code, state) => {
     try {
-      console.log(
-        "Sending Axios request with code:",
-        code,
-        "and state:",
-        state
-      );
       const response = await GZAPI.post("/api/naver/token", { code, state });
       const { token, refreshToken, tokenExpiresIn } = response.data;
       window.localStorage.setItem("accessToken", token);
       window.localStorage.setItem("refreshToken", refreshToken);
       window.localStorage.setItem("tokenExpiresIn", tokenExpiresIn);
+      return response.data;
     } catch (error) {
       if (error.response.status === 403) {
         return { error: "제재 되었거나 탈퇴된 계정입니다." };
       } else if (error.response.status === 410) {
         return { error: "휴면 계정입니다." };
       }
-      console.error("Error in Axios request:", error);
       const errorMessage = error.response ? error.response.data : error.message;
 
       return { error: errorMessage };
@@ -63,12 +52,6 @@ export const Auth = {
   },
   Google: async (code, state) => {
     try {
-      console.log(
-        "Sending Axios request with code:",
-        code,
-        "and state:",
-        state
-      );
       const response = await GZAPI.post("/api/google/token", { code, state });
       const { token, refreshToken, tokenExpiresIn } = response.data;
       window.localStorage.setItem("accessToken", token);
@@ -81,7 +64,6 @@ export const Auth = {
       } else if (error.response.status === 410) {
         return { error: "휴면 계정입니다." };
       }
-      console.error("Error in Axios request:", error);
       const errorMessage = error.response ? error.response.data : error.message;
 
       return { error: errorMessage };
@@ -89,12 +71,6 @@ export const Auth = {
   },
   Kakao: async (code, state) => {
     try {
-      console.log(
-        "Sending Axios request with code:",
-        code,
-        "and state:",
-        state
-      );
       const response = await GZAPI.post("/api/kakao/token", { code, state });
       const { token, refreshToken, tokenExpiresIn } = response.data;
       window.localStorage.setItem("accessToken", token);
@@ -107,7 +83,6 @@ export const Auth = {
       } else if (error.response.status === 410) {
         return { error: "휴면 계정입니다." };
       }
-      console.error("Error in Axios request:", error);
       const errorMessage = error.response ? error.response.data : error.message;
 
       return { error: errorMessage };
@@ -393,6 +368,18 @@ export const DropDownAPI = {
       .then((response) => response.data)
       .catch((error) => {
         console.error("Error fetching drop down data:", error);
+        throw error;
+      });
+  },
+  getProfile: async (memberNo) => {
+    console.log("프로필 조회 요청:", memberNo);
+    return GZAPI.get(`/api/members/getProfile/${memberNo}`)
+      .then((response) => {
+        console.log("프로필 조회 응답:", response.data);
+        return response.data;
+      })
+      .catch((error) => {
+        console.error("프로필 조회 실패:", error);
         throw error;
       });
   },

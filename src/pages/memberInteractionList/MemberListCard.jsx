@@ -84,7 +84,7 @@ export default function MemberListCard({
   }, []);
 
   return (
-    <div className="border rounded-lg hover:border-[#ea6560] transition-colors overflow-hidden min-h-[150px] flex flex-col">
+    <div className="border rounded-lg hover:border-[#ea6560] transition-colors overflow-hidden min-h-[210px] flex flex-col">
       <div className="flex flex-grow">
         <div className="ml-4 mt-6 w-16 h-16 rounded-full bg-slate-400 flex-shrink-0">
           <img
@@ -95,7 +95,7 @@ export default function MemberListCard({
         </div>
         <div className="w-full mt-2 ml-4 font-bold text-gray-500 flex flex-col relative">
           {like && (
-            <button type="button" className="self-end mr-4" onClick={likeBtn}>
+            <button type="button" className="self-end" onClick={likeBtn}>
               <FollowButton
                 targetMemberNo={member.memberNo}
                 targetMemberName={member.memberName}
@@ -153,15 +153,9 @@ export default function MemberListCard({
           <div className="text-xs">
             성별: {member.gender === "M" ? "남성" : "여성"}
           </div>
-          <div className="mt-2">
-            {member.isPopular && <div className="text-blue-500">인기유저</div>}
-            {member.isWarning && (
-              <div className="text-red-500">블랙리스트유저</div>
-            )}
-          </div>
         </div>
       </div>
-      <div className="flex flex-col justify-between items-center mt-4 p-4 space-y-2">
+      <div className="flex flex-col justify-center items-center mt-4 p-4 space-y-2">
         {currentUserNo !== member.memberNo && (
           <>
             {note && (
@@ -173,7 +167,20 @@ export default function MemberListCard({
                 쪽지 보내기
               </button>
             )}
-            <div>{children}</div>
+            <hr className="w-full" />
+            {member.isPopular ? (
+              <div className="w-full text-center flex items-center justify-center h-6 rounded-md bg-[#6ea2d4] text-xs font-bold text-[white]">
+                인기유저
+              </div>
+            ) : member.isWarning ? (
+              <div className="w-full text-center flex items-center justify-center h-6 rounded-md bg-[#b93d40] text-xs font-bold text-[white]">
+                블랙리스트유저
+              </div>
+            ) : (
+              <div className="w-full text-center flex items-center justify-center h-6 rounded-md bg-[#62c8b3] text-xs font-bold text-[white]">
+                일반유저
+              </div>
+            )}
           </>
         )}
       </div>

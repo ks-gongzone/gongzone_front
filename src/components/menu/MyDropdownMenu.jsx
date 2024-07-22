@@ -4,6 +4,8 @@ import AuthStore from "../../utils/zustand/AuthStore";
 import sample1 from "../../assets/images/sample1.PNG";
 import { DropDownAPI } from "../../utils/repository";
 
+const baseURL ="http://localhost:8088";
+
 /**
  * @수정일: 2024-07-10
  * @수정내용: 드롭다운 박스 노출 시 데이터 로드
@@ -20,6 +22,7 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
     pointNo: "",
     memberPoint: 0,
   });
+  const [profileImage, setProfileImage] = useState(null);
 
   const handleLogout = () => {
     statusLogout();
@@ -45,6 +48,16 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
           })
           .catch((error) => {
             console.error("드롭다운 메뉴 로드 중 에러발생", error);
+          });
+      DropDownAPI.getProfile(memberNo)
+          .then((data) => {
+            if (data.file) {
+              console.log("프로필 이미지 경로: ", `${baseURL}${data.filePath}`);
+              setProfileImage(`${baseURL}${data.file.filePath}`);
+            }
+          })
+          .catch((error) => {
+            console.error("프로필 이미지 로드 중 에러 발생", error);
           });
       }
     } else {
@@ -77,7 +90,7 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
         <Link to="/myPage/point" className="flex items-center">
           <img
             className="w-20 h-20 rounded-full"
-            src={sample1}
+            src={profileImage || sample1}
             alt="User avatar"
           />
           <div className="ml-3">
