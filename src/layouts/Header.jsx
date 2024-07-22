@@ -99,7 +99,7 @@ export default function LayoutHeader() {
               공지사항
             </Link>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="w-full xl:w-[15em] md:w-[15em] flex justify-between items-center">
             <button
               type="button"
               onClick={() => {
