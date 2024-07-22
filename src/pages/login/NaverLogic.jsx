@@ -24,16 +24,17 @@ export default function NaverLogin() {
         Auth.Naver(code, state)
           .then((response) => {
             // 로그인 성공 시 처리 로직
-            if (response.jwtToken) {
-              console.log('로그인 성공:', response);
-              window.localStorage.setItem('accessToken', response.jwtToken);
+            if (response.accessToken) {
+              window.localStorage.setItem("accessToken", response.accessToken);
+              window.localStorage.setItem("refreshToken", response.refreshToken);
               setIsLogin(true);
               setUserInfo({
-                token: response.jwtToken,
+                accessToken: response.accessToken,
+                refreshToken: response.refreshToken,
                 memberNo: response.memberNo,
                 pointNo: response.pointNo,
               });
-              navigate('/');
+              navigate('/home');
             } else {
               console.error('로그인 실패:', response);
               setErrorMessage(response.error);
