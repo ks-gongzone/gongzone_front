@@ -88,23 +88,17 @@ export default function Register() {
 
   const statusRegister = async (e) => {
     e.preventDefault();
-    console.log("statusRegister 실행")
     setMessage('');
 
     const requiredFields = isSocialLogin ? ['memberPhone', 'memberGender'] : ['memberId', 'memberPw', 'memberName', 'memberPhone'];
-    console.log("필수 입력 필드:", requiredFields);
-    console.log("폼 값:", formValues);
 
     const validationPromises = requiredFields.map(name => checkField(name, formValues[name]));
     await Promise.all(validationPromises);
     const requestMember = requiredFields.every(name => errors[name] === '');
-    console.log("검증 결과:", requestMember);
 
     if (requestMember) {
       try {
         const response = await MemberAPI.Register(formValues);
-        console.log("회원가입 응답:", response);
-        console.log("회원가입 응답:", response.data.success);
         if (response.data.success) {
           setMessage('회원가입에 성공했습니다.');
           setIsModalOpen(true);
@@ -205,7 +199,7 @@ export default function Register() {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    navigate('/');
+    navigate('/home');
   };
 
   return (
