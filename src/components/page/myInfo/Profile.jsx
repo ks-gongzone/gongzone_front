@@ -75,12 +75,14 @@ export default function Profile({ memberNo }) {
     return <Skeleton />;
   }
 
+  const genderLabel = profileData.gender === "M" ? "남성" : profileData.gender === "F" ? "여성" : profileData.gender;
+
   return (
     <div className="w-full flex items-center justify-between">
-      <div className="mb-6">
-        <div className="text-gray-700 font-bold text-xl mb-4">프로필</div>
+      <div className="mb-4">
+        <div className="text-gray-700 font-bold text-xl mb-2">프로필</div>
         <div
-          className="w-[10em] h-[10em] mb-4 rounded-full bg-gray-400 flex items-center justify-center text-white text-2xl cursor-pointer"
+          className="w-[10em] h-[10em] mb-2 rounded-full bg-gray-400 flex items-center justify-center text-white text-2xl cursor-pointer relative"
           onClick={handleImageClick}
         >
           {profileImage ? (
@@ -92,17 +94,33 @@ export default function Profile({ memberNo }) {
           ) : (
             <span>프로필</span>
           )}
+        <div className="absolute bottom-2 right-2 w-10 h-10 rounded-full bg-white border border-black flex items-center justify-center">
+          <span className="text-black">📷</span>
+          </div>
         </div>
       </div>
-      <div className="ml-12 w-[10em] gap-12 flex flex-col flex-shrink-0">
-        <div className="text-gray-700 font-bold text-xl mb-2 ">
+      <div className="ml-8 w-[10em] flex flex-col flex-shrink-0">
+        <div className="text-gray-700 font-bold text-xl mb-2">
           {profileData.memberName}
         </div>
-        <div className="text-gray-500">성별 : {profileData.gender}</div>
-        <div className="text-gray-500">
-          팔로잉 : {profileData.following} / 팔로워 : {profileData.follower}
+        <div className="flex flex-col mb-1">
+          <div className="flex justify-between">
+            <div className="text-gray-500 font-bold">성별:</div>
+            <div className="block text-xl font-bold">{genderLabel}</div>
+          </div>
+          <div className="flex justify-between mt-1">
+            <div className="text-gray-500 font-bold">작성 글 수:</div>
+            <div className="block text-xl font-bold">{profileData.boardCount} 개</div>
+          </div>
         </div>
-        <div className="text-gray-500">작성 글 수 : {profileData.boardCount}</div>
+        <div className="flex justify-between mt-1">
+          <div className="text-gray-500 font-bold">팔로잉</div>
+          <div className="block text-xl font-bold">{profileData.following}</div>
+        </div>
+        <div className="flex justify-between mt-1">
+          <div className="text-gray-500 font-bold">팔로워</div>
+          <div className="block text-xl font-bold">{profileData.follower}</div>
+        </div>
       </div>
       <PictureModal
         isOpen={isModalOpen}
