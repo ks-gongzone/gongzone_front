@@ -352,7 +352,7 @@ export default function InsertForm() {
       </div>
       <div className="flex justify-between gap-10">
         {/* 지도 */}
-        <div className="w-1/2">
+        <div className="w-2/3">
           제품 수령 주소
           {/* <MapSearch /> */}
           <BoardMap
@@ -360,8 +360,8 @@ export default function InsertForm() {
             onPositionChange={handlePositionChange}
           />
         </div>
-        <div className="w-1/2">
-          <label className="block mt-5">게시글 마감일</label>
+        <div className="w-1/3">
+          <label>게시글 마감일</label>
           <Calendar
             selected={formData.endDate}
             onChange={handleEndDateChange}
