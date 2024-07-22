@@ -87,17 +87,17 @@ export default function Dashboard() {
   }, [startDate, endDate]);
 
   const statusMap = {
-    S060102: 1, // 모집완료
+    S060102: 0, // 모집완료
     S060103: 20, // 파티원 결제대기
-    S060104: 30, // 파티장 결제대기
-    S060105: 40, // 쇼핑몰 배송중
-    S060106: 50, // 수취 대기중
-    S060107: 60, // 정산 대기중
+    S060104: 40, // 파티장 결제대기
+    S060105: 50, // 쇼핑몰 배송중
+    S060106: 70, // 수취 대기중
+    S060107: 100, // 정산 대기중
   };
 
   const bulletData = partyData.map((party) => ({
     id: party.partyNo,
-    ranges: [1, 60],
+    ranges: [0, 100],
     measures: [statusMap[party.partyStatus] || 0],
     markers: [],
     title: party.partyNo,
@@ -289,7 +289,7 @@ export default function Dashboard() {
               spacing={60}
               rangeColors="white"
               measureColors="seq:yellow_green_blue"
-              measureSize={2}
+              measureSize={1}
               axisBottom={{
                 tickValues: [1, 2, 3, 4, 5, 6],
                 tickSize: 5,
