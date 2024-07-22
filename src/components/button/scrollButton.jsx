@@ -58,7 +58,6 @@ export default function ScrollButton() {
       setMessages([]);
     }
   };
-  console.log(messages);
 
   const fetchAlerts = async () => {
     try {
@@ -250,7 +249,7 @@ export default function ScrollButton() {
       </div>
 
       <div
-        className={`fixed right-0 bottom-0 h-[50em] border-gray-300 border-t border-l w-1/3 bg-white shadow-lg p-4 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed right-0 bottom-0 h-[30em] border-gray-300 border-t border-l w-[30em] bg-white shadow-lg p-4 transform transition-transform duration-300 ease-in-out ${
           isAlertOpen ? "translate-x-0" : "translate-x-full"
         } z-50`}
       >
@@ -285,64 +284,81 @@ export default function ScrollButton() {
         <div className="p-4">
           {activeTab === "messages" ? (
             <ul>
-              {messages
-                .filter((message) => message.statusCode !== "S010303")
-                .map((message) => (
-                  <li
-                    key={message.noteNo}
-                    className="mb-2 flex justify-between"
-                  >
-                    <button
-                      className={`w-full text-left p-2 rounded-md hover:bg-gray-100 ${
-                        message.statusCode === "S010302" ? "text-gray-400" : ""
-                      }`}
-                      onClick={() => handleReadMessage(message.noteNo)}
+              {messages.length === 0 ? (
+                <li className="text-center text-gray-500">
+                  받은 쪽지가 없습니다.
+                </li>
+              ) : (
+                messages
+                  .filter((message) => message.statusCode !== "S010303")
+                  .map((message) => (
+                    <li
+                      key={message.noteNo}
+                      className="mb-2 flex justify-between"
                     >
-                      <div className="font-medium">{message.memberId}</div>
-                      <div className="text-sm text-gray-500">
-                        {message.noteBody}
-                      </div>
-                    </button>
-                    <button
-                      className="text-blue-500 ml-2"
-                      onClick={() => handleReplyMessage(message)}
-                    >
-                      <PencilSquareIcon className="h-5 w-5" />
-                    </button>
-                    <button
-                      className="text-red-500 ml-2"
-                      onClick={() => handleDeleteMessage(message.noteNo)}
-                    >
-                      <TrashIcon className="h-5 w-5" />
-                    </button>
-                  </li>
-                ))}
+                      <button
+                        className={`w-full text-left p-2 rounded-md hover:bg-gray-100 ${
+                          message.statusCode === "S010302"
+                            ? "text-gray-400"
+                            : ""
+                        }`}
+                        onClick={() => handleReadMessage(message.noteNo)}
+                      >
+                        <div className="font-medium">{message.memberId}</div>
+                        <div className="text-sm text-gray-500">
+                          {message.noteBody}
+                        </div>
+                      </button>
+                      <button
+                        className="text-blue-500 ml-2"
+                        onClick={() => handleReplyMessage(message)}
+                      >
+                        <PencilSquareIcon className="h-5 w-5" />
+                      </button>
+                      <button
+                        className="text-red-500 ml-2"
+                        onClick={() => handleDeleteMessage(message.noteNo)}
+                      >
+                        <TrashIcon className="h-5 w-5" />
+                      </button>
+                    </li>
+                  ))
+              )}
             </ul>
           ) : (
             <ul>
-              {alerts
-                .filter((alert) => alert.statusCode !== "S010403")
-                .map((alert) => (
-                  <li key={alert.alertNo} className="mb-2 flex justify-between">
-                    <button
-                      className={`w-full text-left p-2 rounded-md hover:bg-gray-100 ${
-                        alert.statusCode === "S010402" ? "text-gray-400" : ""
-                      }`}
-                      onClick={() => handleReadAlert(alert.alertNo)}
+              {alerts.length === 0 ? (
+                <li className="text-center text-gray-500">
+                  받은 알림이 없습니다.
+                </li>
+              ) : (
+                alerts
+                  .filter((alert) => alert.statusCode !== "S010403")
+                  .map((alert) => (
+                    <li
+                      key={alert.alertNo}
+                      className="mb-2 flex justify-between"
                     >
-                      <div className="font-medium">{alert.alertDetail}</div>
-                      <div className="text-sm text-gray-500">
-                        {formatDate(alert.alertUpTime)}
-                      </div>
-                    </button>
-                    <button
-                      className="text-red-500 ml-2"
-                      onClick={() => handleDeleteAlert(alert.alertNo)}
-                    >
-                      <TrashIcon className="h-5 w-5" />
-                    </button>
-                  </li>
-                ))}
+                      <button
+                        className={`w-full text-left p-2 rounded-md hover:bg-gray-100 ${
+                          alert.statusCode === "S010402" ? "text-gray-400" : ""
+                        }`}
+                        onClick={() => handleReadAlert(alert.alertNo)}
+                      >
+                        <div className="font-medium">{alert.alertDetail}</div>
+                        <div className="text-sm text-gray-500">
+                          {formatDate(alert.alertUpTime)}
+                        </div>
+                      </button>
+                      <button
+                        className="text-red-500 ml-2"
+                        onClick={() => handleDeleteAlert(alert.alertNo)}
+                      >
+                        <TrashIcon className="h-5 w-5" />
+                      </button>
+                    </li>
+                  ))
+              )}
             </ul>
           )}
         </div>

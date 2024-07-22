@@ -98,7 +98,7 @@ export default function PartyCard({
         </div>
         <div className="w-full mt-2 ml-4 font-bold text-gray-500 flex flex-col relative">
           {like && (
-            <button type="button" className="self-end mr-4" onClick={likeBtn}>
+            <button type="button" className="self-end" onClick={likeBtn}>
               <FollowButton
                 targetMemberNo={memberNo}
                 targetMemberName={memberTargetNo}
