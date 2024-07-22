@@ -21,14 +21,10 @@ export default function AnnounceMenu({ memberNo }) {
   useEffect(() => {
     const fetchAnnounce = async () => {
       const type = activeTab === "all" ? "" : activeTab;
-      try {
-        const data = await AnnounceAPI.getAnnouncements(page, size, type);
-        setAnnuncements(data.announcements);
-        setTotalPages(data.totalPages);
-        setCurrentPage(data.currentPage);
-      } catch (error) {
-        console.error("공지사항 데이터 로드 중 오류", error);
-      }
+      const data = await AnnounceAPI.getAnnouncements(page, size, type);
+      setAnnuncements(data.announcements);
+      setTotalPages(data.totalPages);
+      setCurrentPage(data.currentPage);
     };
     fetchAnnounce();
   }, [activeTab, page, size]);

@@ -45,29 +45,21 @@ export default function ScrollButton() {
   };
 
   const fetchMessages = async () => {
-    try {
-      const response = await Note.NoteList({ memberNo });
-      if (Array.isArray(response)) {
-        updateMessages(response);
-      } else if (response && Array.isArray(response.data)) {
-        updateMessages(response.data);
-      } else {
-        setMessages([]);
-      }
-    } catch (error) {
+    const response = await Note.NoteList({ memberNo });
+    if (Array.isArray(response)) {
+      updateMessages(response);
+    } else if (response && Array.isArray(response.data)) {
+      updateMessages(response.data);
+    } else {
       setMessages([]);
     }
   };
 
   const fetchAlerts = async () => {
-    try {
-      const result = await Alert.AlertList(memberNo);
-      if (Array.isArray(result.data)) {
-        updateAlerts(result.data);
-      } else {
-        setAlerts([]);
-      }
-    } catch (error) {
+    const result = await Alert.AlertList(memberNo);
+    if (Array.isArray(result.data)) {
+      updateAlerts(result.data);
+    } else {
       setAlerts([]);
     }
   };
@@ -107,63 +99,43 @@ export default function ScrollButton() {
   };
 
   const handleReadMessage = async (noteNo) => {
-    try {
-      await Note.UpdateReadTimeNote(noteNo);
-      setMessages((prevMessages) =>
-        prevMessages.map((message) =>
-          message.noteNo === noteNo
-            ? { ...message, statusCode: "S010302" }
-            : message
-        )
-      );
-    } catch (error) {
-      console.error("Error updating message status:", error);
-    }
+    await Note.UpdateReadTimeNote(noteNo);
+    setMessages((prevMessages) =>
+      prevMessages.map((message) =>
+        message.noteNo === noteNo
+          ? { ...message, statusCode: "S010302" }
+          : message
+      )
+    );
   };
 
   const handleReadAlert = async (alertNo) => {
-    try {
-      await Alert.AlertRead(alertNo);
-      setAlerts((prevAlerts) =>
-        prevAlerts.map((alert) =>
-          alert.alertNo === alertNo
-            ? { ...alert, statusCode: "S010402" }
-            : alert
-        )
-      );
-    } catch (error) {
-      console.error("Error updating alert status:", error);
-    }
+    await Alert.AlertRead(alertNo);
+    setAlerts((prevAlerts) =>
+      prevAlerts.map((alert) =>
+        alert.alertNo === alertNo ? { ...alert, statusCode: "S010402" } : alert
+      )
+    );
   };
 
   const handleDeleteMessage = async (noteNo) => {
-    try {
-      await Note.UpdateDeleteNote(noteNo);
-      setMessages((prevMessages) =>
-        prevMessages.map((message) =>
-          message.noteNo === noteNo
-            ? { ...message, statusCode: "S010303" }
-            : message
-        )
-      );
-    } catch (error) {
-      console.error("Error deleting message:", error);
-    }
+    await Note.UpdateDeleteNote(noteNo);
+    setMessages((prevMessages) =>
+      prevMessages.map((message) =>
+        message.noteNo === noteNo
+          ? { ...message, statusCode: "S010303" }
+          : message
+      )
+    );
   };
 
   const handleDeleteAlert = async (alertNo) => {
-    try {
-      await Alert.AlertDelete(alertNo);
-      setAlerts((prevAlerts) =>
-        prevAlerts.map((alert) =>
-          alert.alertNo === alertNo
-            ? { ...alert, statusCode: "S010403" }
-            : alert
-        )
-      );
-    } catch (error) {
-      console.error("Error deleting alert:", error);
-    }
+    await Alert.AlertDelete(alertNo);
+    setAlerts((prevAlerts) =>
+      prevAlerts.map((alert) =>
+        alert.alertNo === alertNo ? { ...alert, statusCode: "S010403" } : alert
+      )
+    );
   };
 
   const handleReplyMessage = async (message) => {
@@ -215,15 +187,11 @@ export default function ScrollButton() {
   };
 
   const formatDate = (dateString) => {
-    try {
-      const date = new Date(dateString);
-      if (!isNaN(date.getTime())) {
-        return date.toLocaleString();
-      }
-      return dateString; // Invalid date, return original string
-    } catch (error) {
-      return dateString; // Error occurred, return original string
+    const date = new Date(dateString);
+    if (!isNaN(date.getTime())) {
+      return date.toLocaleString();
     }
+    return dateString;
   };
 
   return (
