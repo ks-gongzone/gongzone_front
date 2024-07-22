@@ -97,7 +97,7 @@ export default function BoardListCard({
             <Label key={label} label={label} />
           ))}
         </div>
-        <div className="text-sm text-gray-900 text-ml">{title}</div>
+        <div className="text-sm text-gray-900 text-ml h-[3em]">{title}</div>
         <div className="flex justify-between">
           <div className="text-gray-400 text-xs mt-1">{cate}</div>
           <div className="text-xs font-bold mt-2 mb-1 text-[#1d5091]">

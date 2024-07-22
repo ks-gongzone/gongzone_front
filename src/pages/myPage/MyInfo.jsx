@@ -44,18 +44,18 @@ export default function MyInfo({ memberNo, onNextPage }) {
   }, []);
 
   return (
-    <div className="w-[65em] mx-auto mb-10">
+    <div className="lg:w-[65em] w-[30em] mb-10 border-gray-200 border-2 py-8 px-8 rounded-lg shadow-lg">
       <div className="relative flex justify-start">
         <button
           onClick={toggleDropdown}
-          className={`gap-2 text-lg font-bold py-2 px-6 rounded-md flex items-center bg-[#1d5091] hover:bg-[#0d2544] text-white`}
+          className={`gap-2 text-lg font-bold py-2 px-5 rounded-md flex items-center bg-[#6ea2d4] hover:bg-[#1d5091] text-white`}
         >
           <BarsArrowDownIcon className="w-5 h-5" /> 메뉴
         </button>
         {isDropdownOpen && (
           <div
             ref={dropdownRef}
-            className="absolute top-12 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+            className="absolute top-12 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-40"
           >
             {tabItems.map((item) => (
               <button
@@ -71,10 +71,11 @@ export default function MyInfo({ memberNo, onNextPage }) {
       </div>
       <div className="p-4">
         {activeTab === "profile" && (
-          <div className="flex flex-col items-center mb-8">
+          <div className="flex flex-col items-center mt-12">
             <div className="w-[60%] mb-4">
               <Profile memberNo={memberNo} />
             </div>
+            <div className="border-t-2 border-gray-400 mb-12" />
             <button
               onClick={onNextPage}
               className="bg-[#1d5091] hover:bg-[#0d2544] text-white font-bold py-2 w-full px-4 rounded"
