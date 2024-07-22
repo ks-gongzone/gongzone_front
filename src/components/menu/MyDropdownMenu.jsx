@@ -7,7 +7,7 @@ import { DropDownAPI } from "../../utils/repository";
 /**
  * @수정일: 2024-07-10
  * @수정내용: 드롭다운 박스 노출 시 데이터 로드
- */ 
+ */
 export default function MyDropdownMenu({ isOpen, onClose }) {
   const { userInfo } = AuthStore((state) => ({ userInfo: state.userInfo }));
   const { memberNo, pointNo } = userInfo;
@@ -39,13 +39,13 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
       // 2024-07-10 한동환 추가
       if (memberNo && pointNo) {
         DropDownAPI.getDropDownData(memberNo)
-        .then((data) => {
-          console.log("데이터 받는 형식: ", data);
-          setDropDownData(data);
-        })
-        .catch((error) => {
-          console.error("드롭다운 메뉴 로드 중 에러발생", error);
-        });
+          .then((data) => {
+            console.log("데이터 받는 형식: ", data);
+            setDropDownData(data);
+          })
+          .catch((error) => {
+            console.error("드롭다운 메뉴 로드 중 에러발생", error);
+          });
       }
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -59,7 +59,7 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
   return (
     <div
       ref={dropdownRef}
-      className={`absolute right-0 mt-2 w-[20em] bg-white rounded-md shadow-lg z-20 ${
+      className={`absolute right-0 mt-2 w-[20em] bg-white rounded-md shadow-lg z-50 ${
         isOpen ? "block" : "hidden"
       }`}
     >
@@ -81,7 +81,9 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
             alt="User avatar"
           />
           <div className="ml-3">
-            <div className="text-gray-900 font-semibold">{dropDownData.memberName}</div>
+            <div className="text-gray-900 font-semibold">
+              {dropDownData.memberName}
+            </div>
             <p className="text-red-500 text-sm mt-2">보유 포인트</p>
             <div className="flex justify-between">
               <div className="flex w-[8em] rounded-lg justify-end items-center pr-4 text-[13px]">

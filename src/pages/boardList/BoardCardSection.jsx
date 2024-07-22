@@ -51,7 +51,7 @@ export default function BoardCardSection({ data }) {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="w-[24em] sm:w-[50em] lg:w-[68em] lg: mx-auto mb-10 mt-14 px-4">
+    <div className="w-[24em] sm:w-[50em] lg:w-[65em] lg: mx-auto mb-10 mt-14 px-4">
       <div className="mb-6 text-lg font-bold text-[#526688]">모집중인 파티</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {loading
