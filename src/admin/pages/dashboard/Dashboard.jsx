@@ -18,72 +18,91 @@ export default function Dashboard() {
   const [partyData, setPartyData] = useState([]);
   const [startDate, setStartDate] = useState(subMonths(new Date(), 1));
   const [endDate, setEndDate] = useState(new Date());
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchMemberData = async () => {
-    const result = await MemberListAPI.getStaticMember();
-    if (Array.isArray(result.data)) {
-      const filteredData = result.data.filter((item) => {
-        const date = new Date(item.loginInTimeDateFormat);
-        return date >= startDate && date <= endDate;
-      });
+    try {
+      const result = await MemberListAPI.getStaticMember();
+      if (Array.isArray(result.data)) {
+        const filteredData = result.data.filter((item) => {
+          const date = new Date(item.loginInTimeDateFormat);
+          return date >= startDate && date <= endDate;
+        });
 
-      const totalData = filteredData.map((item) => ({
-        x: item.loginInTimeDateFormat,
-        y: item.total,
-      }));
+        const totalData = filteredData.map((item) => ({
+          x: item.loginInTimeDateFormat,
+          y: item.total,
+        }));
 
-      const directData = filteredData.map((item) => ({
-        x: item.loginInTimeDateFormat,
-        y: item.direct,
-      }));
+        const directData = filteredData.map((item) => ({
+          x: item.loginInTimeDateFormat,
+          y: item.direct,
+        }));
 
-      const socialData = filteredData.map((item) => ({
-        x: item.loginInTimeDateFormat,
-        y: item.social,
-      }));
+        const socialData = filteredData.map((item) => ({
+          x: item.loginInTimeDateFormat,
+          y: item.social,
+        }));
 
-      setMemberData([
-        { id: "total", data: totalData },
-        { id: "direct", data: directData },
-        { id: "social", data: socialData },
-      ]);
+        setMemberData([
+          { id: "total", data: totalData },
+          { id: "direct", data: directData },
+          { id: "social", data: socialData },
+        ]);
+      }
+    } catch (error) {
+      console.error("Error fetching member data:", error);
     }
   };
 
   const fetchReportData = async () => {
-    const result = await AdminMemberAPI.UncheckedReport();
-    if (Array.isArray(result.data)) {
-      const today = new Date().toISOString().split("T")[0];
-      const todayReport =
-        result.data.find((item) => item.reportDate === today)?.total || 0;
-      const totalReport =
-        result.data.find((item) => item.reportDate === "totalAll")?.total || 0;
+    try {
+      const result = await AdminMemberAPI.UncheckedReport();
+      if (Array.isArray(result.data)) {
+        const today = new Date().toISOString().split("T")[0];
+        const todayReport =
+          result.data.find((item) => item.reportDate === today)?.total || 0;
+        const totalReport =
+          result.data.find((item) => item.reportDate === "totalAll")?.total || 0;
 
-      setReportData({ today: todayReport, total: totalReport });
+        setReportData({ today: todayReport, total: totalReport });
+      }
+    } catch (error) {
+      console.error("Error fetching report data:", error);
     }
   };
 
   const fetchBoardData = async () => {
-    const result = await Board.GetBoardAdmin();
-    if (
-      result &&
-      result.data.boardProgressList &&
-      result.data.boardWriteMemberList
-    ) {
-      setPartyData(result.data.boardProgressList);
-      const postData = result.data.boardWriteMemberList.map((item) => ({
-        user: item.memberNo,
-        posts: item.boardWrite,
-      }));
-      postData.sort((a, b) => b.posts - a.posts);
-      setPostData(postData);
+    try {
+      const result = await Board.GetBoardAdmin();
+      if (
+        result &&
+        result.data.boardProgressList &&
+        result.data.boardWriteMemberList
+      ) {
+        setPartyData(result.data.boardProgressList);
+        const postData = result.data.boardWriteMemberList.map((item) => ({
+          user: item.memberNo,
+          posts: item.boardWrite,
+        }));
+        postData.sort((a, b) => b.posts - a.posts);
+        setPostData(postData);
+      }
+    } catch (error) {
+      console.error("Error fetching board data:", error);
     }
   };
 
   useEffect(() => {
-    fetchMemberData();
-    fetchReportData();
-    fetchBoardData();
+    const loadData = async () => {
+      setIsLoading(true); // 로딩 시작
+      await fetchMemberData();
+      await fetchReportData();
+      await fetchBoardData();
+      setIsLoading(false); // 로딩 완료
+    };
+
+    loadData();
   }, [startDate, endDate]);
 
   const statusMap = {
@@ -107,6 +126,14 @@ export default function Dashboard() {
     ...item,
     color: index,
   }));
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center w-full h-screen">
+        <div className="loader"></div> {/* 여기에 로딩 스피너를 추가합니다 */}
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center box-border p-4">

@@ -354,7 +354,7 @@ export default function Register() {
             />
           </div>
           <div className='mt-8 flex-none'>
-          <button type="submit" className="w-full bg-blue-500 text-white py-4 rounded-lg">회원가입</button>
+          <button type="submit" className="w-full bg-[#1d5091] text-white py-4 rounded-lg">회원가입</button>
           </div>
           
         </form>
@@ -373,7 +373,7 @@ function Modal({ isOpen, onClose }) {
       <div className="bg-white p-6 rounded-lg shadow-lg w-80">
         <h2 className="text-xl font-bold mb-4">회원가입 성공</h2>
         <p className="mb-4">회원가입이 완료되었습니다.</p>
-        <button onClick={onClose} className="w-full bg-blue-500 text-white py-2 rounded-lg">확인</button>
+        <button onClick={onClose} className="w-full bg-[#1d5091] text-white py-2 rounded-lg">확인</button>
       </div>
     </div>
   );
