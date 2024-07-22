@@ -31,7 +31,7 @@ export default function ModalLogin({ isOpen, onClose }) {
   const handleGoogleLogin = () => {
     const clientId =
       "901670599809-s8vu30qhb5hba1r856uvj4bulra76d0s.apps.googleusercontent.com";
-    const redirectUri = encodeURI("https://www.gongzone.shop/google/callback");
+    const redirectUri = encodeURI("http://localhost:3000/google/callback");
     const state = Math.random().toString(36).substr(2, 11);
     window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=profile email&state=${state}`;
   };
