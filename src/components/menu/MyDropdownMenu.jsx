@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthStore from "../../utils/zustand/AuthStore";
 import sample1 from "../../assets/images/sample1.PNG";
-import { DropDownAPI } from "../../utils/repository";
+import { Alert, DropDownAPI } from "../../utils/repository";
 
 const baseURL ="http://localhost:8088";
 
@@ -23,6 +23,8 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
     memberPoint: 0,
   });
   const [profileImage, setProfileImage] = useState(null);
+  const [alerts, setAlerts] = useState([]);
+  const [newAlertCount, setNewAlertCount] = useState(0);
 
   const handleLogout = () => {
     statusLogout();
@@ -37,13 +39,10 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
 
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
-      console.log("memberNo", memberNo);
-      console.log("pointNo", pointNo);
       // 2024-07-10 한동환 추가
       if (memberNo && pointNo) {
         DropDownAPI.getDropDownData(memberNo)
           .then((data) => {
-            console.log("데이터 받는 형식: ", data);
             setDropDownData(data);
           })
           .catch((error) => {
@@ -59,6 +58,16 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
           .catch((error) => {
             console.error("프로필 이미지 로드 중 에러 발생", error);
           });
+          // 알림 목록 로드
+          Alert.getNewAlertCount(memberNo)
+          .then((data) => {
+            setAlerts(data);  // 가져온 알림 목록을 상태에 저장
+            const alertCount = data.reduce((sum, alert) => sum + alert.alertCount, 0);
+            setNewAlertCount(alertCount);  // 가져온 알림 수를 상태에 저장
+          })
+          .catch((error) => {
+            console.error("새로운 알림 수 로드 중 에러 발생", error);
+          });
       }
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -68,6 +77,12 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen, onClose, memberNo, pointNo]);
+
+  const transText = (text, maxLength) => {
+    if (!text) return "";
+    if (text.length <= maxLength) return text;
+    return text.slice(0, maxLength) + " ... ";
+  }
 
   return (
     <div
@@ -135,32 +150,18 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
         <div className="w-[18em] pt-8 border-gray-200 border-b" />
       </div>
       <div className="px-8 pt-8">
-        <div className="font-semibold text-gray-900">신규 알림 (2)</div>
-        <div className="mt-2">
-          <button
-            type="button"
-            className="w-full text-left text-gray-500 break-words overflow-hidden"
-          >
-            [쪽지] 안녕하세요
-          </button>
+        <div className="font-semibold text-gray-900">신규 알림 ({newAlertCount})</div>
+        {alerts.map((alert, index) => (
+          <div className="mt-2" key={index}>
+            <button
+              type="button"
+              className="w-full text-left text-gray-500 break-words overflow-hidden"
+            >
+              {transText(alert.alertDetail, 14)}
+            </button>
+          </div>
+        ))}
         </div>
-        <div className="mt-2">
-          <button
-            type="button"
-            className="w-full text-left text-gray-500 break-words overflow-hidden"
-          >
-            [공지] 공지사항
-          </button>
-        </div>
-        <div className="mt-2">
-          <button
-            type="button"
-            className="w-full text-left text-blue-500 text-[12px]"
-          >
-            이 외 0개의 메시지가 있습니다.
-          </button>
-        </div>
-      </div>
       <button
         type="button"
         className="w-full text-right text-[13px] mt-4 pr-4 text-red-500"

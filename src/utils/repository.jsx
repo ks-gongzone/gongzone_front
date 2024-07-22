@@ -408,6 +408,8 @@ export const DropDownAPI = {
         throw error;
       });
   },
+  
+
 }
   // 유저 리스트 업 후 팔로우 차단 API
  export const MemberListAPI = {
@@ -657,6 +659,14 @@ export const Alert = {
     return GZAPI.post(`/api/alertSSE/updateReadTime/${alertNo}`)
       .then((res) => res)
       .catch((err) => err);
+  },
+  getNewAlertCount: async (memberNo) => {
+    return GZAPI.get(`/api/alertSSE/AlertSSEListAndCount/${memberNo}`)
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error("Failed to fetch new alert count:", err);
+      return 0;
+    });
   },
 };
 

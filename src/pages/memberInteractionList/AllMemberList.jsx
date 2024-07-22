@@ -16,7 +16,7 @@ export default function AllMemberList({
 }) {
   const { userInfo } = AuthStore();
   const currentUserNo = userInfo?.memberNo;
-  const [size] = useState(8);
+  const [size] = useState(9);
   const navigate = useNavigate();
 
   useEffect(() => {
