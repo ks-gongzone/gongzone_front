@@ -21,14 +21,10 @@ export default function AnnounceMenu({ memberNo }) {
   useEffect(() => {
     const fetchAnnounce = async () => {
       const type = activeTab === "all" ? "" : activeTab;
-      try {
-        const data = await AnnounceAPI.getAnnouncements(page, size, type);
-        setAnnuncements(data.announcements);
-        setTotalPages(data.totalPages);
-        setCurrentPage(data.currentPage);
-      } catch (error) {
-        console.error("공지사항 데이터 로드 중 오류", error);
-      }
+      const data = await AnnounceAPI.getAnnouncements(page, size, type);
+      setAnnuncements(data.announcements);
+      setTotalPages(data.totalPages);
+      setCurrentPage(data.currentPage);
     };
     fetchAnnounce();
   }, [activeTab, page, size]);
@@ -43,7 +39,7 @@ export default function AnnounceMenu({ memberNo }) {
   };
 
   return (
-    <div className="w-[60em] flex flex-col items-center mx-auto mb-10 mt-14">
+    <div className="xl:w-[65em] w-[30em] md:w-[50em] lg:w-[58em] flex flex-col items-center mb-10 mt-14">
       <div className="w-full sticky top-20">
         <BasicTapMenu
           tabItems={tabItems}

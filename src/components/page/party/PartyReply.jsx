@@ -36,53 +36,38 @@ export default function PartyReply({ boardNo, boardReply }) {
 
   const handleReplySubmit = async () => {
     if (reply.trim()) {
-      try {
-        const newReply = await Board.BoardReply(
-          boardNo,
-          connectMemberNo,
-          reply
-        );
-        console.log(newReply.data); // 새로운 댓글 확인
-        setReplies(newReply.data); // 새로운 댓글을 상태에 추가
-        setReply(""); // 댓글 입력 필드 비우기
-      } catch (error) {
-        console.error("Error posting reply:", error);
-      }
+      const newReply = await Board.BoardReply(boardNo, connectMemberNo, reply);
+      console.log(newReply.data); // 새로운 댓글 확인
+      setReplies(newReply.data); // 새로운 댓글을 상태에 추가
+      setReply(""); // 댓글 입력 필드 비우기
     }
   };
 
   const handleReplyUpdate = async (replyNo) => {
     if (updateReply.trim()) {
-      try {
-        const updateReplies = await Board.UpdateBoardReply(
-          replyNo,
-          boardNo,
-          connectMemberNo,
-          updateReply
-        );
-        console.log(updateReplies.data);
-        setReplies(updateReplies.data);
-        setUpdateReply("");
-        setEditingIndex(-1);
-      } catch (error) {
-        console.error("Error updating reply:", error);
-      }
+      const updateReplies = await Board.UpdateBoardReply(
+        replyNo,
+        boardNo,
+        connectMemberNo,
+        updateReply
+      );
+      console.log(updateReplies.data);
+      setReplies(updateReplies.data);
+      setUpdateReply("");
+      setEditingIndex(-1);
     }
   };
 
   const handleDelete = async (index) => {
     const deleteNo = replies[index].replyNo;
-    try {
-      const deletedReply = await Board.DeleteBoardReply(
-        deleteNo,
-        boardNo,
-        connectMemberNo
-      );
-      console.log(deletedReply);
-      setReplies(deletedReply.data);
-    } catch (error) {
-      console.error("Error deleting reply:", error);
-    }
+
+    const deletedReply = await Board.DeleteBoardReply(
+      deleteNo,
+      boardNo,
+      connectMemberNo
+    );
+    console.log(deletedReply);
+    setReplies(deletedReply.data);
   };
 
   return (

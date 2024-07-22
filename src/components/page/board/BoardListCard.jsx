@@ -92,17 +92,18 @@ export default function BoardListCard({
         )}
       </div>
       <div className="px-6 py-2">
-        <div className={["flex gap-2", labels?.length > 0 && 'mb-2'].join(' ')}>
-          {(labels ?? []).map(label => <Label key={label} label={label} />)}
+        <div className={["flex gap-2", labels?.length > 0 && "mb-2"].join(" ")}>
+          {(labels ?? []).map((label) => (
+            <Label key={label} label={label} />
+          ))}
         </div>
-        <div className="text-sm text-gray-900 text-ml">{title}</div>
+        <div className="text-sm text-gray-900 text-ml h-[3em]">{title}</div>
         <div className="flex justify-between">
-        <div className="text-gray-400 text-xs mt-1">{cate}</div>
-        <div className="text-xs font-bold mt-2 mb-1 text-blue-500">
-          남은수량 : {amount}
+          <div className="text-gray-400 text-xs mt-1">{cate}</div>
+          <div className="text-xs font-bold mt-2 mb-1 text-[#1d5091]">
+            남은수량 : {amount}
+          </div>
         </div>
-        </div>
-        
       </div>
     </button>
   );

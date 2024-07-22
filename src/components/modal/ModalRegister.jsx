@@ -71,7 +71,7 @@ export default function ModalRegisterLogin({ isOpen, onClose }) {
           </button>
           <button
             className="h-[42px] w-full text-black bg-[#F7E318] py-2 gap-2 rounded-md flex items-center justify-center text-xs hover:bg-opacity-90"
-            onClick={handleNaverLogin}
+            onClick={handleKakaoLogin}
           >
             <img src={Kk} alt="Kakao Logo" className="w-4"/>
             카카오 계정으로 회원가입

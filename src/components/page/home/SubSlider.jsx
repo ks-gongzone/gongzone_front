@@ -19,22 +19,20 @@ export default function SubSlider() {
   };
 
   return (
-    <div>
-      <div className="w-[1056px] mx-auto mt-10 mb-6 text-lg font-bold text-[#526688]">
+    <div className="w-[30em] md:w-[50em] xl:w-[63em]">
+      <div className="mx-auto mt-10 mb-6 text-lg font-bold text-[#526688]">
         다양한 소식
       </div>
-      <div className="w-full flex justify-center">
-      
-      <div class="w-[1056px]">
+      <div>
         <Slider {...settings}>
-          <div className="h-[80px] sm:h-[130px] md:h-[200px] bg-gray-200">
+          <div className="h-[80px] sm:h-[100px] md:h-[120px] bg-gray-200">
             <img
               src={subBanner1}
               alt="Sample Banner"
               className="h-full w-full object-cover"
             />
           </div>
-          <div className="h-[80px] sm:h-[130px] md:h-[200px] bg-gray-200">
+          <div className="h-[80px] sm:h-[100px] md:h-[120px] bg-gray-200">
             <img
               src={subBanner2}
               alt="Sample Banner"
@@ -43,9 +41,6 @@ export default function SubSlider() {
           </div>
         </Slider>
       </div>
-      
     </div>
-    </div>
-    
   );
 }

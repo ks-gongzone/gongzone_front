@@ -10,16 +10,9 @@ export default function AdminPartyModal({ selectedParty, closeModal }) {
   };
 
   const handleButton = async () => {
-    try {
-      const response = await Party.SettlementParty(partyNo);
-      if (response.status === 200) {
-        console.log("Successfully settled party:", partyNo);
-        closeModal();
-      } else {
-        console.error("Failed to settle party:", response);
-      }
-    } catch (error) {
-      console.error("Error settling party:", error);
+    const response = await Party.SettlementParty(partyNo);
+    if (response.status === 200) {
+      closeModal();
     }
   };
 

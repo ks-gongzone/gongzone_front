@@ -45,30 +45,21 @@ export default function ScrollButton() {
   };
 
   const fetchMessages = async () => {
-    try {
-      const response = await Note.NoteList({ memberNo });
-      if (Array.isArray(response)) {
-        updateMessages(response);
-      } else if (response && Array.isArray(response.data)) {
-        updateMessages(response.data);
-      } else {
-        setMessages([]);
-      }
-    } catch (error) {
+    const response = await Note.NoteList({ memberNo });
+    if (Array.isArray(response)) {
+      updateMessages(response);
+    } else if (response && Array.isArray(response.data)) {
+      updateMessages(response.data);
+    } else {
       setMessages([]);
     }
   };
-  console.log(messages);
 
   const fetchAlerts = async () => {
-    try {
-      const result = await Alert.AlertList(memberNo);
-      if (Array.isArray(result.data)) {
-        updateAlerts(result.data);
-      } else {
-        setAlerts([]);
-      }
-    } catch (error) {
+    const result = await Alert.AlertList(memberNo);
+    if (Array.isArray(result.data)) {
+      updateAlerts(result.data);
+    } else {
       setAlerts([]);
     }
   };
@@ -108,63 +99,43 @@ export default function ScrollButton() {
   };
 
   const handleReadMessage = async (noteNo) => {
-    try {
-      await Note.UpdateReadTimeNote(noteNo);
-      setMessages((prevMessages) =>
-        prevMessages.map((message) =>
-          message.noteNo === noteNo
-            ? { ...message, statusCode: "S010302" }
-            : message
-        )
-      );
-    } catch (error) {
-      console.error("Error updating message status:", error);
-    }
+    await Note.UpdateReadTimeNote(noteNo);
+    setMessages((prevMessages) =>
+      prevMessages.map((message) =>
+        message.noteNo === noteNo
+          ? { ...message, statusCode: "S010302" }
+          : message
+      )
+    );
   };
 
   const handleReadAlert = async (alertNo) => {
-    try {
-      await Alert.AlertRead(alertNo);
-      setAlerts((prevAlerts) =>
-        prevAlerts.map((alert) =>
-          alert.alertNo === alertNo
-            ? { ...alert, statusCode: "S010402" }
-            : alert
-        )
-      );
-    } catch (error) {
-      console.error("Error updating alert status:", error);
-    }
+    await Alert.AlertRead(alertNo);
+    setAlerts((prevAlerts) =>
+      prevAlerts.map((alert) =>
+        alert.alertNo === alertNo ? { ...alert, statusCode: "S010402" } : alert
+      )
+    );
   };
 
   const handleDeleteMessage = async (noteNo) => {
-    try {
-      await Note.UpdateDeleteNote(noteNo);
-      setMessages((prevMessages) =>
-        prevMessages.map((message) =>
-          message.noteNo === noteNo
-            ? { ...message, statusCode: "S010303" }
-            : message
-        )
-      );
-    } catch (error) {
-      console.error("Error deleting message:", error);
-    }
+    await Note.UpdateDeleteNote(noteNo);
+    setMessages((prevMessages) =>
+      prevMessages.map((message) =>
+        message.noteNo === noteNo
+          ? { ...message, statusCode: "S010303" }
+          : message
+      )
+    );
   };
 
   const handleDeleteAlert = async (alertNo) => {
-    try {
-      await Alert.AlertDelete(alertNo);
-      setAlerts((prevAlerts) =>
-        prevAlerts.map((alert) =>
-          alert.alertNo === alertNo
-            ? { ...alert, statusCode: "S010403" }
-            : alert
-        )
-      );
-    } catch (error) {
-      console.error("Error deleting alert:", error);
-    }
+    await Alert.AlertDelete(alertNo);
+    setAlerts((prevAlerts) =>
+      prevAlerts.map((alert) =>
+        alert.alertNo === alertNo ? { ...alert, statusCode: "S010403" } : alert
+      )
+    );
   };
 
   const handleReplyMessage = async (message) => {
@@ -216,15 +187,11 @@ export default function ScrollButton() {
   };
 
   const formatDate = (dateString) => {
-    try {
-      const date = new Date(dateString);
-      if (!isNaN(date.getTime())) {
-        return date.toLocaleString();
-      }
-      return dateString; // Invalid date, return original string
-    } catch (error) {
-      return dateString; // Error occurred, return original string
+    const date = new Date(dateString);
+    if (!isNaN(date.getTime())) {
+      return date.toLocaleString();
     }
+    return dateString;
   };
 
   return (
@@ -250,7 +217,7 @@ export default function ScrollButton() {
       </div>
 
       <div
-        className={`fixed right-0 bottom-0 h-[50em] border-gray-300 border-t border-l w-1/3 bg-white shadow-lg p-4 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed right-0 bottom-0 h-[30em] border-gray-300 border-t border-l w-[30em] bg-white shadow-lg p-4 transform transition-transform duration-300 ease-in-out ${
           isAlertOpen ? "translate-x-0" : "translate-x-full"
         } z-50`}
       >
@@ -285,64 +252,81 @@ export default function ScrollButton() {
         <div className="p-4">
           {activeTab === "messages" ? (
             <ul>
-              {messages
-                .filter((message) => message.statusCode !== "S010303")
-                .map((message) => (
-                  <li
-                    key={message.noteNo}
-                    className="mb-2 flex justify-between"
-                  >
-                    <button
-                      className={`w-full text-left p-2 rounded-md hover:bg-gray-100 ${
-                        message.statusCode === "S010302" ? "text-gray-400" : ""
-                      }`}
-                      onClick={() => handleReadMessage(message.noteNo)}
+              {messages.length === 0 ? (
+                <li className="text-center text-gray-500">
+                  받은 쪽지가 없습니다.
+                </li>
+              ) : (
+                messages
+                  .filter((message) => message.statusCode !== "S010303")
+                  .map((message) => (
+                    <li
+                      key={message.noteNo}
+                      className="mb-2 flex justify-between"
                     >
-                      <div className="font-medium">{message.memberId}</div>
-                      <div className="text-sm text-gray-500">
-                        {message.noteBody}
-                      </div>
-                    </button>
-                    <button
-                      className="text-blue-500 ml-2"
-                      onClick={() => handleReplyMessage(message)}
-                    >
-                      <PencilSquareIcon className="h-5 w-5" />
-                    </button>
-                    <button
-                      className="text-red-500 ml-2"
-                      onClick={() => handleDeleteMessage(message.noteNo)}
-                    >
-                      <TrashIcon className="h-5 w-5" />
-                    </button>
-                  </li>
-                ))}
+                      <button
+                        className={`w-full text-left p-2 rounded-md hover:bg-gray-100 ${
+                          message.statusCode === "S010302"
+                            ? "text-gray-400"
+                            : ""
+                        }`}
+                        onClick={() => handleReadMessage(message.noteNo)}
+                      >
+                        <div className="font-medium">{message.memberId}</div>
+                        <div className="text-sm text-gray-500">
+                          {message.noteBody}
+                        </div>
+                      </button>
+                      <button
+                        className="text-blue-500 ml-2"
+                        onClick={() => handleReplyMessage(message)}
+                      >
+                        <PencilSquareIcon className="h-5 w-5" />
+                      </button>
+                      <button
+                        className="text-red-500 ml-2"
+                        onClick={() => handleDeleteMessage(message.noteNo)}
+                      >
+                        <TrashIcon className="h-5 w-5" />
+                      </button>
+                    </li>
+                  ))
+              )}
             </ul>
           ) : (
             <ul>
-              {alerts
-                .filter((alert) => alert.statusCode !== "S010403")
-                .map((alert) => (
-                  <li key={alert.alertNo} className="mb-2 flex justify-between">
-                    <button
-                      className={`w-full text-left p-2 rounded-md hover:bg-gray-100 ${
-                        alert.statusCode === "S010402" ? "text-gray-400" : ""
-                      }`}
-                      onClick={() => handleReadAlert(alert.alertNo)}
+              {alerts.length === 0 ? (
+                <li className="text-center text-gray-500">
+                  받은 알림이 없습니다.
+                </li>
+              ) : (
+                alerts
+                  .filter((alert) => alert.statusCode !== "S010403")
+                  .map((alert) => (
+                    <li
+                      key={alert.alertNo}
+                      className="mb-2 flex justify-between"
                     >
-                      <div className="font-medium">{alert.alertDetail}</div>
-                      <div className="text-sm text-gray-500">
-                        {formatDate(alert.alertUpTime)}
-                      </div>
-                    </button>
-                    <button
-                      className="text-red-500 ml-2"
-                      onClick={() => handleDeleteAlert(alert.alertNo)}
-                    >
-                      <TrashIcon className="h-5 w-5" />
-                    </button>
-                  </li>
-                ))}
+                      <button
+                        className={`w-full text-left p-2 rounded-md hover:bg-gray-100 ${
+                          alert.statusCode === "S010402" ? "text-gray-400" : ""
+                        }`}
+                        onClick={() => handleReadAlert(alert.alertNo)}
+                      >
+                        <div className="font-medium">{alert.alertDetail}</div>
+                        <div className="text-sm text-gray-500">
+                          {formatDate(alert.alertUpTime)}
+                        </div>
+                      </button>
+                      <button
+                        className="text-red-500 ml-2"
+                        onClick={() => handleDeleteAlert(alert.alertNo)}
+                      >
+                        <TrashIcon className="h-5 w-5" />
+                      </button>
+                    </li>
+                  ))
+              )}
             </ul>
           )}
         </div>
