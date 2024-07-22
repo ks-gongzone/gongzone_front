@@ -46,7 +46,7 @@ export default function PartyRequest({
                     <>
                       <button
                         type="button"
-                        className="w-full mx-1 h-6 rounded-md bg-blue-300 hover:bg-blue-500 text-xs font-bold text-[white]"
+                        className="w-full mx-1 h-6 rounded-md bg-[#6ea2d4] hover:bg-blue-500 text-xs font-bold text-[white]"
                         onClick={() =>
                           onAccept(
                             requestMember.memberNo,
@@ -58,7 +58,7 @@ export default function PartyRequest({
                       </button>
                       <button
                         type="button"
-                        className="w-full mx-1 h-6 rounded-md bg-red-300 hover:bg-red-500 text-xs font-bold text-[white]"
+                        className="w-full mx-1 h-6 rounded-md bg-[#f97173] hover:bg-red-500 text-xs font-bold text-[white]"
                         onClick={() =>
                           onRefuse(
                             requestMember.memberNo,
@@ -72,7 +72,7 @@ export default function PartyRequest({
                   ) : requestMember.memberNo === currentUser ? (
                     <button
                       type="button"
-                      className="w-full mx-1 h-6 rounded-md bg-red-300 hover:bg-red-500 text-xs font-bold text-[white]"
+                      className="w-full mx-1 h-6 rounded-md bg-[#f97173] hover:bg-red-500 text-xs font-bold text-[white]"
                       onClick={() =>
                         onLeave(requestMember.memberNo, requestMember.partyNo)
                       }

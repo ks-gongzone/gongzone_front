@@ -85,13 +85,13 @@ export default function InfoCard({
             {writeNo === connectNo && (
               <>
                 <button
-                  className="bg-[#6ea2d4] hover:bg-[#1d5091] text-white font-bold py-1 px-2 rounded w-14 h-8"
+                  className="bg-[#6ea2d4] hover:bg-[#1d5091] text-white font-bold py-1 px-2 rounded w-14 h-8 mt-3"
                   onClick={handleBoardUpdate}
                 >
                   수정
                 </button>
                 <button
-                  className="bg-[#f97173] hover:bg-red-700 text-white font-bold py-1 px-2 rounded ml-1 w-14 h-8"
+                  className="bg-[#f97173] hover:bg-red-700 text-white font-bold py-1 px-2 rounded ml-1 w-14 h-8 mt-3"
                   onClick={handleBoardDelete}
                 >
                   삭제
@@ -99,7 +99,7 @@ export default function InfoCard({
               </>
             )}
             <button onClick={handleShareClick}>
-              <ShareIcon className="mt-3 w-8 h-8" />
+              <ShareIcon className="mt-3 w-8 h-8 ml-5" />
             </button>
             {isCopied && (
               <div className="absolute top-10 ml-2 mt-1 text-sm text-green-500 bg-white p-2 rounded shadow-lg w-max">

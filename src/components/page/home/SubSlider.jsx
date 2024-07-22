@@ -19,26 +19,33 @@ export default function SubSlider() {
   };
 
   return (
-    <div className="w-full">
-      <div className="w-[1000px] mx-auto mt-10 mb-6 text-lg font-bold text-[#526688]">
+    <div>
+      <div className="w-[1056px] mx-auto mt-10 mb-6 text-lg font-bold text-[#526688]">
         다양한 소식
       </div>
-      <Slider {...settings}>
-        <div className="h-[80px] sm:h-[130px] md:h-[200px] bg-gray-200">
-          <img
-            src={subBanner1}
-            alt="Sample Banner"
-            className="h-full w-full object-cover"
-          />
-        </div>
-        <div className="h-[80px] sm:h-[130px] md:h-[200px] bg-gray-200">
-          <img
-            src={subBanner2}
-            alt="Sample Banner"
-            className="h-full w-full object-cover"
-          />
-        </div>
-      </Slider>
+      <div className="w-full flex justify-center">
+      
+      <div class="w-[1056px]">
+        <Slider {...settings}>
+          <div className="h-[80px] sm:h-[130px] md:h-[200px] bg-gray-200">
+            <img
+              src={subBanner1}
+              alt="Sample Banner"
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <div className="h-[80px] sm:h-[130px] md:h-[200px] bg-gray-200">
+            <img
+              src={subBanner2}
+              alt="Sample Banner"
+              className="h-full w-full object-cover"
+            />
+          </div>
+        </Slider>
+      </div>
+      
     </div>
+    </div>
+    
   );
 }

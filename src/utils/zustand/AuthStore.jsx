@@ -1,6 +1,7 @@
 import create from "zustand";
 import { Auth } from "../repository";
 import { persist } from "zustand/middleware";
+import {data} from "express-session/session/cookie";
 
 const AuthStore = create(
   persist(
@@ -46,10 +47,13 @@ const AuthStore = create(
         }
       },
 
-      statusLogout: async () => {
+      statusLogout: async (data) => {
+        const userAgent = navigator.userAgent; // 브라우저 정보 가져오기
+        const loginData = { ...data, userAgent };
+
         const token = window.localStorage.getItem("accessToken");
         if (token) {
-          await Auth.Logout();
+          await Auth.Logout(loginData);
         }
 
         window.localStorage.removeItem("accessToken");
