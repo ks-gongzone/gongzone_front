@@ -356,7 +356,7 @@ export default function InsertForm() {
           />
         </div>
         <div className="w-1/3">
-          <label className="block mt-5">게시글 마감일</label>
+          <label>게시글 마감일</label>
           <Calendar
             selected={formData.endDate}
             onChange={handleEndDateChange}
