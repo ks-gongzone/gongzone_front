@@ -358,6 +358,17 @@ export const GetPhone = (memberNo) => {
     });
 };
 
+export const UserDelete = (memberNo) => {
+  return GZAPI.post(`/api/members/${memberNo}/updateStatus`, {
+    newStatusCode: "S010104"
+  })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("회원 상태 변경중 에러", error)
+      throw error;
+    });
+};
+
 // 드롭다운 데이터 받기
 export const DropDownAPI = {
   getDropDownData: async (memberNo) => {
@@ -380,6 +391,17 @@ export const DropDownAPI = {
       .catch((error) => {
         console.error("프로필 조회 실패:", error);
         throw error;
+      });
+  },
+  getNoteList: async (memberNo) => {
+    return GZAPI.get(`/api/note/countNewNotes/${memberNo}`)
+      .then((response) => {
+        console.log("드롭다운 쪽지 카운팅", response.data);
+        return response.data;
+      })
+      .catch((error) => {
+        console.error("드롭다운 쪽지 카운팅 실패:", error);
+        throw 0;
       });
   },
 };

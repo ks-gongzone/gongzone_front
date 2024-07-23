@@ -25,6 +25,8 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
   const [profileImage, setProfileImage] = useState(null);
   const [alerts, setAlerts] = useState([]);
   const [newAlertCount, setNewAlertCount] = useState(0);
+  const [notes, setNotes] = useState([]);
+  const [newNoteCount, setNewNoteCount] = useState(0); 
 
   const handleLogout = () => {
     statusLogout();
@@ -68,6 +70,16 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
           .catch((error) => {
             console.error("새로운 알림 수 로드 중 에러 발생", error);
           });
+          // 쪽지 목록 로드
+          DropDownAPI.getNoteList(memberNo)
+            .then((data) => {
+              setNotes(data); // 가져온 쪽지 목록을 상태에 저장
+              const noteCount = data.reduce((sum, note) => sum + note.noteCount, 0);
+              setNewNoteCount(noteCount);
+            })
+            .catch((error) => {
+              console.error("쪽지 목록 로드 중 에러 발생", error);
+            });
       }
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -161,7 +173,20 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
             </button>
           </div>
         ))}
-        </div>
+      </div>
+      <div className="px-8 pt-8">
+        <div className="font-semibold text-gray-900">신규 쪽지 ({newNoteCount})</div>
+        {notes.map((note, index) => (
+          <div className="mt-2" key={index}>
+            <button
+              type="button"
+              className="w-full text-left text-gray-500 break-words overflow-hidden"
+            >
+              {transText(note.noteBody, 14)}
+            </button>
+          </div>
+        ))}
+      </div>
       <button
         type="button"
         className="w-full text-right text-[13px] mt-4 pr-4 text-red-500"

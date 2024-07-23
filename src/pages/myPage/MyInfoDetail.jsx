@@ -71,9 +71,6 @@ export default function MyInfoDetail({ memberNo, onPreviousPage }) {
           <Phone memberNo={memberNo} />
         </div>
         <div className="mb-6 flex justify-end">
-          <button className="bg-blue-500 text-white font-bold py-2 px-4 rounded">
-            ! 본인인증
-          </button>
         </div>
         <AlarmSettings memberNo={memberNo} />
         <div className="flex justify-end mt-4">
