@@ -1,87 +1,86 @@
-import { useEffect } from "react";
-import GZAPI from "../../utils/api";
+import React, { useEffect } from "react";
 import { formatNumber } from "../../libs/utilities";
 import State from "../../utils/state/State";
 import { Link } from "react-router-dom";
 import { usePointData } from "./context/PointContext";
-import { PointInnerSection } from "../../components/page/point/Index";
+import { PointInnerSection, PointSection } from "../../components/page/point/Index";
 import {
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
+import Skeleton from "react-loading-skeleton";
+import { PointAPI } from "../../utils/repository";
 
 export default function PointHistory() {
   const { memberNo } = usePointData();
-  const [pageSize, pageNo, maxPage, currentPage] = [
+  const [pageSize, pageNo, maxPage, loading, histories] = [
     State("pageSize", 10),
     State("pageNo", 1),
     State("maxPage", 0),
+    State("loading", true),
+    State("histories", [])
   ];
 
   useEffect(() => {
-    const fetchTotalPages = async () => {
-      const params = new URLSearchParams({
-        pageSize: pageSize.value,
-        pageNo: pageNo.value,
-      });
-      const url = `/api/members/${memberNo}/point/history?${params.toString()}`;
-      const response = await GZAPI.get(url);
-      maxPage.set(response.data.result.max);
-    };
+    (async () => {
+      // 포인트 내역 불러오기
+      const responseHistories = await PointAPI.fetchHistories(memberNo);
+      histories.set(responseHistories.data.result.elements);
+      maxPage.set(responseHistories.data.result.max);
 
-    fetchTotalPages();
-  }, [pageSize, pageNo, memberNo, maxPage]);
+      // 로딩 완료
+      loading.set(false);
+    })();
+  }, [loading.value]);
+
 
   return (
-    <PointInnerSection title={`${memberNo}님의 포인트 내역 페이지`}>
-      <div>
-        <div></div>
-      </div>
-      <PointHistoryTable
-        memberNo={memberNo}
-        pageSize={pageSize.value}
-        pageNo={pageNo.value}
-      />
-      <div className="flex justify-end">
-        <div className="w-1/6"></div>
-        <div className="w-4/6">
-          <Pagination pageNo={pageNo} totalPages={maxPage.value} />
+    loading.value ?
+      <PointInnerSection>
+        <div className="flex flex-col items-center mt-12">
+          <Skeleton circle={ true } height={ 150 } width={ 150 } />
+          <Skeleton height={ 30 } width={ 200 } className="mt-4" />
+          <Skeleton height={ 20 } width={ 300 } className="mt-2" />
+          <Skeleton height={ 20 } width={ 300 } className="mt-2" />
+          <Skeleton height={ 20 } width={ 300 } className="mt-2" />
         </div>
-        <div className="w-1/6 flex justify-end items-center">
-          <select
-            className="w-full h-8 border rounded border-gray-400"
-            onChange={(event) => {
-              pageSize.set(Number(event.target.value));
-            }}
-          >
-            <option value="10">10개</option>
-            <option value="25">25개</option>
-          </select>
-        </div>
-      </div>
-    </PointInnerSection>
+      </PointInnerSection>
+      :
+      <PointSection title={ `${ memberNo }님의 포인트 내역 페이지` }>
+        <PointInnerSection>
+          <div>
+            <div></div>
+          </div>
+          <PointHistoryTable
+            memberNo={ memberNo }
+            histories={ histories }
+            pageSize={ pageSize.value }
+            pageNo={ pageNo.value }
+          />
+          <div className="flex justify-end">
+            <div className="w-1/6"></div>
+            <div className="w-4/6">
+              <Pagination pageNo={ pageNo } totalPages={ maxPage.value } />
+            </div>
+            <div className="w-1/6 flex justify-end items-center">
+              <select
+                className="w-full h-8 border rounded border-gray-400"
+                onChange={ (event) => {
+                  pageSize.set(Number(event.target.value));
+                } }
+              >
+                <option value="10">10개</option>
+                <option value="25">25개</option>
+              </select>
+            </div>
+          </div>
+        </PointInnerSection></PointSection>
   );
 }
 
-export function PointHistoryTable({ memberNo, pageSize = 10, pageNo = 1 }) {
-  const histories = State("pointHistories", []);
-
-  useEffect(() => {
-    const fetchHistories = async () => {
-      const params = new URLSearchParams({
-        pageSize: pageSize,
-        pageNo: pageNo,
-      });
-      const url = `/api/members/${memberNo}/point/history?${params.toString()}`;
-      const response = await GZAPI.get(url);
-      const result = response.data.result.elements;
-      histories.set(result);
-    };
-
-    fetchHistories();
-  }, [pageSize, pageNo, memberNo]);
+export function PointHistoryTable({ memberNo, histories, pageSize = 10, pageNo = 1 }) {
 
   return (
     <div className="flex flex-col flex-grow space-y-4">
@@ -95,13 +94,13 @@ export function PointHistoryTable({ memberNo, pageSize = 10, pageNo = 1 }) {
           <TableHeader width="w-[16%]">변동후</TableHeader>
           <TableHeader width="w-[12%]">상태</TableHeader>
         </div>
-        {histories.value.map((history, index) => (
+        { histories.value.map((history, index) => (
           <PointHistoryRow
-            key={index}
-            memberNo={memberNo}
-            pointHistory={history}
+            key={ index }
+            memberNo={ memberNo }
+            pointHistory={ history }
           />
-        ))}
+        )) }
       </div>
     </div>
   );
@@ -111,24 +110,24 @@ function PointHistoryRow({ memberNo, pointHistory }) {
   return (
     <div className="flex w-full border-y border-y-gray-300 bg-gray-50 text-center">
       <TableCell width="w-3/12">
-        {pointHistory.pointHistoryDate.substring(0, 10)}
+        { pointHistory.pointHistoryDate.substring(0, 10) }
       </TableCell>
-      <TableCell width="w-2/12">{pointHistory.type}</TableCell>
+      <TableCell width="w-2/12">{ pointHistory.type }</TableCell>
       <TableCell width="w-[16%]">
-        {formatNumber(pointHistory.pointHistoryBefore)}
-      </TableCell>
-      <TableCell width="w-[16%]">
-        {formatNumber(pointHistory.pointHistoryChange)}
+        { formatNumber(pointHistory.pointHistoryBefore) }
       </TableCell>
       <TableCell width="w-[16%]">
-        {formatNumber(pointHistory.pointHistoryAfter)}
+        { formatNumber(pointHistory.pointHistoryChange) }
+      </TableCell>
+      <TableCell width="w-[16%]">
+        { formatNumber(pointHistory.pointHistoryAfter) }
       </TableCell>
       <TableCell width="w-[12%]">
         <Link
           to="/myPage/point/detail"
-          state={{ memberNo, historyNo: pointHistory.pointHistoryNo }}
+          state={ { memberNo, historyNo: pointHistory.pointHistoryNo } }
         >
-          {pointHistory.status}
+          { pointHistory.status }
         </Link>
       </TableCell>
     </div>
@@ -139,12 +138,12 @@ function TableHeader({ width, children }) {
   const className = `border-x border-x-gray-300 border-y-2 border-y-gray-400 ${
     width || "w-auto"
   }`;
-  return <div className={className}>{children}</div>;
+  return <div className={ className }>{ children }</div>;
 }
 
 function TableCell({ width, children }) {
-  const className = `border-x border-gray-300 ${width || "w-auto"}`;
-  return <div className={className}>{children}</div>;
+  const className = `border-x border-gray-300 ${ width || "w-auto" }`;
+  return <div className={ className }>{ children }</div>;
 }
 
 const Pagination = ({ pageNo, totalPages }) => {
@@ -168,13 +167,13 @@ const Pagination = ({ pageNo, totalPages }) => {
     for (let i = startPage; i <= endPage; i++) {
       pages.push(
         <button
-          key={i}
-          onClick={() => handlePageClick(i)}
-          className={`px-3 py-1 border rounded ${
+          key={ i }
+          onClick={ () => handlePageClick(i) }
+          className={ `px-3 py-1 border rounded ${
             i === value ? "bg-blue-500 text-white" : "bg-gray-200"
-          }`}
+          }` }
         >
-          {i}
+          { i }
         </button>
       );
     }
@@ -185,30 +184,30 @@ const Pagination = ({ pageNo, totalPages }) => {
   return (
     <div className="flex items-center justify-center space-x-2">
       <button
-        onClick={handleFirstPage}
-        disabled={value <= 1}
+        onClick={ handleFirstPage }
+        disabled={ value <= 1 }
         className="p-1 border border-gray-400 rounded"
       >
         <ChevronDoubleLeftIcon className="w-5 h-5" />
       </button>
       <button
-        onClick={handlePrevPage}
-        disabled={value <= 1}
+        onClick={ handlePrevPage }
+        disabled={ value <= 1 }
         className="p-1 border border-gray-400 rounded"
       >
         <ChevronLeftIcon className="w-5 h-5" />
       </button>
-      {renderPageNumbers()}
+      { renderPageNumbers() }
       <button
-        onClick={handleNextPage}
-        disabled={value >= totalPages}
+        onClick={ handleNextPage }
+        disabled={ value >= totalPages }
         className="p-1 border border-gray-400 rounded"
       >
         <ChevronRightIcon className="w-5 h-5" />
       </button>
       <button
-        onClick={handleLastPage}
-        disabled={value >= totalPages}
+        onClick={ handleLastPage }
+        disabled={ value >= totalPages }
         className="p-1 border border-gray-400 rounded"
       >
         <ChevronDoubleRightIcon className="w-5 h-5" />

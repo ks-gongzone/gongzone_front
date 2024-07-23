@@ -75,7 +75,7 @@ export default function PointCharge() {
           <div className="relative flex w-full justify-end">
             <input
               onChange={ actions.inputChangeHandler }
-              className="w-1/2 h-16
+              className="w-1/2 min-w-[272px] h-16
                               border-2 border-gray-300 rounded-xl
                               p-4 pl-6
                               text-2xl"
@@ -116,7 +116,23 @@ export default function PointCharge() {
               초기화
             </button>
           </div>
-          <div className="w-full">
+          <div className="w-full space-y-4">
+            <div className="w-full">
+              <h2 className="text-xl">간편결제</h2>
+              <div className="flex w-full space-x-2">
+                <div className="w-1/4">
+                  <button
+                    onClick={ actions.requestPointCharge }
+                    className="w-full box-border border-2 border-[#3182f6] rounded py-4"
+                  >
+                    토스페이
+                  </button>
+                </div>
+                <div className="w-1/4"></div>
+                <div className="w-1/4"></div>
+                <div className="w-1/4"></div>
+              </div>
+            </div>
             <h2 className="text-xl">일반결제</h2>
             <div className="flex w-full space-x-2">
               <div className="w-1/4">
@@ -131,22 +147,6 @@ export default function PointCharge() {
               <div className="w-1/4">
                 <button className="w-full box-border border-2 border-gray-400 rounded py-4">!가상계좌</button>
               </div>
-            </div>
-          </div>
-          <div className="w-full">
-            <h2 className="text-xl">간편결제</h2>
-            <div className="flex w-full space-x-2">
-              <div className="w-1/4">
-                <button
-                  onClick={ actions.requestPointCharge }
-                  className="w-full box-border border-2 border-[#3182f6] rounded py-4"
-                >
-                  토스페이
-                </button>
-              </div>
-              <div className="w-1/4"></div>
-              <div className="w-1/4"></div>
-              <div className="w-1/4"></div>
             </div>
           </div>
         </PointInnerSection>

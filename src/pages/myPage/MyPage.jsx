@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AuthStore from "../../utils/zustand/AuthStore";
-import { MyInfoDetail, MyInfo, MyParty } from "./Index";
+import { MyInfo, MyInfoDetail, MyParty } from "./Index";
 import { Point } from "../point/Index";
 import MyPageBoard from "./MyPageBoard";
 import BasicTapMenu from "../../components/menu/BasicTapMenu";
@@ -40,11 +40,11 @@ export default function MyPage() {
     switch (activeTab) {
       case "myInfo":
         return infoPage === 1 ? (
-          <MyInfo memberNo={userInfo.memberNo} onNextPage={handleNextPage} />
+          <MyInfo memberNo={ userInfo.memberNo } onNextPage={ handleNextPage } />
         ) : (
           <MyInfoDetail
-            memberNo={userInfo.memberNo}
-            onPreviousPage={handlePreviousPage}
+            memberNo={ userInfo.memberNo }
+            onPreviousPage={ handlePreviousPage }
           />
         );
       case "myPageBoard":
@@ -66,17 +66,17 @@ export default function MyPage() {
   ];
 
   return (
-    <div className="w-[65em] mx-auto mb-10">
+    <div className="w-full mx-auto mb-10">
       <BasicTapMenu
-        tabItems={tabItems}
-        activeTab={activeTab}
-        onTabClick={(id) => {
-          navigate(`/myPage/${id}`);
+        tabItems={ tabItems }
+        activeTab={ activeTab }
+        onTabClick={ (id) => {
+          navigate(`/myPage/${ id }`);
           setActiveTab(id);
-        }}
+        } }
         className="sticky top-20 z-20"
       />
-      <div>{renderContent()}</div>
+      <div>{ renderContent() }</div>
     </div>
   );
 }
