@@ -88,7 +88,7 @@ export default function MyPage() {
   ];
 
   return (
-    <div className="w-full mx-auto mb-10">
+    <div className="w-[65em] mx-auto mb-10">
       <BasicTapMenu
         tabItems={tabItems}
         activeTab={activeTab}

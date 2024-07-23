@@ -20,17 +20,15 @@ export default function BlockButton({
         : `${targetMemberName}님을 차단시겠습니까?`;
       if (window.confirm(confirmMessage)) {
         if (isBlocked) {
-          console.log("차단해제 타겟", targetMemberNo);
           await MemberListAPI.unBlockMember(currentUserNo, targetMemberNo);
         } else {
-          console.log("차단 타겟", targetMemberNo);
           await MemberListAPI.blockMember(currentUserNo, targetMemberNo);
         }
         setIsBlocked(!isBlocked);
       }
       setIsLoading(false);
     } catch (error) {
-      console.error("[버튼] 멤버 차단 중 에러 발생", error);
+      error;
       setIsBlocked(false);
     }
   };
