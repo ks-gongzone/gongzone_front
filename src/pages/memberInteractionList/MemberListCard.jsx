@@ -7,6 +7,7 @@ import FollowButton from "../../components/button/FollowButton";
 import BlockButton from "../../components/button/BlockButton";
 import AuthStore from "../../utils/zustand/AuthStore";
 import { Note } from "../../utils/repository";
+import sample1 from "../../assets/images/sample1.PNG";
 
 const MySwal = withReactContent(Swal);
 
@@ -15,6 +16,7 @@ export default function MemberListCard({
   like = false,
   note = false,
   children,
+  profileImage,
 }) {
   const [isLiked, setIsLiked] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -89,7 +91,7 @@ export default function MemberListCard({
         <div className="ml-4 mt-6 w-16 h-16 rounded-full bg-slate-400 flex-shrink-0">
           <img
             className="w-16 h-16 rounded-full object-cover"
-            src={member.profileImage}
+            src={profileImage || sample1} // profileImage prop 사용
             alt=""
           />
         </div>
