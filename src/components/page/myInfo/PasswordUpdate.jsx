@@ -5,7 +5,7 @@ import { GetMemberInfo } from "../../../utils/repository";
 /**
  * 개별 토글 스위치 컴포넌트
  * @date: 2024-06-12
- * @last: 2024-06-17
+ * @last: 2024-07-18
  * @desc: 커스텀 훅 [소문자use 사용해서 구현]
  */
 export function useDataSet(initialValue = "") {
@@ -54,9 +54,9 @@ export default function ChangePassword({ memberNo }) {
 
   // 비밀번호 유효성 검사 (숫자, 특수 문자 포함 8~16글자)
   const isAblePassword = (password) => {
-    const filtering =  /^(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/;
+    const filtering = /^(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/;
     return filtering.test(password);
-  }
+  };
 
   const handleChangePassword = () => {
     if (!isMatched) {
@@ -64,7 +64,7 @@ export default function ChangePassword({ memberNo }) {
       return;
     }
 
-    if(!isAblePassword(password)) {
+    if (!isAblePassword(password)) {
       setValidationMessage("비밀번호는 8자 이상 16자 이하의 숫자와 특수 문자를 포함해야 합니다.");
       return;
     }
@@ -84,7 +84,7 @@ export default function ChangePassword({ memberNo }) {
   return (
     <div>
       <div className="mb-6">
-        <div className="text-blue-500 font-bold text-lg mb-2">
+        <div className="text-gray-700 font-bold text-lg mb-2">
           비밀번호 수정
         </div>
         <input
@@ -105,7 +105,7 @@ export default function ChangePassword({ memberNo }) {
         )}
       </div>
       <div className="mb-6">
-        <div className="text-blue-500 font-bold text-lg mb-2">
+        <div className="text-gray-700 font-bold text-lg mb-2">
           비밀번호 수정 확인
         </div>
         <input
@@ -117,20 +117,22 @@ export default function ChangePassword({ memberNo }) {
           disabled={!isSocialLogin}
         />
         {matchMessage && (
-          <div className={`mt-2 text-lg font-bold ${isMatched ? "text-blue-500" : "text-red-500"}`}>
+          <div
+            className={`mt-2 text-lg font-bold ${
+              isMatched ? "text-[#1d5091]" : "text-red-500"
+            }`}
+          >
             {isMatched ? "비밀번호가 일치합니다." : "비밀번호가 불일치합니다."}
           </div>
         )}
       </div>
       {validationMessage && (
-        <div className="text-red-500 text-sm mt-1">
-          {validationMessage}
-        </div>
+        <div className="text-red-500 text-sm mt-1">{validationMessage}</div>
       )}
       <div className="flex justify-end">
         <button
           onClick={handleChangePassword}
-          className="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4 mb-4"
+          className="bg-[#1d5091] text-white font-bold py-2 px-4 rounded mt-4 mb-4"
           disabled={!isSocialLogin}
         >
           비밀번호 변경

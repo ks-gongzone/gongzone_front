@@ -11,7 +11,7 @@ export default function SetNickname({ memberNo }) {
   const [nickname, setNickname] = useState("");
   const [loading, setLoading] = useState(true);
   // alert대신 메세지로 오류 표기
-  const [validationMessage, setValidationMessage] = useState(""); 
+  const [validationMessage, setValidationMessage] = useState("");
 
   useEffect(() => {
     GetNickname(memberNo)
@@ -25,7 +25,6 @@ export default function SetNickname({ memberNo }) {
       });
   }, [memberNo]);
 
-  
   const isAbleNickname = (nickname) => {
     const filtering = /^[ㄱ-ㅎ가-힣a-zA-Z0-9]{2,8}$/;
     return filtering.test(nickname);
@@ -34,7 +33,7 @@ export default function SetNickname({ memberNo }) {
   const changeNickname = (e) => {
     const newNickname = e.target.value;
     if (!isAbleNickname(newNickname)) {
-      setValidationMessage("닉네임은 2~8자의 한글, 영문자 또는 숫자로 입력해 주세요.")
+      setValidationMessage("닉네임은 2~8자의 한글, 영문자 또는 숫자로 입력해 주세요.");
     } else {
       setValidationMessage("");
     }
@@ -74,7 +73,7 @@ export default function SetNickname({ memberNo }) {
       <div className="mt-2 flex justify-end">
         <button
           onClick={handleSaveNickname}
-          className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
+          className="bg-[#1d5091] text-white font-bold py-2 px-4 rounded"
         >
           닉네임 저장
         </button>

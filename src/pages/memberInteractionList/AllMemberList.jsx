@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import AuthStore from "../../utils/zustand/AuthStore";
 import { MemberListAPI, ProfileAPI } from "../../utils/repository";
 import MemberListCard from "./MemberListCard";
@@ -21,6 +23,7 @@ export default function AllMemberList({
   const currentUserNo = userInfo?.memberNo;
   const [size] = useState(9);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
   useEffect(() => {
     if (!currentUserNo) {
@@ -75,6 +78,8 @@ export default function AllMemberList({
         }
       } catch (error) {
         console.error("[페이지] 유저 데이터 로드 중 오류", error);
+      } finally {
+        setLoading(false); // 로딩 완료
       }
     };
 
@@ -103,6 +108,17 @@ export default function AllMemberList({
     ));
   };
 
+  const renderSkeletonCards = (count) => {
+    return Array(count).fill(0).map((_, index) => (
+      <div key={index} className="bg-white rounded-lg shadow-md p-4 min-h-[350px]">
+        <Skeleton height={200} width={300} />
+        <Skeleton height={20} width="80%" className="mt-4" />
+        <Skeleton height={20} width="60%" className="mt-2" />
+        <Skeleton height={30} width="40%" className="mt-4" />
+      </div>
+    ));
+  };
+
   const totalPages = Math.ceil(totalMembers / size);
 
   return (
@@ -115,12 +131,12 @@ export default function AllMemberList({
         lg:grid-cols-3
         gap-4"
       >
-        {renderMemberCards(memberList)}
+        {loading ? renderSkeletonCards(size) : renderMemberCards(memberList)}
       </div>
       <div className="flex justify-between mt-4">
         <button
           onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 1}
+          disabled={currentPage === 1 || loading}
           className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
         >
           이전
@@ -130,7 +146,7 @@ export default function AllMemberList({
         </span>
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage === totalPages}
+          disabled={currentPage === totalPages || loading}
           className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
         >
           다음
