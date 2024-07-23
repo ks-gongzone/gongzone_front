@@ -1,12 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Modal from 'react-modal';
 import GZAPI from '../../../utils/api';
+import Cropper from 'react-easy-crop';
+import { GetCroppedImg } from './CanvasUtils';
 
 // Modal의 App element 설정
 Modal.setAppElement('#root');
 
 export default function PictureModal({ isOpen, onRequestClose, onImageSave, profileImage, memberNo }) {
   const [image, setImage] = useState(null);
+  const [imageType, setImageType] = useState(null);
+  const [parsedFileData, setParsedFileData] = useState(null); // 파싱된 파일 데이터
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
   const [hasProfileImage, setHasProfileImage] = useState(false);
 
   useEffect(() => {
@@ -25,19 +32,50 @@ export default function PictureModal({ isOpen, onRequestClose, onImageSave, prof
     checkProfileImage();
   }, [memberNo]);
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(file);
+      // 이미지 URL 생성 및 파일 정보 저장
+      setImage(URL.createObjectURL(file));
+      setImageType(file.type);
+
+      // 파일 파싱 작업 호출
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await GZAPI.post('/api/members/parseFile', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        if (response.data) {
+          // 파싱된 파일 정보 저장
+          setParsedFileData(response.data);
+          console.log("파싱된 파일 정보:", response.data);
+        }
+      } catch (error) {
+        console.error('파일 파싱 실패:', error);
+      }
     } else {
       alert('이미지 파일을 선택해주세요.');
     }
   };
 
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+
   const handleSaveOrUpdate = async () => {
     try {
+      const croppedImage = await GetCroppedImg(image, croppedAreaPixels, parsedFileData.fileNewName, imageType);
       const formData = new FormData();
-      formData.append('file', image);
+      formData.append('file', croppedImage);
+      formData.append('originalName', parsedFileData.fileOriginalName);
+      formData.append('newName', parsedFileData.fileNewName);
+      formData.append('filePath', parsedFileData.filePath);
+      formData.append('fileSize', parsedFileData.fileSize);
 
       let apiEndpoint;
       if (hasProfileImage) {
@@ -62,7 +100,6 @@ export default function PictureModal({ isOpen, onRequestClose, onImageSave, prof
     }
   };
 
-
   const customStyles = {
     content: {
       top: '50%',
@@ -72,7 +109,7 @@ export default function PictureModal({ isOpen, onRequestClose, onImageSave, prof
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
       width: '100%',
-      maxWidth: '500px', // 모달의 최대 너비를 설정합니다.
+      maxWidth: '500px',
       padding: '20px',
       borderRadius: '8px',
     },
@@ -80,7 +117,7 @@ export default function PictureModal({ isOpen, onRequestClose, onImageSave, prof
       backgroundColor: 'rgba(0, 0, 0, 0.75)',
       display: 'flex',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
     },
   };
 
@@ -88,13 +125,23 @@ export default function PictureModal({ isOpen, onRequestClose, onImageSave, prof
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      style={customStyles} // customStyles를 적용
+      style={customStyles}
     >
       <div className="text-lg font-bold mb-4">사진 편집하기</div>
       <input type="file" accept="image/*" onChange={handleImageChange} className="mb-4" />
       {image && (
         <div className="relative w-full h-64">
-          <img src={URL.createObjectURL(image)} alt="선택된 이미지" className="w-full h-full object-cover" />
+          <Cropper
+            image={image}
+            crop={crop}
+            zoom={zoom}
+            aspect={1}
+            onCropChange={setCrop}
+            onZoomChange={setZoom}
+            onCropComplete={onCropComplete}
+            cropShape="round"
+            showGrid={false}
+          />
         </div>
       )}
       <div className="mt-4 flex justify-between w-full">
