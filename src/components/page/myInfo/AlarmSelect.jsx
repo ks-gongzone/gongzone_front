@@ -13,12 +13,12 @@ const ToggleSwitch = ({ label, checked, onChange }) => (
     <div className="flex items-center">
       <div
         className={`w-16 h-8 flex items-center rounded-full p-1 cursor-pointer transition duration-200 ease-in-out ${
-          checked ? "bg-blue-500" : "bg-gray-300"
+          checked ? "bg-[#1d5091]" : "bg-gray-300"
         }`}
         onClick={onChange}
       >
         <div
-          className={`bg-white w-6 h-6 rounded-full shadow-md transform tarnsition duration-500 ease-in-out ${
+          className={`bg-white w-6 h-6 rounded-full shadow-md transform transition duration-500 ease-in-out ${
             checked ? "translate-x-8" : ""
           }`}
         ></div>
@@ -140,7 +140,7 @@ export default function AlarmSettings({ memberNo }) {
           <div className="mr-2">전체 동의</div>
           <div
             className={`w-16 h-8 flex items-center rounded-full p-1 cursor-pointer transition duration-200 ease-in-out ${
-              alarms.all ? "bg-blue-500" : "bg-gray-300"
+              alarms.all ? "bg-[#1d5091]" : "bg-gray-300"
             }`}
             onClick={handleAllChange}
           >
@@ -166,7 +166,7 @@ export default function AlarmSettings({ memberNo }) {
       <div>
         <button
           onClick={handleSave}
-          className="bg-blue-500 text-white font-bold py-2 px-4 rounded"
+          className="bg-[#1d5091] text-white font-bold py-2 px-4 rounded"
         >
           알림 설정 저장
         </button>

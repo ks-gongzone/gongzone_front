@@ -58,7 +58,7 @@ export default function LocationSelect({ onLocationChange, memberNo }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    loadData(  
+    loadData(
       memberNo,
       setLocationData,
       setSelectedDo,
@@ -161,7 +161,7 @@ export default function LocationSelect({ onLocationChange, memberNo }) {
       <div className="mt-2 md:mt-4 self-end">
         <button
           onClick={handleSubmit}
-          className="p-2 bg-blue-500 text-white rounded font-bold"
+          className="p-2 bg-[#1d5091] text-white rounded font-bold"
         >
           선호지역 저장
         </button>
