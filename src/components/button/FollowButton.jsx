@@ -27,7 +27,7 @@ export default function FollowButton({
         }
         setIsLoading(false);
       } catch (error) {
-        error;
+        console.error("[버튼] 멤버 팔로우 중 에러 발생", error);
         setIsLoading(false);
     }
   };

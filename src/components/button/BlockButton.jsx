@@ -28,7 +28,7 @@ export default function BlockButton({
       }
       setIsLoading(false);
     } catch (error) {
-      error;
+      console.error("[버튼] 멤버 차단 중 에러 발생", error);
       setIsBlocked(false);
     }
   };
