@@ -78,6 +78,30 @@
 
 <br>
 
+## 🎁 [Preview](gongzone.shop)
+
+|메인페이지 - 1|
+|--|
+|![mainPage1](https://github.com/user-attachments/assets/2efdabdb-39ea-4358-81ad-7f133dd34e26)|
+
+|메인페이지 - 2|
+|--|
+|![mainPage2](https://github.com/user-attachments/assets/ce08e699-0fe1-4ce6-ab19-f82dee608408)|
+
+|로그인|
+|--|
+|![LoginModal](https://github.com/user-attachments/assets/49fa9d5f-8dbd-42b6-9861-b99eece7c8c9)|
+
+|게시판|
+|--|
+|![board](https://github.com/user-attachments/assets/fa8f0adc-4c7d-42ad-9f5c-fba205206930)|
+
+|파티상세|
+|--|
+|![partyDetail](https://github.com/user-attachments/assets/8c6d8bb0-76f7-4fe5-a9cb-56de7eb829f6)|
+
+<br>
+
 ## ⚙ 설치 및 실행
 
 1. 저장소 클론
