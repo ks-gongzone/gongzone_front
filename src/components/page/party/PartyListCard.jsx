@@ -70,11 +70,11 @@ export default function PartyListCard({
         )}
       </div>
       <div className="px-6 py-2">
-        <div className="text-sm text-gray-900 text-ml">
-          {stripHtmlTags(desc)}
-        </div>
-        <div className="text-right text-gray-500 text-xs">
+        <div className="text-sm text-gray-900 text-ml h-[3em]">
           {stripHtmlTags(title)}
+        </div>
+        <div className="text-right text-gray-500 text-xs h-[2em]">
+          {stripHtmlTags(desc)}
         </div>
         <div className="text-xs text-right font-bold mt-2 mb-1 text-[#1d5091]">
           총 구매수량 : {amount}

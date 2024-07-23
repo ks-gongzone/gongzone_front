@@ -58,7 +58,7 @@ export default function BoardSearch({ onSearch, hidden }) {
     { key: "c4", value: "CF0104", label: "정육/계란류" },
     { key: "c5", value: "CF0105", label: "우유/유제품" },
     { key: "c6", value: "CF0201", label: "쌀/잡곡" },
-    { key: "c7", value: "견과류" },
+    { key: "c7", value: "CF0202", label: "견과류" },
     { key: "c8", value: "CF0301", label: "김치/반찬" },
     { key: "c9", value: "CF0302", label: "밀키트" },
     { key: "c10", value: "CF0401", label: "면류/통조림" },

@@ -11,13 +11,17 @@ export default function BlockList({ memberNo }) {
   useEffect(() => {
     const fetchBlockList = async () => {
       try {
-        const data = await MemberListAPI.getBlockList(memberNo, currentPage, size);
-        const processedData = data.blockList.map(member => ({
+        const data = await MemberListAPI.getBlockList(
+          memberNo,
+          currentPage,
+          size
+        );
+        const processedData = data.blockList.map((member) => ({
           ...member,
           isPopular: member.popular,
           isWarning: member.warning,
           isFollowing: member.following,
-          isBlocked: member.blocked
+          isBlocked: member.blocked,
         }));
         setBlockList(processedData);
         setCurrentPage(data.currentPage);
@@ -32,10 +36,8 @@ export default function BlockList({ memberNo }) {
 
   const renderMemberCards = (members) => {
     return members.map((member) => (
-      <div key={member.memberNo} className="w-full md:w-1/2 lg:w-1/3 p-4">
-        <MemberListCard
-          member={member}
-        />
+      <div key={member.memberNo} className="w-full lg:w-1/3 p-4">
+        <MemberListCard member={member} note={true} like={true} />
       </div>
     ));
   };
@@ -43,7 +45,7 @@ export default function BlockList({ memberNo }) {
   const totalPages = Math.ceil(totalMembers / size);
 
   return (
-    <div className="w-[65em] mx-auto mb-10 mt-14">
+    <div className="w-full relative mx-auto mb-10 mt-14">
       <div className="flex flex-wrap gap-4 justify-center">
         {renderMemberCards(blockList)}
       </div>
@@ -55,7 +57,9 @@ export default function BlockList({ memberNo }) {
         >
           이전
         </button>
-        <span>페이지 {currentPage} / {totalPages}</span>
+        <span>
+          페이지 {currentPage} / {totalPages}
+        </span>
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={currentPage === totalPages}
