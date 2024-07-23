@@ -23,7 +23,7 @@ export default function AllMemberList({
   const currentUserNo = userInfo?.memberNo;
   const [size] = useState(9);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!currentUserNo) {
@@ -32,9 +32,9 @@ export default function AllMemberList({
   }, [currentUserNo, navigate]);
 
   useEffect(() => {
-    const changeMembersList = async () => {
+    const fetchData = async () => {
       console.log(
-        "[changeMembersList] - page:",
+        "[fetchData] - page:",
         currentPage,
         " size:",
         size,
@@ -44,7 +44,7 @@ export default function AllMemberList({
 
       try {
         const [membersData, profilesData] = await Promise.all([
-          MemberListAPI.getMemberList(currentPage, size, searchQuery),
+          MemberListAPI.getMemberList(currentPage, size + 1, searchQuery), // size + 1 to ensure we get enough data
           ProfileAPI.getAllProfiles()
         ]);
 
@@ -62,7 +62,9 @@ export default function AllMemberList({
             return acc;
           }, {});
 
-          const processedData = membersData.memberList.map((member) => ({
+          const filteredData = membersData.memberList.filter(member => member.memberNo !== 'M000001' || currentUserNo === 'M000001');
+
+          const processedData = filteredData.map((member) => ({
             ...member,
             isPopular: member.popular,
             isWarning: member.warning,
@@ -79,11 +81,11 @@ export default function AllMemberList({
       } catch (error) {
         console.error("[페이지] 유저 데이터 로드 중 오류", error);
       } finally {
-        setLoading(false); // 로딩 완료
+        setLoading(false);
       }
     };
 
-    changeMembersList();
+    fetchData();
   }, [
     currentPage,
     searchQuery,
