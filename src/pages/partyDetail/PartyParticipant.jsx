@@ -2,6 +2,10 @@ import { HeartIcon } from "@heroicons/react/20/solid";
 import PartyCard from "../../components/page/party/PartyCard";
 import sample1 from "../../assets/images/sample1.PNG";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { ProfileAPI } from "../../utils/repository";
+import { useEffect, useState } from "react";
+
+const baseURL = "https://gongzone.duckdns.org";
 
 export default function PartyParticipant({
   participants,
@@ -11,6 +15,28 @@ export default function PartyParticipant({
   currentUser,
   status,
 }) {
+  const [profileImages, setProfileImages] = useState({});
+
+  useEffect(() => {
+    const fetchProfileImages = async () => {
+      try {
+        const profilesData = await ProfileAPI.getAllProfiles();
+        const profiles = profilesData || [];
+
+        const profilesMap = profiles.reduce((acc, profile) => {
+          acc[profile.memberNo] = profile.files.length > 0 ? `${baseURL}${profile.files[0].filePath}` : sample1;
+          return acc;
+        }, {});
+
+        setProfileImages(profilesMap);
+      } catch (error) {
+        console.error("프로필 이미지 로드 중 오류", error);
+      }
+    };
+
+    fetchProfileImages();
+  }, []);
+
   if (!participants || participants.length === 0) {
     return <div className="w-full text-center py-4">참가자가 없습니다.</div>;
   }
@@ -34,7 +60,7 @@ export default function PartyParticipant({
             classNames="fade"
           >
             <PartyCard
-              img={sample1}
+              img={profileImages[participant.memberNo] || sample1}
               desc={participant.memberNick}
               id={participant.memberEmail}
               note={true}

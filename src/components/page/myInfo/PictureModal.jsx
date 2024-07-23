@@ -12,14 +12,10 @@ export default function PictureModal({ isOpen, onRequestClose, onImageSave, prof
   useEffect(() => {
     const checkProfileImage = async () => {
       try {
-        console.log('프로필 이미지 확인 요청:', memberNo);
         const response = await GZAPI.get(`/api/members/getProfile/${memberNo}`);
-        console.log('프로필 이미지 확인 응답:', response.data);
         if (response.data && response.data.file && Object.keys(response.data.file).length > 0) {
-          console.log('이미지 존재');
           setHasProfileImage(true);
         } else {
-          console.log('이미지 없음');
           setHasProfileImage(false);
         }
       } catch (error) {
@@ -46,10 +42,8 @@ export default function PictureModal({ isOpen, onRequestClose, onImageSave, prof
       let apiEndpoint;
       if (hasProfileImage) {
         apiEndpoint = '/api/members/updateProfilePicture';
-        console.log('Update 요청:', formData);
       } else {
         apiEndpoint = '/api/members/addProfilePicture';
-        console.log('Save 요청:', formData);
       }
 
       const response = await GZAPI.post(apiEndpoint, formData, {
@@ -106,13 +100,13 @@ export default function PictureModal({ isOpen, onRequestClose, onImageSave, prof
       <div className="mt-4 flex justify-between w-full">
         <button
           onClick={onRequestClose}
-          className="bg-red-500 text-white px-4 py-2 rounded-lg"
+          className="bg-[#f97173] text-white px-4 py-2 rounded-lg"
         >
           Cancel
         </button>
         <button
           onClick={handleSaveOrUpdate}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+          className="bg-[#1d5091] text-white px-4 py-2 rounded-lg"
         >
           {hasProfileImage ? 'Update' : 'Save'}
         </button>

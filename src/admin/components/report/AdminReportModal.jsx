@@ -26,7 +26,6 @@ export default function AdminReportModal({ selectedReport, closeModal }) {
       reasonDetail: textareaValue,
       period: punishDuration,
     };
-    console.log('Data to send:', data);
 
     const apiCall = selectedReport.isPunishUpdate
     AdminMemberAPI.ReportPunishInsert({
@@ -40,7 +39,6 @@ export default function AdminReportModal({ selectedReport, closeModal }) {
     try {
       const response = await apiCall;
       if (response.status === true) {
-        console.log('Successfully sent data:', data);
         closeModal();
       } else {
         console.error('Failed to send data:', response);
