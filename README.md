@@ -20,19 +20,25 @@
 <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> 
 <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">
 <img src="https://img.shields.io/badge/tailwindcss-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white">
+<img src="https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=Axios&logoColor=white">
 <br>
 <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">
 <img src="https://img.shields.io/badge/Spring boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
 <img src="https://img.shields.io/badge/springsecurity-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">
+<img src="https://img.shields.io/badge/swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white">
+<img src="https://img.shields.io/badge/postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white">
 <br>
 <img src="https://img.shields.io/badge/mariaDB-003545?style=for-the-badge&logo=mariaDB&logoColor=white"> 
 <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
 <br>
 <img src="https://img.shields.io/badge/OCI-F80000?style=for-the-badge&logo=oracle&logoColor=white">
 <img src="https://img.shields.io/badge/openjdk-000000?style=for-the-badge&logo=openjdk&logoColor=white">
-<img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white">
-<img src="https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=nginx&logoColor=white">
+
+
 <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white">
+<img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white">
+<br>
+<img src="https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=nginx&logoColor=white">
 <img src="https://img.shields.io/badge/apachetomcat-F8DC75?style=for-the-badge&logo=apachetomcat&logoColor=white">
 </div>
 
@@ -40,13 +46,36 @@
 
 ## 📃 [회의록](https://docs.google.com/spreadsheets/d/1MvBGhNniVNmAtgURcjHmigTW3enp7Sy78sCR2WFS7c4/edit?usp=sharing)
 
+- 프로젝트 기획 단계 회의록을 확인할 수 있습니다.
+
 <br>
 
 ## 📝 [WIKI](https://nutritious-torta-392.notion.site/5eab88ee66c340e18491eeef752f04fb?pvs=4)
 
+- 프로젝트 개발 정의 문서입니다.
+- 폴더 트리, commit 규칙 등을 확인할 수 있습니다.
+
 <br>
 
-## ✨ [주요기능 - 기능정의서](https://docs.google.com/spreadsheets/d/1DfoGwbjeJ9tgpMLF9nTVkZpnNYQI3FRkyJkOwqtYie0/edit?usp=sharing)
+## ✨ [개발문서 열람](https://docs.google.com/spreadsheets/d/1DfoGwbjeJ9tgpMLF9nTVkZpnNYQI3FRkyJkOwqtYie0/edit?usp=sharing)
+
+- 기능 정의서
+- DB(객체) 목록
+- ERD
+- 네이밍 규칙 등을 확인할 수 있습니다.
+
+<br>
+
+## 🎨 [Wireframe](https://www.figma.com/design/Ipfyp3tdkYWFF38J23LA4V/2Team-WireFrame?node-id=0-1&t=owtBLnDBlnHtmdud-1)
+
+- 프로젝트 와이어프레임입니다.
+- 기획 단계에서의 화면 흐름을 확인할 수 있습니다.
+
+<br>
+
+## 🔑 [Swagger](https://gongzone.duckdns.org/swagger-ui/index.html#/)
+
+- Rest API 공유 및 테스트를 위한 스웨거 문서입니다.
 
 <br>
 
