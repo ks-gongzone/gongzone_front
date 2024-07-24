@@ -178,7 +178,7 @@ export default function MemberListCard({
               </div>
             ) : member.isWarning ? (
               <div className="w-full text-center flex items-center justify-center h-6 rounded-md bg-[#b93d40] text-xs font-bold text-[white]">
-                블랙리스트유저
+                공존의난동꾼
               </div>
             ) : (
               <div className="w-full text-center flex items-center justify-center h-6 rounded-md bg-[#62c8b3] text-xs font-bold text-[white]">
