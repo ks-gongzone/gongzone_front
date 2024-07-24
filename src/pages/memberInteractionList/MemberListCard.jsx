@@ -30,7 +30,9 @@ export default function MemberListCard({
   };
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+    if (currentUserNo !== member.memberNo) {
+      setIsDropdownOpen(!isDropdownOpen);
+    }
   };
 
   const handleClickOutside = (event) => {
@@ -116,7 +118,7 @@ export default function MemberListCard({
               onClick={toggleDropdown}
               className="font-bold text-gray-500 text-sm focus:outline-none"
             >
-              {member.memberName}
+                <span className="font-bold text-black">{member.memberName}</span> #{member.memberNick}
             </button>
             {isDropdownOpen && (
               <div className="absolute mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
@@ -176,7 +178,7 @@ export default function MemberListCard({
               </div>
             ) : member.isWarning ? (
               <div className="w-full text-center flex items-center justify-center h-6 rounded-md bg-[#b93d40] text-xs font-bold text-[white]">
-                블랙리스트유저
+                공존의난동꾼
               </div>
             ) : (
               <div className="w-full text-center flex items-center justify-center h-6 rounded-md bg-[#62c8b3] text-xs font-bold text-[white]">
