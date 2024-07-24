@@ -14,6 +14,7 @@ export default function DeleteButton() {
   const redirect = useNavigate();
   const [inConfirm, setInConfirm] = useState(false);
   const { userInfo } = AuthStore((state) => ({ userInfo: state.userInfo }));
+  const { statusLogout } = AuthStore();
 
   const handleDelete = () => {
     setInConfirm(true);
@@ -25,7 +26,8 @@ export default function DeleteButton() {
       try {
         await UserDelete(userInfo.memberNo);
         alert("회원탈퇴가 완료되었습니다.");
-        redirect("/");
+        redirect("/home");
+        statusLogout();
       } catch (error) {
         console.error("회원 탈퇴 실패:", error);
         alert("회원 탈퇴 중 오류가 발생했습니다.");
