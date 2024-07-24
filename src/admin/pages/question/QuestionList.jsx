@@ -16,7 +16,6 @@ const handleSendData = async (member) => {
 
   try {
     const response = await AdminMemberAPI.QuestionStatusList(modifiedMember);
-    console.log("data : ", modifiedMember)
     if (response.status === 200) {
       console.log('Successfully sent data:', modifiedMember);
     } else {

@@ -46,9 +46,7 @@ export default function AdminUpdateDetail() {
           alert("공지사항이 성공적으로 수정되었습니다.")
           navigate("/_admin/main")  
         })
-        .catch((error) => {
-          console.error("공지사항 수정중 오류발생[update]", error);
-        });
+        .catch(error => error);
     // 3. 해당로직의 유효성 검증
     }
 

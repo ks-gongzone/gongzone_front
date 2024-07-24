@@ -401,7 +401,7 @@ export const DropDownAPI = {
       })
       .catch((error) => {
         console.error("드롭다운 쪽지 카운팅 실패:", error);
-        throw 0;
+        return 0;
       });
   },
 };

@@ -26,7 +26,6 @@ export default function AdminPunishModal({ selectedReport, closeModal }) {
       reasonDetail: textareaValue,
       period: punishDuration,
     };
-    console.log('Data to send:', data);
 
     const apiCall = selectedReport.isPunishUpdate
       ? AdminMemberAPI.PunishUpdate({
@@ -42,7 +41,6 @@ export default function AdminPunishModal({ selectedReport, closeModal }) {
     try {
       const response = await apiCall;
       if (response.status === 200) {
-        console.log('Successfully sent data:', data);
         closeModal();
       } else {
         console.error('Failed to send data:', response);

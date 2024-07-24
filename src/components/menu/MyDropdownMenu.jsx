@@ -47,19 +47,14 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
           .then((data) => {
             setDropDownData(data);
           })
-          .catch((error) => {
-            console.error("드롭다운 메뉴 로드 중 에러발생", error);
-          });
+          .catch(error => error);
       DropDownAPI.getProfile(memberNo)
           .then((data) => {
             if (data.file) {
-              console.log("프로필 이미지 경로: ", `${baseURL}${data.filePath}`);
               setProfileImage(`${baseURL}${data.file.filePath}`);
             }
           })
-          .catch((error) => {
-            console.error("프로필 이미지 로드 중 에러 발생", error);
-          });
+          .catch(error => error);
           // 알림 목록 로드
           Alert.getNewAlertCount(memberNo)
           .then((data) => {
@@ -67,9 +62,7 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
             const alertCount = data.reduce((sum, alert) => sum + alert.alertCount, 0);
             setNewAlertCount(alertCount);  // 가져온 알림 수를 상태에 저장
           })
-          .catch((error) => {
-            console.error("새로운 알림 수 로드 중 에러 발생", error);
-          });
+          .catch(error => error);
           // 쪽지 목록 로드
           DropDownAPI.getNoteList(memberNo)
             .then((data) => {
@@ -77,9 +70,7 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
               const noteCount = data.reduce((sum, note) => sum + note.noteCount, 0);
               setNewNoteCount(noteCount);
             })
-            .catch((error) => {
-              console.error("쪽지 목록 로드 중 에러 발생", error);
-            });
+            .catch(error => error);
       }
     } else {
       document.removeEventListener("mousedown", handleClickOutside);

@@ -23,7 +23,8 @@ export default function AllMemberList({
   const currentUserNo = userInfo?.memberNo;
   const [size] = useState(9);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const [loading, setLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     if (!currentUserNo) {
@@ -32,10 +33,10 @@ export default function AllMemberList({
   }, [currentUserNo, navigate]);
 
   useEffect(() => {
-    const changeMembersList = async () => {
+    const fetchData = async (page, initialLoad = false) => {
       console.log(
-        "[changeMembersList] - page:",
-        currentPage,
+        "[fetchData] - page:",
+        page,
         " size:",
         size,
         " query:",
@@ -44,25 +45,30 @@ export default function AllMemberList({
 
       try {
         const [membersData, profilesData] = await Promise.all([
-          MemberListAPI.getMemberList(currentPage, size, searchQuery),
+          MemberListAPI.getMemberList(page, size, searchQuery),
           ProfileAPI.getAllProfiles()
         ]);
 
         const profiles = profilesData || [];
 
         if (!membersData.memberList || membersData.memberList.length === 0) {
-          setMemberList([]);
-          setTotalMembers(0);
-          setCurrentPage(1);
-          alert("검색 결과가 없습니다.");
-          navigate("/member/list");
+          if (initialLoad) {
+            setMemberList([]);
+            setTotalMembers(0);
+            setCurrentPage(1);
+            alert("검색 결과가 없습니다.");
+            navigate("/member/list");
+          }
+          setHasMore(false);
         } else {
           const profilesMap = profiles.reduce((acc, profile) => {
             acc[profile.memberNo] = profile.files.length > 0 ? `${baseURL}${profile.files[0].filePath}` : sample1;
             return acc;
           }, {});
 
-          const processedData = membersData.memberList.map((member) => ({
+          const filteredData = membersData.memberList.filter(member => member.memberNo !== 'M000001' || currentUserNo === 'M000001');
+
+          const processedData = filteredData.map((member) => ({
             ...member,
             isPopular: member.popular,
             isWarning: member.warning,
@@ -71,19 +77,22 @@ export default function AllMemberList({
             profileImage: profilesMap[member.memberNo] || sample1 
           }));
 
-          setMemberList(processedData);
-          setCurrentPage(membersData.currentPage);
+          setMemberList(prev => initialLoad ? processedData : [...prev, ...processedData]);
           setTotalMembers(membersData.totalCount);
-          navigate(`/member/list?query=${searchQuery}&page=${currentPage}`);
+          setHasMore(filteredData.length === size);
+          if (initialLoad) {
+            setCurrentPage(membersData.currentPage);
+            navigate(`/member/list?query=${searchQuery}&page=${page}`);
+          }
         }
       } catch (error) {
         console.error("[페이지] 유저 데이터 로드 중 오류", error);
       } finally {
-        setLoading(false); // 로딩 완료
+        setLoading(false);
       }
     };
 
-    changeMembersList();
+    fetchData(currentPage, true);
   }, [
     currentPage,
     searchQuery,
@@ -92,7 +101,14 @@ export default function AllMemberList({
     setTotalMembers,
     size,
     navigate,
+    currentUserNo,
   ]);
+
+  const loadMore = () => {
+    if (hasMore) {
+      setCurrentPage(prev => prev + 1);
+    }
+  };
 
   const renderMemberCards = (members) => {
     return members.map((member) => (
@@ -131,11 +147,11 @@ export default function AllMemberList({
         lg:grid-cols-3
         gap-4"
       >
-        {loading ? renderSkeletonCards(size) : renderMemberCards(memberList)}
+        {loading && currentPage === 1 ? renderSkeletonCards(size) : renderMemberCards(memberList)}
       </div>
       <div className="flex justify-between mt-4">
         <button
-          onClick={() => setCurrentPage(currentPage - 1)}
+          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
           disabled={currentPage === 1 || loading}
           className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
         >
@@ -145,8 +161,8 @@ export default function AllMemberList({
           페이지 {currentPage} / {totalPages}
         </span>
         <button
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage === totalPages || loading}
+          onClick={loadMore}
+          disabled={currentPage === totalPages || loading || !hasMore}
           className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
         >
           다음

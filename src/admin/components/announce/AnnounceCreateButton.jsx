@@ -34,8 +34,9 @@ export default function CreateButton({
         navigate(adminAddr);
       })
       .catch((error) => {
-        console.error("공지사항 작성 중 오류 발생[컴포넌트]", error);
+        alert("공지사항 작성 중 오류가 발생했습니다.");
         navigate(adminAddr);
+        return error;
       });
   };
 

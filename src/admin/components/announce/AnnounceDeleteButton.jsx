@@ -26,9 +26,7 @@ export default function DeleteButton({ announceNo }) {
           alert("공지사항이 성공적으로 삭제되었습니다.");
           navigate(adminAddr);
         })
-        .catch(error => {
-          console.error("공지사항 삭제 중 오류 발생[컴포넌트]", error);
-        });
+        .catch(error => error);
     }
   };
   

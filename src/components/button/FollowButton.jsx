@@ -19,10 +19,8 @@ export default function FollowButton({
         `${targetMemberName}님을 팔로우 하시겠습니까?`;
       if (window.confirm(confirmMessage)) {
           if (isFollowing) {
-            console.log("언팔로우 타겟", targetMemberNo);
             await MemberListAPI.unFollowMember(currentUserNo, targetMemberNo);
           } else {
-            console.log("팔로우 타겟", targetMemberNo);
             await MemberListAPI.followMember(currentUserNo, targetMemberNo);
           }
           setIsFollowing(!isFollowing);
