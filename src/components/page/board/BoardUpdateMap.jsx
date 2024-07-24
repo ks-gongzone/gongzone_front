@@ -102,7 +102,7 @@ export default function BoardUpdateMap({ onLocationChange, onPositionChange, loc
     <div className="flex flex-col items-center relative">
       {showPostcode && (
         <div
-          className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-5"
+          className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"
           onClick={() => setShowPostcode(false)}
         >
           <div
