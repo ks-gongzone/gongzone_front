@@ -82,11 +82,9 @@ export default function ChangePassword({ memberNo }) {
   };
 
   return (
-    <div>
+    <div className="w-full">
       <div className="mb-6">
-        <div className="text-gray-700 font-bold text-lg mb-2">
-          비밀번호 수정
-        </div>
+        <div className="text-gray-700 font-bold text-lg mb-2">비밀번호 수정</div>
         <input
           type="password"
           value={password}
@@ -105,9 +103,7 @@ export default function ChangePassword({ memberNo }) {
         )}
       </div>
       <div className="mb-6">
-        <div className="text-gray-700 font-bold text-lg mb-2">
-          비밀번호 수정 확인
-        </div>
+        <div className="text-gray-700 font-bold text-lg mb-2">비밀번호 수정 확인</div>
         <input
           type="password"
           value={confirmPassword}
@@ -117,11 +113,7 @@ export default function ChangePassword({ memberNo }) {
           disabled={!isSocialLogin}
         />
         {matchMessage && (
-          <div
-            className={`mt-2 text-lg font-bold ${
-              isMatched ? "text-[#1d5091]" : "text-red-500"
-            }`}
-          >
+          <div className={`mt-2 text-lg font-bold ${isMatched ? "text-[#1d5091]" : "text-red-500"}`}>
             {isMatched ? "비밀번호가 일치합니다." : "비밀번호가 불일치합니다."}
           </div>
         )}

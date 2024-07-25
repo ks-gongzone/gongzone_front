@@ -133,7 +133,7 @@ export default function AlarmSettings({ memberNo }) {
   }
 
   return (
-    <div className="p-8 bg-white shadow-md rounded-lg max-w-xl mx-auto">
+    <div className="p-8 bg-white shadow-md rounded-lg w-full">
       <div className="flex justify-between items-center mb-6">
         <div className="text-gray-700 font-bold text-lg">알림 설정</div>
         <label className="flex items-center">
@@ -163,7 +163,7 @@ export default function AlarmSettings({ memberNo }) {
           />
         ))}
       </div>
-      <div>
+      <div className="flex justify-end">
         <button
           onClick={handleSave}
           className="bg-[#1d5091] text-white font-bold py-2 px-4 rounded"

@@ -44,7 +44,7 @@ export default function MyInfo({ memberNo, onNextPage }) {
   }, []);
 
   return (
-    <div className="lg:w-[65em] w-[30em] mb-10 border-gray-200 border-2 py-8 px-8 rounded-lg shadow-lg">
+    <div className="lg:w-[65em] w-[90%] mb-10 border-gray-200 border-2 py-8 px-4 sm:px-8 rounded-lg shadow-lg mx-auto">
       <div className="relative flex justify-start">
         <button
           onClick={toggleDropdown}
@@ -72,7 +72,7 @@ export default function MyInfo({ memberNo, onNextPage }) {
       <div className="p-4">
         {activeTab === "profile" && (
           <div className="flex flex-col items-center mt-12">
-            <div className="w-[60%] mb-4">
+            <div className="w-[90%] md:w-[60%] mb-4">
               <Profile memberNo={memberNo} />
             </div>
             <div className="border-t-2 border-gray-400 mb-12" />

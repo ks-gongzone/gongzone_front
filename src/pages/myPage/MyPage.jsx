@@ -37,6 +37,12 @@ export default function MyPage() {
     }
   }, [location.pathname, isLogin, navigate]);
 
+  useEffect(() => {
+    if (activeTab === "myInfo") {
+      setInfoPage(1); // MyInfo 탭이 활성화될 때 infoPage를 기본 페이지로 설정
+    }
+  }, [activeTab]);
+
   const handleNextPage = () => setInfoPage(2);
   const handlePreviousPage = () => setInfoPage(1);
 
@@ -62,11 +68,11 @@ export default function MyPage() {
     switch (activeTab) {
       case "myInfo":
         return infoPage === 1 ? (
-          <MyInfo memberNo={ userInfo.memberNo } onNextPage={ handleNextPage } />
+          <MyInfo memberNo={userInfo.memberNo} onNextPage={handleNextPage} />
         ) : (
           <MyInfoDetail
-            memberNo={ userInfo.memberNo }
-            onPreviousPage={ handlePreviousPage }
+            memberNo={userInfo.memberNo}
+            onPreviousPage={handlePreviousPage}
           />
         );
       case "myPageBoard":
@@ -100,7 +106,7 @@ export default function MyPage() {
         }}
         className="sticky top-20 z-20"
       />
-      <div>{ renderContent() }</div>
+      <div>{renderContent()}</div>
     </div>
   );
 }

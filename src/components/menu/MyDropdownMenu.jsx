@@ -26,7 +26,7 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
   const [alerts, setAlerts] = useState([]);
   const [newAlertCount, setNewAlertCount] = useState(0);
   const [notes, setNotes] = useState([]);
-  const [newNoteCount, setNewNoteCount] = useState(0); 
+  const [newNoteCount, setNewNoteCount] = useState(0);
 
   const handleLogout = () => {
     statusLogout();
@@ -47,30 +47,30 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
           .then((data) => {
             setDropDownData(data);
           })
-          .catch(error => error);
-      DropDownAPI.getProfile(memberNo)
+          .catch((error) => console.error(error));
+        DropDownAPI.getProfile(memberNo)
           .then((data) => {
             if (data.file) {
               setProfileImage(`${baseURL}${data.file.filePath}`);
             }
           })
-          .catch(error => error);
-          // 알림 목록 로드
-          Alert.getNewAlertCount(memberNo)
+          .catch((error) => console.error(error));
+        // 알림 목록 로드
+        Alert.getNewAlertCount(memberNo)
           .then((data) => {
-            setAlerts(data);  // 가져온 알림 목록을 상태에 저장
+            setAlerts(data); // 가져온 알림 목록을 상태에 저장
             const alertCount = data.reduce((sum, alert) => sum + alert.alertCount, 0);
-            setNewAlertCount(alertCount);  // 가져온 알림 수를 상태에 저장
+            setNewAlertCount(alertCount); // 가져온 알림 수를 상태에 저장
           })
-          .catch(error => error);
-          // 쪽지 목록 로드
-          DropDownAPI.getNoteList(memberNo)
-            .then((data) => {
-              setNotes(data); // 가져온 쪽지 목록을 상태에 저장
-              const noteCount = data.reduce((sum, note) => sum + note.noteCount, 0);
-              setNewNoteCount(noteCount);
-            })
-            .catch(error => error);
+          .catch((error) => console.error(error));
+        // 쪽지 목록 로드
+        DropDownAPI.getNoteList(memberNo)
+          .then((data) => {
+            setNotes(data); // 가져온 쪽지 목록을 상태에 저장
+            const noteCount = data.reduce((sum, note) => sum + note.noteCount, 0);
+            setNewNoteCount(noteCount);
+          })
+          .catch((error) => console.error(error));
       }
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -85,7 +85,13 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
     if (!text) return "";
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength) + " ... ";
-  }
+  };
+
+  const handleMyPageClick = () => {
+    navigate("/myPage/myInfo");
+    window.scrollTo(0, 0); // 스크롤을 맨 위로 이동
+    onClose();
+  };
 
   return (
     <div
@@ -105,7 +111,7 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
         </button>
       </div>
       <div className="flex items-center px-8">
-        <Link to="/myPage/point" className="flex items-center">
+        <Link to="/myPage/point" className="flex items-center" onClick={onClose}>
           <img
             className="w-20 h-20 rounded-full"
             src={profileImage || sample1}
@@ -137,7 +143,7 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
         <div className="font-semibold text-gray-900">내 정보</div>
         <div className="flex justify-between items-center border rounded-lg mt-4 py-1 px-8">
           <button
-            onClick={() => navigate("/myPage")}
+            onClick={handleMyPageClick}
             type="button"
             className="hover:font-semibold text-[12px]"
           >

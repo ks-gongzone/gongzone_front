@@ -89,23 +89,25 @@ export default function Intro() {
         <div className="text-[3vw] md:text-[2vw] lg:text-[1vw] font-GGothicssi20g">
           로고 클릭 시 메인페이지로 이동합니다.
         </div>
-        <div className="text-gray-700 h-auto w-full p-6 rounded-md text-left bg-blue-100 bg-opacity-70 mb-1 shadow-xl">
+        <div className="text-gray-700 h-auto w-full p-6 rounded-md text-left bg-blue-100 bg-opacity-70 mb-5 mt-3 shadow-xl">
           <div className="flex flex-col lg:flex-row gap-12 justify-center">
             <div className="text-ms">
               <div>
-                <strong>Language:</strong> Java, JavaScript, TailwindCSS
+                <strong>Language:</strong> Java, JavaScript, HTML, CSS
               </div>
               <div>
                 <strong>DB:</strong> MySQL
               </div>
-              <div>
-                <strong>서버:</strong> Apache - 9.0.1
-              </div>
             </div>
             <div className="text-ms">
               <div>
-                <strong>WAS:</strong> Tomcat - 9.0.1
+                <strong>서버:</strong> Nginx
               </div>
+              <div>
+                <strong>WAS:</strong> Tomcat - 10.1
+              </div>
+            </div>
+            <div className="text-ms">
               <div>
                 <strong>협업툴:</strong> GitHub, JIRA, Google 공유드라이브,
                 ERDCloud
@@ -186,8 +188,46 @@ export default function Intro() {
               - 게시글 작성 횟수 Top 5 회원 조회 기능 구현
               - 파티 별 진행 현황 조회 기능 구현`,
             },
-            { name: "전 우 석", intro: "팀원 전우석의 소개" },
-            { name: "한 동 환", intro: "팀원 한동환의 소개" },
+            {
+              name: "전 우 석",
+              intro: `포인트 기능
+              - PG사 연동 API를 통한 전자 결제/인출 프로세스 구현
+              - 결제 프로세스 중 발생할 수 있는 위/변조 위험 검증
+              - Spring WebFlux 활용하여 서버 측 비동기 통신 구현
+              - 외부 서버 JSON 데이터 파싱 및 클라이언트 제공 로직 개발
+              파티 결제 및 정산 기능
+              - 포인트 기반 파티 결제 시스템 개발 및 트랜잭션 관리
+              - 프로세스 자동화를 통해 사용자 편의성 및 시스템 효율성 확보
+              프론트엔드 구현
+              - Zustand와 React Context API를 활용한 상태 관리 최적화
+              - Custom Hook을 이용한 상태 관리 효율성 확보
+              - Router를 이용한 공통 레이아웃 관리 및 렌더링 성능 최적화
+              - Tailwind CSS를 이용한 반응형 웹 구현
+              아키텍처 설계
+              - Spring MVC 아키텍처 구조 설계
+              - MyBatis 영속성 계층 설계
+              - RESTful 아키텍처를 적용한 API 엔드포인트 설계
+              배포 환경 구축
+              - Jenkins 활용하여 CI/CD 파이프라인 구축
+              - Linux(CentOS) 기반 지속적 통합/배포 환경 구성
+              - SSL 인증서 발급 및 HTTPS 프로토콜 적용`,
+            },
+            {
+              name: "한 동 환",
+              intro: `전체 회원 프로필 카드 구현
+              - 회원별 상태 구분기능 구현(인기유저, 공존의난동꾼, 일반유저)
+              - 회원리스트 페이지네이션 처리(이전 페이지 다음페이지 버튼 클릭하여 이동)
+              - 회원 이름 검색 후 조건에 맞는 데이터 노출 기능
+              마이페이지에서 특정 회원 정보 수정 및 탈퇴
+              - 프로필 사진 등록시 React-easy-crop 라이브러리를 이용한 사진 편집 후 파일파싱
+              (blob으로 반환 된 데이터 확장자 및 파일 이름 파싱 로직 구현)
+              - React-csv 라이브러리를 이용한 국토교통부 법정동 주소명 csv 파일 로드 후 db에 맞게 데이터 가공처리 (read, update)
+              - 알람 수신 동의 데이터 변경 시 변경 날짜 로그 기록
+              공지사항 타입별 작성 기능 (FAQ, 공지, 프로모션)
+              - CKEditor라이브를 이용한 본문 작성 기능 구현
+              - 전체 공지사항 타입별 노출 및 10개의 데이터씩 페이지네이션 처리(1~n 번 페이지 클릭 시 해당 페이지 이동)
+              - 공지사항 클릭시 조회수 증가 counting 및 최 상단으로 이동`,
+            },
           ].map((member, index) => (
             <div
               key={index}

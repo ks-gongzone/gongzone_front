@@ -14,6 +14,7 @@ export default function DeleteButton() {
   const redirect = useNavigate();
   const [inConfirm, setInConfirm] = useState(false);
   const { userInfo } = AuthStore((state) => ({ userInfo: state.userInfo }));
+  const { statusLogout } = AuthStore();
 
   const handleDelete = () => {
     setInConfirm(true);
@@ -25,7 +26,8 @@ export default function DeleteButton() {
       try {
         await UserDelete(userInfo.memberNo);
         alert("회원탈퇴가 완료되었습니다.");
-        redirect("/");
+        redirect("/home");
+        statusLogout();
       } catch (error) {
         console.error("회원 탈퇴 실패:", error);
         alert("회원 탈퇴 중 오류가 발생했습니다.");
@@ -36,7 +38,7 @@ export default function DeleteButton() {
   };
 
   return (
-    <div>
+    <div className="w-full flex justify-end">
       <button
         onClick={handleDelete}
         className="bg-[#f97173] text-white font-bold py-2 px-4 rounded"
@@ -44,8 +46,8 @@ export default function DeleteButton() {
         회원 탈퇴
       </button>
       {inConfirm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
-          <div className="bg-white p-8 rounded shadow-md w-96 h-48 flex flex-col items-center justify-center">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-50">
+          <div className="bg-white p-8 rounded shadow-md w-96 h-48 flex flex-col items-center justify-center z-60">
             <p className="mb-6 text-center text-lg">정말 회원 탈퇴하시겠습니까?</p>
             <div className="flex space-x-4">
               <button

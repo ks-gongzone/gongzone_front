@@ -61,7 +61,7 @@ export default function MyInfoDetail({ memberNo, onPreviousPage }) {
 
   return (
     <div className="bg-gray-100 py-10 overflow-y-hidden">
-      <div className="p-12 bg-white shadow-md rounded-lg w-[800px] mx-auto">
+      <div className="p-12 bg-white shadow-md rounded-lg w-[90%] md:w-[800px] mx-auto">
         <button
           onClick={onPreviousPage}
           className="text-blue-500 text-2xl mb-4"
@@ -87,7 +87,7 @@ export default function MyInfoDetail({ memberNo, onPreviousPage }) {
         </div>
         <AlarmSettings memberNo={memberNo} />
         <div className="flex justify-end mt-4">
-          <DeleteButton onClick={handleSave} />
+          <DeleteButton />
         </div>
       </div>
     </div>
