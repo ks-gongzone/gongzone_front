@@ -84,7 +84,7 @@ export default function PointCharge() {
             />
             <span className="absolute inset-y-4 right-4 text-2xl">{ '\u20A9' }</span>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end space-x-2">
             <button
               onClick={ actions.addAmount(10_000) }
               className="box-border border-2 rounded-xl px-4 py-2 bg-gray-300"
@@ -117,8 +117,8 @@ export default function PointCharge() {
             </button>
           </div>
           <div className="w-full space-y-4">
+            <h2 className="text-xl">간편결제</h2>
             <div className="w-full">
-              <h2 className="text-xl">간편결제</h2>
               <div className="flex w-full space-x-2">
                 <div className="w-1/4">
                   <button
@@ -136,16 +136,16 @@ export default function PointCharge() {
             <h2 className="text-xl">일반결제</h2>
             <div className="flex w-full space-x-2">
               <div className="w-1/4">
-                <button className="w-full box-border border-2 border-gray-400 rounded py-4">!신용카드</button>
+                <button className="w-full box-border border-2 border-gray-400 rounded py-4">신용카드</button>
               </div>
               <div className="w-1/4">
-                <button className="w-full box-border border-2 border-gray-400 rounded py-4">!휴대폰결제</button>
+                <button className="w-full box-border border-2 border-gray-400 rounded py-4">휴대폰</button>
               </div>
               <div className="w-1/4">
-                <button className="w-full box-border border-2 border-gray-400 rounded py-4">!계좌이체</button>
+                <button className="w-full box-border border-2 border-gray-400 rounded py-4">계좌이체</button>
               </div>
               <div className="w-1/4">
-                <button className="w-full box-border border-2 border-gray-400 rounded py-4">!가상계좌</button>
+                <button className="w-full box-border border-2 border-gray-400 rounded py-4">가상계좌</button>
               </div>
             </div>
           </div>
