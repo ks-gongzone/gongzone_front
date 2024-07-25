@@ -59,24 +59,26 @@ export default function SetNickname({ memberNo }) {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="mb-6">
-      <div className="text-gray-700 font-bold text-lg mb-2">닉네임</div>
-      <input
-        className="w-full p-2 border border-gray-300 rounded mt-2"
-        placeholder="닉네임을 입력해 주세요."
-        value={nickname}
-        onChange={changeNickname}
-      />
-      {validationMessage && (
-        <div className="text-red-500 text-sm mt-1">{validationMessage}</div>
-      )}
-      <div className="mt-2 flex justify-end">
-        <button
-          onClick={handleSaveNickname}
-          className="bg-[#1d5091] text-white font-bold py-2 px-4 rounded"
-        >
-          닉네임 저장
-        </button>
+    <div className="w-full">
+      <div className="mb-6">
+        <div className="text-gray-700 font-bold text-lg mb-2">닉네임</div>
+        <input
+          className="w-full p-2 border border-gray-300 rounded mt-2"
+          placeholder="닉네임을 입력해 주세요."
+          value={nickname}
+          onChange={changeNickname}
+        />
+        {validationMessage && (
+          <div className="text-red-500 text-sm mt-1">{validationMessage}</div>
+        )}
+        <div className="mt-2 flex justify-end">
+          <button
+            onClick={handleSaveNickname}
+            className="bg-[#1d5091] text-white font-bold py-2 px-4 rounded"
+          >
+            닉네임 저장
+          </button>
+        </div>
       </div>
     </div>
   );

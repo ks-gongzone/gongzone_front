@@ -139,15 +139,10 @@ export default function AllMemberList({
 
   return (
     <div className="w-full mx-auto mb-10 mt-14 px-4 sm:px-6 lg:px-8">
-      <div
-        className="
-        grid
-        grid-cols-1
-        sm:grid-cols-2
-        lg:grid-cols-3
-        gap-4"
-      >
-        {loading && currentPage === 1 ? renderSkeletonCards(size) : renderMemberCards(memberList)}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {loading && currentPage === 1
+          ? renderSkeletonCards(size)
+          : renderMemberCards(memberList)}
       </div>
       <div className="flex justify-between mt-4">
         <button

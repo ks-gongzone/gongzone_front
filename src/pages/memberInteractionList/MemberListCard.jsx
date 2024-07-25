@@ -1,6 +1,5 @@
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { HeartIcon } from "@heroicons/react/20/solid";
 import { useState, useEffect, useRef } from "react";
 import ReportModal from "../../components/modal/ReportModal";
 import FollowButton from "../../components/button/FollowButton";
@@ -89,36 +88,36 @@ export default function MemberListCard({
 
   return (
     <div className="border rounded-lg hover:border-[#ea6560] transition-colors overflow-hidden min-h-[210px] flex flex-col">
-      <div className="flex flex-grow">
+      <div className="flex flex-grow flex-wrap md:flex-nowrap">
         <div className="ml-4 mt-6 w-16 h-16 rounded-full bg-slate-400 flex-shrink-0">
           <img
             className="w-16 h-16 rounded-full object-cover"
-            src={profileImage || sample1} // profileImage prop 사용
+            src={profileImage || sample1}
             alt=""
           />
         </div>
         <div className="w-full mt-2 ml-4 font-bold text-gray-500 flex flex-col relative">
-          {like && (
-            <button type="button" className="self-end" onClick={likeBtn}>
-              <FollowButton
-                targetMemberNo={member.memberNo}
-                targetMemberName={member.memberName}
-                initialFollowing={member.isFollowing}
-                className={`w-6 transition-transform duration-200 ${
-                  isLiked
-                    ? "text-red-500 scale-125"
-                    : "text-[#e7e7e7] scale-100"
-                }`}
-              />
-            </button>
-          )}
-          <div className="relative" ref={dropdownRef}>
+          <div className="self-end" style={{ height: '24px' }}>
+            {like && currentUserNo !== member.memberNo && (
+              <button type="button" onClick={likeBtn}>
+                <FollowButton
+                  targetMemberNo={member.memberNo}
+                  targetMemberName={member.memberName}
+                  initialFollowing={member.isFollowing}
+                  className={`w-6 transition-transform duration-200 ${
+                    isLiked ? "text-red-500 scale-125" : "text-[#e7e7e7] scale-100"
+                  }`}
+                />
+              </button>
+            )}
+          </div>
+          <div className="relative mt-2" ref={dropdownRef}>
             <button
               type="button"
               onClick={toggleDropdown}
               className="font-bold text-gray-500 text-sm focus:outline-none"
             >
-                <span className="font-bold text-black">{member.memberName}</span> #{member.memberNick}
+              <span className="font-bold text-black">{member.memberName}</span> #{member.memberNick}
             </button>
             {isDropdownOpen && (
               <div className="absolute mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
@@ -137,11 +136,13 @@ export default function MemberListCard({
                   >
                     쪽지 보내기
                   </button>
-                  <BlockButton
-                    targetMemberNo={member.memberNo}
-                    targetMemberName={member.memberName}
-                    initialBlocked={member.isBlocked}
-                  />
+                  {currentUserNo !== member.memberNo && (
+                    <BlockButton
+                      targetMemberNo={member.memberNo}
+                      targetMemberName={member.memberName}
+                      initialBlocked={member.isBlocked}
+                    />
+                  )}
                   <button
                     className="block px-4 py-2 text-sm text-red-700 hover:bg-gray-100 w-full text-left"
                     role="menuitem"
@@ -154,40 +155,38 @@ export default function MemberListCard({
               </div>
             )}
           </div>
-          <div className="text-xs">
+          <div className="text-xs mt-2">
             성별: {member.gender === "M" ? "남성" : "여성"}
           </div>
         </div>
       </div>
-      <div className="flex flex-col justify-center items-center mt-4 p-4 space-y-2">
-        {currentUserNo !== member.memberNo && (
-          <>
-            {note && (
-              <button
-                onClick={handleNote}
-                type="button"
-                className="w-full h-6 rounded-md bg-gray-300 hover:bg-gray-500 text-xs font-bold text-[white]"
-              >
-                쪽지 보내기
-              </button>
-            )}
-            <hr className="w-full" />
-            {member.isPopular ? (
-              <div className="w-full text-center flex items-center justify-center h-6 rounded-md bg-[#6ea2d4] text-xs font-bold text-[white]">
-                인기유저
-              </div>
-            ) : member.isWarning ? (
-              <div className="w-full text-center flex items-center justify-center h-6 rounded-md bg-[#b93d40] text-xs font-bold text-[white]">
-                공존의난동꾼
-              </div>
-            ) : (
-              <div className="w-full text-center flex items-center justify-center h-6 rounded-md bg-[#62c8b3] text-xs font-bold text-[white]">
-                일반유저
-              </div>
-            )}
-          </>
-        )}
-      </div>
+      {currentUserNo !== member.memberNo && (
+        <div className="flex flex-col justify-center items-center mt-4 p-4 space-y-2">
+          {note && (
+            <button
+              onClick={handleNote}
+              type="button"
+              className="w-full h-6 rounded-md bg-gray-300 hover:bg-gray-500 text-xs font-bold text-[white]"
+            >
+              쪽지 보내기
+            </button>
+          )}
+          <hr className="w-full" />
+          {member.isPopular ? (
+            <div className="w-full text-center flex items-center justify-center h-6 rounded-md bg-[#6ea2d4] text-xs font-bold text-[white]">
+              인기유저
+            </div>
+          ) : member.isWarning ? (
+            <div className="w-full text-center flex items-center justify-center h-6 rounded-md bg-[#b93d40] text-xs font-bold text-[white]">
+              공존의난동꾼
+            </div>
+          ) : (
+            <div className="w-full text-center flex items-center justify-center h-6 rounded-md bg-[#62c8b3] text-xs font-bold text-[white]">
+              일반유저
+            </div>
+          )}
+        </div>
+      )}
       {isReportModalOpen && (
         <ReportModal
           isOpen={isReportModalOpen}

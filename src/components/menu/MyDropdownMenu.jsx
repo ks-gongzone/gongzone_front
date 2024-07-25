@@ -87,6 +87,12 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
     return text.slice(0, maxLength) + " ... ";
   };
 
+  const handleMyPageClick = () => {
+    navigate("/myPage/myInfo");
+    window.scrollTo(0, 0); // 스크롤을 맨 위로 이동
+    onClose();
+  };
+
   return (
     <div
       ref={dropdownRef}
@@ -137,7 +143,7 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
         <div className="font-semibold text-gray-900">내 정보</div>
         <div className="flex justify-between items-center border rounded-lg mt-4 py-1 px-8">
           <button
-            onClick={() => { navigate("/myPage/myInfo"); onClose(); }}
+            onClick={handleMyPageClick}
             type="button"
             className="hover:font-semibold text-[12px]"
           >

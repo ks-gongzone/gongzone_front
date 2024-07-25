@@ -15,7 +15,7 @@ export default function Phone({ memberNo }) {
   }, [memberNo]);
 
   return (
-    <div className="mb-6">
+    <div className="mb-6 w-full">
       <div className="text-gray-700 font-bold text-lg mb-2">휴대폰</div>
       <input
         className="w-full p-2 border border-gray-300 rounded mt-2"
