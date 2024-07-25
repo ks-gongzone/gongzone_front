@@ -113,9 +113,9 @@ export default function LocationSelect({ onLocationChange, memberNo }) {
       : [];
 
   return (
-    <div className="flex flex-col">
-      <div className="flex flex-col md:flex-row md:space-x-2">
-        <div className="flex-1">
+    <div className="flex flex-col w-full">
+      <div className="flex flex-col md:flex-row md:space-x-2 mb-2 md:mb-4">
+        <div className="w-full">
           <select
             value={selectedDo}
             onChange={handleDoChange}
@@ -129,7 +129,7 @@ export default function LocationSelect({ onLocationChange, memberNo }) {
             ))}
           </select>
         </div>
-        <div className="flex-1">
+        <div className="w-full">
           <select
             value={selectedSi}
             onChange={handleSiChange}
@@ -143,7 +143,7 @@ export default function LocationSelect({ onLocationChange, memberNo }) {
             ))}
           </select>
         </div>
-        <div className="flex-1">
+        <div className="w-full">
           <select
             value={selectedGu}
             onChange={handleGuChange}
@@ -158,7 +158,7 @@ export default function LocationSelect({ onLocationChange, memberNo }) {
           </select>
         </div>
       </div>
-      <div className="mt-2 md:mt-4 self-end">
+      <div className="self-end mt-2 md:mt-4">
         <button
           onClick={handleSubmit}
           className="p-2 bg-[#1d5091] text-white rounded font-bold"
