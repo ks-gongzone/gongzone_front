@@ -2,6 +2,11 @@ import { HeartIcon } from "@heroicons/react/20/solid";
 import PartyCard from "../../components/page/party/PartyCard";
 import sample1 from "../../assets/images/sample1.PNG";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { useEffect, useState } from "react";
+import { ProfileAPI } from "../../utils/repository";
+import Skeleton from "react-loading-skeleton";
+
+const baseURL = "https://gongzone.duckdns.org";
 
 export default function PartyRequest({
   requestMembers,
@@ -11,7 +16,44 @@ export default function PartyRequest({
   partyLeader,
   currentUser,
 }) {
+  const [profileImages, setProfileImages] = useState({});
+  const [loading, setLoading] = useState(true);
   console.log("Request members in PartyRequest:", requestMembers);
+
+  useEffect(() => {
+    const fetchProfileImages = async () => {
+      try {
+        const profilesData = await ProfileAPI.getAllProfiles();
+        const profiles = profilesData || [];
+
+        const profilesMap = profiles.reduce((acc, profile) => {
+          acc[profile.memberNo] = profile.files.length > 0 ? `${baseURL}${profile.files[0].filePath}` : sample1;
+          return acc;
+        }, {});
+
+        setProfileImages(profilesMap);
+      } catch (error) {
+        console.error("프로필 이미지 로드 중 오류", error);
+      } finally {
+        setLoading(false); // This will ensure loading is set to false regardless of success or failure
+      }
+    };
+
+    fetchProfileImages();
+  }, []);
+
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center mt-12">
+        <Skeleton circle={true} height={150} width={150} />
+        <Skeleton height={30} width={200} className="mt-4" />
+        <Skeleton height={20} width={300} className="mt-2" />
+        <Skeleton height={20} width={300} className="mt-2" />
+        <Skeleton height={20} width={300} className="mt-2" />
+      </div>
+    );
+  }
 
   if (!requestMembers || requestMembers.length === 0) {
     return <div className="w-full text-center py-4">요청 멤버가 없습니다.</div>;
@@ -30,7 +72,7 @@ export default function PartyRequest({
             classNames="fade"
           >
             <PartyCard
-              img={sample1}
+              img={profileImages[requestMember.memberNo] || sample1}
               desc={requestMember.memberNick}
               id={requestMember.memberEmail}
               note={true}

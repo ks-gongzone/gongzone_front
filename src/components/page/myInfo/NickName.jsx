@@ -20,7 +20,6 @@ export default function SetNickname({ memberNo }) {
         setLoading(false);
       })
       .catch((error) => {
-        console.error("에러: 호출 실패", error);
         setLoading(false);
       });
   }, [memberNo]);
@@ -47,11 +46,9 @@ export default function SetNickname({ memberNo }) {
     }
     UpdateNickname(memberNo, nickname)
       .then(() => {
-        console.log("닉네임 저장 성공");
         alert(`${nickname}으로 변경 완료`);
       })
       .catch((error) => {
-        console.error("닉네임 수정 오류", error);
         alert(`${nickname}으로는 변경 할 수 없습니다.`);
       });
   };

@@ -16,7 +16,6 @@ export default function MyPageParty() {
       ? detailData.data
       : [detailData.data]; // 배열로 변환
     setData(responseData);
-    console.log("Fetched data:", responseData);
   };
 
   useEffect(() => {

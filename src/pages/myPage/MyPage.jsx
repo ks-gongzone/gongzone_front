@@ -24,7 +24,6 @@ export default function MyPage() {
 
   useEffect(() => {
     if (!isLogin) {
-      console.log("로그인이 필요한 서비스");
       navigate("/home");
     } else {
       const path = location.pathname.split("/")[2];
@@ -94,18 +93,20 @@ export default function MyPage() {
   ];
 
   return (
-    <div className="w-[65em] mx-auto mb-10">
-      <BasicTapMenu
-        tabItems={tabItems}
-        activeTab={activeTab}
-        onTabClick={(id) => {
-          setLoading(true); // 탭 변경 시 로딩 상태로 설정
-          navigate(`/myPage/${id}`);
-          setActiveTab(id);
-          setLoading(false); // 로딩 완료
-        }}
-        className="sticky top-20 z-20"
-      />
+    <div className="max-w-screen-lg mx-auto mb-10">
+      <div className="flex justify-center">
+        <BasicTapMenu
+          tabItems={tabItems}
+          activeTab={activeTab}
+          onTabClick={(id) => {
+            setLoading(true); // 탭 변경 시 로딩 상태로 설정
+            navigate(`/myPage/${id}`);
+            setActiveTab(id);
+            setLoading(false); // 로딩 완료
+          }}
+          className="sticky top-20 z-20"
+        />
+      </div>
       <div>{renderContent()}</div>
     </div>
   );

@@ -96,10 +96,7 @@ export default function AnnounceItems({
   }
 
   const handleItemClick = (announceNo) => {
-    console.log("클릭 announceNo: ", announceNo);
-    AnnounceAPI.incrementAnnounceViews(announceNo, navigate).catch((error) => {
-      console.log("조회수 증가 실패", error);
-    });
+    AnnounceAPI.incrementAnnounceViews(announceNo, navigate).catch((error) => {});
   };
 
   return (
@@ -164,7 +161,7 @@ export default function AnnounceItems({
           <div className="flex justify-end flex-1">
             <Link
               to="/_admin/announce/write"
-              className="bg-blue-500 text-white px-4 py-2 rounded mx-1 mt-10"
+              className="bg-[#1d5091] text-white px-4 py-2 rounded mx-1 mt-10"
             >
               글쓰기
             </Link>

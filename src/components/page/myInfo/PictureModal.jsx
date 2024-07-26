@@ -53,7 +53,6 @@ export default function PictureModal({ isOpen, onRequestClose, onImageSave, prof
         if (response.data) {
           // 파싱된 파일 정보 저장
           setParsedFileData(response.data);
-          console.log("파싱된 파일 정보:", response.data);
         }
       } catch (error) {
         console.error('파일 파싱 실패:', error);
@@ -90,7 +89,6 @@ export default function PictureModal({ isOpen, onRequestClose, onImageSave, prof
         },
       });
 
-      console.log('파일 처리 성공:', response.data);
       onImageSave(response.data.filePath);
       alert('프로필 사진이 성공적으로 처리되었습니다!');
       onRequestClose();
@@ -149,13 +147,13 @@ export default function PictureModal({ isOpen, onRequestClose, onImageSave, prof
           onClick={onRequestClose}
           className="bg-[#f97173] text-white px-4 py-2 rounded-lg"
         >
-          Cancel
+          취소
         </button>
         <button
           onClick={handleSaveOrUpdate}
           className="bg-[#1d5091] text-white px-4 py-2 rounded-lg"
         >
-          {hasProfileImage ? 'Update' : 'Save'}
+          {hasProfileImage ? '수정' : '등록'}
         </button>
       </div>
     </Modal>

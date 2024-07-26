@@ -34,15 +34,6 @@ export default function AllMemberList({
 
   useEffect(() => {
     const fetchData = async (page, initialLoad = false) => {
-      console.log(
-        "[fetchData] - page:",
-        page,
-        " size:",
-        size,
-        " query:",
-        searchQuery
-      );
-
       try {
         const [membersData, profilesData] = await Promise.all([
           MemberListAPI.getMemberList(page, size, searchQuery),

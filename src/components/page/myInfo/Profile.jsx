@@ -21,10 +21,8 @@ export default function Profile({ memberNo }) {
 
   useEffect(() => {
     if (memberNo) {
-      console.log("회원번호", memberNo);
       getProfile(memberNo)
         .then((data) => {
-          console.log("받은 데이터", data);
           const profile = data.profile;
           setProfileData({
             memberName: profile.memberName,
@@ -34,26 +32,19 @@ export default function Profile({ memberNo }) {
             boardCount: profile.boardCount,
           });
           if (data.file) {
-            console.log(
-              "프로필 이미지 경로:",
-              `${baseURL}${data.file.filePath}`
-            );
             setProfileImage(`${baseURL}${data.file.filePath}`);
           }
           setLoading(false);
         })
-        .catch((error) => {
-          console.error("프로필 등록 실패:", error);
+        .catch(() => {
           setLoading(false);
         });
     } else {
-      console.error("memberNo가 전달되지 않았습니다.");
       setLoading(false);
     }
   }, [memberNo]);
 
   const handleImageSave = (imagePath) => {
-    console.log("이미지 저장 경로:", imagePath);
     setProfileImage(`${baseURL}${imagePath}`);
   };
 
@@ -62,14 +53,11 @@ export default function Profile({ memberNo }) {
   };
 
   const getProfile = async (memberNo) => {
-    console.log("프로필 조회 요청:", memberNo);
     return GZAPI.get(`/api/members/getProfile/${memberNo}`)
       .then((response) => {
-        console.log("프로필 조회 응답:", response.data);
         return response.data;
       })
       .catch((error) => {
-        console.error("프로필 조회 실패:", error);
         throw error;
       });
   };

@@ -33,7 +33,6 @@ export default function MyPageBoardCard({
 
   const handleLikeClick = async (e) => {
     e.stopPropagation();
-    console.log(boardNo, memberNo);
     try{
       likeBtn();
       await GZAPI.post(`/api/boards/wish/${boardNo}/${memberNo}`)

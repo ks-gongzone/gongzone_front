@@ -29,11 +29,12 @@ export default function DeleteButton() {
         redirect("/home");
         statusLogout();
       } catch (error) {
-        console.error("회원 탈퇴 실패:", error);
         alert("회원 탈퇴 중 오류가 발생했습니다.");
       }
     } else {
-      console.log("회원 탈퇴를 취소했습니다.");
+      setTimeout(() => {
+        alert("회원탈퇴가 취소되었습니다.");
+      }, 500);
     }
   };
 
