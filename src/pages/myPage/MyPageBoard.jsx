@@ -17,7 +17,6 @@ export default function MyPageBoard() {
       ? detailData
       : [detailData]; // 배열로 변환
     setData(responseData);
-    console.log("Fetched data:", responseData);
   };
 
   useEffect(() => {

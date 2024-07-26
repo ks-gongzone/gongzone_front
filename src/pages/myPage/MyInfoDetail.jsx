@@ -76,7 +76,6 @@ export default function MyInfoDetail({ memberNo, onPreviousPage }) {
             memberNo={memberNo}
             initialLocation={userData.location}
             onLocationChange={(newDo, newSi, newGu) => {
-              console.log(`선택주소: ${newDo} ${newSi} ${newGu}`);
             }}
           />
         </div>

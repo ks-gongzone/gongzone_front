@@ -45,7 +45,6 @@ export default function BlockList({ memberNo }) {
       setTotalMembers(data.totalCount);
       setLoading(false); // 로딩 완료
     } catch (error) {
-      console.error("[차단 목록] 유저 데이터 로드 중 오류", error);
       setLoading(false); // 로딩 실패 시에도 완료로 설정
     }
   };
