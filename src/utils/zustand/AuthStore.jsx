@@ -72,8 +72,8 @@ const AuthStore = create(
       },
     }),
     {
-      name: "auth-storage", // localStorage에 저장되는 이름
-      getStorage: () => localStorage, // 기본 스토리지는 localStorage
+      name: "auth-storage",
+      getStorage: () => localStorage,
     }
   )
 );

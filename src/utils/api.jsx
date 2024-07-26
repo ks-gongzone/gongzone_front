@@ -1,4 +1,5 @@
 import axios from "axios";
+import AuthStore from "./zustand/AuthStore";
 
 const GZAPI = axios.create({
   baseURL: process.env.REACT_APP_API_URL, // API의 기본 URL을 설정
@@ -34,7 +35,7 @@ GZAPI.interceptors.response.use(
         const refreshToken = window.localStorage.getItem("refreshToken");
         if (refreshToken) {
           try {
-            const response = await axios.post('http://localhost:8088/api/refresh', {
+            const response = await axios.post('https://gongzone.shop/home/api/refresh', {
               refreshToken: refreshToken,
             });
 
@@ -44,16 +45,16 @@ GZAPI.interceptors.response.use(
               firstRequest.headers["Authorization"] = `Bearer ${ newAccessToken }`;
               return axios(firstRequest);
             } else {
-              handleLogout();
+              handleLogout()
             }
           } catch (err) {
-            handleLogout();
+            handleLogout()
           }
         } else {
-          handleLogout();
+          handleLogout()
         }
       } else {
-        showLoginAlertModal();
+        await handleLogout();
       }
     }
 
@@ -70,16 +71,13 @@ GZAPI.interceptors.response.use(
   }
 );
 
-function handleLogout() {
-  window.localStorage.removeItem("accessToken");
-  window.localStorage.removeItem("refreshToken");
-  window.location.href = "/home";
-  window.localStorage.setItem("redirect", window.location.href);
-}
+async function handleLogout() {
+  const userAgent = navigator.userAgent;
+  const data = { userAgent };
 
-function showLoginAlertModal() {
-  const event = new Event('showLoginAlertModal');
-  window.dispatchEvent(event);
+  await AuthStore.getState().statusLogout(data);
+
+  window.location.href = "/home";
 }
 
 export default GZAPI;
