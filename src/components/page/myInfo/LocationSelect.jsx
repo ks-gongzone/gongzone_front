@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { parseCSV, transformLocationData } from "../../../utils/LocationApi";
 import { GetLocationData, SaveAddress } from "../../../utils/repository";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css';
 
 /**
  * csvData 파싱로직
@@ -20,25 +22,19 @@ const loadData = (
       const transformedData = transformLocationData(csvData);
       setLocationData(transformedData);
     })
-    .catch((error) => {
-      console.error("CSV 파일을 읽을 수 없음", error);
-    });
+    .catch((error) => {});
 
   GetLocationData(memberNo)
     .then((response) => {
       const address = response.memberAddress;
       if (address) {
-        const [initalDo, initalSi, initalGu] = address.split(" ");
-        setSelectedDo(initalDo);
-        setSelectedSi(initalSi);
-        setSelectedGu(initalGu);
-      } else {
-        console.log("주소가 정의되지 않았습니다.");
+        const [initialDo, initialSi, initialGu] = address.split(" ");
+        setSelectedDo(initialDo);
+        setSelectedSi(initialSi);
+        setSelectedGu(initialGu);
       }
     })
-    .catch((error) => {
-      console.error("데이터를 가져오기 실패", error);
-    })
+    .catch((error) => {})
     .finally(() => {
       setIsLoading(false);
     });
@@ -91,18 +87,26 @@ export default function LocationSelect({ onLocationChange, memberNo }) {
 
   const handleSubmit = () => {
     const fullAddress = `${selectedDo} ${selectedSi} ${selectedGu}`;
-    console.log("저장할 주소: ", fullAddress);
     SaveAddress(memberNo, fullAddress)
       .then(() => {
         alert("주소가 저장되었습니다.");
       })
       .catch((error) => {
-        console.error("주소 저장 중 오류 발생", error);
+        alert("주소 저장 중 오류가 발생했습니다.");
       });
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col w-full">
+        <div className="flex flex-col md:flex-row md:space-x-2 mb-2 md:mb-4">
+          <Skeleton height={40} className="w-full" />
+          <Skeleton height={40} className="w-full" />
+          <Skeleton height={40} className="w-full" />
+        </div>
+        <Skeleton height={40} className="self-end mt-2 md:mt-4 w-24" />
+      </div>
+    );
   }
 
   const doList = Object.keys(locationData);

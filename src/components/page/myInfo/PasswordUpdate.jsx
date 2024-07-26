@@ -40,11 +40,9 @@ export default function ChangePassword({ memberNo }) {
         setMemberInfo(member);
         if (!member.memberId || !member.memberPw) {
           setIsSocialLogin(false);
-          console.log("소셜로그인 사용자는 비밀번호 수정 불가");
         }
       })
       .catch((error) => {
-        console.error("에러 발생: ", error);
         alert("정보를 가져오는데 실패했습니다.");
       });
   }, [memberNo]);
@@ -72,11 +70,9 @@ export default function ChangePassword({ memberNo }) {
     const payload = { newPassword: password };
     UpdatePassword(memberNo, payload)
       .then((response) => {
-        console.log(response);
         setValidationMessage("비밀번호 성공적으로 변경되었습니다.");
       })
       .catch((error) => {
-        console.error("비밀번호 변경 에러입니다.", error);
         setValidationMessage("기존 비밀번호와 일치합니다.");
       });
   };

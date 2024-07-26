@@ -4,6 +4,8 @@ import sample1 from "../../assets/images/sample1.PNG";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { ProfileAPI } from "../../utils/repository";
 import { useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const baseURL = "https://gongzone.duckdns.org";
 
@@ -16,6 +18,7 @@ export default function PartyParticipant({
   status,
 }) {
   const [profileImages, setProfileImages] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProfileImages = async () => {
@@ -31,11 +34,25 @@ export default function PartyParticipant({
         setProfileImages(profilesMap);
       } catch (error) {
         console.error("프로필 이미지 로드 중 오류", error);
+      } finally {
+        setLoading(false); // Ensure loading is set to false regardless of success or failure
       }
     };
 
     fetchProfileImages();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center mt-12">
+        <Skeleton circle={true} height={150} width={150} />
+        <Skeleton height={30} width={200} className="mt-4" />
+        <Skeleton height={20} width={300} className="mt-2" />
+        <Skeleton height={20} width={300} className="mt-2" />
+        <Skeleton height={20} width={300} className="mt-2" />
+      </div>
+    );
+  }
 
   if (!participants || participants.length === 0) {
     return <div className="w-full text-center py-4">참가자가 없습니다.</div>;

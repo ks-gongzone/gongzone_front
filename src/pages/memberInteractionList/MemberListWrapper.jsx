@@ -11,7 +11,6 @@ export default function MemberListWrapper() {
 
   const handleSearch = async (query) => {
     if (query === undefined) query = "";
-    console.log("[handleSearch] 검색어 전송: ", query);
     await MemberListAPI.getMemberList(1, 8, query)
       .then((response) => {
         if (response.memberList && response.memberList.length > 0) {

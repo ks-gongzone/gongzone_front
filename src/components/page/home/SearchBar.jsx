@@ -12,7 +12,6 @@ export default function SearchBar({ onSearch }) {
   };
   const handleSearch = () => {
     onSearch(query);
-    console.log("검색어", query);
   };
   return (
     <div className="flex justify-center items-center">

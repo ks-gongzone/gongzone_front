@@ -201,7 +201,6 @@ export const ChangeUserInfo = (memberNo) => {
   return GZAPI.get(`/api/members/${ memberNo }/memberInfo`)
               .then((response) => response.data)
               .catch((error) => {
-                console.error("데이터 로드 중 에러 발생", error);
                 throw error;
               });
 };
@@ -210,7 +209,6 @@ export const MyBoard = (memberNo) => {
   return GZAPI.get(`/api/members/${ memberNo }/board`)
               .then((response) => response.data)
               .catch((error) => {
-                console.error("데이터 로드 중 에러 발생", error);
                 throw error;
               });
 };
@@ -219,7 +217,6 @@ export const MyPageWish = (memberNo) => {
   return GZAPI.get(`/api/boards/myPage/wishList/${ memberNo }`)
               .then((response) => response.data)
               .catch((error) => {
-                console.error("데이터 로드 중 에러 발생", error);
                 throw error;
               });
 };
@@ -228,7 +225,6 @@ export const MyParty = (memberNo) => {
   return GZAPI.get(`/api/members/${ memberNo }/party`)
               .then((response) => response.data)
               .catch((error) => {
-                console.error("데이터 로드 중 에러 발생", error);
                 throw error;
               });
 };
@@ -237,7 +233,6 @@ export const Myfollow = (memberNo) => {
   return GZAPI.get(`/api/members/${ memberNo }/follow`)
               .then((response) => response.data)
               .catch((error) => {
-                console.error("데이터 로드 중 에러 발생", error);
                 throw error;
               });
 };
@@ -246,7 +241,6 @@ export const BlockUser = (memberNo) => {
   return GZAPI.get(`/api/members/${ memberNo }/blockUser`)
               .then((response) => response.data)
               .catch((error) => {
-                console.error("데이터 로드 중 에러 발생", error);
                 throw error;
               });
 };
@@ -255,7 +249,6 @@ export const SaveUserData = (memberNo, userData) => {
   return GZAPI.post(`/api/members/${ memberNo }/memberInfo`, userData)
               .then((response) => response.data)
               .catch((error) => {
-                console.error("데이터 저장 중 에러 발생", error);
                 throw error;
               });
 };
@@ -264,7 +257,6 @@ export const GetNickname = (memberNo) => {
   return GZAPI.get(`/api/members/${ memberNo }/nickname`)
               .then((response) => response.data)
               .catch((error) => {
-                console.error("닉네임 로드 중 에러 발생", error);
                 throw error;
               });
 };
@@ -275,7 +267,6 @@ export const UpdateNickname = (memberNo, nickname) => {
               })
               .then((response) => response.data)
               .catch((error) => {
-                console.error("닉네임 업데이트 중 오류 발생", error);
                 throw error;
               });
 };
@@ -285,7 +276,6 @@ export const GetLocationData = (memberNo) => {
   return GZAPI.get(`/api/members/${ memberNo }/locations`)
               .then((response) => response.data)
               .catch((error) => {
-                console.error("위치 데이터 로드 중 에러 발생", error);
                 throw error;
               });
 };
@@ -296,7 +286,6 @@ export const SaveAddress = (memberNo, address) => {
               })
               .then((response) => response.data)
               .catch((error) => {
-                console.error("주소 저장 중 에러 발생", error);
                 throw error;
               });
 };
@@ -305,7 +294,6 @@ export const GetMemberInfo = (memberNo) => {
   return GZAPI.get(`/api/members/${ memberNo }/memberInfo`)
               .then((response) => response.data)
               .catch((error) => {
-                console.error("회원 정보 로드 중 에러 발생", error);
                 throw error;
               });
 };
@@ -314,19 +302,14 @@ export const UpdatePassword = (memberNo, payload) => {
   return GZAPI.post(`/api/members/${ memberNo }/password`, payload)
               .then((response) => response.data)
               .catch((error) => {
-                console.error("비밀번호 변경 에러 발생", error);
                 throw error;
               });
 };
 
 export const GetAlertSetting = (memberNo) => {
   return GZAPI.get(`/api/members/${ memberNo }/alerts`)
-              .then((response) => {
-                console.log("받은데이터", response.data);
-                return response.data;
-              })
+              .then((response) => response.data)
               .catch((error) => {
-                console.error("알림 정보 로드 중 에러 발생", error);
                 throw error;
               });
 };
@@ -335,7 +318,6 @@ export const UpdateAlertSetting = (memberNo, alertData) => {
   return GZAPI.post(`/api/members/${ memberNo }/alerts/update`, alertData)
               .then((response) => response.data)
               .catch((error) => {
-                console.error("알림 정보 로드 중 에러 발생", error);
                 throw error;
               });
 };
@@ -344,7 +326,6 @@ export const InsertAlertSetting = (memberNo, alertData) => {
   return GZAPI.post(`/api/members/${ memberNo }/alerts/insert`, alertData)
               .then((response) => response.data)
               .catch((error) => {
-                console.error("알림 정보 로드 중 에러 발생", error);
                 throw error;
               });
 };
@@ -353,7 +334,6 @@ export const GetPhone = (memberNo) => {
   return GZAPI.get(`/api/members/${ memberNo }/phone`)
               .then((response) => response.data)
               .catch((error) => {
-                console.error("핸드폰 번호 조회 중 에러 발생", error);
                 throw error;
               });
 };
@@ -364,7 +344,6 @@ export const UserDelete = (memberNo) => {
   })
     .then((response) => response.data)
     .catch((error) => {
-      console.error("회원 상태 변경중 에러", error)
       throw error;
     });
 };
@@ -378,29 +357,20 @@ export const DropDownAPI = {
     return GZAPI.get(`/api/member/dropDown/${ memberNo }`)
                 .then((response) => response.data)
                 .catch((error) => {
-                  console.error("Error fetching drop down data:", error);
                   throw error;
                 });
   },
   getProfile: async (memberNo) => {
     return GZAPI.get(`/api/members/getProfile/${ memberNo }`)
-                .then((response) => {
-                  console.log("프로필 조회 응답:", response.data);
-                  return response.data;
-                })
+                .then((response) => response.data)
                 .catch((error) => {
-                  console.error("프로필 조회 실패:", error);
                   throw error;
                 });
   },
   getNoteList: async (memberNo) => {
     return GZAPI.get(`/api/note/countNewNotes/${memberNo}`)
-      .then((response) => {
-        console.log("드롭다운 쪽지 카운팅", response.data);
-        return response.data;
-      })
+      .then((response) => response.data)
       .catch((error) => {
-        console.error("드롭다운 쪽지 카운팅 실패:", error);
         return 0;
       });
   },
@@ -409,12 +379,8 @@ export const DropDownAPI = {
 export const ProfileAPI = {
   getAllProfiles: async () => {
     return GZAPI.get(`/api/members/allProfiles`)
-                .then((response) => {
-                  console.log("전체 프로필 조회 응답:", response.data);
-                  return response.data;
-                })
+                .then((response) => response.data)
                 .catch((error) => {
-                  console.error("전체 프로필 조회 실패:", error);
                   throw error;
                 });
   },
@@ -427,7 +393,6 @@ export const MemberListAPI = {
     return GZAPI.get(`/api/members/interaction?${ params.toString() }`)
                 .then((response) => response.data)
                 .catch((error) => {
-                  console.error("유저데이터 로드 중 에러발생", error);
                   throw error;
                 });
   },
@@ -439,7 +404,6 @@ export const MemberListAPI = {
                   return response.data.query
                 })
                 .catch(error => {
-                  console.error("유저 검색 중 에러 발생", error);
                   throw error;
                 });
   },
@@ -451,7 +415,6 @@ export const MemberListAPI = {
                 })
                 .then((response) => response.data)
                 .catch((error) => {
-                  console.error("멤버 팔로우 중 에러 발생", error);
                   throw error;
                 });
   },
@@ -460,11 +423,8 @@ export const MemberListAPI = {
     return GZAPI.delete(`/api/members/interaction/follow`, {
                   data: { currentUserNo, targetMemberNo },
                 })
-                .then((response) => {
-                  return response.data;
-                })
+                .then((response) => response.data)
                 .catch((error) => {
-                  console.error("멤버 팔로우 중 에러 발생", error);
                   throw error;
                 });
   },
@@ -476,7 +436,6 @@ export const MemberListAPI = {
                 })
                 .then((response) => response.data)
                 .catch((error) => {
-                  console.error("멤버 차단 중 에러 발생", error);
                   throw error;
                 });
   },
@@ -487,7 +446,6 @@ export const MemberListAPI = {
                 })
                 .then((response) => response.data)
                 .catch((error) => {
-                  console.error("멤버 차단해제 중 에러 발생", error);
                   throw error;
                 });
   },
@@ -497,10 +455,6 @@ export const MemberListAPI = {
     return GZAPI.get(`/api/members/interaction/${ memberNo }/follow`)
                 .then((response) => response.data)
                 .catch((error) => {
-                  console.error(
-                    `${ memberNo } 팔로우 리스트를 가져오는 중 오류 발생: `,
-                    error
-                  );
                   throw error;
                 });
   },
@@ -509,10 +463,6 @@ export const MemberListAPI = {
     return GZAPI.get(`/api/members/interaction/${ memberNo }/block`)
                 .then((response) => response.data)
                 .catch((error) => {
-                  console.error(
-                    `${ memberNo } 차단 리스트를 가져오는 중 오류 발생: `,
-                    error
-                  );
                   throw error;
                 });
   },
@@ -535,7 +485,6 @@ export const AnnounceAPI = {
     return GZAPI.get(`/api/announce?${ params.toString() }`)
                 .then((response) => response.data)
                 .catch((error) => {
-                  console.error("Error fetching announcements:", error);
                   throw error;
                 });
   },
@@ -546,20 +495,16 @@ export const AnnounceAPI = {
     return GZAPI.get(`/api/announce/detail/${ announceNo }`)
                 .then((response) => response.data)
                 .catch((error) => {
-                  console.error("공지사항 세부조회중 에러 발생[API]", error);
                   throw error;
                 });
   },
   incrementAnnounceViews: async (announceNo, navigate) => {
-    console.log("클릭 annonuceNo: ", announceNo);
     return GZAPI.post(`/api/announce/${ announceNo }/increment`)
                 .then((response) => {
-                  console.log("조회수 증가 성공", response);
                   navigate(`/announce/detail/${ announceNo }`);
                   return response.data;
                 })
                 .catch((error) => {
-                  console.error("조회수 증가 실패", error);
                   throw error;
                 });
   },
@@ -570,10 +515,6 @@ export const AnnounceAPI = {
       announcementData;
 
     if (!memberNo || !announceTitle || !announceBody || !typeCode) {
-      console.log(memberNo);
-      console.log(announceTitle);
-      console.log(announceBody);
-      console.log(typeCode);
       return Promise.reject(new Error("필수 필드가 누락되었습니다."));
     }
     return GZAPI.post("/api/_admin/announce/write", {
@@ -584,16 +525,13 @@ export const AnnounceAPI = {
                 })
                 .then((response) => response.data)
                 .catch((error) => {
-                  console.error("공지사항 작성 중 에러 발생[API]", error);
                   throw error;
                 });
   },
   updateAnnouncement: (announceNo, announce) => {
-    console.log("공지 수정 [API] 번호: ", announceNo);
     return GZAPI.put(`/api/_admin/announce/update/${ announceNo }`, announce)
                 .then((response) => response.data)
                 .catch((error) => {
-                  console.error("공지사항 수정 중 에러 발생[API]", error);
                   throw error;
                 });
   },
@@ -601,7 +539,6 @@ export const AnnounceAPI = {
     return GZAPI.delete(`/api/_admin/announce/delete/${ announceNo }`)
                 .then((response) => response.data)
                 .catch((error) => {
-                  console.error("공지사항 삭제 중 에러 발생[API]", error);
                   throw error;
                 });
   },
@@ -666,17 +603,14 @@ export const Alert = {
                 .catch((err) => err);
   },
   AlertDelete: async (alertNo) => {
-    return GZAPI.post(`/api/alertSSE/updateReadTime/${ alertNo }`)
+    return GZAPI.post(`/api/alertSSE/updateDelete/${ alertNo }`)
                 .then((res) => res)
                 .catch((err) => err);
   },
   getNewAlertCount: async (memberNo) => {
     return GZAPI.get(`/api/alertSSE/AlertSSEListAndCount/${ memberNo }`)
                 .then((res) => res.data)
-                .catch((err) => {
-                  console.error("Failed to fetch new alert count:", err);
-                  return 0;
-                });
+                .catch((err) => err);
   },
 };
 

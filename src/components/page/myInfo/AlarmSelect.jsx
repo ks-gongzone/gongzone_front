@@ -72,7 +72,6 @@ export default function AlarmSettings({ memberNo }) {
         setAlarms(newAlarms);
       })
       .catch((error) => {
-        console.error("알림 로드 중 에러",error);
         if (error.response && error.response.status === 500) {
           const defaultAlarms = {
             smsAlert: false,
@@ -123,9 +122,7 @@ export default function AlarmSettings({ memberNo }) {
         alert("알림 설정 저장완료");
         setIsNewUser(false);
       })
-      .catch((error) => {
-        console.error("알림 저장 중 에러 발생", error);
-    });
+      .catch((error) => error);
   }
 
   if (!alarms) {
