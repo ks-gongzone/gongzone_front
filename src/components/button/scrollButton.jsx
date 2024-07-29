@@ -23,6 +23,12 @@ export default function ScrollButton() {
 
   useEffect(() => {
     fetchInitialData();
+    window.addEventListener('showNote', handleShowNote);
+    window.addEventListener('showAlert', handleShowAlert);
+    return () => {
+      window.removeEventListener('showNote', handleShowNote);
+      window.removeEventListener('showAlert', handleShowAlert);
+    };
   }, []);
 
   useEffect(() => {
@@ -192,6 +198,16 @@ export default function ScrollButton() {
       return date.toLocaleString();
     }
     return dateString;
+  };
+
+  const handleShowNote = (event) => {
+    setActiveTab('messages');
+    setIsAlertOpen(true);
+  };
+
+  const handleShowAlert = (event) => {
+    setActiveTab('alerts');
+    setIsAlertOpen(true);
   };
 
   return (
