@@ -144,7 +144,8 @@ export default function InsertForm() {
       formData.detailAddress === "" ||
       formData.latitude === "" ||
       formData.longitude === "" ||
-      formData.endDate === ""
+      formData.endDate === ""  ||
+      !formData.image
     ) {
       alert("필수 입력 항목을 모두 작성해주세요.");
       return;
@@ -323,7 +324,6 @@ export default function InsertForm() {
           accept="image/*"
           onChange={handleChange}
           style={{ display: "none" }}
-          required
         />
 
         <button
