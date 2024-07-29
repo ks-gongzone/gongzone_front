@@ -9,7 +9,7 @@ export default function MyPageBoard() {
   const [data, setData] = useState([]);
   const memberNo = AuthStore((state) => state.userInfo.memberNo);
   const navigate = useNavigate();
-  const baseURL = "http://localhost:8088";
+  const baseURL = "https://gongzone.duckdns.org";
 
   const fetch = async () => {
     const detailData = await MyPageWish(memberNo);
