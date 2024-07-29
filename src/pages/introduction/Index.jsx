@@ -363,7 +363,7 @@ export default function Intro() {
           ERD 이미지 클릭 시 ERD 클라우드로 이동됩니다.
         </div>
         <Link
-          to="https://www.erdcloud.com/d/E99deotjvtDYETQFj"
+          to="https://www.erdcloud.com/d/N686cPDjd6TqWpHFv"
           className="text-2xl whitespace-nowrap"
         >
           <img alt="logo" src={ERD} className="h-[30em] mb-12" />
