@@ -105,6 +105,18 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
     onClose();
   };
 
+  const handleNoteClick = (noteNo) => {
+    const event = new CustomEvent('showNote', { detail: noteNo });
+    window.dispatchEvent(event);
+    onClose();
+  };
+
+  const handleAlertClick = (alertNo) => {
+    const event = new CustomEvent('showAlert', { detail: alertNo });
+    window.dispatchEvent(event);
+    onClose();
+  };
+
   return (
     <div
       ref={dropdownRef}
@@ -209,6 +221,7 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
                 <button
                   type="button"
                   className="w-full text-left text-gray-500 break-words overflow-hidden"
+                  onClick={() => handleAlertClick(alert.alertNo)}
                 >
                   {transText(alert.alertDetail, 14)}
                 </button>
@@ -222,6 +235,7 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
                 <button
                   type="button"
                   className="w-full text-left text-gray-500 break-words overflow-hidden"
+                  onClick={() => handleNoteClick(note.noteNo)}
                 >
                   {transText(note.noteBody, 14)}
                 </button>
