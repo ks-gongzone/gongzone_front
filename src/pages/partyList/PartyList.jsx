@@ -100,12 +100,25 @@ export default function PartyList() {
   });
 
   const renderPartyCards = (parties) => {
+    const truncateBody = (desc, maxLength = 20) => {
+      if (desc.length > maxLength) {
+        return desc.slice(0, maxLength) + "...";
+      }
+      return desc;
+    };
+
+    const truncateTitle = (title, maxLength = 25) => {
+      if (title.length > maxLength) {
+        return title.slice(0, maxLength) + "...";
+      }
+      return title;
+    };
     return parties.map((e) => (
       <div key={e.partyNo} onClick={() => handleCardClick(e.partyNo)}>
         <PartyListCard
           img={`${baseURL}${e.img}`}
-          desc={e.boardBody}
-          title={e.boardTitle}
+          desc={truncateBody(e.boardBody)}
+          title={truncateTitle(e.boardTitle)}
           id={e.partyNo}
           memberNo={memberNo}
           note={e.partyCateCode}
