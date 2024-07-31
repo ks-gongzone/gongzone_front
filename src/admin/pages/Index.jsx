@@ -8,6 +8,7 @@ import ReportList from "./report/ReportList";
 import QuestionList from "./question/QuestionList";
 import AdminPartyMenu from "../components/party/AdminPartyMenu";
 import Dashboard from "./dashboard/Dashboard";
+import ScrollToTop from "../../layouts/ScrollToTop";
 
 export default function Admin() {
   const [content, setContent] = useState({
@@ -45,6 +46,7 @@ export default function Admin() {
 
   return (
     <div className="flex">
+      <ScrollToTop />
       <div className="w-[15%] min-h-screen bg-[#1e5187] p-6 shadow-md font-bold text-white">
         <div className="mt-2 flex flex-col space-y-4 sticky top-0">
           <Link to="/home">

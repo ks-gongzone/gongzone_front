@@ -36,16 +36,10 @@ export default function AdminReportModal({ selectedReport, closeModal }) {
         memberStatusCode: 'S010103' //맴버 상태 코드
       });
 
-    try {
       const response = await apiCall;
       if (response.status === true) {
         closeModal();
-      } else {
-        console.error('Failed to send data:', response);
       }
-    } catch (error) {
-      console.error('Error sending data:', error);
-    }
   };
 
   return (

@@ -43,14 +43,12 @@ export default function MainMap() {
                 locations: locationData,
               }));
             } else {
-              console.error("Fetched data is not an array:", locationData);
               setState((prev) => ({
                 ...prev,
                 locations: [],
               }));
             }
           } catch (error) {
-            console.error("Error fetching locations:", error);
             setState((prev) => ({
               ...prev,
               locations: [],
@@ -141,6 +139,15 @@ function LocationMarker({ location, memberNo }) {
     navigate(`/party/detail/${memberNo}/${location.partyNo}`);
   };
 
+  const baseURL = "https://gongzone.duckdns.org";
+
+  const truncateTitle = (title, maxLength = 20) => {
+    if (title.length > maxLength) {
+      return title.slice(0, maxLength) + "...";
+    }
+    return title;
+  };
+
   return (
     <>
       <MapMarker
@@ -165,7 +172,9 @@ function LocationMarker({ location, memberNo }) {
           <div className="wrap w-[20em] bg-white rounded-lg shadow-lg p-4 flex justify-between">
             <div className="w-full">
               <div className="flex justify-between items-center border-b-2 pb-2">
-                <div className="text-lg font-bold">{location.boardTitle}</div>
+                <div className="text-ms font-bold">
+                  {truncateTitle(location.boardTitle)}
+                </div>
                 <button
                   type="button"
                   className="close text-red-500"
@@ -180,7 +189,7 @@ function LocationMarker({ location, memberNo }) {
               <div className="w-full justify-center mt-2 flex">
                 <div className="img flex-none">
                   <img
-                    src="//t1.daumcdn.net/thumb/C84x76/?fname=http://t1.daumcdn.net/cfile/2170353A51B82DE005"
+                    src={`${baseURL}${location.filePath}`}
                     width="90"
                     height="70"
                     alt={location.boardTitle}

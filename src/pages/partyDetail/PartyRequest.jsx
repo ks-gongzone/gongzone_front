@@ -18,7 +18,6 @@ export default function PartyRequest({
 }) {
   const [profileImages, setProfileImages] = useState({});
   const [loading, setLoading] = useState(true);
-  console.log("Request members in PartyRequest:", requestMembers);
 
   useEffect(() => {
     const fetchProfileImages = async () => {
@@ -32,10 +31,8 @@ export default function PartyRequest({
         }, {});
 
         setProfileImages(profilesMap);
-      } catch (error) {
-        console.error("프로필 이미지 로드 중 오류", error);
       } finally {
-        setLoading(false); // This will ensure loading is set to false regardless of success or failure
+        setLoading(false);
       }
     };
 

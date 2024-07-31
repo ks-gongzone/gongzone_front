@@ -585,7 +585,7 @@ export const Note = {
                 .catch((err) => err);
   },
   UpdateDeleteNote: async (noteNo) => {
-    return GZAPI.post(`/note/updateDelete/${ noteNo }`)
+    return GZAPI.post(`/api/note/updateDelete/${ noteNo }`)
                 .then((res) => res)
                 .catch((err) => err);
   },

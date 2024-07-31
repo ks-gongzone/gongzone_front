@@ -26,7 +26,7 @@ export default function ScrollButton() {
     fetchInitialData();
     window.addEventListener('showNote', handleShowNote);
     window.addEventListener('showAlert', handleShowAlert);
-    const eventSource = new EventSource(`http://localhost:8088/api/alertSSE/stream/${memberNo}?token=${token}`);
+    const eventSource = new EventSource(`https://gongzone.duckdns.org/api/alertSSE/stream/${memberNo}?token=${token}`);
 
     eventSource.onmessage = (event) => {
       const alert = JSON.parse(event.data);

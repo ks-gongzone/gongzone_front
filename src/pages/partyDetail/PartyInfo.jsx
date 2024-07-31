@@ -137,7 +137,6 @@ export default function PartyDetail() {
             fetch();
           } catch (error) {
             MySwal.fire("오류", "결제 중 오류가 발생했습니다.", "error");
-            console.error("Error during purchase:", error);
           }
         } else if (result.isDenied) {
           window.location.href = "/myPage/point";
@@ -145,7 +144,6 @@ export default function PartyDetail() {
       });
     } catch (error) {
       MySwal.fire("오류", "결제 요청 중 오류가 발생했습니다.", "error");
-      console.error("Error during purchase:", error);
     }
   };
 
@@ -286,6 +284,12 @@ export default function PartyDetail() {
     await fetch();
   };
 
+  const isMemberPaid = participants.some(
+    (participant) =>
+      participant.memberNo === memberNo &&
+      participant.purchaseCode === "S060302"
+  );
+
   return (
     <div className="w-full max-w-6xl mx-auto mb-10 mt-14 px-4 sm:px-6 lg:px-8">
       <div className="w-full mb-6 text-lg font-bold text-[#526688]">
@@ -397,14 +401,17 @@ export default function PartyDetail() {
         >
           수취 확인하기
         </button>
-      ) : detail.status === "S060103" ? (
-        <button
-          className="w-full h-10 mt-4 rounded-md bg-[#299c9f] text-white font-bold"
-          onClick={() => handlePurchase(memberNo, partyNo)}
-        >
-          내꺼 결제하기
-        </button>
-      ) : null}
+      ) : (
+        !isMemberPaid &&
+        detail.status === "S060103" && (
+          <button
+            className="w-full h-10 mt-4 rounded-md bg-[#299c9f] text-white font-bold"
+            onClick={() => handlePurchase(memberNo, partyNo)}
+          >
+            내꺼 결제하기
+          </button>
+        )
+      )}
 
       <PartyParticipant
         participants={participants}
