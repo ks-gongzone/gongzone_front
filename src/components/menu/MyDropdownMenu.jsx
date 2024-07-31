@@ -4,9 +4,9 @@ import AuthStore from "../../utils/zustand/AuthStore";
 import sample1 from "../../assets/images/sample1.PNG";
 import { Alert, DropDownAPI } from "../../utils/repository";
 import Skeleton from "react-loading-skeleton";
-import 'react-loading-skeleton/dist/skeleton.css';
+import "react-loading-skeleton/dist/skeleton.css";
 
-const baseURL = 'https://gongzone.duckdns.org';
+const baseURL = "https://gongzone.duckdns.org";
 
 /**
  * @수정일: 2024-07-10
@@ -46,11 +46,16 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [dropDownDataResponse, profileResponse, alertsResponse, notesResponse] = await Promise.all([
+        const [
+          dropDownDataResponse,
+          profileResponse,
+          alertsResponse,
+          notesResponse,
+        ] = await Promise.all([
           DropDownAPI.getDropDownData(memberNo),
           DropDownAPI.getProfile(memberNo),
           Alert.getNewAlertCount(memberNo),
-          DropDownAPI.getNoteList(memberNo)
+          DropDownAPI.getNoteList(memberNo),
         ]);
 
         setDropDownData(dropDownDataResponse);
@@ -60,11 +65,17 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
         }
 
         setAlerts(alertsResponse);
-        const alertCount = alertsResponse.reduce((sum, alert) => sum + alert.alertCount, 0);
+        const alertCount = alertsResponse.reduce(
+          (sum, alert) => sum + alert.alertCount,
+          0
+        );
         setNewAlertCount(alertCount);
 
         setNotes(notesResponse);
-        const noteCount = notesResponse.reduce((sum, note) => sum + note.noteCount, 0);
+        const noteCount = notesResponse.reduce(
+          (sum, note) => sum + note.noteCount,
+          0
+        );
         setNewNoteCount(noteCount);
       } catch (error) {
         onClose();
@@ -96,23 +107,23 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
   const handleMyPageClick = (e) => {
     e.preventDefault();
     navigate("/myPage/myInfo");
-    window.scrollTo(0, 0); 
+    window.scrollTo(0, 0);
     onClose();
   };
 
   const handleLinkClick = () => {
-    window.scrollTo(0, 0); 
+    window.scrollTo(0, 0);
     onClose();
   };
 
   const handleNoteClick = (noteNo) => {
-    const event = new CustomEvent('showNote', { detail: noteNo });
+    const event = new CustomEvent("showNote", { detail: noteNo });
     window.dispatchEvent(event);
     onClose();
   };
 
   const handleAlertClick = (alertNo) => {
-    const event = new CustomEvent('showAlert', { detail: alertNo });
+    const event = new CustomEvent("showAlert", { detail: alertNo });
     window.dispatchEvent(event);
     onClose();
   };
@@ -160,6 +171,12 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
       ) : (
         <div>
           <div className="absolute top-[-0.5rem] right-[1.5rem] w-0 h-0 border-l-8 border-l-transparent border-r-8 border-r-transparent border-b-8 border-b-white"></div>
+          <button
+            className="absolute top-2 left-2 bg-transparent text-gray-600 hover:text-gray-900"
+            onClick={onClose}
+          >
+            ❌
+          </button>
           <div className="flex justify-end w-full">
             <button
               type="button"
@@ -183,10 +200,18 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
               </div>
               <p className="text-red-500 text-sm mt-2">보유 포인트</p>
               <div className="flex justify-between items-center">
-                <Link to="/myPage/point" className="flex w-[8em] rounded-lg justify-end items-center pr-4 text-[13px]" onClick={handleLinkClick}>
+                <Link
+                  to="/myPage/point"
+                  className="flex w-[8em] rounded-lg justify-end items-center pr-4 text-[13px]"
+                  onClick={handleLinkClick}
+                >
                   {dropDownData.memberPoint}P
                 </Link>
-                <Link to="/myPage/point" className="ml-4 px-2 py-1 rounded-lg bg-red-200 hover:font-semibold hover:bg-red-400" onClick={handleLinkClick} >
+                <Link
+                  to="/myPage/point"
+                  className="ml-4 px-2 py-1 rounded-lg bg-red-200 hover:font-semibold hover:bg-red-400"
+                  onClick={handleLinkClick}
+                >
                   충전
                 </Link>
               </div>
@@ -197,17 +222,13 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
           </div>
           <div className="px-8 pt-8">
             <div className="font-semibold text-gray-900">내 정보</div>
-            <div className="flex justify-between items-center border rounded-lg mt-4 py-1 px-8">
+            <div className="flex items-center border rounded-lg mt-4 py-1 px-8">
               <button
                 onClick={handleMyPageClick}
                 type="button"
-                className="hover:font-semibold text-[12px]"
+                className="hover:font-semibold text-[12px] mx-auto"
               >
                 마이페이지
-              </button>
-              <div className="h-4 border-l" />
-              <button type="button" className="hover:font-semibold text-[12px]">
-                모임 현황
               </button>
             </div>
           </div>
@@ -215,7 +236,9 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
             <div className="w-[18em] pt-8 border-gray-200 border-b" />
           </div>
           <div className="px-8 pt-8">
-            <div className="font-semibold text-gray-900">신규 알림 ({newAlertCount})</div>
+            <div className="font-semibold text-gray-900">
+              신규 알림 ({newAlertCount})
+            </div>
             {alerts.map((alert, index) => (
               <div className="mt-2" key={index}>
                 <button
@@ -229,7 +252,9 @@ export default function MyDropdownMenu({ isOpen, onClose }) {
             ))}
           </div>
           <div className="px-8 pt-8">
-            <div className="font-semibold text-gray-900">신규 쪽지 ({newNoteCount})</div>
+            <div className="font-semibold text-gray-900">
+              신규 쪽지 ({newNoteCount})
+            </div>
             {notes.map((note, index) => (
               <div className="mt-2" key={index}>
                 <button

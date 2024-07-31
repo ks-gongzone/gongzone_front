@@ -36,16 +36,18 @@ export default function BoardCardSection({ data }) {
   const [itemsPerPage] = useState(9); // 페이지당 항목 수 설정
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
+  const filteredData = data.filter((e) => e.remain > 0);
+
   useEffect(() => {
-    if (data.length > 0) {
+    if (filteredData.length > 0) {
       setLoading(false);
     }
-  }, [data]);
+  }, [filteredData]);
 
   // 현재 페이지의 데이터 계산
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
   // 페이지 번호 변경 함수
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -85,7 +87,7 @@ export default function BoardCardSection({ data }) {
       <div className="flex justify-center mt-8">
         <Pagination
           itemsPerPage={itemsPerPage}
-          totalItems={data.length}
+          totalItems={filteredData.length}
           paginate={paginate}
           currentPage={currentPage}
         />

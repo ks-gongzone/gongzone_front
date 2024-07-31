@@ -5,7 +5,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { ProfileAPI } from "../../utils/repository";
 import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import 'react-loading-skeleton/dist/skeleton.css';
+import "react-loading-skeleton/dist/skeleton.css";
 
 const baseURL = "https://gongzone.duckdns.org";
 
@@ -27,7 +27,10 @@ export default function PartyParticipant({
         const profiles = profilesData || [];
 
         const profilesMap = profiles.reduce((acc, profile) => {
-          acc[profile.memberNo] = profile.files.length > 0 ? `${baseURL}${profile.files[0].filePath}` : sample1;
+          acc[profile.memberNo] =
+            profile.files.length > 0
+              ? `${baseURL}${profile.files[0].filePath}`
+              : sample1;
           return acc;
         }, {});
 
@@ -127,16 +130,20 @@ export default function PartyParticipant({
                       >
                         파티 탈퇴하기
                       </button>
-                    ) : (
+                    ) : currentUser === partyLeader ? (
                       <button
                         type="button"
-                        className="w-full mx-1 h-6 rounded-md bg-[#f97173] hover:bg-blue-500 text-xs font-bold text-[white]"
+                        className="w-full mx-1 h-6 rounded-md bg-[#f97173] hover:bg-red-500 text-xs font-bold text-[white]"
                         onClick={() =>
                           onKick(participant.memberNo, participant.partyNo)
                         }
                       >
                         강퇴하기
                       </button>
+                    ) : (
+                      <div className="w-full mx-1 h-6 rounded-md bg-gray-300 text-xs font-bold text-[black] text-center flex items-center justify-center">
+                        파티 참가자
+                      </div>
                     )}
                   </div>
                 )}
