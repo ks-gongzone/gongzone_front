@@ -20,16 +20,31 @@ export default function ScrollButton() {
   const [hasUnread, setHasUnread] = useState(false);
 
   const memberNo = AuthStore((state) => state.userInfo.memberNo);
+  const token = window.localStorage.getItem("accessToken");
 
   useEffect(() => {
     fetchInitialData();
     window.addEventListener('showNote', handleShowNote);
     window.addEventListener('showAlert', handleShowAlert);
+    const eventSource = new EventSource(`http://localhost:8088/api/alertSSE/stream/${memberNo}?token=${token}`);
+
+    eventSource.onmessage = (event) => {
+      const alert = JSON.parse(event.data);
+      setAlerts((prevAlerts) => [alert, ...prevAlerts]);
+      checkUnreadStatus();
+      setHasUnread(true);
+    };
+
+    eventSource.onerror = (event) => {
+      eventSource.close();
+    };
+
     return () => {
       window.removeEventListener('showNote', handleShowNote);
       window.removeEventListener('showAlert', handleShowAlert);
+      eventSource.close();
     };
-  }, []);
+  }, [memberNo]);
 
   useEffect(() => {
     if (isAlertOpen) {
