@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ERD from "../../assets/images/GongzoneERD.png";
 import AuthStore from "../../utils/zustand/AuthStore";
 import logo from "../../assets/logo/GONGZONE_logo_white.png";
+import github from "../../assets/logo/github_logo.png";
 
 export default function Intro() {
   const navigate = useNavigate();
@@ -86,6 +87,7 @@ export default function Intro() {
         >
           <img alt="logo" src={logo} className="w-[5em]" />
         </Link>
+
         <div className="text-[3vw] md:text-[2vw] lg:text-[1vw] font-GGothicssi20g">
           로고 클릭 시 메인페이지로 이동합니다.
         </div>
@@ -116,6 +118,15 @@ export default function Intro() {
                 <strong>프레임워크:</strong> React, Spring Boot, MyBatis,
                 TailwindCSS
               </div>
+            </div>
+            <div className="text-ms flex justify-between items-center gap-2">
+              <div>Github 방문하기 ▶</div>
+              <Link
+                to="https://github.com/ks-gongzone/gongzone_front.git"
+                className="font-bold text-[8vw] md:text-[6vw] lg:text-[4vw]"
+              >
+                <img alt="github" src={github} className="w-[40px]" />
+              </Link>
             </div>
           </div>
         </div>
