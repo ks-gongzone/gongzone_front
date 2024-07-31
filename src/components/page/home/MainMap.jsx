@@ -43,14 +43,12 @@ export default function MainMap() {
                 locations: locationData,
               }));
             } else {
-              console.error("Fetched data is not an array:", locationData);
               setState((prev) => ({
                 ...prev,
                 locations: [],
               }));
             }
           } catch (error) {
-            console.error("Error fetching locations:", error);
             setState((prev) => ({
               ...prev,
               locations: [],

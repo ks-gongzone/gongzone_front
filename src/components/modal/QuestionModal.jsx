@@ -21,20 +21,6 @@ export default function QuestionModal() {
       typeCode: typeCodeValue,
       memberQuestionBody: textareaValue,
     };
-    console.log('Data to send:', data);
-
-
-    try {
-      const response = await AdminMemberAPI.QuestionMemberInsert(data);
-      if (response.status === 200) {
-        console.log('Successfully sent data:', data);
-        closeModal();
-      } else {
-        console.error('Failed to send data:', response);
-      }
-    } catch (error) {
-      console.error('Error sending data:', error);
-    }
   };
 
   const openModal = () => {

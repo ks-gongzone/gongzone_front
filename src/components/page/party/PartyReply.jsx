@@ -37,7 +37,6 @@ export default function PartyReply({ boardNo, boardReply }) {
   const handleReplySubmit = async () => {
     if (reply.trim()) {
       const newReply = await Board.BoardReply(boardNo, connectMemberNo, reply);
-      console.log(newReply.data); // 새로운 댓글 확인
       setReplies(newReply.data); // 새로운 댓글을 상태에 추가
       setReply(""); // 댓글 입력 필드 비우기
     }
@@ -51,7 +50,6 @@ export default function PartyReply({ boardNo, boardReply }) {
         connectMemberNo,
         updateReply
       );
-      console.log(updateReplies.data);
       setReplies(updateReplies.data);
       setUpdateReply("");
       setEditingIndex(-1);
@@ -66,7 +64,6 @@ export default function PartyReply({ boardNo, boardReply }) {
       boardNo,
       connectMemberNo
     );
-    console.log(deletedReply);
     setReplies(deletedReply.data);
   };
 

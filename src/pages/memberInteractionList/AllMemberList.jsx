@@ -76,8 +76,6 @@ export default function AllMemberList({
             navigate(`/member/list?query=${searchQuery}&page=${page}`);
           }
         }
-      } catch (error) {
-        console.error("[페이지] 유저 데이터 로드 중 오류", error);
       } finally {
         setLoading(false);
       }

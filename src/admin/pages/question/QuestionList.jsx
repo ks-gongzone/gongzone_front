@@ -13,17 +13,6 @@ const handleSendData = async (member) => {
     ...member,
     statusCode: 'S010702'
   };
-
-  try {
-    const response = await AdminMemberAPI.QuestionStatusList(modifiedMember);
-    if (response.status === 200) {
-      console.log('Successfully sent data:', modifiedMember);
-    } else {
-      console.error('Failed to send data:', response);
-    }
-  } catch (error) {
-    console.error('Error sending data:', error);
-  }
 };
 
 export default function QuestionList() {

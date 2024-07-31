@@ -19,16 +19,11 @@ export default function AnnounceDetailBody() {
 
   useEffect(() => {
     window.scrollTo(0, 0); // 페이지 이동 위치 조정
-    if (!announceNo) {
-      console.error("announceNo가 없습니다.");
-      return;
-    }
     AnnounceAPI.getAnnouncementDetail(announceNo)
       .then((data) => {
         setAnnounce(data);
       })
       .catch((error) => {
-        console.error("공지사항 세부 로드중 오류 발생[컴포넌트]", error);
         alert("공지사항을 불러올 수 없습니다.");
       });
   }, [announceNo]);

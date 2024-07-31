@@ -32,10 +32,8 @@ export default function PartyParticipant({
         }, {});
 
         setProfileImages(profilesMap);
-      } catch (error) {
-        console.error("프로필 이미지 로드 중 오류", error);
       } finally {
-        setLoading(false); // Ensure loading is set to false regardless of success or failure
+        setLoading(false);
       }
     };
 

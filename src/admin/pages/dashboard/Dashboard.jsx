@@ -21,7 +21,6 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchMemberData = async () => {
-    try {
       const result = await MemberListAPI.getStaticMember();
       if (Array.isArray(result.data)) {
         const filteredData = result.data.filter((item) => {
@@ -50,13 +49,9 @@ export default function Dashboard() {
           { id: "social", data: socialData },
         ]);
       }
-    } catch (error) {
-      console.error("Error fetching member data:", error);
-    }
   };
 
   const fetchReportData = async () => {
-    try {
       const result = await AdminMemberAPI.UncheckedReport();
       if (Array.isArray(result.data)) {
         const today = new Date().toISOString().split("T")[0];
@@ -67,13 +62,9 @@ export default function Dashboard() {
 
         setReportData({ today: todayReport, total: totalReport });
       }
-    } catch (error) {
-      console.error("Error fetching report data:", error);
-    }
   };
 
   const fetchBoardData = async () => {
-    try {
       const result = await Board.GetBoardAdmin();
       if (
         result &&
@@ -88,9 +79,6 @@ export default function Dashboard() {
         postData.sort((a, b) => b.posts - a.posts);
         setPostData(postData);
       }
-    } catch (error) {
-      console.error("Error fetching board data:", error);
-    }
   };
 
   useEffect(() => {

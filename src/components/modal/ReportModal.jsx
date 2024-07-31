@@ -26,19 +26,6 @@ export default function ReportModal({
       typeCode: typeCodeValue,
       reasonDetail: textareaValue,
     };
-    console.log("Data to send:", data);
-
-    try {
-      const response = await AdminMemberAPI.ReportMemberInsert(data);
-      if (response.status === 200) {
-        console.log("Successfully sent data:", data);
-        closeModal();
-      } else {
-        console.error("Failed to send data:", response);
-      }
-    } catch (error) {
-      console.error("Error sending data:", error);
-    }
   };
 
   return (
