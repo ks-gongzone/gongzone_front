@@ -26,9 +26,6 @@ export default function MemberListWrapper() {
           setTotalMembers(0);
         }
       })
-      .catch((error) => {
-        console.error("검색어 전송 중 오류 발생", error);
-      });
   };
   
   const goToPreviousPage = () => {

@@ -20,7 +20,6 @@ export default function PointCharge() {
 
       // 오류 발생
       if (payResponse.code != null) {
-        console.log(payResponse.message);
         alert("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
         // TODO: 서버에 오류정보 전송(status: 실패로 설정 후 전송)
         return;  // 종료

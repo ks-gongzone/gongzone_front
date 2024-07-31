@@ -137,7 +137,6 @@ export default function PartyDetail() {
             fetch();
           } catch (error) {
             MySwal.fire("오류", "결제 중 오류가 발생했습니다.", "error");
-            console.error("Error during purchase:", error);
           }
         } else if (result.isDenied) {
           window.location.href = "/myPage/point";
@@ -145,7 +144,6 @@ export default function PartyDetail() {
       });
     } catch (error) {
       MySwal.fire("오류", "결제 요청 중 오류가 발생했습니다.", "error");
-      console.error("Error during purchase:", error);
     }
   };
 

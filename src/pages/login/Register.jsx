@@ -41,7 +41,6 @@ export default function Register() {
 
   const checkField = async (name, value) => {
     let errorMsg;
-    console.log(`검증 중: ${name} = ${value}`);
 
     if (name === 'memberEmail') {
       errorMsg = checkMemberEmail(value);
@@ -63,7 +62,6 @@ export default function Register() {
       }
     }
 
-    console.log(`검증 결과: ${name} = ${errorMsg}`);
 
     setErrors(prevErrors => ({ ...prevErrors, [name]: errorMsg }));
     return errorMsg;
@@ -71,9 +69,7 @@ export default function Register() {
 
   const onBlur = async (e) => {
     const { name, value } = e.target;
-    console.log(`검증 중: ${name} = ${value}`);
     await checkField(name, value);
-    console.log(`검증 결과: ${name} = ${errors[name]}`);
   };
 
   const handleCheck = (e) => {

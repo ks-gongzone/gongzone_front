@@ -33,12 +33,8 @@ export default function MyPageBoardCard({
 
   const handleLikeClick = async (e) => {
     e.stopPropagation();
-    try{
       likeBtn();
       await GZAPI.post(`/api/boards/wish/${boardNo}/${memberNo}`)
-    } catch (error) {
-      console.error('서버 요청 중 오류 발생:', error);
-    }
   };
 
   return (

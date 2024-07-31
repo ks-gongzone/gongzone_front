@@ -8,9 +8,6 @@ export default function Phone({ memberNo }) {
     GetPhone(memberNo)
       .then((data) => {
         setPhoneNumber(data.phone);
-      })
-      .catch((error) => {
-        console.error("핸드폰 번호 로드에러", error);
       });
   }, [memberNo]);
 

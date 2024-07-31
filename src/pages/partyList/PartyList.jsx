@@ -43,7 +43,6 @@ export default function PartyList() {
       : [detailData.data]; // 배열로 변환
     setData(responseData);
     setIsLoading(false);
-    console.log("Fetched data:", responseData);
   };
 
   useEffect(() => {
