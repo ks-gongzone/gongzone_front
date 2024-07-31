@@ -15,7 +15,6 @@ export default function BoardSearch({ onSearch, hidden }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
         const response = await GZAPI.post("/api/boards/list", {
           location: "*",
           category: "*",
@@ -23,11 +22,7 @@ export default function BoardSearch({ onSearch, hidden }) {
           memberNo: memberNo,
         });
 
-        // 응답 데이터를 상태에 반영하거나 처리할 수 있습니다.
         onSearch(response.data.slice(0, 90));
-      } catch (error) {
-        console.error("초기 데이터 요청 중 오류 발생:", error);
-      }
     };
 
     fetchData();
@@ -42,12 +37,8 @@ export default function BoardSearch({ onSearch, hidden }) {
   };
 
   const clickSearch = async () => {
-    try {
       const response = await GZAPI.post("/api/boards/list", formData);
       onSearch(response.data);
-    } catch (error) {
-      console.error("Error during search request:", error);
-    }
   };
 
   const cate = [

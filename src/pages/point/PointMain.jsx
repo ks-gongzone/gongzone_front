@@ -33,9 +33,6 @@ export default function Point() {
     })();
   }, []);
 
-  console.log(loading)
-
-
   return (
     loading.value ?
       <PointInnerSection>

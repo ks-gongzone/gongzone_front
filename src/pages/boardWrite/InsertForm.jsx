@@ -161,11 +161,6 @@ export default function InsertForm() {
       formDataToSend.append(key, formData[key]);
     }
 
-    // FormData 객체에 저장된 데이터를 콘솔에 출력
-    for (const [key, value] of formDataToSend.entries()) {
-      console.log(`${key}:`, value);
-    }
-
     try {
       const response = await GZAPI.post(
         `/api/boards/write/${memberNo}`,
@@ -194,7 +189,6 @@ export default function InsertForm() {
       }
     } catch (error) {
       // 에러 처리
-      console.error("폼 데이터 전송 중 오류가 발생했습니다.", error);
       setSubmitSuccess("");
       setSubmitError(
         "게시글 등록 중 오류가 발생했습니다. 나중에 다시 시도하세요."

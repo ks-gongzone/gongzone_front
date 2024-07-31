@@ -61,9 +61,7 @@ export default function UpdateForm() {
 
   useEffect(() => {
     const fetchBoardData = async () => {
-      try {
         const response = await GZAPI.post(`/api/boards/${boardNo}/info`);
-        console.log(response.data);
 
         setFormData({
             memberNo: response.data[0].memberNo,
@@ -83,9 +81,6 @@ export default function UpdateForm() {
             longitude: response.data[0].locationY,
             endDate: response.data[0].endDate,
           });
-      } catch (error) {
-        console.error("초기 데이터 요청 중 오류 발생:", error);
-      }
     };
     fetchBoardData();
   }, [boardNo]);
@@ -201,11 +196,6 @@ export default function UpdateForm() {
       formDataToSend.append(key, formData[key]);
     }
 
-    // FormData 객체에 저장된 데이터를 콘솔에 출력
-    for (const [key, value] of formDataToSend.entries()) {
-      console.log(`${key}:`, value);
-    }
-
     try {
       const response = await GZAPI.post(`/api/boards/update/${boardNo}`,formDataToSend,{
         headers: {
@@ -231,7 +221,6 @@ export default function UpdateForm() {
       }
     } catch (error) {
       // 에러 처리
-      console.error("폼 데이터 전송 중 오류가 발생했습니다.", error);
       setSubmitSuccess("");
       setSubmitError("게시글 등록 중 오류가 발생했습니다. 나중에 다시 시도하세요.");
     }

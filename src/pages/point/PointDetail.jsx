@@ -14,7 +14,6 @@ export default function PointDetail() {
     (async () => {
       const url = `/api/members/${ memberNo }/point/history/${ historyNo }`;
       const response = await GZAPI.get(url);
-      console.log(response)
       const result = response.data.result;
       pointHistory.set(result);
     })();

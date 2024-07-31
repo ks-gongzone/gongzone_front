@@ -38,17 +38,11 @@ export default function AdminPunishModal({ selectedReport, closeModal }) {
         memberStatusCode: 'S010103'
       });
 
-    try {
       const response = await apiCall;
       if (response.status === 200) {
         closeModal();
-      } else {
-        console.error('Failed to send data:', response);
-      }
-    } catch (error) {
-      console.error('Error sending data:', error);
+      } 
     }
-  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">

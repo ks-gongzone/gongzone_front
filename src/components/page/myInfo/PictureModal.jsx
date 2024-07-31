@@ -18,16 +18,12 @@ export default function PictureModal({ isOpen, onRequestClose, onImageSave, prof
 
   useEffect(() => {
     const checkProfileImage = async () => {
-      try {
         const response = await GZAPI.get(`/api/members/getProfile/${memberNo}`);
         if (response.data && response.data.file && Object.keys(response.data.file).length > 0) {
           setHasProfileImage(true);
         } else {
           setHasProfileImage(false);
         }
-      } catch (error) {
-        console.error('프로필 이미지 확인 실패:', error);
-      }
     };
     checkProfileImage();
   }, [memberNo]);
@@ -40,7 +36,6 @@ export default function PictureModal({ isOpen, onRequestClose, onImageSave, prof
       setImageType(file.type);
 
       // 파일 파싱 작업 호출
-      try {
         const formData = new FormData();
         formData.append('file', file);
 
@@ -54,9 +49,6 @@ export default function PictureModal({ isOpen, onRequestClose, onImageSave, prof
           // 파싱된 파일 정보 저장
           setParsedFileData(response.data);
         }
-      } catch (error) {
-        console.error('파일 파싱 실패:', error);
-      }
     } else {
       alert('이미지 파일을 선택해주세요.');
     }
@@ -93,7 +85,6 @@ export default function PictureModal({ isOpen, onRequestClose, onImageSave, prof
       alert('프로필 사진이 성공적으로 처리되었습니다!');
       onRequestClose();
     } catch (error) {
-      console.error('프로필 사진 처리 실패:', error);
       alert('프로필 사진 처리에 실패했습니다.');
     }
   };
